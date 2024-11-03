@@ -295,7 +295,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-11-19 15:47:26" itemprop="dateModified" datetime="2023-11-19T15:47:26+08:00">2023-11-19</time>
+                <time title="Modified: 2024-11-04 01:01:53" itemprop="dateModified" datetime="2024-11-04T01:01:53+08:00">2024-11-04</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -323,72 +323,14 @@
 
       
           <p>This article references the chapter 10 “ Simplifying Conditional Logic “ of <a target="_blank" rel="noopener" href="https://amzn.to/3LUmBwI">Refactoring: Improving the Design of Existing Code (2nd Edition)</a>. Author had highlighted many important refactorings in this chapter.</p>
-<p>I use .NET C# to practice with these refactorings and upload to Github.</p>
-<p><img src="https://geekcodeparadise.com/wp-content/uploads/2022/04/direction-2320124_1920-1024x1024.jpg" alt="Simplifying Conditional Logic"></p>
-<p>(Photo from Pixabay: <a target="_blank" rel="noopener" href="https://pixabay.com/illustrations/direction-path-decision-goal-2320124/">https://pixabay.com/illustrations/direction-path-decision-goal-2320124/</a><a target="_blank" rel="noopener" href="https://pixabay.com/illustrations/moving-boxes-mover-moving-truck-3671446/">)</a></p>
-<h2 id="Decompose-Conditional"><a href="#Decompose-Conditional" class="headerlink" title="Decompose Conditional"></a>Decompose Conditional</h2><h5 id="Tips"><a href="#Tips" class="headerlink" title="Tips"></a>Tips</h5><ul>
-<li>If the condition is complex, extract the condition and its branches as functions.</li>
-</ul>
-<h5 id="Examples"><a href="#Examples" class="headerlink" title="Examples:"></a>Examples:</h5><ul>
-<li>A simple example</li>
-</ul>
-<p><a target="_blank" rel="noopener" href="https://github.com/u8989332/martin-fowler-refactoring-2nd/tree/master/Ch10.Simplifying%20Conditional%20Logic/Decompose%20Conditional">Github</a></p>
-<hr>
-<h2 id="Consolidate-Conditional-Expression"><a href="#Consolidate-Conditional-Expression" class="headerlink" title="Consolidate Conditional Expression"></a>Consolidate Conditional Expression</h2><h5 id="Tips-1"><a href="#Tips-1" class="headerlink" title="Tips"></a>Tips</h5><ul>
-<li>Some conditions can be reduced into an “Ands” or “Ors” expression. Then this “Ands” or “Ors” expression can be extracted as a function.</li>
-<li>Sequences combine with Or, nested if statements combine with And.</li>
-<li>If the conditions have side-effect, use <strong>Separate Query from Modifier</strong> to process it.</li>
-</ul>
-<h5 id="Examples-1"><a href="#Examples-1" class="headerlink" title="Examples:"></a>Examples:</h5><ul>
-<li>An Ors example</li>
-<li>An Ands example</li>
-</ul>
-<p><a target="_blank" rel="noopener" href="https://github.com/u8989332/martin-fowler-refactoring-2nd/tree/master/Ch10.Simplifying%20Conditional%20Logic/Consolidate%20Conditional%20Expression">Github</a></p>
-<hr>
-<h2 id="Replace-Nested-Conditional-with-Guard-Clauses"><a href="#Replace-Nested-Conditional-with-Guard-Clauses" class="headerlink" title="Replace Nested Conditional with Guard Clauses"></a>Replace Nested Conditional with Guard Clauses</h2><h5 id="Tips-2"><a href="#Tips-2" class="headerlink" title="Tips"></a>Tips</h5><ul>
-<li>If a condition is not normal, check it and return if it’s true. This check is a <strong>Guard Clause</strong></li>
-<li>Guard Clause means that it is not the core logic of the function But if it happens, it does the necessary cleaning job to exit the function.</li>
-<li>Choose the outermost condition and replace it by Guard Clause. If some Guard Clauses have the same result, use <strong>Consolidate Conditional Expression</strong>.</li>
-</ul>
-<h5 id="Examples-2"><a href="#Examples-2" class="headerlink" title="Examples:"></a>Examples:</h5><ul>
-<li>An simple example</li>
-<li>Reversing the Conditions example</li>
-</ul>
-<p><a target="_blank" rel="noopener" href="https://github.com/u8989332/martin-fowler-refactoring-2nd/tree/master/Ch10.Simplifying%20Conditional%20Logic/Replace%20Nested%20Conditional%20with%20Guard%20Clauses">Github</a></p>
-<h2 id="Replace-Conditional-with-Polymorphism"><a href="#Replace-Conditional-with-Polymorphism" class="headerlink" title="Replace Conditional with Polymorphism"></a>Replace Conditional with Polymorphism</h2><hr>
-<h5 id="Tips-3"><a href="#Tips-3" class="headerlink" title="Tips"></a>Tips</h5><ul>
-<li>If a condition is complex, split it by using polymorphism and make its logic clear</li>
-<li>For a variation condition, we put the basic logic into a superclass, and put the variation logic into derived class.</li>
-<li>Don’t abuse using polymorphism when the condition is simple.</li>
-<li>If the current class has no polymorphism, we create a <strong>factory function</strong> to return its object instance. Then we put every condition logic into derived class.</li>
-</ul>
-<h5 id="Examples-3"><a href="#Examples-3" class="headerlink" title="Examples:"></a>Examples:</h5><ul>
-<li>An simple example</li>
-<li>Using Polymorphism for Variation</li>
-</ul>
-<p><a target="_blank" rel="noopener" href="https://github.com/u8989332/martin-fowler-refactoring-2nd/tree/master/Ch10.Simplifying%20Conditional%20Logic/Replace%20Conditional%20with%20Polymorphism">Github</a></p>
-<hr>
-<h2 id="Introduce-Special-Case"><a href="#Introduce-Special-Case" class="headerlink" title="Introduce Special Case"></a>Introduce Special Case</h2><h5 id="Tips-4"><a href="#Tips-4" class="headerlink" title="Tips"></a>Tips</h5><ul>
-<li>If clients always check a structure’s value, we separate this check into a special-case.</li>
-<li>NullObject is a common pattern for null value.</li>
-<li>Add the special-case check property to the target structure. Use <strong>Combine Functions into Class</strong> or <strong>Combine Functions into Transform</strong> to move the special-case logic into a new class. Then the previous special-case check property will return it when check triggers.</li>
-</ul>
-<h5 id="Examples-4"><a href="#Examples-4" class="headerlink" title="Examples:"></a>Examples:</h5><ul>
-<li>A Class example</li>
-<li>An Object Literal example</li>
-<li>A Transform example</li>
-</ul>
-<p><a target="_blank" rel="noopener" href="https://github.com/u8989332/martin-fowler-refactoring-2nd/tree/master/Ch10.Simplifying%20Conditional%20Logic/Introduce%20Special%20Case">Github</a></p>
-<hr>
-<h2 id="Introduce-Assertion"><a href="#Introduce-Assertion" class="headerlink" title="Introduce Assertion"></a>Introduce Assertion</h2><h5 id="Tips-5"><a href="#Tips-5" class="headerlink" title="Tips"></a>Tips</h5><ul>
-<li>Assertion definitely marks the assumption(expression). Assertion avoid programmer’s error.</li>
-<li>Don’t abuse assertion. We only use it when the expression must be true.</li>
-</ul>
-<h5 id="Examples-5"><a href="#Examples-5" class="headerlink" title="Examples:"></a>Examples:</h5><p>&#x2F;&#x2F; before refactoring<br>public void SaveMoneyIntoAccount(decimal money)<br>{<br>     acount +&#x3D; money;<br>}</p>
-<p>&#x2F;&#x2F; after refactoring<br>public void SaveMoneyIntoAccount(decimal money)<br>{<br>     Debug.Assert(money &gt; 0);<br>     acount +&#x3D; money;<br>}</p>
-<hr>
-<h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><p>This chapter introduces me how to simplify conditional logic. I had ever written complex conditional branches and they were very ugly long…… I had no idea to reafactor them until I read this chapter. If you want to learn detailed motivation and mechanics, study the chapter 10 “ Simplifying Conditional Logic “ of <a target="_blank" rel="noopener" href="https://amzn.to/3LUmBwI">Refactoring: Improving the Design of Existing Code (2nd Edition)</a>. and it improves our programmer’s ability.</p>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/04/09/refactoring-chapter-10-simplifying-conditional-logic/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 

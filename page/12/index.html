@@ -173,6 +173,108 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2019/12/22/uva-1593-alignment-of-code/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="LiJyu Gao">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="GeekCodeParadise">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/12/22/uva-1593-alignment-of-code/" class="post-title-link" itemprop="url">UVa 1593 Alignment of Code</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-12-22 12:02:00" itemprop="dateCreated datePublished" datetime="2019-12-22T12:02:00+08:00">2019-12-22</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-11-19 15:47:25" itemprop="dateModified" datetime="2023-11-19T15:47:25+08:00">2023-11-19</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C#</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ACM/" itemprop="url" rel="index"><span itemprop="name">ACM</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Level-Easy/" itemprop="url" rel="index"><span itemprop="name">Level-Easy</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%A8%8B%E5%BC%8F%E8%A7%A3%E9%A1%8C/" itemprop="url" rel="index"><span itemprop="name">程式解題</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ProgramSolving/" itemprop="url" rel="index"><span itemprop="name">ProgramSolving</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/UVa/" itemprop="url" rel="index"><span itemprop="name">UVa</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>UVa 1593 Alignment of Code 解題報告</p>
+<h4 id="平台："><a href="#平台：" class="headerlink" title="平台："></a>平台：</h4><p>UVa Online Judge</p>
+<h4 id="題號："><a href="#題號：" class="headerlink" title="題號："></a>題號：</h4><p>1593 - Alignment of Code</p>
+<h4 id="題目連結："><a href="#題目連結：" class="headerlink" title="題目連結："></a>題目連結：</h4><p><a target="_blank" rel="noopener" href="https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=4468">https://onlinejudge.org/index.php?option=com_onlinejudge&amp;Itemid&#x3D;8&amp;page&#x3D;show_problem&amp;problem&#x3D;4468</a></p>
+<h4 id="題目說明："><a href="#題目說明：" class="headerlink" title="題目說明："></a>題目說明：</h4><p>給N列的程式碼字串，每列程式碼包含空格和其他符號組合的單字，求重新排列的程式碼字串。排列的規則為，取第K行最長單字的長度Lk，同K行的單字都要靠左並補上空白，使第K行的長度都為Lk。每行單字中間用1個空格分隔，每列的最後一個單字不必補空白，直接跳行。<br>　　以範例輸入為例，第1行的單字包含start:、stop:、s:與c:，最長單字start:的長度為6，排列後的結果如範例輸出。</p>
+<h4 id="範例輸入："><a href="#範例輸入：" class="headerlink" title="範例輸入："></a>範例輸入：</h4><p>start: integer; &#x2F;&#x2F; begins here<br>stop: integer; &#x2F;&#x2F; ends here<br> s: string;<br>c: char; &#x2F;&#x2F; temp</p>
+<h4 id="範例輸出："><a href="#範例輸出：" class="headerlink" title="範例輸出："></a>範例輸出：</h4><p>start: integer; &#x2F;&#x2F; begins here<br>stop: integer; &#x2F;&#x2F; ends here<br>s: string;<br>c: char; &#x2F;&#x2F; temp</p>
+<h4 id="解題方法："><a href="#解題方法：" class="headerlink" title="解題方法："></a>解題方法：</h4><p>使用C++的stringstream做每列單字的切割，計算每一行的最長單字的長度，最後用iomanip函式庫的left與setw靠左輸出。<br>　　<br>難度為Easy</p>
+<h4 id="GITHUB位置："><a href="#GITHUB位置：" class="headerlink" title="GITHUB位置："></a>GITHUB位置：</h4><p><a target="_blank" rel="noopener" href="https://github.com/u8989332/ProblemSolving/blob/master/UVaOnlineJudge/1500-1599/1593.cpp">https://github.com/u8989332/ProblemSolving/blob/master/UVaOnlineJudge/1500-1599/1593.cpp</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2019/12/22/uva-1594-ducci-sequence/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -265,108 +367,6 @@
 </ol>
 <p>　　<br>難度為Easy</p>
 <h4 id="GITHUB位置："><a href="#GITHUB位置：" class="headerlink" title="GITHUB位置："></a>GITHUB位置：</h4><p><a target="_blank" rel="noopener" href="https://github.com/u8989332/ProblemSolving/blob/master/UVaOnlineJudge/1500-1599/1594.cpp">https://github.com/u8989332/ProblemSolving/blob/master/UVaOnlineJudge/1500-1599/1594.cpp</a></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2019/12/22/uva-1593-alignment-of-code/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="LiJyu Gao">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="GeekCodeParadise">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/12/22/uva-1593-alignment-of-code/" class="post-title-link" itemprop="url">UVa 1593 Alignment of Code</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2019-12-22 12:02:00" itemprop="dateCreated datePublished" datetime="2019-12-22T12:02:00+08:00">2019-12-22</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-11-19 15:47:25" itemprop="dateModified" datetime="2023-11-19T15:47:25+08:00">2023-11-19</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C#</span></a>
-                </span>
-                  , 
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/ACM/" itemprop="url" rel="index"><span itemprop="name">ACM</span></a>
-                </span>
-                  , 
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Level-Easy/" itemprop="url" rel="index"><span itemprop="name">Level-Easy</span></a>
-                </span>
-                  , 
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E7%A8%8B%E5%BC%8F%E8%A7%A3%E9%A1%8C/" itemprop="url" rel="index"><span itemprop="name">程式解題</span></a>
-                </span>
-                  , 
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/ProgramSolving/" itemprop="url" rel="index"><span itemprop="name">ProgramSolving</span></a>
-                </span>
-                  , 
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/UVa/" itemprop="url" rel="index"><span itemprop="name">UVa</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>UVa 1593 Alignment of Code 解題報告</p>
-<h4 id="平台："><a href="#平台：" class="headerlink" title="平台："></a>平台：</h4><p>UVa Online Judge</p>
-<h4 id="題號："><a href="#題號：" class="headerlink" title="題號："></a>題號：</h4><p>1593 - Alignment of Code</p>
-<h4 id="題目連結："><a href="#題目連結：" class="headerlink" title="題目連結："></a>題目連結：</h4><p><a target="_blank" rel="noopener" href="https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=4468">https://onlinejudge.org/index.php?option=com_onlinejudge&amp;Itemid&#x3D;8&amp;page&#x3D;show_problem&amp;problem&#x3D;4468</a></p>
-<h4 id="題目說明："><a href="#題目說明：" class="headerlink" title="題目說明："></a>題目說明：</h4><p>給N列的程式碼字串，每列程式碼包含空格和其他符號組合的單字，求重新排列的程式碼字串。排列的規則為，取第K行最長單字的長度Lk，同K行的單字都要靠左並補上空白，使第K行的長度都為Lk。每行單字中間用1個空格分隔，每列的最後一個單字不必補空白，直接跳行。<br>　　以範例輸入為例，第1行的單字包含start:、stop:、s:與c:，最長單字start:的長度為6，排列後的結果如範例輸出。</p>
-<h4 id="範例輸入："><a href="#範例輸入：" class="headerlink" title="範例輸入："></a>範例輸入：</h4><p>start: integer; &#x2F;&#x2F; begins here<br>stop: integer; &#x2F;&#x2F; ends here<br> s: string;<br>c: char; &#x2F;&#x2F; temp</p>
-<h4 id="範例輸出："><a href="#範例輸出：" class="headerlink" title="範例輸出："></a>範例輸出：</h4><p>start: integer; &#x2F;&#x2F; begins here<br>stop: integer; &#x2F;&#x2F; ends here<br>s: string;<br>c: char; &#x2F;&#x2F; temp</p>
-<h4 id="解題方法："><a href="#解題方法：" class="headerlink" title="解題方法："></a>解題方法：</h4><p>使用C++的stringstream做每列單字的切割，計算每一行的最長單字的長度，最後用iomanip函式庫的left與setw靠左輸出。<br>　　<br>難度為Easy</p>
-<h4 id="GITHUB位置："><a href="#GITHUB位置：" class="headerlink" title="GITHUB位置："></a>GITHUB位置：</h4><p><a target="_blank" rel="noopener" href="https://github.com/u8989332/ProblemSolving/blob/master/UVaOnlineJudge/1500-1599/1593.cpp">https://github.com/u8989332/ProblemSolving/blob/master/UVaOnlineJudge/1500-1599/1593.cpp</a></p>
 
       
     </div>
@@ -814,7 +814,7 @@
 <h4 id="題號："><a href="#題號：" class="headerlink" title="題號："></a>題號：</h4><p>1592 - Database</p>
 <h4 id="題目連結："><a href="#題目連結：" class="headerlink" title="題目連結："></a>題目連結：</h4><p><a target="_blank" rel="noopener" href="https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=4467">https://onlinejudge.org/index.php?option=com_onlinejudge&amp;Itemid&#x3D;8&amp;page&#x3D;show_problem&amp;problem&#x3D;4467</a></p>
 <h4 id="題目說明："><a href="#題目說明：" class="headerlink" title="題目說明："></a>題目說明：</h4><p>有n列資料，每列資料有m個欄位的值。m個欄位值用逗點 , 分隔組成1列資料。求這n列資料是否為PNF，PNF的定義沒有出現2個不同列r1 與 r2在2個不同欄位c1與c2，同欄位有相同的值，也就是table[r1][c1] &#x3D; table[r2][c1] 且 table[r1][c2] &#x3D; table[r2][c2]。<br>　　如果是PNF，輸出YES；如果非PNF，則輸出NO，並輸出r1、r2、c1、c2。</p>
-<h4 id="範例輸入："><a href="#範例輸入：" class="headerlink" title="範例輸入："></a>範例輸入：</h4><p>3 3<br>How to compete in ACM ICPC,Peter,<a href="mailto:&#112;&#101;&#x74;&#101;&#114;&#64;&#x6e;&#x65;&#101;&#x72;&#99;&#x2e;&#105;&#x66;&#x6d;&#111;&#46;&#x72;&#x75;">&#112;&#101;&#x74;&#101;&#114;&#64;&#x6e;&#x65;&#101;&#x72;&#99;&#x2e;&#105;&#x66;&#x6d;&#111;&#46;&#x72;&#x75;</a><br>How to win ACM ICPC,Michael,<a href="mailto:&#109;&#x69;&#99;&#x68;&#97;&#101;&#108;&#64;&#110;&#x65;&#101;&#114;&#x63;&#x2e;&#105;&#102;&#x6d;&#x6f;&#x2e;&#x72;&#117;">&#109;&#x69;&#99;&#x68;&#97;&#101;&#108;&#64;&#110;&#x65;&#101;&#114;&#x63;&#x2e;&#105;&#102;&#x6d;&#x6f;&#x2e;&#x72;&#117;</a><br>Notes from ACM ICPC champion,Michael,<a href="mailto:&#109;&#105;&#99;&#x68;&#x61;&#101;&#108;&#x40;&#110;&#101;&#x65;&#114;&#x63;&#46;&#x69;&#x66;&#109;&#111;&#x2e;&#114;&#117;">&#109;&#105;&#99;&#x68;&#x61;&#101;&#108;&#x40;&#110;&#101;&#x65;&#114;&#x63;&#46;&#x69;&#x66;&#109;&#111;&#x2e;&#114;&#117;</a><br>2 3<br>1,Peter,<a href="mailto:&#112;&#x65;&#x74;&#101;&#114;&#x40;&#110;&#101;&#101;&#114;&#99;&#x2e;&#x69;&#x66;&#x6d;&#x6f;&#46;&#114;&#x75;">&#112;&#x65;&#x74;&#101;&#114;&#x40;&#110;&#101;&#101;&#114;&#99;&#x2e;&#x69;&#x66;&#x6d;&#x6f;&#46;&#114;&#x75;</a><br>2,Michael,<a href="mailto:&#109;&#x69;&#x63;&#104;&#97;&#x65;&#x6c;&#x40;&#110;&#x65;&#x65;&#x72;&#x63;&#46;&#x69;&#102;&#x6d;&#x6f;&#46;&#114;&#117;">&#109;&#x69;&#x63;&#104;&#97;&#x65;&#x6c;&#x40;&#110;&#x65;&#x65;&#x72;&#x63;&#46;&#x69;&#102;&#x6d;&#x6f;&#46;&#114;&#117;</a></p>
+<h4 id="範例輸入："><a href="#範例輸入：" class="headerlink" title="範例輸入："></a>範例輸入：</h4><p>3 3<br>How to compete in ACM ICPC,Peter,<a href="mailto:&#x70;&#x65;&#x74;&#101;&#x72;&#64;&#110;&#101;&#x65;&#x72;&#99;&#46;&#x69;&#102;&#x6d;&#x6f;&#46;&#114;&#x75;">&#x70;&#x65;&#x74;&#101;&#x72;&#64;&#110;&#101;&#x65;&#x72;&#99;&#46;&#x69;&#102;&#x6d;&#x6f;&#46;&#114;&#x75;</a><br>How to win ACM ICPC,Michael,<a href="mailto:&#x6d;&#105;&#x63;&#x68;&#x61;&#x65;&#x6c;&#64;&#110;&#x65;&#x65;&#114;&#x63;&#x2e;&#105;&#102;&#x6d;&#x6f;&#x2e;&#x72;&#x75;">&#x6d;&#105;&#x63;&#x68;&#x61;&#x65;&#x6c;&#64;&#110;&#x65;&#x65;&#114;&#x63;&#x2e;&#105;&#102;&#x6d;&#x6f;&#x2e;&#x72;&#x75;</a><br>Notes from ACM ICPC champion,Michael,<a href="mailto:&#x6d;&#105;&#99;&#104;&#x61;&#x65;&#x6c;&#64;&#110;&#x65;&#101;&#114;&#x63;&#46;&#105;&#x66;&#x6d;&#x6f;&#x2e;&#x72;&#x75;">&#x6d;&#105;&#99;&#104;&#x61;&#x65;&#x6c;&#64;&#110;&#x65;&#101;&#114;&#x63;&#46;&#105;&#x66;&#x6d;&#x6f;&#x2e;&#x72;&#x75;</a><br>2 3<br>1,Peter,<a href="mailto:&#x70;&#101;&#116;&#x65;&#114;&#64;&#110;&#x65;&#x65;&#x72;&#99;&#x2e;&#105;&#102;&#109;&#111;&#x2e;&#114;&#x75;">&#x70;&#101;&#116;&#x65;&#114;&#64;&#110;&#x65;&#x65;&#x72;&#99;&#x2e;&#105;&#102;&#109;&#111;&#x2e;&#114;&#x75;</a><br>2,Michael,<a href="mailto:&#x6d;&#105;&#99;&#x68;&#x61;&#101;&#x6c;&#64;&#110;&#x65;&#x65;&#x72;&#99;&#46;&#x69;&#x66;&#x6d;&#x6f;&#46;&#x72;&#117;">&#x6d;&#105;&#99;&#x68;&#x61;&#101;&#x6c;&#64;&#110;&#x65;&#x65;&#x72;&#99;&#46;&#x69;&#x66;&#x6d;&#x6f;&#46;&#x72;&#117;</a></p>
 <h4 id="範例輸出："><a href="#範例輸出：" class="headerlink" title="範例輸出："></a>範例輸出：</h4><p>NO<br>2 3<br>2 3<br>YES</p>
 <h4 id="解題方法："><a href="#解題方法：" class="headerlink" title="解題方法："></a>解題方法：</h4><p>每1列每1欄位的值可存在2維的Table，並用Map紀錄第j欄的字串出現在哪幾列。當第i筆的字串有出現在Map時，需要檢查同列且其他欄位的字串，是否他們的Map對應的列數有交集，交集可以用STL的set_intersection。<br>　　這題有個速度優化技巧，比如m如果只有1，一定是PNF，因為它定義c1 !&#x3D; c2。</p>
 <p>難度為Medium</p>
