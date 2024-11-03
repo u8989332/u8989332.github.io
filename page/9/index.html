@@ -173,119 +173,6 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2020/09/17/poj-2431-expedition/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="LiJyu Gao">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="GeekCodeParadise">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/09/17/poj-2431-expedition/" class="post-title-link" itemprop="url">POJ 2431 Expedition</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2020-09-17 20:11:00" itemprop="dateCreated datePublished" datetime="2020-09-17T20:11:00+08:00">2020-09-17</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-11-19 15:47:25" itemprop="dateModified" datetime="2023-11-19T15:47:25+08:00">2023-11-19</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C#</span></a>
-                </span>
-                  , 
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/ACM/" itemprop="url" rel="index"><span itemprop="name">ACM</span></a>
-                </span>
-                  , 
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Level-Medium/" itemprop="url" rel="index"><span itemprop="name">Level-Medium</span></a>
-                </span>
-                  , 
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E7%A8%8B%E5%BC%8F%E8%A7%A3%E9%A1%8C/" itemprop="url" rel="index"><span itemprop="name">程式解題</span></a>
-                </span>
-                  , 
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/ProgramSolving/" itemprop="url" rel="index"><span itemprop="name">ProgramSolving</span></a>
-                </span>
-                  , 
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/POJ/" itemprop="url" rel="index"><span itemprop="name">POJ</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>POJ 2431 Expedition 解題報告</p>
-<h4 id="平台："><a href="#平台：" class="headerlink" title="平台："></a>平台：</h4><p>PKU Online Judge</p>
-<h4 id="題號："><a href="#題號：" class="headerlink" title="題號："></a>題號：</h4><p>2431 - Expedition</p>
-<h4 id="題目連結："><a href="#題目連結：" class="headerlink" title="題目連結："></a>題目連結：</h4><p><a target="_blank" rel="noopener" href="http://poj.org/problem?id=2431">http://poj.org/problem?id=2431</a></p>
-<h4 id="題目說明："><a href="#題目說明：" class="headerlink" title="題目說明："></a>題目說明：</h4><p>有一輛車子要開往城鎮，距離為L單位，且車上目前有P單位的燃料。路上會有N(1 &lt;&#x3D; N &lt;&#x3D; 10000)間的加油站，每間加油站距離城鎮x單位、並能補充p單位的燃料。車子每行駛1單位的距離就得消耗1單位的燃料，而車子的燃料容量無限大，求車子抵達城鎮時的最少加油次數，如果達不到則輸出-1。</p>
-<p>範例輸入是4間加油站，需要在第1家(15 10)和第2家(11 5)加油站加油，才能抵達成鎮。</p>
-<h4 id="範例輸入："><a href="#範例輸入：" class="headerlink" title="範例輸入："></a>範例輸入：</h4><p>4<br>4 4<br>5 2<br>11 5<br>15 10<br>25 10</p>
-<h4 id="範例輸出："><a href="#範例輸出：" class="headerlink" title="範例輸出："></a>範例輸出：</h4><p>2</p>
-<h4 id="解題方法："><a href="#解題方法：" class="headerlink" title="解題方法："></a>解題方法：</h4><p>這題需轉換問題，可以看成是當車子開到某站時，如果行經距離超過燃料箱的油量，則檢查經過的加油站的備用油，先從最大量的油倒進燃料箱，直到超過消耗量或者仍無法滿足消耗量。 最大量的油的儲存方式是使用Priority Queue。 　　以範例輸入來看：</p>
-<ol>
-<li>目前距離25，到下一間加油站15，花10單位的燃料，沒有超過燃料箱的油量(10)，則當前油量變成0、備用的加油站多了[10]的油量</li>
-<li>目前距離15，到下一間加油站11，花4單位的燃料，超過燃料箱的油量(0)，則拿備用油[10]倒進來，滿足這段行使距離。當前油量變成6、備用的加油站是[5]的油量 </li>
-<li>目前距離11，到下一間加油站5，花6單位的燃料，沒有超過燃料箱的油量(6)，則當前油量變成0、備用的加油站多了[2]的油量</li>
-<li>目前距離5，到下一間加油站4，花1單位的燃料，超過燃料箱的油量(0)，則拿備用油[5]倒進來，滿足這段行駛距離。當前油量變成4、備用的加油站是[4]的油量</li>
-<li>目前距離4，到終點城鎮0，花4單位的燃料，沒有超過燃料箱的油量(4)，則當前油量變成0。</li>
-<li>需加2次油才可抵達城鎮</li>
-</ol>
-<p>題目測資會有些陷阱，比如加油站的位置不一定由小到大，需要自己排序。或者加油站的補給量有可能是0…….很好玩的測資。實作也把城鎮當作最後一家加油站，這樣距離&#x2F;扣油量的計算才會完整。 　</p>
-<p>難度為Medium</p>
-<h3 id="GITHUB位置："><a href="#GITHUB位置：" class="headerlink" title="GITHUB位置："></a>GITHUB位置：</h3><p><a target="_blank" rel="noopener" href="https://github.com/u8989332/ProblemSolving/blob/master/PKUOnlineJudge/2400-2499/2431.cpp">https://github.com/u8989332/ProblemSolving/blob/master/PKUOnlineJudge/2400-2499/2431.cpp</a></p>
-<h3 id="POJ-2431-Expedition"><a href="#POJ-2431-Expedition" class="headerlink" title="POJ 2431 Expedition"></a>POJ 2431 Expedition</h3>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2020/09/16/leetcode-455-assign-cookies/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1217,6 +1104,757 @@
   
   
 
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/05/23/%E8%AE%80%E6%9B%B8%E7%AD%86%E8%A8%98-professional-javascript-for-web-developers-%E7%AC%AC3%E7%AB%A0-%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="LiJyu Gao">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="GeekCodeParadise">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/05/23/%E8%AE%80%E6%9B%B8%E7%AD%86%E8%A8%98-professional-javascript-for-web-developers-%E7%AC%AC3%E7%AB%A0-%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/" class="post-title-link" itemprop="url">[讀書筆記] Professional JavaScript for Web Developers - 第3章 基本概念</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-05-23 23:11:00" itemprop="dateCreated datePublished" datetime="2020-05-23T23:11:00+08:00">2020-05-23</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-11-19 15:47:25" itemprop="dateModified" datetime="2023-11-19T15:47:25+08:00">2023-11-19</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/JavaScript/" itemprop="url" rel="index"><span itemprop="name">JavaScript</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%AE%80%E6%9B%B8%E7%AD%86%E8%A8%98/" itemprop="url" rel="index"><span itemprop="name">讀書筆記</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="1-1-Syntax"><a href="#1-1-Syntax" class="headerlink" title="1.1 Syntax"></a>1.1 Syntax</h2><h3 id="1-1-1-Case-Sensitivity"><a href="#1-1-1-Case-Sensitivity" class="headerlink" title="1.1.1 Case-Sensitivity"></a>1.1.1 Case-Sensitivity</h3><h3 id="1-1-2-Identifiers"><a href="#1-1-2-Identifiers" class="headerlink" title="1.1.2 Identifiers"></a>1.1.2 Identifiers</h3><ul>
+<li>變數、函式、屬性、函式參數的名稱, 都是identifier</li>
+<li>命名規則: 第1個字元只能是字母、底線 _ 或 錢字符號 $ ; 第二個字元以後可以是字母、底線 _ 、 錢字符號 $ 或 數字</li>
+<li>字母可以是擴展的ASCII或Unicode特殊的字母Â、 â之類的，但不推薦</li>
+<li>採用camelCaseNaming</li>
+<li>不能把keywords, reserved word當identifier</li>
+</ul>
+<h3 id="1-1-3-Comments"><a href="#1-1-3-Comments" class="headerlink" title="1.1.3 Comments"></a>1.1.3 Comments</h3><h2 id=""><a href="#" class="headerlink" title=""></a></h2><ul>
+<li>單行註解  &#x2F;&#x2F; comment</li>
+<li>多行註解</li>
+</ul>
+<p> </p>
+<p>     &#x2F;*</p>
+<p>      * comments</p>
+<p>     *&#x2F;</p>
+<h3 id="1-1-4-Strict-Mode"><a href="#1-1-4-Strict-Mode" class="headerlink" title="1.1.4 Strict Mode"></a>1.1.4 Strict Mode</h3><ul>
+<li><p>ES5導入strict mode, 以不同的方式解析、執行JS, 且也對ES3的部分寫法拋出異常</p>
+</li>
+<li><p>使用方式, 在腳本最上方寫</p>
+</li>
+</ul>
+<p>  </p>
+<p>       “use strict”;</p>
+<ul>
+<li>也能在function內寫 “use strict”; , 影響的只會限於function內部</li>
+</ul>
+<h3 id="1-1-5-Statements"><a href="#1-1-5-Statements" class="headerlink" title="1.1.5 Statements"></a>1.1.5 Statements</h3><ul>
+<li>statement都以分號 ; 結尾 , 可以不加;結尾, 但不推薦</li>
+<li>有用分號;結尾對於JS的解析性能較好</li>
+<li>有用if , for的code block, 建議都用 {} 包住, 不要省略</li>
+</ul>
+<h2 id="1-2-Keywords-and-Reserved-words"><a href="#1-2-Keywords-and-Reserved-words" class="headerlink" title="1.2 Keywords and Reserved words"></a>1.2 Keywords and Reserved words</h2><ul>
+<li><p>keywords有控制流程、特殊運算等功能, 不能拿來當identitifer命名</p>
+</li>
+<li><p>ES6的keywords<br>break do in typeof case else instanceof var catch export new void class extends return while const finally super with continue for switch yield debugger function this default if throw delete import try    </p>
+</li>
+<li><p>future reserved words不能被設為identifier, 但現行沒提供功能, 未來有可能會使用, 於是先預訂這些詞.</p>
+</li>
+<li><p>總是reserved : enum</p>
+</li>
+<li><p>在strict mode是reserved:  implements  interface  let  package  private  protected  public  static</p>
+</li>
+<li><p>在module模式的reserved: await</p>
+</li>
+</ul>
+<h2 id="1-3-Variables"><a href="#1-3-Variables" class="headerlink" title="1.3 Variables"></a>1.3 Variables</h2><ul>
+<li>ES5以前只有var用來宣告變數</li>
+<li>ES6訂定const 和 let</li>
+</ul>
+<p> </p>
+<h3 id="1-3-1-var-keyword"><a href="#1-3-1-var-keyword" class="headerlink" title="1.3.1 var keyword"></a>1.3.1 var keyword</h3><ul>
+<li>var的變數能賦予任何資料型別的值, 且能用其他資料型別的值覆蓋, 不建議這麼做.</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">var msg = 1; // 值是數字1msg = &quot;5566&quot;;  // 值變成字串&quot;5566&quot;, 但不建議這麼做                    </span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>只有宣告但沒賦值, 它的值會是undefined</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">var msg; // undefined</span><br></pre></td></tr></table></figure>
+
+<h4 id="1-3-1-1-var-Declaration-Scope"><a href="#1-3-1-1-var-Declaration-Scope" class="headerlink" title="1.3.1.1 var Declaration Scope"></a>1.3.1.1 var Declaration Scope</h4><ul>
+<li>var是function scope</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">function sayHi() &#123;     var msg = 1;  &#125;sayHi(); console.log(msg); // 會有error</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>可以忽略var關鍵字, 變成global variable, 但不建議這麼做</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">function sayHi() &#123;     msg = 1;  &#125;sayHi(); console.log(msg); // 輸出1, 之後其他都能存取msg變數</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>var可一次宣告多的變數, 用逗點 , 串接</li>
+</ul>
+<h4 id="1-3-1-2-var-Declaration-Hoisting"><a href="#1-3-1-2-var-Declaration-Hoisting" class="headerlink" title="1.3.1.2 var Declaration Hoisting"></a>1.3.1.2 var Declaration Hoisting</h4><ul>
+<li>var在”宣告”的時候會發生hoisting(懸吊), 將var的宣告拉到scope的最上方</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">function sayHi() &#123;     console.log(msg);    var msg = &quot;hi&quot;;&#125;sayHi(); // 輸出undefined/* JS會將上方寫法轉為等同功能的下方 */function sayHi() &#123;    var msg;    console.log(msg);    msg = &quot;hi&quot;;&#125;sayHi(); // 輸出undefined</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>var宣告同一種變數名稱指定不同的值, 也是一樣hoisting</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">function sayHi() &#123;    var msg = &quot;123&quot;;   var msg = &quot;456&quot;;   var msg = &quot;789&quot;;   console.log(msg);&#125;sayHi(); // 輸出789</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-3-2-let-Declarations"><a href="#1-3-2-let-Declarations" class="headerlink" title="1.3.2 let Declarations"></a>1.3.2 let Declarations</h3><ul>
+<li>let和var很像, 但主要差異在於let是block scope</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">if (true)&#123;   var msg = &#x27;hello&#x27;;   console.log(msg); // 輸出hello&#125;console.log(msg); //輸出helloif (true)&#123;   let height = 100;   console.log(height); // 輸出100&#125;console.log(height); //產生錯誤: Uncaught ReferenceError: height is not defined</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>let無法重複宣告, 也無法蓋掉var的宣告</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">let x;let x; //產生錯誤: Uncaught SyntaxError: Identifier &#x27;x&#x27; has already been declaredvar y;let y; //產生錯誤: Uncaught SyntaxError: Identifier &#x27;y&#x27; has already been declared</span><br></pre></td></tr></table></figure>
+
+<h4 id="1-3-2-1-Temporal-Dead-Zone"><a href="#1-3-2-1-Temporal-Dead-Zone" class="headerlink" title="1.3.2.1 Temporal Dead Zone"></a>1.3.2.1 Temporal Dead Zone</h4><ul>
+<li>let沒有hoisting的特性, 如果學var會產生錯誤 ReferenceError: ‘xxx’ is not defined</li>
+</ul>
+<p>    </p>
+<h4 id="1-3-2-2-Global-Declarations"><a href="#1-3-2-2-Global-Declarations" class="headerlink" title="1.3.2.2 Global Declarations"></a>1.3.2.2 Global Declarations</h4><ul>
+<li>let的變數不會到global context, 比如不會附加到window物件</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">var x = &#x27;1&#x27;;console.log(window.x); // 輸出1let y = &#x27;2&#x27;;console.log(window.y); // 輸出undefined</span><br></pre></td></tr></table></figure>
+
+<h4 id="1-3-2-3-Conditional-Declaration"><a href="#1-3-2-3-Conditional-Declaration" class="headerlink" title="1.3.2.3 Conditional Declaration"></a>1.3.2.3 Conditional Declaration</h4><h3 id="-1"><a href="#-1" class="headerlink" title=""></a></h3><ul>
+<li>用try&#x2F;catch或typeof等判斷變數是否有被宣告, 在block code用let仍只是block scope</li>
+<li>建議都別用let在conditional declaration</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">if (typeof msg !== &#x27;undefined&#x27;) &#123;    let msg; // 只是block scope的變數&#125;msg = &#x27;hello&#x27;; // msg變成global variable</span><br></pre></td></tr></table></figure>
+
+<h4 id="1-3-2-4-let-declaration-in-for-loops"><a href="#1-3-2-4-let-declaration-in-for-loops" class="headerlink" title="1.3.2.4 let declaration in for loops"></a>1.3.2.4 let declaration in for loops</h4><ul>
+<li>用var當for迴圈的宣告索引, for外面仍可使用那個索引</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">for (var i = 0;i &lt; 10;++i) &#123;   // do anything&#125;console.log(i); // 輸出10</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>用let當for迴圈的宣告索引, for外面不能存取那個索引</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">for (let i = 0;i &lt; 10;++i) &#123;   // do anything&#125;console.log(i); // 產生錯誤 Uncaught ReferenceError: i is not defined</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>在for迴圈用setTimeout對var索引做輸出時, 因為var都是同一個物件, 所以setTimeout後來的執行都是最後更新的索引值</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">for (var i = 0;i &lt; 10;++i) &#123;   setTimeout(() =&gt; console.log(i), 0);&#125;// 輸出 10,10,10,10,10,10,10,10,10,10</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>在for迴圈用setTimeout對let索引做輸出時, let在每次的迴圈都產生新的索引物件, 所以setTimeout執行都存取當下的索引物件</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">for (let i = 0;i &lt; 10;++i) &#123;   setTimeout(() =&gt; console.log(i), 0);&#125;// 輸出 0, 1, 2, 3, 4, 5, 6, 7, 8, 9</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-3-3-const-Declarations"><a href="#1-3-3-const-Declarations" class="headerlink" title="1.3.3 const Declarations"></a>1.3.3 const Declarations</h3><ul>
+<li>用const宣告和let大部分功能一樣, 但必須對const的變數賦值, 且它的值就不能再改變</li>
+<li>不能用const在for迴圈的改變索引值，但可以用在一開始的賦值</li>
+<li>const用在object, 是可以改裡面的key&#x2F;value.</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">const x = 5;x = 100; // 產生錯誤 Uncaught TypeError: Assignment to constant variable.const y = &#123;&#125;; // 宣告objecty.name = &quot;John&quot;;console.log(y.name); // 輸出Johnfor (const k = 0; k &lt; 10;++k)&#123;    console.log(k); // 在++k這一段會產生錯誤 Uncaught TypeError: Assignment to constant variable.&#125;let i = 0;for (const j = 100; i &lt; 5;++i) &#123;    console.log(j);&#125;// j 只在初始化賦值, 沒有用++j做改值, 是合法的.// 輸出 100, 100, 100. 100. 100for (const key in &#123;x:5, y:6&#125;)&#123;    console.log(key);&#125;// 輸出x, yfor (const value of [7,8,9]) &#123;    console.log(value);&#125;// 輸出 7, 8, 9</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-3-3-宣告風格和最佳實踐"><a href="#1-3-3-宣告風格和最佳實踐" class="headerlink" title="1.3.3 宣告風格和最佳實踐"></a>1.3.3 宣告風格和最佳實踐</h3><ul>
+<li>別用var, 以免scope等問題</li>
+<li>使用const優於let, 除非是必須改值的功能, 否則用const可免於被其他功能改值而產生錯誤</li>
+</ul>
+<h2 id="1-4-Data-Types"><a href="#1-4-Data-Types" class="headerlink" title="1.4 Data Types"></a>1.4 Data Types</h2><ul>
+<li>6種基本的data type(稱為 Primitive types), 另1種是複雜的data type : object, 共7種.</li>
+<li>object是無順序的key&#x2F;value集合, 裡面的值可以包含上述的7種data type</li>
+<li>6種primitive types, 其中Symbol是ES6才加入</li>
+</ul>
+<ol>
+<li>Undefined</li>
+<li>Null</li>
+<li>Boolean</li>
+<li>Number</li>
+<li>String</li>
+<li>Symbol</li>
+</ol>
+<h3 id="1-4-1-typeof-operator"><a href="#1-4-1-typeof-operator" class="headerlink" title="1.4.1 typeof operator"></a>1.4.1 typeof operator</h3><ul>
+<li>用來檢測某變數的data type</li>
+<li>用typeof可能的值</li>
+</ul>
+<ol>
+<li><p>“undefined”</p>
+</li>
+<li><p>“boolean”</p>
+</li>
+<li><p>“string”</p>
+</li>
+<li><p>“number”</p>
+</li>
+<li><p>“object”</p>
+</li>
+<li><p>“function”</p>
+</li>
+<li><p>“symbol”</p>
+</li>
+</ol>
+<ul>
+<li>typeof null , 會得到”object”, 因為null是空object的reference</li>
+</ul>
+<h3 id="1-4-2-Undefined-Type"><a href="#1-4-2-Undefined-Type" class="headerlink" title="1.4.2 Undefined Type"></a>1.4.2 Undefined Type</h3><ul>
+<li><p>Undefined type只有一個值, 就是undefined.</p>
+</li>
+<li><p>變數被var&#x2F;let宣告但沒初始化, 則它的預設值為undefined, 不會是null</p>
+</li>
+<li><p>當變數沒被宣告, 用console.log等函式會找不到變數而產生錯誤; 但用typeof 會得到 “undefined”</p>
+</li>
+<li><p>以結果來說, 被宣告而沒初始化 和 沒有宣告, 都是無法操作的東西, 所以typeof得到”undefined”是合理的</p>
+</li>
+<li><p>建議被宣告的變數都要初始化, 別讓typeof判斷undefined而無法知道它是沒被宣告還是沒被初始化</p>
+</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">let msg;console.log(msg); // 輸出 undefinedconsole.log(index); // 產生錯誤 Uncaught ReferenceError: index is not definedtypeof msg; // 輸出 &quot;undefined&quot;typeof index; // 輸出 &quot;undefined&quot;</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-4-3-Null-Type"><a href="#1-4-3-Null-Type" class="headerlink" title="1.4.3 Null Type"></a>1.4.3 Null Type</h3><ul>
+<li><p>Null type只有一個值, 就是null.</p>
+</li>
+<li><p>typeof null的值為 “object”</p>
+</li>
+<li><p>用null初始化變數, 可用來區分undefined</p>
+</li>
+<li><p>undefined是null的衍生物, 用&#x3D;&#x3D;比對可得到true</p>
+</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">console.log(undefined == null); // 輸出trueconsole.log(undefined === null); // 輸出false</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-4-4-Boolean-Type"><a href="#1-4-4-Boolean-Type" class="headerlink" title="1.4.4 Boolean Type"></a>1.4.4 Boolean Type</h3><ul>
+<li>Boolean只有2種值: true 和 false</li>
+<li>true 不等於 1 , false 不等於 0</li>
+<li>可以用 Boolean()函式將值轉換成boolean, 其轉換對照如下</li>
+</ul>
+<p> Data type </p>
+<p>哪些值轉換成true </p>
+<p>哪些值轉換成false </p>
+<p> Boolean</p>
+<p> true</p>
+<p> false </p>
+<p> String</p>
+<p> 任何非空字串 </p>
+<p> 空字串 “”</p>
+<p> Number</p>
+<p> 任何非0(也包含無限大)</p>
+<p> 0 和 NaN </p>
+<p> Object</p>
+<p> 任何物件</p>
+<p> null </p>
+<p> Undefined </p>
+<p> 沒有值可為true </p>
+<p> undefined</p>
+<ul>
+<li>像是if等控制條件的()的裡面判斷, 自動用Boolean()的轉換</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">let x = &#x27;hello&#x27;;     if(x)&#123;        console.log(x); // 這行會執行, 輸出 hello     &#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-4-5-Number-Type"><a href="#1-4-5-Number-Type" class="headerlink" title="1.4.5 Number Type"></a>1.4.5 Number Type</h3><ul>
+<li>包含整數和浮點數(雙精度)</li>
+<li>一般整數是10進位, 也能寫成8進位(用0開頭)、16進位(用0x或0X開頭)</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">let intNum = 5566;           let octalNum1 = 050; // 等於10進位的40     let octalNum2 = 059; // 不符合8進位, 所以會是10進位的59     let octalNum3 = 09; // 不符合8進位, 所以會是10進位的9          let hexNum1 = 0xB; // 等於10進位的11     let hexNum2 = 0X1C; // 等於10進位的28</span><br></pre></td></tr></table></figure>
+
+<h4 id="1-4-5-1-Floating-Point-Values"><a href="#1-4-5-1-Floating-Point-Values" class="headerlink" title="1.4.5.1 Floating-Point Values"></a>1.4.5.1 Floating-Point Values</h4><ul>
+<li><p>數字後方有一個小數點 . , 後面再串非0的數字, 則會是浮點數</p>
+</li>
+<li><p>只有小數點後方再接非0數字, 也是浮點數, 不建議這樣表示</p>
+</li>
+<li><p>數字後方有一個小數點 . , 後面再串空的或全都是0, 則會是整數</p>
+</li>
+<li><p>可以用 e 科學符號</p>
+</li>
+<li><p>浮點數精準度最高到17位小數</p>
+</li>
+<li><p>經典浮點數精準度問題: 0.1 + 0.2 &#x3D; 0.30000000000000004    </p>
+</li>
+<li><p>建議有些判斷不要用在浮點數</p>
+</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">let floatNum1 = 1.2; // 浮點數 1.2     let floatNum2 = 0.2; // 浮點數 0.2     let floatNum3 = .2; // 浮點數 0.2          let floatNum4 = 6.; // 等於整數的 6     let floatNum5 = 7.0; // 等於整數的 7     let floatNum6 = 1.234e3; // 等於整數 1234     let floatNum7 = 1.234e-3; // 等於浮點數 0.001234     let sums = 0.1 + 0.2; // sums 等於 0.30000000000000004     let sums2 = 0.1 + 0.7; // sums2 等於 0.7999999999999999</span><br></pre></td></tr></table></figure>
+
+<h4 id="1-4-5-2-Range-Of-Values"><a href="#1-4-5-2-Range-Of-Values" class="headerlink" title="1.4.5.2 Range Of Values"></a>1.4.5.2 Range Of Values</h4><ul>
+<li>在正數當中, JS能表示的最大值是Number.MAX_VALUE &#x3D; 1.7976931348623157e+308 ; 最小值是 Number.MIN_VALUE &#x3D; 5e-324</li>
+<li>如果數值計算過程超過JS的數值範圍, 將變成特殊值 Infinity, 如果是負數為 -Infinity</li>
+<li>任何Infinity無法再做計算</li>
+<li>可以用isFinite()檢測數字是否為Infinity</li>
+<li>可以用Number.NEGATIVE_INFINITY和Number.POSITIVE_INFINITY取得負和正的Infinity值</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">console.log(isFinite(5566)) // 輸出 true     console.log(isFinite(Number.MAX_VALUE + Number.MAX_VALUE)); // 輸出 false</span><br></pre></td></tr></table></figure>
+
+<h4 id="1-4-5-3-NaN"><a href="#1-4-5-3-NaN" class="headerlink" title="1.4.5.3 NaN"></a>1.4.5.3 NaN</h4><ul>
+<li><p>意思是Not a number</p>
+</li>
+<li><p>其他程式語言是數字計算的結果無法正當回傳則是拋exception, 而JS是回傳NaN</p>
+</li>
+<li><p>NaN任何的操作都是NaN, 做任何比對也是NaN(包括自己)</p>
+</li>
+<li><p>只能用isNaN()函式判斷是否為NaN</p>
+</li>
+<li><p>isNaN()會將參數嘗試轉換, 是否能變成數字而再判斷.</p>
+</li>
+<li><p>isNaN()也能用在object, 會先對object的valueOf判斷能否使用, 不能的話再用toString()</p>
+</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">console.log(isNaN(NaN == NaN)); // 輸出 false     console.log(isNaN(NaN)); // 輸出 true     console.log(isNaN(5566)); // 輸出 false     console.log(isNaN(&quot;7788&quot;)); // 轉成數字 7788, 輸出 false     console.log(isNaN(&quot;orange&quot;)); // 無法轉成數字, 輸出 true     console.log(isNaN(true)); // 轉成數字 1, 輸出 false</span><br></pre></td></tr></table></figure>
+
+<h4 id="1-4-5-3-Number-Conversions"><a href="#1-4-5-3-Number-Conversions" class="headerlink" title="1.4.5.3 Number Conversions"></a>1.4.5.3 Number Conversions</h4><ul>
+<li>有3種轉換成數字的函式: Number(), parseInt(), parseFloat()</li>
+<li>Number()可用在任何資料型別, 而parseInt和parseFloat只能用在字串</li>
+<li>Number()判斷邏輯複雜:</li>
+</ul>
+<ol>
+<li><p>如果是boolean, true&#x2F;false分別轉換成1和0</p>
+</li>
+<li><p>如果是數字, 回傳一樣的數字</p>
+</li>
+<li><p>如果是null, 轉換成0</p>
+</li>
+<li><p>如果是undefined, 轉換成NaN</p>
+</li>
+<li><p>如果是字串, 又有更細的判斷</p>
+</li>
+</ol>
+<p>      (1) 字串裡只有整數, 且會移除leading zero, 則轉換成整數</p>
+<p>      (2) 字串裡只有浮點數, 且會移除leading zero, 則轉換成浮點數</p>
+<p>      (3) 字串裡只有整數且前面帶有0xf開頭, 則轉換成10進位的整數</p>
+<p>      (4) 空字串則轉換成0</p>
+<p>      (5) 非前4項的字串, 則是NaN</p>
+<p>   6. 如果是object, 先確認valueOf()的值依前面5項的判斷. 如果結果是NaN則再用toString()並套用字串的判斷.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">console.log(Number(true)); // 輸出 1     console.log(Number(false)); // 輸出 0     console.log(Number(5566)); // 輸出 5566     console.log(Number(12.345)); // 輸出 12.345     console.log(Number(null)); // 輸出 0     console.log(Number(undefined)); // 輸出 NaN     console.log(Number(&quot;Taiwan&quot;)); // 輸出 NaN     console.log(Number(&quot;true&quot;)); // 輸出 NaN     console.log(Number(&quot;987&quot;)); // 輸出 987     console.log(Number(&quot;000666&quot;)); // 輸出 666     console.log(Number(&quot;0.14&quot;)); // 輸出 0.14     console.log(Number(&quot;00001.88&quot;)); // 輸出 1.88     console.log(Number(&quot;5.0000&quot;)); // 輸出 5     console.log(Number(&quot;&quot;)); // 輸出 0</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>parseInt()在轉換整數時較常用</li>
+<li>parseInt()從前面字元開始會確認有無數字字元, 如果一開始為非數字, 則輸出NaN;否則一開始遇到數字字元, 會直到結尾或非數字字元</li>
+<li>parseInt()支援0x開頭的16進位</li>
+<li>parseInt()在現代的JS, 遇到0開頭的8進位字串, 會解析成10進位</li>
+<li>建議用parseInt()轉換別的進位時, 要指定第2個參數, 代表N進位 </li>
+<li>即使是要轉10進位, 也建議用parseInt(num, 10)明確指定轉成10</li>
+<li>parseInt()遇到空字串回傳NaN</li>
+<li></li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">console.log(parseInt(&quot;&quot;)); // 輸出 NaN     console.log(parseInt(&quot;0000x22&quot;)); // 輸出 0     console.log(parseInt(&quot;017&quot;)); // 現代JS會解析成10進位的17, 而不是8進位轉10進位的15     console.log(parseInt(&quot;0x16&quot;)); // 16進位表示, 輸出 22     console.log(parseInt(&quot;00000011&quot;)); // 輸出 11     console.log(parseInt(&quot;5566&quot;)); // 輸出 5566     console.log(parseInt(&quot;tomato1234&quot;)); // 輸出 NaN     console.log(parseInt(&quot;789banana&quot;)); // 輸出 789     console.log(parseInt(&quot;god654yo&quot;)); // 輸出 NaN     console.log(parseInt(&quot;017&quot;, 8)); // 輸出 15     console.log(parseInt(&quot;88&quot;, 8)); // 不合理的8進位表示, 輸出 NaN     console.log(parseInt(&quot;AA&quot;, 16)); // 輸出 170     console.log(parseInt(&quot;0x1A&quot;, 16)); // 輸出 26       </span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>parseFloat()在轉換浮點數時較常用</li>
+<li>parseFloat()只能解析10進位的表示, 遇到0x之類的無效, 而開頭有leading zero都會被移除</li>
+<li>parseFloat()從前面字元開始會確認有無數字字元或小數點, 如果一開始為非數字且不是小數點, 則輸出NaN;有遇到小數點時, 將判斷是否為浮點數, 若遇到有第2個小數點, 第2個小數點以後都忽略</li>
+<li>parseFloat()遇到空字串回傳NaN</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">console.log(parseFloat(&quot;&quot;)); // 輸出 NaN     console.log(parseFloat(&quot;0000x22&quot;)); // 輸出 0     console.log(parseFloat(&quot;017&quot;)); // 輸出 17     console.log(parseFloat(&quot;16.1&quot;)); // 輸出 16.1     console.log(parseFloat(&quot;16.0&quot;)); // 輸出 16     console.log(parseFloat(&quot;16.9.9&quot;)); // 輸出 16.9     console.log(parseFloat(&quot;AA&quot;)); // 輸出 NaN     console.log(parseFloat(&quot;1234abcd&quot;)); // 輸出 1234     console.log(parseFloat(&quot;abcd1234&quot;)); // 輸出 NaN       </span><br></pre></td></tr></table></figure>
+
+<h3 id="1-4-6-String-Type"><a href="#1-4-6-String-Type" class="headerlink" title="1.4.6 String Type"></a>1.4.6 String Type</h3><ul>
+<li>字串由0或多個16-bit Unicode字元組成</li>
+<li>可以用雙引號 “  或 單引號 ‘ 或 重音符 ` 括起來表示字串</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">console.log(&#x27;hello&#x27;); // 輸出 &quot;hello&quot;     console.log(&quot;world&quot;); // 輸出 &quot;world&quot;     console.log(`hey guy`); // 輸出 &quot;hey guy&quot;       </span><br></pre></td></tr></table></figure>
+
+<h4 id="1-4-6-1-Character-Literals"><a href="#1-4-6-1-Character-Literals" class="headerlink" title="1.4.6.1 Character Literals"></a>1.4.6.1 Character Literals</h4><ul>
+<li>字串裡的特殊符號, 比如跳行 n ,  t Tab , xnn 16進位代表一個字元 n是0<del>F組成, unnnn 表示Unicode的字元 n也是0</del>F組成. </li>
+<li>可以用.length屬性得到字串長度</li>
+<li>如果有用特殊符號, 它的長度是被轉譯後的長度</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">console.log(&#x27;Hi man&#x27;.length); // 輸出 6     console.log(&#x27;u0045&#x27;.length); // 輸出 1     console.log(&quot;x41&quot;.length); // 輸出 1       </span><br></pre></td></tr></table></figure>
+
+<h4 id="1-4-6-2-The-Nature-of-Strings"><a href="#1-4-6-2-The-Nature-of-Strings" class="headerlink" title="1.4.6.2 The Nature of Strings"></a>1.4.6.2 The Nature of Strings</h4><ul>
+<li>字串是不可變的(Immutable), 也就是建立字串後就不可再改變</li>
+<li>如果要改變某字串變數的值, 都是先銷毀舊的字串值再覆蓋新的.</li>
+</ul>
+<h4 id="1-4-6-3-Convert-to-a-String"><a href="#1-4-6-3-Convert-to-a-String" class="headerlink" title="1.4.6.3 Convert to a String"></a>1.4.6.3 Convert to a String</h4><h2 id="-2"><a href="#-2" class="headerlink" title=""></a></h2><ul>
+<li>可使用toString()轉成字串, 字串會和值本身的意思一樣</li>
+<li>null&#x2F;undefined沒有toString()</li>
+<li>如果數字用toString(), 可以代參數, 轉成想要的進位數</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">let x = 16;     console.log(x.toString()); // 輸出 &quot;16&quot;     console.log(x.toString(2)); // 輸出 &quot;10000&quot;     console.log(x.toString(8)); // 輸出 &quot;20&quot;     console.log(x.toString(16)); // 輸出 &quot;10&quot;     </span><br></pre></td></tr></table></figure>
+
+<h2 id="-3"><a href="#-3" class="headerlink" title=""></a></h2><ul>
+<li>另外轉成字串的函式為 String(), 如果值本身可以用toString(), 則用toString()的結果, 否則像是null&#x2F;undefined, 則輸出 “null” 和 “undefined”</li>
+<li>快速轉字串的寫法, 串接空字串 “”:  myVariable + “”</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">console.log(String(true)); // 輸出 &quot;true&quot;     console.log(String(null)); // 輸出 &quot;null&quot;     console.log(String(undefined)); // 輸出 &quot;undefined&quot;     console.log(undefined + &quot;&quot;); // 輸出 &quot;undefined&quot;     </span><br></pre></td></tr></table></figure>
+
+<h4 id="1-4-6-4-Template-Literals"><a href="#1-4-6-4-Template-Literals" class="headerlink" title="1.4.6.4 Template Literals"></a>1.4.6.4 Template Literals</h4><ul>
+<li>ES6使用樣板字串, 可以不用自己寫跳行符號而達到跳行</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">let msg = `     hi     this     is     a     book!     `;     </span><br></pre></td></tr></table></figure>
+
+<h4 id="1-4-6-5-Interpolation"><a href="#1-4-6-5-Interpolation" class="headerlink" title="1.4.6.5 Interpolation"></a>1.4.6.5 Interpolation</h4><h2 id="-4"><a href="#-4" class="headerlink" title=""></a></h2><ul>
+<li>在重音符 ` 括的字串裡用${ expression }, 可將expression轉成字串</li>
+</ul>
+<p> </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">let num1 = 100;     let num2 = 200;     let sum1 = num1 + &#x27; * &#x27; + num2 + &#x27; = &#x27; + (num1 * num2);     // 等同用$&#123;&#125;的寫法     let sum2 = `$&#123; num1 &#125; * $&#123; num2 &#125; = $&#123; num1 * num2 &#125;`;     console.log(sum1 == sum2); // 輸出 true     </span><br></pre></td></tr></table></figure>
+
+<h4 id="1-4-6-6-Template-Literal-Tag-Function"><a href="#1-4-6-6-Template-Literal-Tag-Function" class="headerlink" title="1.4.6.6 Template Literal Tag Function"></a>1.4.6.6 Template Literal Tag Function</h4><ul>
+<li>在template literal, 可以把整個字串傳進function做拆分, 區分沒有${}符號的字串陣列和每個${}裡的expression</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">let name = &#x27;John&#x27;;     let age = 18;     let height = 180;     function tagFunction(str, exp1, exp2, exp3)&#123;         console.log(str);         console.log(exp1);         console.log(exp2);         console.log(exp3);                  return &#x27;spliting completed&#x27;;     &#125;     let result = tagFunction`My name is $&#123; name &#125;, the age is $&#123; age &#125; and the height is $&#123; height &#125;.`;     // 分別輸出     // [&quot;My name is &quot;, &quot;, the age is &quot;, &quot; and the height is &quot;, &quot;.&quot;]     // John     // 18     // 180     console.log(result); // 輸出 &#x27;spliting completed&#x27;          /*       也能支援 spread operator     */     function tagFunction2(str, ...exps)&#123;         console.log(str);         for(const exp of exps)&#123;            console.log(exp);         &#125;                  return &#x27;spliting completed&#x27;;     &#125;          </span><br></pre></td></tr></table></figure>
+
+<h4 id="1-4-6-7-Raw-Strings"><a href="#1-4-6-7-Raw-Strings" class="headerlink" title="1.4.6.7 Raw Strings"></a>1.4.6.7 Raw Strings</h4><ul>
+<li>可以用 String.raw tag function, 將Template literals輸出在內部的原始符號, 比如有n等, 輸出的字串也會有’n’</li>
+<li>用tag function切過的字串陣列, 有個raw屬性, 也是String.raw的結果</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">console.log(`$&#123; 1 + 2 &#125; and n and u0041`);      // 輸出     // 3 and      //  and A          console.log(String.raw`$&#123; 1 + 2 &#125; and n and u0041`);     // 輸出     // 3 and n and u0041          function tagFunction(str, ...exps)&#123;         for(const rawStr of str.raw)&#123;            console.log(rawStr);         &#125;     &#125;          tagFunction`Hi, $&#123;1&#125; today is n $&#123;2&#125; u0048u004Fu0054.`;     // 分別輸出     // Hi,      //  today is n      //  u0048u004Fu0054.</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-4-7-Symbol-Type"><a href="#1-4-7-Symbol-Type" class="headerlink" title="1.4.7 Symbol Type"></a>1.4.7 Symbol Type</h3><ul>
+<li>ES6導入此Type, 有唯一和不可變的性質. 此性質是為了讓object有唯一識別的屬性, 可取代用string的key</li>
+<li>使用Symbol()和Symbol(keyStr), 都是獨立的.</li>
+<li>用console輸出有帶keyStr的symbol, 會有那筆keyStr</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">let sym1 = Symbol();     console.log(typeof sym1); // 輸出 &quot;symbol&quot;     let sym2 = Symbol();     console.log(sym1 == sym2); // 輸出false          let sym3 = Symbol(&#x27;test&#x27;);     console.log(sym3); // 輸出 Symbol(test)     let sym4 = Symbol(&#x27;test&#x27;);     console.log(sym3 == sym4); // 輸出false</span><br></pre></td></tr></table></figure>
+
+<h2 id="-5"><a href="#-5" class="headerlink" title=""></a></h2><ul>
+<li>Symbol是不可以用new的, 避免直接被封裝為object</li>
+<li>但可以用Object(someSymbol)封裝成object</li>
+</ul>
+<h4 id="1-4-7-1-Global-Symbol-Registry"><a href="#1-4-7-1-Global-Symbol-Registry" class="headerlink" title="1.4.7.1 Global Symbol Registry"></a>1.4.7.1 Global Symbol Registry</h4><ul>
+<li>可建立重複使用的全域symbol, 使用Symbol.for(‘someKey’)</li>
+<li>如果有多個Symbol.for同樣key的symbol, 都是同一個物件</li>
+<li>global和一般的symbol用同樣的key仍是不同的物件</li>
+<li>Symbol.for()則是建立一個undefined的key</li>
+<li>Symbol.keyFor能輸出global symbol的key值, 但一般的symbol只會輸出undefined</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">let sym1 = Symbol.for(&#x27;hello&#x27;);     console.log(typeof sym1); // 輸出 &quot;symbol&quot;     console.log(sym1); // 輸出 Symbol(hello)     let sym2 = Symbol.for(&#x27;hello&#x27;);     console.log(sym1 == sym2); // 輸出true     let sym3 = Symbol(&#x27;hello&#x27;);     console.log(sym1 == sym3); // 輸出false     let sym4 = Symbol.for();     console.log(sym4); // 輸出 Symbol(undefined)     console.log(Symbol.keyFor(sym1)); // 輸出hello     let sym5 = Symbol(&#x27;GUY&#x27;);     console.log(Symbol.keyFor(sym5)); // 輸出undefined     </span><br></pre></td></tr></table></figure>
+
+<h4 id="1-4-7-2-Using-Symbols-as-Properties"><a href="#1-4-7-2-Using-Symbols-as-Properties" class="headerlink" title="1.4.7.2 Using Symbols as Properties"></a>1.4.7.2 Using Symbols as Properties</h4><ul>
+<li>object除了string和number當property, 也能用Symbol</li>
+<li>可用[]或 Object.defineProperty()、Object.defineProperties() 定義property</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">let sym1 = Symbol.for(&#x27;a&#x27;);     let sym2 = Symbol.for(&#x27;b&#x27;);     let sym3 = Symbol.for(&#x27;c&#x27;);     let sym4 = Symbol.for(&#x27;d&#x27;);     let obj1 = &#123;[sym1]: &#x27;sym1 value&#x27;&#125;;     console.log(obj1); // 輸出 &#123;Symbol(a): &quot;sym1 value&quot;&#125;          Object.defineProperty(obj1, sym2, &#123;value: &#x27;sym2 value&#x27;&#125;);     console.log(obj1); // 輸出 &#123;Symbol(a): &quot;sym1 value&quot;, Symbol(b): &quot;sym2 value&quot;&#125;          Object.defineProperties(obj1, &#123;        [sym3]: &#123;value: &#x27;sym3 value&#x27;&#125;,        [sym4]: &#123;value: &#x27;sym4 value&#x27;&#125;     &#125;);     console.log(obj1);      // 輸出 &#123;Symbol(a): &quot;sym1 value&quot;, Symbol(b): &quot;sym2 value&quot;     // , Symbol(c): &quot;sym3 value&quot;, Symbol(d): &quot;sym4 value&quot;&#125;     </span><br></pre></td></tr></table></figure>
+
+<h2 id="-6"><a href="#-6" class="headerlink" title=""></a></h2><ul>
+<li><p>取object的property有區分Object.getOwnPropertyNames()和 Object.getOwnPropertySymbols(), 分別是回傳非Symbol和Symbol的Property  </p>
+</li>
+<li><p>Object.getOwnPropertyDescriptors()可回傳所有property與對應value的object描述</p>
+</li>
+<li><p>如果要全部回傳property, 可用Reflect.ownKeys()</p>
+</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">let sym1 = Symbol.for(&#x27;a&#x27;);     let sym2 = Symbol.for(&#x27;b&#x27;);     let obj1 = &#123;[sym1]: &#x27;sym1 value&#x27;, [sym2]: &#x27;sym2 value&#x27;, test: &#x27;test value&#x27;, 4: &#x27;4 value&#x27;&#125;;     console.log(Object.getOwnPropertySymbols(obj1)); // 輸出 [Symbol(a), Symbol(b)]     console.log(Object.getOwnPropertyNames(obj1)); // 輸出 [&quot;4&quot;, &quot;test&quot;]     console.log(Object.getOwnPropertyDescriptors(obj1)); // 輸出 [&quot;4&quot;:&#123;...&#125;, &quot;test&quot;:&#123;...&#125;, Symbol(a):&#123;...&#125;, Symbol(b):&#123;...&#125;]     console.log(Reflect.ownKeys(obj1)); // 輸出 [&quot;4&quot;, &quot;test&quot;, Symbol(a), Symbol(b)]     </span><br></pre></td></tr></table></figure>
+
+<h2 id="-7"><a href="#-7" class="headerlink" title=""></a></h2><h4 id="1-4-7-3-Well-Known-Symbols"><a href="#1-4-7-3-Well-Known-Symbols" class="headerlink" title="1.4.7.3 Well-Known Symbols"></a>1.4.7.3 Well-Known Symbols</h4><ul>
+<li>ES6有定義一些global的symbol, 有各別的用途</li>
+<li>在MDN的Properties類別都是well-known symbols <a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol/search">https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects&#x2F;Symbol&#x2F;search</a></li>
+</ul>
+<h3 id="1-4-8-Object-Type"><a href="#1-4-8-Object-Type" class="headerlink" title="1.4.8 Object Type"></a>1.4.8 Object Type</h3><ul>
+<li>一組資料和功能的集合</li>
+<li>使用new Object()建立object物件</li>
+<li>任何的object有預設的函式和屬性</li>
+</ul>
+<p>       1. constructor: 很特別這是property</p>
+<p>       2. hasOwnProperty(propertyName): 檢查是否有property在此object(不是預設的property)</p>
+<p>       3. isPrototypeOf(someObject): 是否為someObject的prototype</p>
+<p>       4. propertyIsEnumerable(propertyName): 能否用在for-in</p>
+<p>       5. toLocaleString(): 可輸出指定語系的string</p>
+<p>       6. toString(): 回傳物件的string表示法</p>
+<p>       7. valueOf(): 回傳物件的string、number或boolean的表示. 通常和toString()一樣</p>
+<ul>
+<li>Host object: 比如瀏覽器的DOM、BOM object, 不一定是繼承ECMAScript的object</li>
+</ul>
+<h2 id="1-5-Operators"><a href="#1-5-Operators" class="headerlink" title="1.5 Operators"></a>1.5 Operators</h2><h3 id="1-5-1-Unary-Operators"><a href="#1-5-1-Unary-Operators" class="headerlink" title="1.5.1 Unary Operators"></a>1.5.1 Unary Operators</h3><h4 id="1-5-1-1-Increment-Decrement"><a href="#1-5-1-1-Increment-Decrement" class="headerlink" title="1.5.1.1 Increment&#x2F;Decrement"></a>1.5.1.1 Increment&#x2F;Decrement</h4><ul>
+<li>++x,  x++, –x, ++x</li>
+<li>可用在非整數的值</li>
+<li>字串可以轉成數字時, 用++&#x2F;–會先轉成數字再做+&#x2F;- 1的動作</li>
+<li>字串不可以轉成數字時, 用++&#x2F;–會變成NaN</li>
+<li>boolean的false用++&#x2F;–時, 會先轉成0再做+&#x2F;- 1的動作</li>
+<li>boolean的true用++&#x2F;–時, 會先轉成1再做+&#x2F;- 1的動作</li>
+<li>浮點數用++&#x2F;–時, 會做+&#x2F;- 1的動作, 也會有浮點數精準度的問題</li>
+<li>對object使用++&#x2F;–時, 會先嘗試用valueOf()的值和前面的邏輯產生第一次結果, 如果結果是NaN, 再用toString()產生字串再依字串的邏輯產生第二次結果</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">let a = &quot;1&quot;;     let b = &quot;0xf&quot;;     let c = &quot;XD&quot;;     let d = true;     let e = false;     let f = 100;     let g = 1.1;     let h = &#123;1: 2&#125;;     a++; // 2     b++; // 16     c--; // NaN     d++; // 2     e--; // -1     f--; // 99     g--; // 0.10000000000000009     h++; // Nan     </span><br></pre></td></tr></table></figure>
+
+<h4 id="1-5-1-2-Unary-Plus-and-Minus"><a href="#1-5-1-2-Unary-Plus-and-Minus" class="headerlink" title="1.5.1.2 Unary Plus and Minus"></a>1.5.1.2 Unary Plus and Minus</h4><ul>
+<li>正負符號</li>
+<li>對於非number的變數, 會先以Number()轉換再套用+&#x2F;-, 不能轉換者會是NaN</li>
+</ul>
+<h3 id="1-5-2-Bitwise-Operators"><a href="#1-5-2-Bitwise-Operators" class="headerlink" title="1.5.2 Bitwise Operators"></a>1.5.2 Bitwise Operators</h3><ul>
+<li>ECMAScript的Number都是以IEEE-754 64位元儲存</li>
+<li>但Bitwise的操作都是先轉成32位元來操作, 運算結果再存回64位元</li>
+<li>Signed的整數, 第32位元用來表示正(0)或負(1). 負數是用two’s complement表示</li>
+<li>負數用toString(2)會是絕對值的2進位再加上負號, 而不是two’s complement</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">let num = -20;     console.log(num.toString(2)); // 輸出 -10100     </span><br></pre></td></tr></table></figure>
+
+<h4 id="1-5-2-1-Bitwise-NOT"><a href="#1-5-2-1-Bitwise-NOT" class="headerlink" title="1.5.2.1 Bitwise NOT"></a>1.5.2.1 Bitwise NOT</h4><ul>
+<li>數字前面用~波浪符號, 把所有bit轉成反bit</li>
+<li>~num &#x3D; -num - 1</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">let num1 = 19;     let num2 = ~num1;     console.log(num2); // 輸出 -20          let num3 = -num1 - 1;     console.log(num3); // 輸出 -20     </span><br></pre></td></tr></table></figure>
+
+<h4 id="1-5-2-2-Bitwise-AND"><a href="#1-5-2-2-Bitwise-AND" class="headerlink" title="1.5.2.2 Bitwise AND"></a>1.5.2.2 Bitwise AND</h4><ul>
+<li>用一個 &amp; 符號</li>
+</ul>
+<h4 id="1-5-2-3-Bitwise-OR"><a href="#1-5-2-3-Bitwise-OR" class="headerlink" title="1.5.2.3 Bitwise OR"></a>1.5.2.3 Bitwise OR</h4><ul>
+<li>用一個 符號</li>
+</ul>
+<h4 id="1-5-2-4-Bitwise-XOR"><a href="#1-5-2-4-Bitwise-XOR" class="headerlink" title="1.5.2.4 Bitwise XOR"></a>1.5.2.4 Bitwise XOR</h4><ul>
+<li>用一個 ^ 符號</li>
+</ul>
+<h4 id="1-5-2-5-Left-Shift"><a href="#1-5-2-5-Left-Shift" class="headerlink" title="1.5.2.5 Left Shift"></a>1.5.2.5 Left Shift</h4><ul>
+<li>用 &lt;&lt; 符號, 將右邊bit往左移, 右邊補上0, 移動完的結果會是signed number</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">let num1 = 1;     let num2 = num1 &lt;&lt; 1;     console.log(num2); // 輸出 2          let num3 = -1;     let num4 = num3 &lt;&lt; 1;     console.log(num4); // 輸出 -2     </span><br></pre></td></tr></table></figure>
+
+<h4 id="1-5-2-6-Signed-Right-Shift"><a href="#1-5-2-6-Signed-Right-Shift" class="headerlink" title="1.5.2.6 Signed Right Shift"></a>1.5.2.6 Signed Right Shift</h4><ul>
+<li>用 &gt;&gt; 符號, 將左邊第31個bit往右移, Sign bit保持不變, 移動完的結果會是signed number</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">let num1 = 19;     let num2 = num1 &gt;&gt; 1;     console.log(num2); // 輸出 9          let num3 = -23;     let num4 = num3 &gt;&gt; 1;     console.log(num4); // 輸出 -12     </span><br></pre></td></tr></table></figure>
+
+<h4 id="1-5-2-7-Unsigned-Right-Shift"><a href="#1-5-2-7-Unsigned-Right-Shift" class="headerlink" title="1.5.2.7 Unsigned Right Shift"></a>1.5.2.7 Unsigned Right Shift</h4><h2 id="-8"><a href="#-8" class="headerlink" title=""></a></h2><ul>
+<li>用 &gt;&gt;&gt; 符號, 將左邊bit往右移, 左邊補上0, 移動完的結果會是正數或0</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">let num1 = -5;     let num2 = num1 &gt;&gt;&gt; 1;     console.log(num2); // 輸出 2147483645          let num3 = 99;     let num4 = num3 &gt;&gt;&gt; 1;     console.log(num4); // 輸出 49</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-5-3-Boolean-Operators"><a href="#1-5-3-Boolean-Operators" class="headerlink" title="1.5.3 Boolean Operators"></a>1.5.3 Boolean Operators</h3><h4 id="1-5-3-1-Logical-NOT"><a href="#1-5-3-1-Logical-NOT" class="headerlink" title="1.5.3.1 Logical NOT"></a>1.5.3.1 Logical NOT</h4><ul>
+<li>使用符號 ! , 可用在任何數值, 都是先轉成Boolean再求反的值</li>
+</ul>
+<h4 id="1-5-3-2-Logical-AND"><a href="#1-5-3-2-Logical-AND" class="headerlink" title="1.5.3.2 Logical AND"></a>1.5.3.2 Logical AND</h4><ul>
+<li>使用符號 &amp;&amp;, 如果有一方不是boolean, 返回的值不一定是boolean</li>
+<li>有短路的性質</li>
+<li>如果左方是object, 則回傳右方</li>
+<li>如果右方是object, 則左方必須是true才會回傳右方</li>
+<li>如果兩邊都是object, 則回傳右方</li>
+<li>如果有一方是null, 則回傳null, 並不是先回傳false</li>
+<li>如果有一方是NaN, 則回傳NaN, 並不是回傳false</li>
+<li>如果有一方是undefined, 則回傳undefined, 並不是回傳false</li>
+</ul>
+<h4 id="1-5-3-3-Logical-OR"><a href="#1-5-3-3-Logical-OR" class="headerlink" title="1.5.3.3 Logical OR"></a>1.5.3.3 Logical OR</h4><ul>
+<li>使用符號 , 如果兩方都不是boolean, 返回的值不一定是boolean</li>
+<li>有短路的性質</li>
+<li>如果左方是object, 則回傳左方</li>
+<li>如果左方是轉換boolean是false, 則回傳右方</li>
+<li>如果兩邊都是object, 則回傳左方</li>
+<li>如果兩邊都是null, 則回傳null, 並不是先回傳false</li>
+<li>如果兩邊都是NaN, 則回傳NaN, 並不是先回傳false</li>
+<li>如果兩邊都是undefined, 則回傳undefined, 並不是先回傳false</li>
+</ul>
+<h3 id="1-5-4-Multiplicative-Operators"><a href="#1-5-4-Multiplicative-Operators" class="headerlink" title="1.5.4 Multiplicative Operators"></a>1.5.4 Multiplicative Operators</h3><h4 id="1-5-4-1-Multiply"><a href="#1-5-4-1-Multiply" class="headerlink" title="1.5.4.1 Multiply"></a>1.5.4.1 Multiply</h4><ul>
+<li>使用符號 * 做乘法運算</li>
+<li>數字相乘超過可表示的範圍, 將是Infinity&#x2F;-Infinity</li>
+<li>只要有一方是NaN, 乘法結果一定是NaN</li>
+<li>Infinity * 0 &#x3D; NaN (!!??)</li>
+<li>Infinity 乘以 非0的數仍是+&#x2F;-Infinity, 根據正負規則</li>
+<li>Infinity 乘以 Infinity 仍是+&#x2F;-Infinity, 根據正負規則</li>
+<li>其他非數字的會先用Number()轉換再用上述邏輯</li>
+</ul>
+<h4 id="1-5-4-2-Divide"><a href="#1-5-4-2-Divide" class="headerlink" title="1.5.4.2 Divide"></a>1.5.4.2 Divide</h4><h2 id="-9"><a href="#-9" class="headerlink" title=""></a></h2><ul>
+<li>使用符號 &#x2F; 做除法運算</li>
+<li>數字相除超過可表示的範圍, 將是Infinity&#x2F;-Infinity</li>
+<li>只要有一方是NaN, 乘法結果一定是NaN</li>
+<li>Infinity &#x2F; Infinity &#x3D; NaN</li>
+<li>0 &#x2F; 0 &#x3D; NaN</li>
+<li>非0 除以 0 &#x3D; +&#x2F;-Infinity, 根據正負規則</li>
+<li>Infinity 除以 非0的數仍是+&#x2F;-Infinity, 根據正負規則</li>
+<li>其他非數字的會先用Number()轉換再用上述邏輯</li>
+</ul>
+<h4 id="1-5-4-3-Modulus"><a href="#1-5-4-3-Modulus" class="headerlink" title="1.5.4.3 Modulus"></a>1.5.4.3 Modulus</h4><ul>
+<li>使用符號 % 取餘數</li>
+<li>和除法有相似的邏輯</li>
+<li>都是正常的數字, 可以直接取餘數</li>
+<li>Infinity % 非無限大的數 &#x3D; NaN</li>
+<li>非無限大的數 % 0 &#x3D; NaN</li>
+<li>Infinity % Infinity &#x3D; NaN</li>
+<li>非無限大的數 % Infinity &#x3D; 非無限大的數</li>
+<li>0 % 任何數 &#x3D; 0</li>
+<li>其他非數字的會先用Number()轉換再用上述邏輯</li>
+</ul>
+<h3 id="1-5-5-Exponentiation-Operators"><a href="#1-5-5-Exponentiation-Operators" class="headerlink" title="1.5.5 Exponentiation Operators"></a>1.5.5 Exponentiation Operators</h3><ul>
+<li>在ES7, 可使用a ** b, 代表Math.pow(a, b)</li>
+<li>也能用 a **&#x3D; b</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">let num1 = 64;     let num2 = num1 ** 0.5;     console.log(num2); // 輸出 8          let num3 = 12;     num3 **= 2;     console.log(num3); // 輸出 144     </span><br></pre></td></tr></table></figure>
+
+<h3 id="1-5-6-Additive-Operators"><a href="#1-5-6-Additive-Operators" class="headerlink" title="1.5.6 Additive Operators"></a>1.5.6 Additive Operators</h3><h4 id="1-5-6-1-Add"><a href="#1-5-6-1-Add" class="headerlink" title="1.5.6.1 Add"></a>1.5.6.1 Add</h4><ul>
+<li>使用符號 + 相加</li>
+<li>如果兩者都是數字, 則可套用下列4個規則</li>
+</ul>
+<p>      1. 只要有一方是NaN, 相加結果一定是NaN</p>
+<p>      2. Infinity + Infinity &#x3D; Infinity</p>
+<p>      3. -Infinity + -Infinity &#x3D; -Infinity</p>
+<p>      4. Infinity + -Infinity &#x3D; NaN</p>
+<ul>
+<li>只要有一方是字串, 其他都會轉成字串做串接</li>
+<li>非字串類的, 會先用Number()轉成數字, 再以Number計算</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">let num1 = 2;     let num2 = true;     console.log(num1 + num2); // 輸出 3          let num3 = &quot;4&quot;;     let num4 = 55;     console.log(num3 + num4); // &quot;4&quot;並不會轉成數字4, 輸出 455          let num5 = 1;     let num6 = null;     console.log(num5 + num6); // null轉成0, 輸出 1          let num7 = 2;     let num8 = undefined;     console.log(num7 + num8); // undefined轉成NaN, 輸出 NaN          let num9 = 3;     let num10 = &#123;&quot;test&quot;: true&#125;;     console.log(num9 + num10); // object轉成字串, 輸出 3[object Object]     </span><br></pre></td></tr></table></figure>
+
+<h4 id="1-5-6-2-Subtract"><a href="#1-5-6-2-Subtract" class="headerlink" title="1.5.6.2 Subtract"></a>1.5.6.2 Subtract</h4><ul>
+<li>使用符號 - 相減</li>
+<li>如果兩者都是數字, 則可套用下列5個規則</li>
+</ul>
+<p>      1. 只要有一方是NaN, 相減結果一定是NaN</p>
+<p>      2. Infinity - Infinity &#x3D; NaN</p>
+<p>      3. -Infinity - -Infinity &#x3D; NaN</p>
+<p>      4. Infinity - -Infinity &#x3D; Infinity</p>
+<p>      5. -Infinity - Infinity &#x3D; -Infinity</p>
+<ul>
+<li>其他非數字類, 會先用Number()轉成數字, 再以Number計算</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">let num1 = 2;     let num2 = true;     console.log(num1 - num2); // 輸出 1          let num3 = &quot;4&quot;;     let num4 = 55;     console.log(num3 - num4); // &quot;4&quot;轉成數字4, 輸出 -51          let num5 = 1;     let num6 = null;     console.log(num5 - num6); // null轉成0, 輸出 1          let num7 = 2;     let num8 = undefined;     console.log(num7 - num8); // undefined轉成NaN, 輸出 NaN          let num9 = 3;     let num10 = &#123;&quot;test&quot;: true&#125;;     console.log(num9 - num10); // object轉成字串, 輸出 NaN     </span><br></pre></td></tr></table></figure>
+
+<h3 id="1-5-7-Relational-Operators"><a href="#1-5-7-Relational-Operators" class="headerlink" title="1.5.7 Relational Operators"></a>1.5.7 Relational Operators</h3><ul>
+<li>&gt; 、 &lt;、&gt;&#x3D; 、&lt;&#x3D; 4種比對</li>
+<li>只要有一方是NaN, 比對結果一定是false</li>
+<li>兩邊都是字串時, 用字串的字母順序比對</li>
+<li>有非數字類, 則用Number()轉換再做number比對</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">let num1 = 2;     let num2 = true;     console.log(num1 &gt; num2); // 輸出 true          let num3 = &quot;4&quot;;     let num4 = 55;     console.log(num3 &gt; num4); // &quot;4&quot;轉成數字4, 輸出 false          let num5 = &quot;jack&quot;;     let num6 = &quot;rose&quot;;     console.log(num5 &gt; num6); // 輸出 fasle          let num7 = 2;     let num8 = undefined;     console.log(num7 &gt; num8); // undefined轉成NaN, 輸出 false          let num9 = 3;     let num10 = &#123;&quot;test&quot;: true&#125;;     console.log(num9 &gt; num10); // object轉成字串, 再Number()轉換成NaN, 輸出 false          let num11 = 1;     let num12 = NaN;     console.log(num11 &gt; num12); // 輸出 false     console.log(num1 &lt;= num12); // 還是輸出 false          </span><br></pre></td></tr></table></figure>
+
+<h3 id="1-5-8-Equality-Operators"><a href="#1-5-8-Equality-Operators" class="headerlink" title="1.5.8 Equality Operators"></a>1.5.8 Equality Operators</h3><h2 id="-10"><a href="#-10" class="headerlink" title=""></a></h2><ul>
+<li>區分轉換相等 &#x3D;&#x3D; &#x2F; !&#x3D; 和全等 &#x3D;&#x3D;&#x3D; &#x2F; !&#x3D;&#x3D;&#x3D;</li>
+<li>轉換相等會先轉換成同型別再比較; 全等直接依目前型別來比較</li>
+</ul>
+<h4 id="1-5-8-1-轉換相等"><a href="#1-5-8-1-轉換相等" class="headerlink" title="1.5.8.1 轉換相等 &#x3D;&#x3D; &#x2F; !&#x3D;"></a>1.5.8.1 轉換相等 &#x3D;&#x3D; &#x2F; !&#x3D;</h4><ul>
+<li>兩者型別不相同時, 將使用一些規則轉換</li>
+</ul>
+<ol>
+<li>Boolean都轉換成數字, true&#x2F;false &#x3D; 1&#x2F;0</li>
+<li>一邊是字串,另一邊是數字, 則將字串嘗試轉成數字</li>
+<li>一邊是object, 另一邊不是, 則將object的valueOf()轉成一般類型再比對</li>
+</ol>
+<ul>
+<li>經過前述轉換, 再來一些規則</li>
+</ul>
+<ol>
+<li>null &#x3D;&#x3D; undefined</li>
+<li>null和undefined是不會被轉換的</li>
+<li>只要有NaN, 任何 &#x3D;&#x3D; 都是false, 任何 !&#x3D; 都是true</li>
+<li>如果兩邊都是object, 用 &#x3D;&#x3D; 會比對是否指向同一個object</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">let num1 = 1;     let num2 = true;     console.log(num1 == num2); // 輸出 true          let num3 = &quot;4&quot;;     let num4 = 4;     console.log(num3 == num4); // &quot;4&quot;轉成數字4, 輸出 true          let num5 = &quot;0&quot;;     let num6 = null;     console.log(num5 == num6); // 輸出 false          let num7 = 1;     let num8 = undefined;     console.log(num7 != num8); // 輸出 true          let num9 = 2;     let num10 = null;     console.log(num9 != num10); // 輸出 true          let num11 = 3;     let num12 = NaN;     console.log(num11 == num12); // 輸出 false     console.log(num11 != num12); // 輸出 true          </span><br></pre></td></tr></table></figure>
+
+<h4 id="1-5-8-2-全等"><a href="#1-5-8-2-全等" class="headerlink" title="1.5.8.2 全等 &#x3D;&#x3D;&#x3D; &#x2F; !&#x3D;&#x3D;"></a>1.5.8.2 全等 &#x3D;&#x3D;&#x3D; &#x2F; !&#x3D;&#x3D;</h4><h2 id="-11"><a href="#-11" class="headerlink" title=""></a></h2><ul>
+<li>兩者型別不轉換型別直接比對</li>
+<li>null &#x3D;&#x3D;&#x3D; undefined 會是false</li>
+<li>建議任何等於比對, 都用全等</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">let num1 = 1;     let num2 = true;     console.log(num1 === num2); // 輸出 false          let num3 = &quot;4&quot;;     let num4 = 4;     console.log(num3 === num4); // 輸出 false          let num5 = &quot;0&quot;;     let num6 = null;     console.log(num5 === num6); // 輸出 false          let num7 = 1;     let num8 = undefined;     console.log(num7 !== num8); // 輸出 true          let num9 = 2;     let num10 = null;     console.log(num9 !== num10); // 輸出 true          let num11 = 3;     let num12 = NaN;     console.log(num11 === num12); // 輸出 false     console.log(num11 !== num12); // 輸出 true</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-5-9-Conditional-Operators"><a href="#1-5-9-Conditional-Operators" class="headerlink" title="1.5.9 Conditional Operators"></a>1.5.9 Conditional Operators</h3><ul>
+<li>let x &#x3D; some_boolean_expression ? y : z;</li>
+</ul>
+<h3 id="1-5-10-Assignment-Operators"><a href="#1-5-10-Assignment-Operators" class="headerlink" title="1.5.10 Assignment Operators"></a>1.5.10 Assignment Operators</h3><ul>
+<li>=</li>
+<li>+&#x3D;</li>
+<li>-&#x3D;</li>
+<li>*&#x3D;</li>
+<li>&#x2F;&#x3D;</li>
+<li>&lt;&lt;&#x3D;</li>
+<li>&gt;&gt;&#x3D;</li>
+<li>&gt;&gt;&gt;&#x3D;</li>
+</ul>
+<h3 id="1-5-11-Comma-Operators"><a href="#1-5-11-Comma-Operators" class="headerlink" title="1.5.11 Comma Operators"></a>1.5.11 Comma Operators</h3><ul>
+<li>多個運算只用一個statement</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">let num1 = 1, num2 = 2, num3 = 3;          let x = (1,2,3,4,5,6,7,8,9,10); // 會是指定最後一個數 10     </span><br></pre></td></tr></table></figure>
+
+<h2 id="1-6-Statements"><a href="#1-6-Statements" class="headerlink" title="1.6 Statements"></a>1.6 Statements</h2><h3 id="1-6-1-if-statement"><a href="#1-6-1-if-statement" class="headerlink" title="1.6.1 if statement"></a>1.6.1 if statement</h3><ul>
+<li>if(expression) 的expression會用Boolean()轉換</li>
+</ul>
+<h3 id="1-6-2-do-while-statement"><a href="#1-6-2-do-while-statement" class="headerlink" title="1.6.2 do-while statement"></a>1.6.2 do-while statement</h3><h3 id="1-6-3-while-statement"><a href="#1-6-3-while-statement" class="headerlink" title="1.6.3 while statement"></a>1.6.3 while statement</h3><h3 id="1-6-4-for-statement"><a href="#1-6-4-for-statement" class="headerlink" title="1.6.4 for statement"></a>1.6.4 for statement</h3><h3 id="1-6-5-for-in-statement"><a href="#1-6-5-for-in-statement" class="headerlink" title="1.6.5 for-in statement"></a>1.6.5 for-in statement</h3><ul>
+<li>支援可Enumerable且非symbol的property</li>
+<li>用在null或undefined會拋出錯誤</li>
+<li>for-in無法保證順序</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">let obj1 = &#123;&#x27;t&#x27;: &#x27;test&#x27;, &#x27;1&#x27;: &#x27;hello&#x27;&#125;;     for(let x in obj1)&#123;         console.log(x); // 輸出property  t 和 1         console.log(obj1[x]); // 輸出property對應的value, test 和 hello     &#125;          let obj2 = [100,200];      for(let x in obj2)&#123;         console.log(x); // 輸出property  0 和 1, 也代表array的index         console.log(obj2[x]); // 輸出property對應的value, 100 和 200     &#125;     </span><br></pre></td></tr></table></figure>
+
+<h3 id="1-6-6-for-of-statement"><a href="#1-6-6-for-of-statement" class="headerlink" title="1.6.6 for-of statement"></a>1.6.6 for-of statement</h3><h2 id="-12"><a href="#-12" class="headerlink" title=""></a></h2><ul>
+<li>支援有iterator的next()的資料</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">let obj1 = &#123;&#x27;t&#x27;: &#x27;test&#x27;, &#x27;1&#x27;: &#x27;hello&#x27;&#125;;     for(let x of obj1)&#123;         console.log(x); // 產生錯誤 Uncaught TypeError: obj1 is not iterable         console.log(obj1[x]);     &#125;          let obj2 = [100,200];      for(let x of obj2)&#123;         console.log(x); // 輸出值  100 和 200     &#125;     </span><br></pre></td></tr></table></figure>
+
+<h2 id="-13"><a href="#-13" class="headerlink" title=""></a></h2><h3 id="1-6-7-labeled-statement"><a href="#1-6-7-labeled-statement" class="headerlink" title="1.6.7 labeled statement"></a>1.6.7 labeled statement</h3><h2 id="-14"><a href="#-14" class="headerlink" title=""></a></h2><ul>
+<li>statement可以加上標籤</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">statement1: for(let i = 0 ; i &lt; 5;++i)&#123;                console.log(i);            &#125;         </span><br></pre></td></tr></table></figure>
+
+<h3 id="1-6-8-break-continue-statement"><a href="#1-6-8-break-continue-statement" class="headerlink" title="1.6.8 break&#x2F;continue statement"></a>1.6.8 break&#x2F;continue statement</h3><h2 id="-15"><a href="#-15" class="headerlink" title=""></a></h2><ul>
+<li>用在迴圈可以跳出或繼續</li>
+<li>break&#x2F;continue可加上label name, 指定要break&#x2F;continue的迴圈位置</li>
+</ul>
+<h3 id="1-6-9-with-statement"><a href="#1-6-9-with-statement" class="headerlink" title="1.6.9 with statement"></a>1.6.9 with statement</h3><h2 id="-16"><a href="#-16" class="headerlink" title=""></a></h2><ul>
+<li>將code block內的scope, 都能用with裡的property</li>
+<li>不建議用with</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">with(window)&#123;         // 都來自widnow的屬性, 可不用window.xxxx的寫法         let myOrigin = origin;         let myHeight = outerHeight;         let myWidth = outerWidth;         console.log(myOrigin);         console.log(myHeight);         console.log(myWidth);     &#125;     </span><br></pre></td></tr></table></figure>
+
+<h3 id="1-6-10-switch-statement"><a href="#1-6-10-switch-statement" class="headerlink" title="1.6.10 switch statement"></a>1.6.10 switch statement</h3><h2 id="-17"><a href="#-17" class="headerlink" title=""></a></h2><ul>
+<li>和其他的程式語言相似, 但有一些特殊功能</li>
+<li>switch的比對都是全等, 不會轉型</li>
+<li>case的值不一定是變數, 也可以是運算式</li>
+</ul>
+<h2 id="1-7-Functions"><a href="#1-7-Functions" class="headerlink" title="1.7 Functions"></a>1.7 Functions</h2><ul>
+<li><p>用function myFunctionName(arg1, arg2, ….){ }  </p>
+</li>
+<li><p>fumction沒有強制要return, 若沒回傳東西或者return; , 都是得到undefined</p>
+</li>
+<li><p>建議function的功能是全都要回傳東西或者都不回傳</p>
+</li>
+</ul>
+<h2 id="2-心得"><a href="#2-心得" class="headerlink" title="2. 心得"></a>2. 心得</h2><p>       這一章節很重要, 之前看到很多網路對JS的謎音創作, 都是那null&#x2F;NaN&#x2F;undefined&#x2F;&#x3D;&#x3D;之類的觀念, 其實現在看到心想這怎麼天殺的難…但看了這本書解釋的定義和底層實作, 可以歸納出邏輯, 現階段就多看多寫吧~</p>
+<h2 id="3-參考資料"><a href="#3-參考資料" class="headerlink" title="3. 參考資料"></a>3. 參考資料</h2><ol>
+<li>Professional JavaScript for Web Developers 4th Edition, Chapter 3 : Language Basics, Matt Frisbie.</li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
 
   
   <nav class="pagination">
@@ -1286,12 +1924,12 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">206</span>
+          <span class="site-state-item-count">205</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
-        <span class="site-state-item-count">49</span>
+        <span class="site-state-item-count">48</span>
         <span class="site-state-item-name">categories</span>
       </div>
       <div class="site-state-item site-state-tags">

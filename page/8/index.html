@@ -173,123 +173,6 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2020/09/22/poj-1182/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="LiJyu Gao">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="GeekCodeParadise">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/09/22/poj-1182/" class="post-title-link" itemprop="url">POJ 1182 食物链</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2020-09-22 22:06:00" itemprop="dateCreated datePublished" datetime="2020-09-22T22:06:00+08:00">2020-09-22</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-11-19 15:47:25" itemprop="dateModified" datetime="2023-11-19T15:47:25+08:00">2023-11-19</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C#</span></a>
-                </span>
-                  , 
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/ACM/" itemprop="url" rel="index"><span itemprop="name">ACM</span></a>
-                </span>
-                  , 
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Level-Medium/" itemprop="url" rel="index"><span itemprop="name">Level-Medium</span></a>
-                </span>
-                  , 
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E7%A8%8B%E5%BC%8F%E8%A7%A3%E9%A1%8C/" itemprop="url" rel="index"><span itemprop="name">程式解題</span></a>
-                </span>
-                  , 
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/ProgramSolving/" itemprop="url" rel="index"><span itemprop="name">ProgramSolving</span></a>
-                </span>
-                  , 
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/POJ/" itemprop="url" rel="index"><span itemprop="name">POJ</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>POJ 1182 食物链 解題報告</p>
-<h4 id="平台："><a href="#平台：" class="headerlink" title="平台："></a>平台：</h4><p>PKU Online Judge</p>
-<h4 id="題號："><a href="#題號：" class="headerlink" title="題號："></a>題號：</h4><p>1182 - 食物链</p>
-<h4 id="題目連結："><a href="#題目連結：" class="headerlink" title="題目連結："></a>題目連結：</h4><p><a target="_blank" rel="noopener" href="http://poj.org/problem?id=1182">http://poj.org/problem?id=1182</a></p>
-<h4 id="題目說明："><a href="#題目說明：" class="headerlink" title="題目說明："></a>題目說明：</h4><p>這題是中文題目，可以看原文的敘述。這裡再簡化敘述，有從1…N的N個編號物種，每個物種可能歸類在A、B、C其中一種，A會吃B、B會吃C、C會吃A。</p>
-<p>接著有K筆敘述，每一筆有D、X、Y，D等於1時是X和Y同物種，D等於2時是X會吃Y。 　　但這K筆敘述不完全是對的，要找出後面敘述與前面敘述矛盾的筆數。比如前面第1筆敘述1和2同物種，但之後第2筆敘述說2能吃1，這樣是矛盾的。除了矛盾之外，也要檢查物種編號是否在1…N之間，否則也要歸類矛盾的筆數。</p>
-<h4 id="範例輸入："><a href="#範例輸入：" class="headerlink" title="範例輸入："></a>範例輸入：</h4><p>100 7<br>1 101 1<br>2 1 2<br>2 2 3<br>2 3 3<br>1 1 3<br>2 3 1<br>1 5 5</p>
-<h4 id="範例輸出："><a href="#範例輸出：" class="headerlink" title="範例輸出："></a>範例輸出：</h4><p>3</p>
-<h4 id="解題方法："><a href="#解題方法：" class="headerlink" title="解題方法："></a>解題方法：</h4><p>這題可用Union and Find，將物種與食物鏈都用同一種分組的方式。由於有分A、B、C三個物種，於是用偏移量 N 與 2*N 代表 B與C。一開始先初始化，每個物種都只屬於自己的編號，尚未與別人做分組。</p>
-<p>每一筆敘述，如果X與Y是同一種，同時建立X-A與Y-A、X-B與Y-B、X-C與Y-C的群組，但建立這群組前要先檢查是否X-A與Y-B的群組已存在或者X-A與Y-C的群組已存在，否則這X與Y是同一種的敘述是矛盾的。如果X與Y是X吃Y，同時建立X-A與Y-B、X-B與Y-C、X-C與Y-A的群組，但建立這群組前要先檢查是否X-A與Y-A的群組已存在或者X-A與Y-C的群組已存在，否則這X吃Y的敘述是矛盾的。</p>
-<p>以範例輸入來看：</p>
-<ol>
-<li>第1筆敘述，X &#x3D; 101這物種編號超過N，屬於矛盾</li>
-<li>第2筆敘述，X &#x3D; 1 能吃 Y &#x3D; 2，因此建立 (1, 2 + 100), (1 + 100, 2 + 200), ( 1 + 200, 2) 三種群組，代表食物鏈</li>
-<li>第3筆敘述，X &#x3D; 2 能吃 Y &#x3D; 3，因此建立(2, 3 + 100), (2 + 100, 3 + 200), ( 2 + 200, 3) 三種群組，代表食物鏈</li>
-<li>第4筆敘述，X &#x3D; 3 能吃 Y &#x3D; 3，產生了自己就是屬於同物種的矛盾</li>
-<li>第5筆敘述，X &#x3D; 1 和 Y &#x3D; 3 同物種，但X &#x3D; 1所屬群組 等於 Y &#x3D; 3的群組(3 + 200的食物鏈包含在2 + 100, 2 + 100 又包含在 1) 相同，食物鏈產生矛盾</li>
-<li>第6筆敘述，X &#x3D; 3 能吃 Y &#x3D; 1，因此建立(3, 1 + 100), (3 + 100, 1 + 200), ( 3 + 200, 1) 三種群組，代表食物鏈</li>
-<li>第7筆敘述，X &#x3D; 5 和 Y &#x3D; 5同物種，都在同一個群組，屬於正確的敘述</li>
-</ol>
-<p>所以一共有3筆敘述是矛盾的，回傳3。題目輸入有些陷阱，比如資料量過大，要用scanf()而不是cin，否則會超時；另外不要用while()讀測資，只要讀一次就好，否則會WA。。。</p>
-<p>難度為Medium</p>
-<h4 id="GITHUB位置："><a href="#GITHUB位置：" class="headerlink" title="GITHUB位置："></a>GITHUB位置：</h4><p><a target="_blank" rel="noopener" href="https://github.com/u8989332/ProblemSolving/blob/master/PKUOnlineJudge/1100-1199/1182.cpp">https://github.com/u8989332/ProblemSolving/blob/master/PKUOnlineJudge/1100-1199/1182.cpp</a></p>
-<p>POJ 1182 食物链</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2020/09/21/leetcode-1094-car-pooling/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1264,6 +1147,119 @@
   
   
 
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/09/17/poj-2431-expedition/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="LiJyu Gao">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="GeekCodeParadise">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/09/17/poj-2431-expedition/" class="post-title-link" itemprop="url">POJ 2431 Expedition</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-09-17 20:11:00" itemprop="dateCreated datePublished" datetime="2020-09-17T20:11:00+08:00">2020-09-17</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-11-19 15:47:25" itemprop="dateModified" datetime="2023-11-19T15:47:25+08:00">2023-11-19</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C#</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ACM/" itemprop="url" rel="index"><span itemprop="name">ACM</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Level-Medium/" itemprop="url" rel="index"><span itemprop="name">Level-Medium</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%A8%8B%E5%BC%8F%E8%A7%A3%E9%A1%8C/" itemprop="url" rel="index"><span itemprop="name">程式解題</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ProgramSolving/" itemprop="url" rel="index"><span itemprop="name">ProgramSolving</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/POJ/" itemprop="url" rel="index"><span itemprop="name">POJ</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>POJ 2431 Expedition 解題報告</p>
+<h4 id="平台："><a href="#平台：" class="headerlink" title="平台："></a>平台：</h4><p>PKU Online Judge</p>
+<h4 id="題號："><a href="#題號：" class="headerlink" title="題號："></a>題號：</h4><p>2431 - Expedition</p>
+<h4 id="題目連結："><a href="#題目連結：" class="headerlink" title="題目連結："></a>題目連結：</h4><p><a target="_blank" rel="noopener" href="http://poj.org/problem?id=2431">http://poj.org/problem?id=2431</a></p>
+<h4 id="題目說明："><a href="#題目說明：" class="headerlink" title="題目說明："></a>題目說明：</h4><p>有一輛車子要開往城鎮，距離為L單位，且車上目前有P單位的燃料。路上會有N(1 &lt;&#x3D; N &lt;&#x3D; 10000)間的加油站，每間加油站距離城鎮x單位、並能補充p單位的燃料。車子每行駛1單位的距離就得消耗1單位的燃料，而車子的燃料容量無限大，求車子抵達城鎮時的最少加油次數，如果達不到則輸出-1。</p>
+<p>範例輸入是4間加油站，需要在第1家(15 10)和第2家(11 5)加油站加油，才能抵達成鎮。</p>
+<h4 id="範例輸入："><a href="#範例輸入：" class="headerlink" title="範例輸入："></a>範例輸入：</h4><p>4<br>4 4<br>5 2<br>11 5<br>15 10<br>25 10</p>
+<h4 id="範例輸出："><a href="#範例輸出：" class="headerlink" title="範例輸出："></a>範例輸出：</h4><p>2</p>
+<h4 id="解題方法："><a href="#解題方法：" class="headerlink" title="解題方法："></a>解題方法：</h4><p>這題需轉換問題，可以看成是當車子開到某站時，如果行經距離超過燃料箱的油量，則檢查經過的加油站的備用油，先從最大量的油倒進燃料箱，直到超過消耗量或者仍無法滿足消耗量。 最大量的油的儲存方式是使用Priority Queue。 　　以範例輸入來看：</p>
+<ol>
+<li>目前距離25，到下一間加油站15，花10單位的燃料，沒有超過燃料箱的油量(10)，則當前油量變成0、備用的加油站多了[10]的油量</li>
+<li>目前距離15，到下一間加油站11，花4單位的燃料，超過燃料箱的油量(0)，則拿備用油[10]倒進來，滿足這段行使距離。當前油量變成6、備用的加油站是[5]的油量 </li>
+<li>目前距離11，到下一間加油站5，花6單位的燃料，沒有超過燃料箱的油量(6)，則當前油量變成0、備用的加油站多了[2]的油量</li>
+<li>目前距離5，到下一間加油站4，花1單位的燃料，超過燃料箱的油量(0)，則拿備用油[5]倒進來，滿足這段行駛距離。當前油量變成4、備用的加油站是[4]的油量</li>
+<li>目前距離4，到終點城鎮0，花4單位的燃料，沒有超過燃料箱的油量(4)，則當前油量變成0。</li>
+<li>需加2次油才可抵達城鎮</li>
+</ol>
+<p>題目測資會有些陷阱，比如加油站的位置不一定由小到大，需要自己排序。或者加油站的補給量有可能是0…….很好玩的測資。實作也把城鎮當作最後一家加油站，這樣距離&#x2F;扣油量的計算才會完整。 　</p>
+<p>難度為Medium</p>
+<h3 id="GITHUB位置："><a href="#GITHUB位置：" class="headerlink" title="GITHUB位置："></a>GITHUB位置：</h3><p><a target="_blank" rel="noopener" href="https://github.com/u8989332/ProblemSolving/blob/master/PKUOnlineJudge/2400-2499/2431.cpp">https://github.com/u8989332/ProblemSolving/blob/master/PKUOnlineJudge/2400-2499/2431.cpp</a></p>
+<h3 id="POJ-2431-Expedition"><a href="#POJ-2431-Expedition" class="headerlink" title="POJ 2431 Expedition"></a>POJ 2431 Expedition</h3>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
 
   
   <nav class="pagination">
@@ -1333,12 +1329,12 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">206</span>
+          <span class="site-state-item-count">205</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
-        <span class="site-state-item-count">49</span>
+        <span class="site-state-item-count">48</span>
         <span class="site-state-item-name">categories</span>
       </div>
       <div class="site-state-item site-state-tags">

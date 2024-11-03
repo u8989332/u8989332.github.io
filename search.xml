@@ -901,6 +901,72 @@
       </categories>
   </entry>
   <entry>
+    <title>代理模式 Proxy Pattern</title>
+    <url>/2018/04/30/design-pattern-proxy/</url>
+    <content><![CDATA[<p>代理模式 (Proxy Pattern) 的設計模式介紹</p>
+<h4 id="1-案例需求"><a href="#1-案例需求" class="headerlink" title="1. 案例需求"></a>1. 案例需求</h4><p><a href="http://geekcodeparadise.com/wp-content/uploads/2018/04/3-1-1.jpg"><img src="http://geekcodeparadise.com/wp-content/uploads/2018/04/3-.jpg" alt="JoJo&#39;s Bizarre Adventure"></a></p>
+<p>圖片來源：<a href="http://www.horace.org/blog/2015/11/22/jojo-%E5%A5%87%E5%A6%99%E5%86%92%E9%9A%AA-%E7%AC%AC%E4%BA%8C%E5%AD%A3%EF%BC%88%E5%8B%95%E7%95%AB%E7%89%88%EF%BC%89/">http://www.horace.org/blog/2015/11/22/jojo-%E5%A5%87%E5%A6%99%E5%86%92%E9%9A%AA-%E7%AC%AC%E4%BA%8C%E5%AD%A3%EF%BC%88%E5%8B%95%E7%95%AB%E7%89%88%EF%BC%89/</a></p>
+<p>知名動畫-JoJo的奇妙冒险，描述喬斯達家族歷代主人翁與各種敵人戰鬥的故事。在《星塵鬥士》篇幅，引入了替身能力，可以讓人產生另一個戰鬥角色，依照主人的意志代替主人戰鬥。</p>
+<h4 id="2-程式設計"><a href="#2-程式設計" class="headerlink" title="2. 程式設計"></a>2. 程式設計</h4><p>建立一個角色(Character)介面，有一個攻擊(Attack)的方法。以主角_承太郎_(Jotaro)為例，他擁有替身_白金之星_(Star Platinum)，特點是快速又堅硬的攻擊。_承太郎_和_白金之星_實作Character介面，且_白金之星_關連了_承太郎_，如下UML類別圖：</p>
+<p><a href="http://geekcodeparadise.com/wp-content/uploads/2018/04/ProxyPattern_EXAMPLE-1.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2018/04/ProxyPattern_EXAMPLE.png" alt="代理模式 Proxy Pattern 案例 UML Class"></a></p>
+<p>這三個類別的實作的程式碼：</p>
+<p>public interface Character<br>{<br>    void Attack();<br>}</p>
+<p>public class Jotaro : Character<br>{<br>    public void Attack()<br>    {<br>        Console.WriteLine(“快速連續揮拳(オラオラオラオラオラ)”);<br>    }<br>}</p>
+<p>public class StarPlatinum : Character<br>{<br>    private Jotaro master;<br>    public StarPlatinum()<br>    {<br>        master &#x3D; new Jotaro();<br>    }</p>
+<pre><code>public void Attack()
+&#123;
+    this.master.Attack();
+&#125;
+</code></pre>
+<p>}</p>
+<p>模擬_承太郎_戰鬥的場景程式和輸出結果：</p>
+<p>public class Program<br>{<br>    static void Main(string[] args)<br>    {<br>        &#x2F;&#x2F;為了顯示日文<br>        Console.OutputEncoding &#x3D; Encoding.UTF8;</p>
+<pre><code>    StarPlatinum starPlatinum = new StarPlatinum();
+    starPlatinum.Attack();
+
+    Console.Read();
+&#125;
+</code></pre>
+<p>}</p>
+<p><a href="http://geekcodeparadise.com/wp-content/uploads/2018/04/EXAMPLE_CONSOLE-1.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2018/04/EXAMPLE_CONSOLE.png" alt="代理模式 Proxy Pattern 案例結果"></a></p>
+<p><a href="http://geekcodeparadise.com/wp-content/uploads/2018/04/c17-1.gif"><img src="http://geekcodeparadise.com/wp-content/uploads/2018/04/c17.gif" alt="JoJo&#39;s Bizarre Adventure"></a></p>
+<p>圖片來源：<a href="http://knowyourmeme.com/photos/1202911-jojos-bizarre-adventure">http://knowyourmeme.com/photos/1202911-jojos-bizarre-adventure</a></p>
+<h4 id="3-代理模式介紹"><a href="#3-代理模式介紹" class="headerlink" title="3. 代理模式介紹"></a>3. 代理模式介紹</h4><h5 id="3-1-代理模式定義"><a href="#3-1-代理模式定義" class="headerlink" title="3.1 代理模式定義"></a>3.1 代理模式定義</h5><p>根據書上的介紹，代理模式的定義：Provide a surrogate or placeholder for another object to control access to it.。意思是給一個物件新增一個代理，這代理能控制這物件的引用。</p>
+<p>　　代理模式的通用UML類別圖：</p>
+<p><a href="http://geekcodeparadise.com/wp-content/uploads/2018/04/ProxyPattern_GENERAL-1.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2018/04/ProxyPattern_GENERAL.png" alt="代理模式 Proxy Pattern 經典 UML Class"></a></p>
+<p>　　而代理模式包含三大角色：</p>
+<p>　　Subject：是一個抽象類別或介面，定義Proxy和RealSubject的共同介面，當任何有使用RealObject的地方皆能使用Proxy。依照前述例子，是Character類別。</p>
+<p>　　RealSubject：被代理的角色，也是實際執行商業邏輯的單位。依照前述例子，是Jotaro類別。</p>
+<p>　　Proxy：代理角色，且引用RealSubject，客戶要與RealSubject互動得透過Proxy。依照前述例子，是StarPlatinum類別，引用了Jotaro物件。</p>
+<h5 id="3-2-代理模式優缺點"><a href="#3-2-代理模式優缺點" class="headerlink" title="3.2 代理模式優缺點"></a>3.2 代理模式優缺點</h5><p>優點</p>
+<ul>
+<li>真實角色(RealSubject)完成實際的商業邏輯，其他非它的職責交由代理完成</li>
+<li>當真實角色商業邏輯變化時，只要Subject定義的介面不變，Proxy仍不用修改而正常使用</li>
+</ul>
+<p>　　缺點</p>
+<ul>
+<li>客戶需透過代理才能請求真實角色做事，處理速度會變慢。</li>
+</ul>
+<h5 id="3-3-代理模式的應用"><a href="#3-3-代理模式的應用" class="headerlink" title="3.3 代理模式的應用"></a>3.3 代理模式的應用</h5><ul>
+<li>遠程代理：可以為不同地址空間的物件提供一個本地的代理物件，比如Web Service，在.NET有WebReference、Java有RMI</li>
+<li>虛擬代理：是根據需建立消耗大資源的物件，先建立一個小的物件，等待真實角色實例化完成。比如使用Web或者視窗程式，在讀取圖片時，會先用＂Loadiing…＂等待畫面給客戶看，當真實圖片載入完成後，再實際顯示給客戶</li>
+<li>保護代理：依照客戶的權限，來控制對真實角色的存取</li>
+<li>智能引用：當代理呼叫真實角色時，代理會做其他的功能，比如計算真實角色被呼叫的次數</li>
+<li>快取代理：將真實角色的運算結果儲存在臨時的共同空間，多個客戶可以取這些共同的結果</li>
+</ul>
+<h4 id="參考文獻"><a href="#參考文獻" class="headerlink" title="參考文獻"></a>參考文獻</h4><ol>
+<li><a href="https://amzn.to/3LOwYlp">程杰 大話設計模式 第07章　為他人做嫁衣—代理模式</a></li>
+<li><a href="https://amzn.to/3JLkwQW">秦小波 設計模式之禪 第12章 代理模式</a></li>
+<li><a href="https://amzn.to/3LRwBqc">Elisabeth Freeman, Eric Freeman, Bert Bates, Kathy Sierra 著、蔡學鏞 譯, 深入淺出設計模式 11 代理人模式</a></li>
+<li><a href="http://design-patterns.readthedocs.io/zh_CN/latest/structural_patterns/proxy.html">me115 图说设计模式 6. 代理模式</a></li>
+</ol>
+]]></content>
+      <categories>
+        <category>Design Pattern</category>
+        <category>OOP</category>
+      </categories>
+  </entry>
+  <entry>
     <title>物件導向程式設計觀念</title>
     <url>/2017/11/08/design-pattern-object-oriented-programming-concept/</url>
     <content><![CDATA[<p>物件導向程式設計觀念</p>
@@ -1015,72 +1081,6 @@
 <li><a href="https://amzn.to/3LOwYlp">程杰 大話設計模式 附錄A-訓練實習生—物件導向基礎</a></li>
 </ol>
 <p>Object-oriented programming Concept</p>
-]]></content>
-      <categories>
-        <category>Design Pattern</category>
-        <category>OOP</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>代理模式 Proxy Pattern</title>
-    <url>/2018/04/30/design-pattern-proxy/</url>
-    <content><![CDATA[<p>代理模式 (Proxy Pattern) 的設計模式介紹</p>
-<h4 id="1-案例需求"><a href="#1-案例需求" class="headerlink" title="1. 案例需求"></a>1. 案例需求</h4><p><a href="http://geekcodeparadise.com/wp-content/uploads/2018/04/3-1-1.jpg"><img src="http://geekcodeparadise.com/wp-content/uploads/2018/04/3-.jpg" alt="JoJo&#39;s Bizarre Adventure"></a></p>
-<p>圖片來源：<a href="http://www.horace.org/blog/2015/11/22/jojo-%E5%A5%87%E5%A6%99%E5%86%92%E9%9A%AA-%E7%AC%AC%E4%BA%8C%E5%AD%A3%EF%BC%88%E5%8B%95%E7%95%AB%E7%89%88%EF%BC%89/">http://www.horace.org/blog/2015/11/22/jojo-%E5%A5%87%E5%A6%99%E5%86%92%E9%9A%AA-%E7%AC%AC%E4%BA%8C%E5%AD%A3%EF%BC%88%E5%8B%95%E7%95%AB%E7%89%88%EF%BC%89/</a></p>
-<p>知名動畫-JoJo的奇妙冒险，描述喬斯達家族歷代主人翁與各種敵人戰鬥的故事。在《星塵鬥士》篇幅，引入了替身能力，可以讓人產生另一個戰鬥角色，依照主人的意志代替主人戰鬥。</p>
-<h4 id="2-程式設計"><a href="#2-程式設計" class="headerlink" title="2. 程式設計"></a>2. 程式設計</h4><p>建立一個角色(Character)介面，有一個攻擊(Attack)的方法。以主角_承太郎_(Jotaro)為例，他擁有替身_白金之星_(Star Platinum)，特點是快速又堅硬的攻擊。_承太郎_和_白金之星_實作Character介面，且_白金之星_關連了_承太郎_，如下UML類別圖：</p>
-<p><a href="http://geekcodeparadise.com/wp-content/uploads/2018/04/ProxyPattern_EXAMPLE-1.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2018/04/ProxyPattern_EXAMPLE.png" alt="代理模式 Proxy Pattern 案例 UML Class"></a></p>
-<p>這三個類別的實作的程式碼：</p>
-<p>public interface Character<br>{<br>    void Attack();<br>}</p>
-<p>public class Jotaro : Character<br>{<br>    public void Attack()<br>    {<br>        Console.WriteLine(“快速連續揮拳(オラオラオラオラオラ)”);<br>    }<br>}</p>
-<p>public class StarPlatinum : Character<br>{<br>    private Jotaro master;<br>    public StarPlatinum()<br>    {<br>        master &#x3D; new Jotaro();<br>    }</p>
-<pre><code>public void Attack()
-&#123;
-    this.master.Attack();
-&#125;
-</code></pre>
-<p>}</p>
-<p>模擬_承太郎_戰鬥的場景程式和輸出結果：</p>
-<p>public class Program<br>{<br>    static void Main(string[] args)<br>    {<br>        &#x2F;&#x2F;為了顯示日文<br>        Console.OutputEncoding &#x3D; Encoding.UTF8;</p>
-<pre><code>    StarPlatinum starPlatinum = new StarPlatinum();
-    starPlatinum.Attack();
-
-    Console.Read();
-&#125;
-</code></pre>
-<p>}</p>
-<p><a href="http://geekcodeparadise.com/wp-content/uploads/2018/04/EXAMPLE_CONSOLE-1.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2018/04/EXAMPLE_CONSOLE.png" alt="代理模式 Proxy Pattern 案例結果"></a></p>
-<p><a href="http://geekcodeparadise.com/wp-content/uploads/2018/04/c17-1.gif"><img src="http://geekcodeparadise.com/wp-content/uploads/2018/04/c17.gif" alt="JoJo&#39;s Bizarre Adventure"></a></p>
-<p>圖片來源：<a href="http://knowyourmeme.com/photos/1202911-jojos-bizarre-adventure">http://knowyourmeme.com/photos/1202911-jojos-bizarre-adventure</a></p>
-<h4 id="3-代理模式介紹"><a href="#3-代理模式介紹" class="headerlink" title="3. 代理模式介紹"></a>3. 代理模式介紹</h4><h5 id="3-1-代理模式定義"><a href="#3-1-代理模式定義" class="headerlink" title="3.1 代理模式定義"></a>3.1 代理模式定義</h5><p>根據書上的介紹，代理模式的定義：Provide a surrogate or placeholder for another object to control access to it.。意思是給一個物件新增一個代理，這代理能控制這物件的引用。</p>
-<p>　　代理模式的通用UML類別圖：</p>
-<p><a href="http://geekcodeparadise.com/wp-content/uploads/2018/04/ProxyPattern_GENERAL-1.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2018/04/ProxyPattern_GENERAL.png" alt="代理模式 Proxy Pattern 經典 UML Class"></a></p>
-<p>　　而代理模式包含三大角色：</p>
-<p>　　Subject：是一個抽象類別或介面，定義Proxy和RealSubject的共同介面，當任何有使用RealObject的地方皆能使用Proxy。依照前述例子，是Character類別。</p>
-<p>　　RealSubject：被代理的角色，也是實際執行商業邏輯的單位。依照前述例子，是Jotaro類別。</p>
-<p>　　Proxy：代理角色，且引用RealSubject，客戶要與RealSubject互動得透過Proxy。依照前述例子，是StarPlatinum類別，引用了Jotaro物件。</p>
-<h5 id="3-2-代理模式優缺點"><a href="#3-2-代理模式優缺點" class="headerlink" title="3.2 代理模式優缺點"></a>3.2 代理模式優缺點</h5><p>優點</p>
-<ul>
-<li>真實角色(RealSubject)完成實際的商業邏輯，其他非它的職責交由代理完成</li>
-<li>當真實角色商業邏輯變化時，只要Subject定義的介面不變，Proxy仍不用修改而正常使用</li>
-</ul>
-<p>　　缺點</p>
-<ul>
-<li>客戶需透過代理才能請求真實角色做事，處理速度會變慢。</li>
-</ul>
-<h5 id="3-3-代理模式的應用"><a href="#3-3-代理模式的應用" class="headerlink" title="3.3 代理模式的應用"></a>3.3 代理模式的應用</h5><ul>
-<li>遠程代理：可以為不同地址空間的物件提供一個本地的代理物件，比如Web Service，在.NET有WebReference、Java有RMI</li>
-<li>虛擬代理：是根據需建立消耗大資源的物件，先建立一個小的物件，等待真實角色實例化完成。比如使用Web或者視窗程式，在讀取圖片時，會先用＂Loadiing…＂等待畫面給客戶看，當真實圖片載入完成後，再實際顯示給客戶</li>
-<li>保護代理：依照客戶的權限，來控制對真實角色的存取</li>
-<li>智能引用：當代理呼叫真實角色時，代理會做其他的功能，比如計算真實角色被呼叫的次數</li>
-<li>快取代理：將真實角色的運算結果儲存在臨時的共同空間，多個客戶可以取這些共同的結果</li>
-</ul>
-<h4 id="參考文獻"><a href="#參考文獻" class="headerlink" title="參考文獻"></a>參考文獻</h4><ol>
-<li><a href="https://amzn.to/3LOwYlp">程杰 大話設計模式 第07章　為他人做嫁衣—代理模式</a></li>
-<li><a href="https://amzn.to/3JLkwQW">秦小波 設計模式之禪 第12章 代理模式</a></li>
-<li><a href="https://amzn.to/3LRwBqc">Elisabeth Freeman, Eric Freeman, Bert Bates, Kathy Sierra 著、蔡學鏞 譯, 深入淺出設計模式 11 代理人模式</a></li>
-<li><a href="http://design-patterns.readthedocs.io/zh_CN/latest/structural_patterns/proxy.html">me115 图说设计模式 6. 代理模式</a></li>
-</ol>
 ]]></content>
       <categories>
         <category>Design Pattern</category>
@@ -1222,99 +1222,6 @@
       <categories>
         <category>Design Pattern</category>
         <category>OOP</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>開閉原則 The Open-Closed Principle</title>
-    <url>/2018/03/04/design-pattern-the-open-closed-principle/</url>
-    <content><![CDATA[<p>開閉原則 The Open-Closed Principle 的設計模式介紹</p>
-<h4 id="1-開閉原則介紹"><a href="#1-開閉原則介紹" class="headerlink" title="1. 開閉原則介紹"></a>1. 開閉原則介紹</h4><h5 id="1-1-開閉原則定義"><a href="#1-1-開閉原則定義" class="headerlink" title="1.1 開閉原則定義"></a>1.1 開閉原則定義</h5><p>根據書上的介紹，開閉原則的定義：Software entities like classes, modules and functions should be open for extension but closed for modifications。意思是軟體實體像是類別、模組和函式，應該只對延展開放，但對修改關閉。此原則是設計模式六大原則的核心原則，其他五原則都是以此原則做具體化。</p>
-<h5 id="1-2-開閉原則案例"><a href="#1-2-開閉原則案例" class="headerlink" title="1.2 開閉原則案例"></a>1.2 開閉原則案例</h5><p><a href="http://geekcodeparadise.com/wp-content/uploads/2018/03/when_is_the_steam_autumn_sale-1.jpg"><img src="http://geekcodeparadise.com/wp-content/uploads/2018/03/when_is_the_steam_autumn_sale.jpg" alt="開閉原則 The Open-Closed Principle 說明"></a></p>
-<p>圖片來源：<a href="http://www.alphr.com/games/1006124/steam-sales">http://www.alphr.com/games/1006124/steam-sales</a></p>
-<p>　　以世界知名的遊戲平台Steam為例，此平台的主要功能包含賣遊戲。假設Steam賣遊戲的UML類別圖如下：</p>
-<p><a href="http://geekcodeparadise.com/wp-content/uploads/2018/03/OCP-1.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2018/03/OCP.png" alt="開閉原則 The Open-Closed Principle 案例 UML Class"></a></p>
-<p>　　IGame介面定義了三個方法，遊戲名稱 (getName)、價錢(getPrice)和開發者(getDeveloper)。Steam類別是Steam平台。FPSGame是實作IGame的具體類別，是所有第一人稱射擊(FPS)遊戲的總稱。三種類別與介面的程式碼如下：<br>　　IGame介面：</p>
-<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title">IGame</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 遊戲名稱</span></span><br><span class="line">    <span class="function"><span class="built_in">string</span> <span class="title">getName</span>()</span>;</span><br><span class="line">    <span class="comment">// 價格</span></span><br><span class="line">    <span class="function"><span class="built_in">int</span> <span class="title">getPrice</span>()</span>;</span><br><span class="line">    <span class="comment">// 開發者</span></span><br><span class="line">    <span class="function"><span class="built_in">string</span> <span class="title">getDeveloper</span>()</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>FPSGame類別：</p>
-<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">FPSGame</span> : <span class="title">IGame</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 遊戲名稱</span></span><br><span class="line">    <span class="keyword">private</span> <span class="built_in">string</span> name;</span><br><span class="line">    <span class="comment">// 遊戲開發者</span></span><br><span class="line">    <span class="keyword">private</span> <span class="built_in">string</span> developer;</span><br><span class="line">    <span class="comment">// 遊戲價格</span></span><br><span class="line">    <span class="keyword">private</span> <span class="built_in">int</span> price;</span><br><span class="line">    <span class="comment">// 用constructor儲存遊戲資料</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">FPSGame</span>(<span class="params"><span class="built_in">string</span> _name, <span class="built_in">int</span> _price, <span class="built_in">string</span> _developer</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">this</span>.name = _name;</span><br><span class="line">        <span class="keyword">this</span>.price = _price;</span><br><span class="line">        <span class="keyword">this</span>.developer = _developer;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="built_in">string</span> <span class="title">getName</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.name;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="built_in">int</span> <span class="title">getPrice</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.price;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="built_in">string</span> <span class="title">getDeveloper</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.developer;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>Steam類別，並模擬賣出遊戲的紀錄：</p>
-<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Steam</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> List&lt;IGame&gt; gameList = <span class="keyword">new</span> List&lt;IGame&gt;()</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">new</span> FPSGame(<span class="string">&quot;H1Z1&quot;</span>,<span class="number">431</span>,<span class="string">&quot;Daybreak Game Company&quot;</span>),</span><br><span class="line">        <span class="keyword">new</span> FPSGame(<span class="string">&quot;Counter-Strike: Global Offensive&quot;</span>,<span class="number">398</span>,<span class="string">&quot;Valve&quot;</span>),</span><br><span class="line">        <span class="keyword">new</span> FPSGame(<span class="string">&quot;Left 4 Dead 2&quot;</span>,<span class="number">468</span>,<span class="string">&quot;Valve&quot;</span>),</span><br><span class="line">        <span class="keyword">new</span> FPSGame(<span class="string">&quot;Call of Duty: Modern Warfare 2&quot;</span>,<span class="number">655</span>,<span class="string">&quot;Infinity Ward , Aspyr&quot;</span>)</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"><span class="built_in">string</span>[] args</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        Console.WriteLine(<span class="string">&quot;Steam販售遊戲紀錄：&quot;</span>);</span><br><span class="line">        <span class="keyword">foreach</span>(IGame game <span class="keyword">in</span> gameList)</span><br><span class="line">        &#123;</span><br><span class="line">            Console.WriteLine(<span class="string">&quot;Game Name: &quot;</span> + game.getName() + <span class="string">&quot;\tDeveloper: &quot;</span> + game.getDeveloper() + <span class="string">&quot;\tPrice: &quot;</span> + game.getPrice() );</span><br><span class="line">        &#125;</span><br><span class="line">        Console.ReadKey();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>執行Main函式的結果：</p>
-<p><a href="https://geekcodeparadise.com/wp-content/uploads/2022/01/2018-03-04-10_11_17-file____H__%E6%88%91%E7%9A%84%E8%B3%87%E6%96%99_%E5%B7%A5%E4%BD%9C_blogger%E5%88%86%E4%BA%AB_DesignPattern_%E7%A8%8B%E5%BC%8F%E7%A2%BC_DesignPattern_OCP_bin_Debug_OCP.E.png"><img src="https://geekcodeparadise.com/wp-content/uploads/2022/01/2018-03-04-10_11_17-file____H__%E6%88%91%E7%9A%84%E8%B3%87%E6%96%99_%E5%B7%A5%E4%BD%9C_blogger%E5%88%86%E4%BA%AB_DesignPattern_%E7%A8%8B%E5%BC%8F%E7%A2%BC_DesignPattern_OCP_bin_Debug_OCP.E.png"></a></p>
-<p>　　以上模擬Steam賣遊戲的一般情況，但是Steam最有名的折扣活動是季節特賣，每款遊戲幾乎會有打折的優惠。假如原價450元以上的遊戲打8折，其他遊戲打6折，那麼要實現此打折的功能，該如何處理這樣的變化？有三種方法：</p>
-<ul>
-<li>修改介面（錯誤）：在IGame介面上新增getOffPrice()的方法，讓實作的具體類別都要實作此方法。但這樣修改的話，會造成FPSGame要修改、Steam類別也要修改。而IGame身為介面，應該是要穩定可靠的，不應該常有變化。因此這方法不考慮。</li>
-<li>修改實作的具體類（錯誤）：在FPSGame的getPrice()中，將打折的功能實作在這函式，這是常見的處理方式。但是這方法還是有缺點，如果有想買FPS遊戲的人要看價格，透過已被修改的getPrice()，是打折後的價格，無法比較打折前後的差異，資訊會有落差。因此這方法不是最好的。</li>
-<li>透過延展實作變化（正確）：將FPSGame的getPrice()改為virutal，並增加一個子類別OffFPSGame繼承FPSGame，覆寫getPrice()方法，而在Steam類別重新生成OffFPSGame物件。這方法修改少、風險也小，修改後的UML類別圖如下：</li>
-</ul>
-<p><a href="http://geekcodeparadise.com/wp-content/uploads/2018/03/OCP_off-1.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2018/03/OCP_off.png" alt="開閉原則 The Open-Closed Principle 案例 UML Class"></a></p>
-<p>　　OffFPSGame類別：</p>
-<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">OffFPSGame</span> : <span class="title">FPSGame</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">OffFPSGame</span>(<span class="params"><span class="built_in">string</span> _name, <span class="built_in">int</span> _price, <span class="built_in">string</span> _developer</span>) : <span class="title">base</span>(<span class="params">_name, _price, _developer</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">override</span> <span class="built_in">int</span> <span class="title">getPrice</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">int</span> originPrice = <span class="keyword">base</span>.getPrice();</span><br><span class="line">        <span class="built_in">int</span> offPrice = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">if</span> (originPrice &gt;= <span class="number">450</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            offPrice = originPrice * <span class="number">80</span> / <span class="number">100</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            offPrice = originPrice * <span class="number">60</span> / <span class="number">100</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> offPrice;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>Steam類別：</p>
-<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Steam</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> List&lt;IGame&gt; gameList = <span class="keyword">new</span> List&lt;IGame&gt;()</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">new</span> OffFPSGame(<span class="string">&quot;H1Z1&quot;</span>,<span class="number">431</span>,<span class="string">&quot;Daybreak Game Company&quot;</span>),</span><br><span class="line">        <span class="keyword">new</span> OffFPSGame(<span class="string">&quot;Counter-Strike: Global Offensive&quot;</span>,<span class="number">398</span>,<span class="string">&quot;Valve&quot;</span>),</span><br><span class="line">        <span class="keyword">new</span> OffFPSGame(<span class="string">&quot;Left 4 Dead 2&quot;</span>,<span class="number">468</span>,<span class="string">&quot;Valve&quot;</span>),</span><br><span class="line">        <span class="keyword">new</span> OffFPSGame(<span class="string">&quot;Call of Duty: Modern Warfare 2&quot;</span>,<span class="number">655</span>,<span class="string">&quot;Infinity Ward , Aspyr&quot;</span>)</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"><span class="built_in">string</span>[] args</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        Console.WriteLine(<span class="string">&quot;Steam販售遊戲紀錄：&quot;</span>);</span><br><span class="line">        <span class="keyword">foreach</span>(IGame game <span class="keyword">in</span> gameList)</span><br><span class="line">        &#123;</span><br><span class="line">            Console.WriteLine(<span class="string">&quot;Game Name: &quot;</span> + game.getName() + <span class="string">&quot;\tDeveloper: &quot;</span> + game.getDeveloper() + <span class="string">&quot;\tPrice: &quot;</span> + game.getPrice() );</span><br><span class="line">        &#125;</span><br><span class="line">        Console.ReadKey();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>執行Main函式的結果：</p>
-<p><a href="http://geekcodeparadise.com/wp-content/uploads/2018/03/OCP_OFF_RESULT-1.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2018/03/OCP_OFF_RESULT.png" alt="開閉原則 The Open-Closed Principle 結果"></a></p>
-<h5 id="1-3-使用開閉原則的原因"><a href="#1-3-使用開閉原則的原因" class="headerlink" title="1.3 使用開閉原則的原因"></a>1.3 使用開閉原則的原因</h5><ul>
-<li>對測試的影響：以上述Steam賣遊戲為例，可以測試FPSGame類別的getPrice()等函式是否正確。而測試打折的功能，若是用修改介面或修改FPSGame的getPrice()，則測試的判斷條件會變複雜，不利於測試。透過新增的OffFPSGame類別，只需新增測試類別，針對OffFPSGame類別做測試，原本的FPSGame測試不用更改。</li>
-<li>提升重複使用性：將商業邏輯切割越細，能重複利用子邏輯來組合更高階的功能模組，避免之後維護要修改功能時，要花不少時間找出分散的共同邏輯。</li>
-<li>提升可維護性：最好的維護方法是透過延展，而不是一直修改原本的程式碼，否則原本程式碼越改越多、複雜時，會造成日後維護更加困難。</li>
-<li>物件導向程式設計的需求：讓開發者一開始要盡量設計完整，考慮所有的變化，所有物件能抽象化，建立完整的抽象類別或介面，日後維護只需延展。</li>
-</ul>
-<h4 id="參考文獻"><a href="#參考文獻" class="headerlink" title="參考文獻"></a>參考文獻</h4><ol>
-<li><a href="https://amzn.to/3LOwYlp">程杰 大話設計模式 第04章｜升學求職兩不誤—開放-封閉原則</a></li>
-<li><a href="https://amzn.to/3JLkwQW">秦小波 設計模式之禪 第6章 開閉原則</a></li>
-</ol>
-]]></content>
-      <categories>
-        <category>Design Pattern</category>
-        <category>OOP</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>UML Class Diagram</title>
-    <url>/2018/02/11/design-pattern-uml-class-diagram/</url>
-    <content><![CDATA[<p>UML Class Diagram 的介紹</p>
-<h4 id="1-UML簡介"><a href="#1-UML簡介" class="headerlink" title="1. UML簡介"></a>1. UML簡介</h4><p>　　UML &#x3D; Unified Modeling Language &#x3D; 統一塑模語言，是一種標準化的標記語言，使開發者對軟體系統有具體說明、視覺化、建構與文件化的物件。在物件導向的軟體裡，UML是很重要的觀點之一。<br>　　之後學到Design Pattern，都會用UML類別圖 (Class Diagram)表示它的意義，所以要先了解如何使用UML。本篇會舉RPG遊戲的角色職業來說明。</p>
-<h4 id="2-繪圖工具-draw-io"><a href="#2-繪圖工具-draw-io" class="headerlink" title="2. 繪圖工具 - draw.io"></a>2. 繪圖工具 - draw.io</h4><p>　　繪製UML的工具，最常見的是微軟的Office Visio，只是它是要授權的。而在這提供一款免費且好用的工具：draw.io，能使用線上版或單機版，不需要註冊會員。編輯完成後的樣板檔還能存到雲端硬碟或自己的硬碟。<br>　　官網網址：<a href="https://www.draw.io/">https://www.draw.io/</a><br>　　單機版網址：<a href="https://about.draw.io/integrations/#integrations_offline">https://about.draw.io/integrations/#integrations_offline</a><br>　　打開程式介面，左方會有多種類別的繪圖元件，其中有個UML類別，常用UML元件都能從這拖拉使用。</p>
-<p><img src="https://geekcodeparadise.com/wp-content/uploads/2022/01/2017-11-26-00_05_37--1024x543.png" alt="draw.io"></p>
-<h4 id="3-UML類別圖案例-RPG遊戲之角色職業"><a href="#3-UML類別圖案例-RPG遊戲之角色職業" class="headerlink" title="3. UML類別圖案例 - RPG遊戲之角色職業"></a>3. UML類別圖案例 - RPG遊戲之角色職業</h4><h5 id="3-1-RPG遊戲角色職業的完整UML-Class-Diagrams"><a href="#3-1-RPG遊戲角色職業的完整UML-Class-Diagrams" class="headerlink" title="3.1 RPG遊戲角色職業的完整UML Class Diagrams"></a>3.1 RPG遊戲角色職業的完整UML Class Diagrams</h5><p><img src="https://geekcodeparadise.com/wp-content/uploads/2022/01/UML_Class-1024x697.png" alt="UML Class Diagrams RPG遊戲角色職業的完整UML Class diagrams"></p>
-<p>　　3.1的UML圖是本篇的範例，接著講解每一項細節。</p>
-<h5 id="3-2-類別"><a href="#3-2-類別" class="headerlink" title="3.2 類別"></a>3.2 類別</h5><p><a href="http://geekcodeparadise.com/wp-content/uploads/2018/02/UML_Class_1-1.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2018/02/UML_Class_1.png" alt="UML Class Diagrams 角色 Class"></a></p>
-<p>　　類別分成三個框，由上而下來看，第一個框代表類別名稱，若該類別是抽象類別，則要用斜體；第二個框是屬性；第三個框是方法。屬性和方法的前面有’+’號，代表public，若是’-‘代表private，而’#’代表protected。<br>　　此類別的屬性包含HealthPoint(血量)、MaginPoint(魔力量)、ATK(攻擊力)、MATK(魔法攻擊力)、Speed(攻擊速度)；方法包含Run(奔跑)、UseFood(使用食物)。</p>
-<h5 id="3-3-介面"><a href="#3-3-介面" class="headerlink" title="3.3 介面"></a>3.3 介面</h5><p><a href="http://geekcodeparadise.com/wp-content/uploads/2018/02/interface1-1.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2018/02/interface1.png" alt="UML Class Diagrams interface 矩形表示法"></a></p>
-<p>介面1 - 矩形表示法</p>
-<p><a href="http://geekcodeparadise.com/wp-content/uploads/2018/02/interface2-1.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2018/02/interface2.png" alt="UML基礎 類別圖 interface 棒棒糖表示法"></a></p>
-<p>介面2 - 棒棒糖表示法</p>
-<p>　　介面的表示法有兩種，第一種矩形表示法跟類別一樣，只是第一個框的最上方多了&lt;<interface>&gt;，代表這個圖是定義介面；第二種是棒棒糖表示法。<br>　　介面1是拳擊手的技能介面，包含方法Hook(勾拳)<br>　　介面2是騎士實作IRiding介面，其介面包含方法RindingHorse(騎乘術)</p>
-<h5 id="3-4-實作-Implementation"><a href="#3-4-實作-Implementation" class="headerlink" title="3.4 實作 (Implementation)"></a>3.4 實作 (Implementation)</h5><p>　　若有類別要以矩形法表示實作關係，則用虛線與空心箭頭表示。本篇範例是Boxer實作IBoxingSkill介面，需定義Hook方法的內容。</p>
-<p><a href="http://geekcodeparadise.com/wp-content/uploads/2018/02/interface_implement-1.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2018/02/interface_implement.png" alt="UML Class Diagrams implementation"></a></p>
-<h5 id="3-5-繼承"><a href="#3-5-繼承" class="headerlink" title="3.5 繼承"></a>3.5 繼承</h5><p>　　類別與類別之間，可有繼承的關係，如角色－近戰職業－劍士，有上下階層的繼承關係。繼承以實線與空心箭頭表示。本篇範例是CloseComat(近戰角色)繼承Character，並另外宣告屬性FuryPoint(狂暴值)和方法Fury(狂暴化)。</p>
-<p><a href="http://geekcodeparadise.com/wp-content/uploads/2018/02/Inherit-1.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2018/02/Inherit.png" alt="UML Class Diagrams inheritance"></a></p>
-<h5 id="3-6-關聯-Association"><a href="#3-6-關聯-Association" class="headerlink" title="3.6 關聯 (Association)"></a>3.6 關聯 (Association)</h5><p>　　若類別”知道”另一個類別時，則是關聯的關係，用實線箭頭表示。本篇範例是Thief(盜賊)關聯Terrain(地形)。</p>
-<p><a href="http://geekcodeparadise.com/wp-content/uploads/2018/02/association-1.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2018/02/association.png" alt="UML Class Diagrams association"></a></p>
-<h5 id="3-7-聚合-Aggregation"><a href="#3-7-聚合-Aggregation" class="headerlink" title="3.7 聚合 (Aggregation)"></a>3.7 聚合 (Aggregation)</h5><p>　　聚合是一種弱的”擁有”關係，A物件可以包含B物件，但B物件並不是A物件的一部分。聚合使用空心菱形與實線箭頭表示。本篇範例是Boxers聚合Boxer，並宣告方法OnePunch。</p>
-<p><a href="http://geekcodeparadise.com/wp-content/uploads/2018/02/aggression-1.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2018/02/aggression.png" alt="  aggregation"></a></p>
-<h5 id="3-8-組合-Composition"><a href="#3-8-組合-Composition" class="headerlink" title="3.8 組合 (Composition)"></a>3.8 組合 (Composition)</h5><p>　　組合是一種強的”擁有”關係，代表部分物件和整體物件的生命週期是一樣的。組合使用實心菱形與實線箭頭表示，其中線的兩端各有數字，代表每一端各有幾個實例。本篇範例是一個Close Combat組合一個Close Combat Weapon(近戰武器)。</p>
-<p><img src="https://geekcodeparadise.com/wp-content/uploads/2022/01/Composition.png" alt=" composition"></p>
-<h5 id="3-9-依賴-Dependency"><a href="#3-9-依賴-Dependency" class="headerlink" title="3.9 依賴 (Dependency)"></a>3.9 依賴 (Dependency)</h5><p>　　當有方法需要別的類別做為參數時，是一種依賴關係。本篇範例是角色的方法UseFood需要Food類別，提供角色吃東西而增加血量、魔力量等功能。</p>
-<p><img src="https://geekcodeparadise.com/wp-content/uploads/2022/01/dependency.png" alt=" dependency"></p>
-<h4 id="4-心得"><a href="#4-心得" class="headerlink" title="4.心得"></a>4.心得</h4><p>這篇文章主要是參考&lt;&lt;大話設計模式&gt;&gt;裡的第一章”程式碼無錯就是優？—簡單工廠模式” 章節之UML，屬於讀書心得+實際模仿練習。會先學UML，是因為之後的所有模式都會畫UML圖，以免到時候學模式會看不懂。<br>　　本篇內容也是參考玩遊戲、看動漫的經驗，設計遊戲角色的類別，但不代表真實遊戲產品也是這樣設計，重點是了解UML基礎。<br>　　距離上次撰寫的<a href="https://geekcodeparadise.com/2017/11/design-pattern-object-oriented-programming-concept/"></a><a href="https://geekcodeparadise.com/wp-admin/post.php?post=205&action=edit">Object-oriented programming Concept</a>隔了三個月，真是慚愧．．．被公司案子搞到沒心寫文章（遭打。<br>　　希望莫忘初衷，保持學習的心。</p>
-<h4 id="參考文獻"><a href="#參考文獻" class="headerlink" title="參考文獻"></a>參考文獻</h4><ol>
-<li><a href="https://amzn.to/3LOwYlp">程杰 大話設計模式 第01章｜程式碼無錯就是優？—簡單工廠模式</a></li>
-</ol>
-<h4 id="修改日誌"><a href="#修改日誌" class="headerlink" title="修改日誌"></a>修改日誌</h4><ul>
-<li>2021&#x2F;3&#x2F;19: 修正關聯和聚合的英文</li>
-</ul>
-]]></content>
-      <categories>
-        <category>Design Pattern</category>
-        <category>OOP</category>
-        <category>UML</category>
       </categories>
   </entry>
   <entry>
@@ -1939,39 +1846,96 @@
       </categories>
   </entry>
   <entry>
-    <title>Home</title>
-    <url>/2022/01/09/home/</url>
-    <content><![CDATA[]]></content>
+    <title>開閉原則 The Open-Closed Principle</title>
+    <url>/2018/03/04/design-pattern-the-open-closed-principle/</url>
+    <content><![CDATA[<p>開閉原則 The Open-Closed Principle 的設計模式介紹</p>
+<h4 id="1-開閉原則介紹"><a href="#1-開閉原則介紹" class="headerlink" title="1. 開閉原則介紹"></a>1. 開閉原則介紹</h4><h5 id="1-1-開閉原則定義"><a href="#1-1-開閉原則定義" class="headerlink" title="1.1 開閉原則定義"></a>1.1 開閉原則定義</h5><p>根據書上的介紹，開閉原則的定義：Software entities like classes, modules and functions should be open for extension but closed for modifications。意思是軟體實體像是類別、模組和函式，應該只對延展開放，但對修改關閉。此原則是設計模式六大原則的核心原則，其他五原則都是以此原則做具體化。</p>
+<h5 id="1-2-開閉原則案例"><a href="#1-2-開閉原則案例" class="headerlink" title="1.2 開閉原則案例"></a>1.2 開閉原則案例</h5><p><a href="http://geekcodeparadise.com/wp-content/uploads/2018/03/when_is_the_steam_autumn_sale-1.jpg"><img src="http://geekcodeparadise.com/wp-content/uploads/2018/03/when_is_the_steam_autumn_sale.jpg" alt="開閉原則 The Open-Closed Principle 說明"></a></p>
+<p>圖片來源：<a href="http://www.alphr.com/games/1006124/steam-sales">http://www.alphr.com/games/1006124/steam-sales</a></p>
+<p>　　以世界知名的遊戲平台Steam為例，此平台的主要功能包含賣遊戲。假設Steam賣遊戲的UML類別圖如下：</p>
+<p><a href="http://geekcodeparadise.com/wp-content/uploads/2018/03/OCP-1.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2018/03/OCP.png" alt="開閉原則 The Open-Closed Principle 案例 UML Class"></a></p>
+<p>　　IGame介面定義了三個方法，遊戲名稱 (getName)、價錢(getPrice)和開發者(getDeveloper)。Steam類別是Steam平台。FPSGame是實作IGame的具體類別，是所有第一人稱射擊(FPS)遊戲的總稱。三種類別與介面的程式碼如下：<br>　　IGame介面：</p>
+<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title">IGame</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 遊戲名稱</span></span><br><span class="line">    <span class="function"><span class="built_in">string</span> <span class="title">getName</span>()</span>;</span><br><span class="line">    <span class="comment">// 價格</span></span><br><span class="line">    <span class="function"><span class="built_in">int</span> <span class="title">getPrice</span>()</span>;</span><br><span class="line">    <span class="comment">// 開發者</span></span><br><span class="line">    <span class="function"><span class="built_in">string</span> <span class="title">getDeveloper</span>()</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>FPSGame類別：</p>
+<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">FPSGame</span> : <span class="title">IGame</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 遊戲名稱</span></span><br><span class="line">    <span class="keyword">private</span> <span class="built_in">string</span> name;</span><br><span class="line">    <span class="comment">// 遊戲開發者</span></span><br><span class="line">    <span class="keyword">private</span> <span class="built_in">string</span> developer;</span><br><span class="line">    <span class="comment">// 遊戲價格</span></span><br><span class="line">    <span class="keyword">private</span> <span class="built_in">int</span> price;</span><br><span class="line">    <span class="comment">// 用constructor儲存遊戲資料</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">FPSGame</span>(<span class="params"><span class="built_in">string</span> _name, <span class="built_in">int</span> _price, <span class="built_in">string</span> _developer</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">this</span>.name = _name;</span><br><span class="line">        <span class="keyword">this</span>.price = _price;</span><br><span class="line">        <span class="keyword">this</span>.developer = _developer;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="built_in">string</span> <span class="title">getName</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.name;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="built_in">int</span> <span class="title">getPrice</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.price;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="built_in">string</span> <span class="title">getDeveloper</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.developer;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Steam類別，並模擬賣出遊戲的紀錄：</p>
+<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Steam</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> List&lt;IGame&gt; gameList = <span class="keyword">new</span> List&lt;IGame&gt;()</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">new</span> FPSGame(<span class="string">&quot;H1Z1&quot;</span>,<span class="number">431</span>,<span class="string">&quot;Daybreak Game Company&quot;</span>),</span><br><span class="line">        <span class="keyword">new</span> FPSGame(<span class="string">&quot;Counter-Strike: Global Offensive&quot;</span>,<span class="number">398</span>,<span class="string">&quot;Valve&quot;</span>),</span><br><span class="line">        <span class="keyword">new</span> FPSGame(<span class="string">&quot;Left 4 Dead 2&quot;</span>,<span class="number">468</span>,<span class="string">&quot;Valve&quot;</span>),</span><br><span class="line">        <span class="keyword">new</span> FPSGame(<span class="string">&quot;Call of Duty: Modern Warfare 2&quot;</span>,<span class="number">655</span>,<span class="string">&quot;Infinity Ward , Aspyr&quot;</span>)</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"><span class="built_in">string</span>[] args</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        Console.WriteLine(<span class="string">&quot;Steam販售遊戲紀錄：&quot;</span>);</span><br><span class="line">        <span class="keyword">foreach</span>(IGame game <span class="keyword">in</span> gameList)</span><br><span class="line">        &#123;</span><br><span class="line">            Console.WriteLine(<span class="string">&quot;Game Name: &quot;</span> + game.getName() + <span class="string">&quot;\tDeveloper: &quot;</span> + game.getDeveloper() + <span class="string">&quot;\tPrice: &quot;</span> + game.getPrice() );</span><br><span class="line">        &#125;</span><br><span class="line">        Console.ReadKey();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>執行Main函式的結果：</p>
+<p><a href="https://geekcodeparadise.com/wp-content/uploads/2022/01/2018-03-04-10_11_17-file____H__%E6%88%91%E7%9A%84%E8%B3%87%E6%96%99_%E5%B7%A5%E4%BD%9C_blogger%E5%88%86%E4%BA%AB_DesignPattern_%E7%A8%8B%E5%BC%8F%E7%A2%BC_DesignPattern_OCP_bin_Debug_OCP.E.png"><img src="https://geekcodeparadise.com/wp-content/uploads/2022/01/2018-03-04-10_11_17-file____H__%E6%88%91%E7%9A%84%E8%B3%87%E6%96%99_%E5%B7%A5%E4%BD%9C_blogger%E5%88%86%E4%BA%AB_DesignPattern_%E7%A8%8B%E5%BC%8F%E7%A2%BC_DesignPattern_OCP_bin_Debug_OCP.E.png"></a></p>
+<p>　　以上模擬Steam賣遊戲的一般情況，但是Steam最有名的折扣活動是季節特賣，每款遊戲幾乎會有打折的優惠。假如原價450元以上的遊戲打8折，其他遊戲打6折，那麼要實現此打折的功能，該如何處理這樣的變化？有三種方法：</p>
+<ul>
+<li>修改介面（錯誤）：在IGame介面上新增getOffPrice()的方法，讓實作的具體類別都要實作此方法。但這樣修改的話，會造成FPSGame要修改、Steam類別也要修改。而IGame身為介面，應該是要穩定可靠的，不應該常有變化。因此這方法不考慮。</li>
+<li>修改實作的具體類（錯誤）：在FPSGame的getPrice()中，將打折的功能實作在這函式，這是常見的處理方式。但是這方法還是有缺點，如果有想買FPS遊戲的人要看價格，透過已被修改的getPrice()，是打折後的價格，無法比較打折前後的差異，資訊會有落差。因此這方法不是最好的。</li>
+<li>透過延展實作變化（正確）：將FPSGame的getPrice()改為virutal，並增加一個子類別OffFPSGame繼承FPSGame，覆寫getPrice()方法，而在Steam類別重新生成OffFPSGame物件。這方法修改少、風險也小，修改後的UML類別圖如下：</li>
+</ul>
+<p><a href="http://geekcodeparadise.com/wp-content/uploads/2018/03/OCP_off-1.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2018/03/OCP_off.png" alt="開閉原則 The Open-Closed Principle 案例 UML Class"></a></p>
+<p>　　OffFPSGame類別：</p>
+<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">OffFPSGame</span> : <span class="title">FPSGame</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">OffFPSGame</span>(<span class="params"><span class="built_in">string</span> _name, <span class="built_in">int</span> _price, <span class="built_in">string</span> _developer</span>) : <span class="title">base</span>(<span class="params">_name, _price, _developer</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">override</span> <span class="built_in">int</span> <span class="title">getPrice</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">int</span> originPrice = <span class="keyword">base</span>.getPrice();</span><br><span class="line">        <span class="built_in">int</span> offPrice = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">if</span> (originPrice &gt;= <span class="number">450</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            offPrice = originPrice * <span class="number">80</span> / <span class="number">100</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            offPrice = originPrice * <span class="number">60</span> / <span class="number">100</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> offPrice;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Steam類別：</p>
+<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Steam</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> List&lt;IGame&gt; gameList = <span class="keyword">new</span> List&lt;IGame&gt;()</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">new</span> OffFPSGame(<span class="string">&quot;H1Z1&quot;</span>,<span class="number">431</span>,<span class="string">&quot;Daybreak Game Company&quot;</span>),</span><br><span class="line">        <span class="keyword">new</span> OffFPSGame(<span class="string">&quot;Counter-Strike: Global Offensive&quot;</span>,<span class="number">398</span>,<span class="string">&quot;Valve&quot;</span>),</span><br><span class="line">        <span class="keyword">new</span> OffFPSGame(<span class="string">&quot;Left 4 Dead 2&quot;</span>,<span class="number">468</span>,<span class="string">&quot;Valve&quot;</span>),</span><br><span class="line">        <span class="keyword">new</span> OffFPSGame(<span class="string">&quot;Call of Duty: Modern Warfare 2&quot;</span>,<span class="number">655</span>,<span class="string">&quot;Infinity Ward , Aspyr&quot;</span>)</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"><span class="built_in">string</span>[] args</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        Console.WriteLine(<span class="string">&quot;Steam販售遊戲紀錄：&quot;</span>);</span><br><span class="line">        <span class="keyword">foreach</span>(IGame game <span class="keyword">in</span> gameList)</span><br><span class="line">        &#123;</span><br><span class="line">            Console.WriteLine(<span class="string">&quot;Game Name: &quot;</span> + game.getName() + <span class="string">&quot;\tDeveloper: &quot;</span> + game.getDeveloper() + <span class="string">&quot;\tPrice: &quot;</span> + game.getPrice() );</span><br><span class="line">        &#125;</span><br><span class="line">        Console.ReadKey();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>執行Main函式的結果：</p>
+<p><a href="http://geekcodeparadise.com/wp-content/uploads/2018/03/OCP_OFF_RESULT-1.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2018/03/OCP_OFF_RESULT.png" alt="開閉原則 The Open-Closed Principle 結果"></a></p>
+<h5 id="1-3-使用開閉原則的原因"><a href="#1-3-使用開閉原則的原因" class="headerlink" title="1.3 使用開閉原則的原因"></a>1.3 使用開閉原則的原因</h5><ul>
+<li>對測試的影響：以上述Steam賣遊戲為例，可以測試FPSGame類別的getPrice()等函式是否正確。而測試打折的功能，若是用修改介面或修改FPSGame的getPrice()，則測試的判斷條件會變複雜，不利於測試。透過新增的OffFPSGame類別，只需新增測試類別，針對OffFPSGame類別做測試，原本的FPSGame測試不用更改。</li>
+<li>提升重複使用性：將商業邏輯切割越細，能重複利用子邏輯來組合更高階的功能模組，避免之後維護要修改功能時，要花不少時間找出分散的共同邏輯。</li>
+<li>提升可維護性：最好的維護方法是透過延展，而不是一直修改原本的程式碼，否則原本程式碼越改越多、複雜時，會造成日後維護更加困難。</li>
+<li>物件導向程式設計的需求：讓開發者一開始要盡量設計完整，考慮所有的變化，所有物件能抽象化，建立完整的抽象類別或介面，日後維護只需延展。</li>
+</ul>
+<h4 id="參考文獻"><a href="#參考文獻" class="headerlink" title="參考文獻"></a>參考文獻</h4><ol>
+<li><a href="https://amzn.to/3LOwYlp">程杰 大話設計模式 第04章｜升學求職兩不誤—開放-封閉原則</a></li>
+<li><a href="https://amzn.to/3JLkwQW">秦小波 設計模式之禪 第6章 開閉原則</a></li>
+</ol>
+]]></content>
       <categories>
-        <category>uncategorized</category>
+        <category>Design Pattern</category>
+        <category>OOP</category>
       </categories>
   </entry>
   <entry>
-    <title>LeetCode 1 Two Sum</title>
-    <url>/2020/10/08/leetcode-1-two-sum/</url>
-    <content><![CDATA[<p>LeetCode 1 Two Sum 解題報告</p>
-<h4 id="平台："><a href="#平台：" class="headerlink" title="平台："></a>平台：</h4><p>LeetCode</p>
-<h4 id="題號："><a href="#題號：" class="headerlink" title="題號："></a>題號：</h4><p>1 - Two Sum</p>
-<h4 id="題目連結："><a href="#題目連結：" class="headerlink" title="題目連結："></a>題目連結：</h4><p><a href="https://leetcode.com/problems/two-sum/">https://leetcode.com/problems/two-sum/</a></p>
-<h4 id="題目說明："><a href="#題目說明：" class="headerlink" title="題目說明："></a>題目說明：</h4><p>LeetCode經典題目，輸入1個陣列nums和一個目標和target，求找到nums的2個元素相加會等於target的索引值。題目確保一定只有一個解，且回傳索引的順序沒差異。</p>
-<p>比如範例輸入的nums &#x3D; [2,7,11,15], target &#x3D; 9，相加變成9的只有2和7，所以回傳這2個元素的索引值[0, 1]。</p>
-<h4 id="解題方法："><a href="#解題方法：" class="headerlink" title="解題方法："></a>解題方法：</h4><p>如果考慮暴力法，需要用雙層迴圈找所有的組合，需要花O(n2)。 更好的設計方法，是用一個HashMap記錄缺少的那一個值(target - nums[i])和對應的索引。 稍微改變範例輸入，nums &#x3D; [2,11, 7,15]：</p>
-<ol>
-<li>nums[0]是2，在HashMap[2]不存在，於是建立HashMap[9 - 2 &#x3D; 7] &#x3D; 0</li>
-<li>nums[1]是11，在HashMap[11]不存在，於是建立HashMap[9 - 11 &#x3D; -2] &#x3D; 1</li>
-<li>nums[2]是7，在HashMap[7]存在，於是回傳[2, HashMap[7]] &#x3D; [2, 0]</li>
+    <title>UML Class Diagram</title>
+    <url>/2018/02/11/design-pattern-uml-class-diagram/</url>
+    <content><![CDATA[<p>UML Class Diagram 的介紹</p>
+<h4 id="1-UML簡介"><a href="#1-UML簡介" class="headerlink" title="1. UML簡介"></a>1. UML簡介</h4><p>　　UML &#x3D; Unified Modeling Language &#x3D; 統一塑模語言，是一種標準化的標記語言，使開發者對軟體系統有具體說明、視覺化、建構與文件化的物件。在物件導向的軟體裡，UML是很重要的觀點之一。<br>　　之後學到Design Pattern，都會用UML類別圖 (Class Diagram)表示它的意義，所以要先了解如何使用UML。本篇會舉RPG遊戲的角色職業來說明。</p>
+<h4 id="2-繪圖工具-draw-io"><a href="#2-繪圖工具-draw-io" class="headerlink" title="2. 繪圖工具 - draw.io"></a>2. 繪圖工具 - draw.io</h4><p>　　繪製UML的工具，最常見的是微軟的Office Visio，只是它是要授權的。而在這提供一款免費且好用的工具：draw.io，能使用線上版或單機版，不需要註冊會員。編輯完成後的樣板檔還能存到雲端硬碟或自己的硬碟。<br>　　官網網址：<a href="https://www.draw.io/">https://www.draw.io/</a><br>　　單機版網址：<a href="https://about.draw.io/integrations/#integrations_offline">https://about.draw.io/integrations/#integrations_offline</a><br>　　打開程式介面，左方會有多種類別的繪圖元件，其中有個UML類別，常用UML元件都能從這拖拉使用。</p>
+<p><img src="https://geekcodeparadise.com/wp-content/uploads/2022/01/2017-11-26-00_05_37--1024x543.png" alt="draw.io"></p>
+<h4 id="3-UML類別圖案例-RPG遊戲之角色職業"><a href="#3-UML類別圖案例-RPG遊戲之角色職業" class="headerlink" title="3. UML類別圖案例 - RPG遊戲之角色職業"></a>3. UML類別圖案例 - RPG遊戲之角色職業</h4><h5 id="3-1-RPG遊戲角色職業的完整UML-Class-Diagrams"><a href="#3-1-RPG遊戲角色職業的完整UML-Class-Diagrams" class="headerlink" title="3.1 RPG遊戲角色職業的完整UML Class Diagrams"></a>3.1 RPG遊戲角色職業的完整UML Class Diagrams</h5><p><img src="https://geekcodeparadise.com/wp-content/uploads/2022/01/UML_Class-1024x697.png" alt="UML Class Diagrams RPG遊戲角色職業的完整UML Class diagrams"></p>
+<p>　　3.1的UML圖是本篇的範例，接著講解每一項細節。</p>
+<h5 id="3-2-類別"><a href="#3-2-類別" class="headerlink" title="3.2 類別"></a>3.2 類別</h5><p><a href="http://geekcodeparadise.com/wp-content/uploads/2018/02/UML_Class_1-1.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2018/02/UML_Class_1.png" alt="UML Class Diagrams 角色 Class"></a></p>
+<p>　　類別分成三個框，由上而下來看，第一個框代表類別名稱，若該類別是抽象類別，則要用斜體；第二個框是屬性；第三個框是方法。屬性和方法的前面有’+’號，代表public，若是’-‘代表private，而’#’代表protected。<br>　　此類別的屬性包含HealthPoint(血量)、MaginPoint(魔力量)、ATK(攻擊力)、MATK(魔法攻擊力)、Speed(攻擊速度)；方法包含Run(奔跑)、UseFood(使用食物)。</p>
+<h5 id="3-3-介面"><a href="#3-3-介面" class="headerlink" title="3.3 介面"></a>3.3 介面</h5><p><a href="http://geekcodeparadise.com/wp-content/uploads/2018/02/interface1-1.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2018/02/interface1.png" alt="UML Class Diagrams interface 矩形表示法"></a></p>
+<p>介面1 - 矩形表示法</p>
+<p><a href="http://geekcodeparadise.com/wp-content/uploads/2018/02/interface2-1.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2018/02/interface2.png" alt="UML基礎 類別圖 interface 棒棒糖表示法"></a></p>
+<p>介面2 - 棒棒糖表示法</p>
+<p>　　介面的表示法有兩種，第一種矩形表示法跟類別一樣，只是第一個框的最上方多了&lt;<interface>&gt;，代表這個圖是定義介面；第二種是棒棒糖表示法。<br>　　介面1是拳擊手的技能介面，包含方法Hook(勾拳)<br>　　介面2是騎士實作IRiding介面，其介面包含方法RindingHorse(騎乘術)</p>
+<h5 id="3-4-實作-Implementation"><a href="#3-4-實作-Implementation" class="headerlink" title="3.4 實作 (Implementation)"></a>3.4 實作 (Implementation)</h5><p>　　若有類別要以矩形法表示實作關係，則用虛線與空心箭頭表示。本篇範例是Boxer實作IBoxingSkill介面，需定義Hook方法的內容。</p>
+<p><a href="http://geekcodeparadise.com/wp-content/uploads/2018/02/interface_implement-1.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2018/02/interface_implement.png" alt="UML Class Diagrams implementation"></a></p>
+<h5 id="3-5-繼承"><a href="#3-5-繼承" class="headerlink" title="3.5 繼承"></a>3.5 繼承</h5><p>　　類別與類別之間，可有繼承的關係，如角色－近戰職業－劍士，有上下階層的繼承關係。繼承以實線與空心箭頭表示。本篇範例是CloseComat(近戰角色)繼承Character，並另外宣告屬性FuryPoint(狂暴值)和方法Fury(狂暴化)。</p>
+<p><a href="http://geekcodeparadise.com/wp-content/uploads/2018/02/Inherit-1.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2018/02/Inherit.png" alt="UML Class Diagrams inheritance"></a></p>
+<h5 id="3-6-關聯-Association"><a href="#3-6-關聯-Association" class="headerlink" title="3.6 關聯 (Association)"></a>3.6 關聯 (Association)</h5><p>　　若類別”知道”另一個類別時，則是關聯的關係，用實線箭頭表示。本篇範例是Thief(盜賊)關聯Terrain(地形)。</p>
+<p><a href="http://geekcodeparadise.com/wp-content/uploads/2018/02/association-1.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2018/02/association.png" alt="UML Class Diagrams association"></a></p>
+<h5 id="3-7-聚合-Aggregation"><a href="#3-7-聚合-Aggregation" class="headerlink" title="3.7 聚合 (Aggregation)"></a>3.7 聚合 (Aggregation)</h5><p>　　聚合是一種弱的”擁有”關係，A物件可以包含B物件，但B物件並不是A物件的一部分。聚合使用空心菱形與實線箭頭表示。本篇範例是Boxers聚合Boxer，並宣告方法OnePunch。</p>
+<p><a href="http://geekcodeparadise.com/wp-content/uploads/2018/02/aggression-1.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2018/02/aggression.png" alt="  aggregation"></a></p>
+<h5 id="3-8-組合-Composition"><a href="#3-8-組合-Composition" class="headerlink" title="3.8 組合 (Composition)"></a>3.8 組合 (Composition)</h5><p>　　組合是一種強的”擁有”關係，代表部分物件和整體物件的生命週期是一樣的。組合使用實心菱形與實線箭頭表示，其中線的兩端各有數字，代表每一端各有幾個實例。本篇範例是一個Close Combat組合一個Close Combat Weapon(近戰武器)。</p>
+<p><img src="https://geekcodeparadise.com/wp-content/uploads/2022/01/Composition.png" alt=" composition"></p>
+<h5 id="3-9-依賴-Dependency"><a href="#3-9-依賴-Dependency" class="headerlink" title="3.9 依賴 (Dependency)"></a>3.9 依賴 (Dependency)</h5><p>　　當有方法需要別的類別做為參數時，是一種依賴關係。本篇範例是角色的方法UseFood需要Food類別，提供角色吃東西而增加血量、魔力量等功能。</p>
+<p><img src="https://geekcodeparadise.com/wp-content/uploads/2022/01/dependency.png" alt=" dependency"></p>
+<h4 id="4-心得"><a href="#4-心得" class="headerlink" title="4.心得"></a>4.心得</h4><p>這篇文章主要是參考&lt;&lt;大話設計模式&gt;&gt;裡的第一章”程式碼無錯就是優？—簡單工廠模式” 章節之UML，屬於讀書心得+實際模仿練習。會先學UML，是因為之後的所有模式都會畫UML圖，以免到時候學模式會看不懂。<br>　　本篇內容也是參考玩遊戲、看動漫的經驗，設計遊戲角色的類別，但不代表真實遊戲產品也是這樣設計，重點是了解UML基礎。<br>　　距離上次撰寫的<a href="https://geekcodeparadise.com/2017/11/design-pattern-object-oriented-programming-concept/"></a><a href="https://geekcodeparadise.com/wp-admin/post.php?post=205&action=edit">Object-oriented programming Concept</a>隔了三個月，真是慚愧．．．被公司案子搞到沒心寫文章（遭打。<br>　　希望莫忘初衷，保持學習的心。</p>
+<h4 id="參考文獻"><a href="#參考文獻" class="headerlink" title="參考文獻"></a>參考文獻</h4><ol>
+<li><a href="https://amzn.to/3LOwYlp">程杰 大話設計模式 第01章｜程式碼無錯就是優？—簡單工廠模式</a></li>
 </ol>
-<p>由於是用沒有排序的HashMap，寫值和讀值都是O(1)，整體時間需要O(n)</p>
-<p>難度為Easy</p>
-<h4 id="GITHUB位置-C-與-C-："><a href="#GITHUB位置-C-與-C-：" class="headerlink" title="GITHUB位置(C++ 與 C#)："></a>GITHUB位置(C++ 與 C#)：</h4><p><a href="https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%2B%2B/1-99/1.cpp">https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%2B%2B/1-99/1.cpp</a></p>
-<p><a href="https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%23/1-99/1.cs">https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%23/1-99/1.cs</a></p>
+<h4 id="修改日誌"><a href="#修改日誌" class="headerlink" title="修改日誌"></a>修改日誌</h4><ul>
+<li>2021&#x2F;3&#x2F;19: 修正關聯和聚合的英文</li>
+</ul>
 ]]></content>
       <categories>
-        <category>C#</category>
-        <category>LeetCode</category>
-        <category>Level-Easy</category>
-        <category>程式解題</category>
-        <category>ProgramSolving</category>
+        <category>Design Pattern</category>
+        <category>OOP</category>
+        <category>UML</category>
       </categories>
   </entry>
   <entry>
@@ -2241,6 +2205,34 @@
       </categories>
   </entry>
   <entry>
+    <title>LeetCode 1 Two Sum</title>
+    <url>/2020/10/08/leetcode-1-two-sum/</url>
+    <content><![CDATA[<p>LeetCode 1 Two Sum 解題報告</p>
+<h4 id="平台："><a href="#平台：" class="headerlink" title="平台："></a>平台：</h4><p>LeetCode</p>
+<h4 id="題號："><a href="#題號：" class="headerlink" title="題號："></a>題號：</h4><p>1 - Two Sum</p>
+<h4 id="題目連結："><a href="#題目連結：" class="headerlink" title="題目連結："></a>題目連結：</h4><p><a href="https://leetcode.com/problems/two-sum/">https://leetcode.com/problems/two-sum/</a></p>
+<h4 id="題目說明："><a href="#題目說明：" class="headerlink" title="題目說明："></a>題目說明：</h4><p>LeetCode經典題目，輸入1個陣列nums和一個目標和target，求找到nums的2個元素相加會等於target的索引值。題目確保一定只有一個解，且回傳索引的順序沒差異。</p>
+<p>比如範例輸入的nums &#x3D; [2,7,11,15], target &#x3D; 9，相加變成9的只有2和7，所以回傳這2個元素的索引值[0, 1]。</p>
+<h4 id="解題方法："><a href="#解題方法：" class="headerlink" title="解題方法："></a>解題方法：</h4><p>如果考慮暴力法，需要用雙層迴圈找所有的組合，需要花O(n2)。 更好的設計方法，是用一個HashMap記錄缺少的那一個值(target - nums[i])和對應的索引。 稍微改變範例輸入，nums &#x3D; [2,11, 7,15]：</p>
+<ol>
+<li>nums[0]是2，在HashMap[2]不存在，於是建立HashMap[9 - 2 &#x3D; 7] &#x3D; 0</li>
+<li>nums[1]是11，在HashMap[11]不存在，於是建立HashMap[9 - 11 &#x3D; -2] &#x3D; 1</li>
+<li>nums[2]是7，在HashMap[7]存在，於是回傳[2, HashMap[7]] &#x3D; [2, 0]</li>
+</ol>
+<p>由於是用沒有排序的HashMap，寫值和讀值都是O(1)，整體時間需要O(n)</p>
+<p>難度為Easy</p>
+<h4 id="GITHUB位置-C-與-C-："><a href="#GITHUB位置-C-與-C-：" class="headerlink" title="GITHUB位置(C++ 與 C#)："></a>GITHUB位置(C++ 與 C#)：</h4><p><a href="https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%2B%2B/1-99/1.cpp">https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%2B%2B/1-99/1.cpp</a></p>
+<p><a href="https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%23/1-99/1.cs">https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%23/1-99/1.cs</a></p>
+]]></content>
+      <categories>
+        <category>C#</category>
+        <category>LeetCode</category>
+        <category>Level-Easy</category>
+        <category>程式解題</category>
+        <category>ProgramSolving</category>
+      </categories>
+  </entry>
+  <entry>
     <title>LeetCode 155 Min Stack</title>
     <url>/2019/09/07/leetcode-155-min-stack/</url>
     <content><![CDATA[<p>LeetCode 155 Min Stack 解題報告</p>
@@ -2282,38 +2274,6 @@
 <p>難度為Easy</p>
 <h4 id="GITHUB位置-C-與-C-："><a href="#GITHUB位置-C-與-C-：" class="headerlink" title="GITHUB位置(C++ 與 C#)："></a>GITHUB位置(C++ 與 C#)：</h4><p><a href="https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%2B%2B/100-199/155.cpp">https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%2B%2B/100-199/155.cpp</a></p>
 <p><a href="https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%23/100-199/155.cs">https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%23/100-199/155.cs</a></p>
-]]></content>
-      <categories>
-        <category>C#</category>
-        <category>LeetCode</category>
-        <category>Level-Easy</category>
-        <category>程式解題</category>
-        <category>ProgramSolving</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>LeetCode 160 Intersection of Two Linked Lists</title>
-    <url>/2019/08/27/leetcode-160-intersection-of-two-linked-lists/</url>
-    <content><![CDATA[<p>LeetCode 160 Intersection of Two Linked Lists 解題報告</p>
-<h4 id="平台："><a href="#平台：" class="headerlink" title="平台："></a>平台：</h4><p>LeetCode</p>
-<h4 id="題號："><a href="#題號：" class="headerlink" title="題號："></a>題號：</h4><p>160 - Intersection of Two Linked Lists</p>
-<h4 id="題目連結："><a href="#題目連結：" class="headerlink" title="題目連結："></a>題目連結：</h4><p><a href="https://leetcode.com/problems/intersection-of-two-linked-lists/">https://leetcode.com/problems/intersection-of-two-linked-lists/</a></p>
-<h4 id="題目說明："><a href="#題目說明：" class="headerlink" title="題目說明："></a>題目說明：</h4><p>給2串Linked List，求出他們的交會點。若有交會點則回傳該交會的ListNode，否則回傳null。</p>
-<h4 id="範例輸入："><a href="#範例輸入：" class="headerlink" title="範例輸入："></a>範例輸入：</h4><p><a href="http://geekcodeparadise.com/wp-content/uploads/2019/08/160_example_1.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2019/08/160_example_1.png" alt="LeetCode 160 Intersection of Two Linked Lists 說明"></a></p>
-<h4 id="範例輸出："><a href="#範例輸出：" class="headerlink" title="範例輸出："></a>範例輸出：</h4><p>Reference of the node with value &#x3D; 8</p>
-<h4 id="解題方法："><a href="#解題方法：" class="headerlink" title="解題方法："></a>解題方法：</h4><p>解題有兩種解法。</p>
-<ul>
-<li>使用Set：先歷遍 Linked List A，將每個Node的記憶體位置存到Set。換歷遍Linked List B，並檢查B的Node的記憶體位置有無在Set，若有在Set，代表這Node為交會點；否則沒有交會點。此方法需要額外Set的記憶體，但執行較快。</li>
-<li>使用起點對齊的方式：</li>
-</ul>
-<ol>
-<li>由於2個Linked List的長度可能不同，事先可以計算長度。假設Linked List A與Linked List B的長度分別為lenA與lenB。</li>
-<li>lenA &gt; lenB時，A先往前lenA - lenB步；否則B先往前lenB - lenA步</li>
-<li>對齊後，代表這2個Linked List以同樣速度往前移動，代表能一起同時到結尾。每次移動檢查記憶體位置是否相等，若有相等，則那位置是交會點。否則一起走到結尾null，代表沒交會點。</li>
-</ol>
-<p>難度為Easy</p>
-<h4 id="GITHUB位置-C-與-C-："><a href="#GITHUB位置-C-與-C-：" class="headerlink" title="GITHUB位置(C++ 與 C#)："></a>GITHUB位置(C++ 與 C#)：</h4><p><a href="https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%2B%2B/100-199/160.cpp">https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%2B%2B/100-199/160.cpp</a></p>
-<p><a href="https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%23/100-199/160.cs">https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%23/100-199/160.cs</a></p>
 ]]></content>
       <categories>
         <category>C#</category>
@@ -2407,6 +2367,38 @@
       </categories>
   </entry>
   <entry>
+    <title>LeetCode 160 Intersection of Two Linked Lists</title>
+    <url>/2019/08/27/leetcode-160-intersection-of-two-linked-lists/</url>
+    <content><![CDATA[<p>LeetCode 160 Intersection of Two Linked Lists 解題報告</p>
+<h4 id="平台："><a href="#平台：" class="headerlink" title="平台："></a>平台：</h4><p>LeetCode</p>
+<h4 id="題號："><a href="#題號：" class="headerlink" title="題號："></a>題號：</h4><p>160 - Intersection of Two Linked Lists</p>
+<h4 id="題目連結："><a href="#題目連結：" class="headerlink" title="題目連結："></a>題目連結：</h4><p><a href="https://leetcode.com/problems/intersection-of-two-linked-lists/">https://leetcode.com/problems/intersection-of-two-linked-lists/</a></p>
+<h4 id="題目說明："><a href="#題目說明：" class="headerlink" title="題目說明："></a>題目說明：</h4><p>給2串Linked List，求出他們的交會點。若有交會點則回傳該交會的ListNode，否則回傳null。</p>
+<h4 id="範例輸入："><a href="#範例輸入：" class="headerlink" title="範例輸入："></a>範例輸入：</h4><p><a href="http://geekcodeparadise.com/wp-content/uploads/2019/08/160_example_1.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2019/08/160_example_1.png" alt="LeetCode 160 Intersection of Two Linked Lists 說明"></a></p>
+<h4 id="範例輸出："><a href="#範例輸出：" class="headerlink" title="範例輸出："></a>範例輸出：</h4><p>Reference of the node with value &#x3D; 8</p>
+<h4 id="解題方法："><a href="#解題方法：" class="headerlink" title="解題方法："></a>解題方法：</h4><p>解題有兩種解法。</p>
+<ul>
+<li>使用Set：先歷遍 Linked List A，將每個Node的記憶體位置存到Set。換歷遍Linked List B，並檢查B的Node的記憶體位置有無在Set，若有在Set，代表這Node為交會點；否則沒有交會點。此方法需要額外Set的記憶體，但執行較快。</li>
+<li>使用起點對齊的方式：</li>
+</ul>
+<ol>
+<li>由於2個Linked List的長度可能不同，事先可以計算長度。假設Linked List A與Linked List B的長度分別為lenA與lenB。</li>
+<li>lenA &gt; lenB時，A先往前lenA - lenB步；否則B先往前lenB - lenA步</li>
+<li>對齊後，代表這2個Linked List以同樣速度往前移動，代表能一起同時到結尾。每次移動檢查記憶體位置是否相等，若有相等，則那位置是交會點。否則一起走到結尾null，代表沒交會點。</li>
+</ol>
+<p>難度為Easy</p>
+<h4 id="GITHUB位置-C-與-C-："><a href="#GITHUB位置-C-與-C-：" class="headerlink" title="GITHUB位置(C++ 與 C#)："></a>GITHUB位置(C++ 與 C#)：</h4><p><a href="https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%2B%2B/100-199/160.cpp">https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%2B%2B/100-199/160.cpp</a></p>
+<p><a href="https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%23/100-199/160.cs">https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%23/100-199/160.cs</a></p>
+]]></content>
+      <categories>
+        <category>C#</category>
+        <category>LeetCode</category>
+        <category>Level-Easy</category>
+        <category>程式解題</category>
+        <category>ProgramSolving</category>
+      </categories>
+  </entry>
+  <entry>
     <title>LeetCode 21 Merge Two Sorted Lists</title>
     <url>/2019/09/01/leetcode-21-merge-two-sorted-lists/</url>
     <content><![CDATA[<p>LeetCode 21 Merge Two Sorted Lists 解題報告</p>
@@ -2452,6 +2444,28 @@
 <p>難度為Easy</p>
 <h4 id="GITHUB位置-C-與-C-："><a href="#GITHUB位置-C-與-C-：" class="headerlink" title="GITHUB位置(C++ 與 C#)："></a>GITHUB位置(C++ 與 C#)：</h4><p><a href="https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%2B%2B/1-99/21.cpp">https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%2B%2B/1-99/21.cpp</a></p>
 <p><a href="https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%23/1-99/21.cs">https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%23/1-99/21.cs</a></p>
+]]></content>
+      <categories>
+        <category>C#</category>
+        <category>LeetCode</category>
+        <category>Level-Easy</category>
+        <category>程式解題</category>
+        <category>ProgramSolving</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>LeetCode 217 Contains Duplicate</title>
+    <url>/2020/10/04/leetcode-217-contains-duplicate/</url>
+    <content><![CDATA[<p>LeetCode 217 Contains Duplicate 解題報告</p>
+<h4 id="平台："><a href="#平台：" class="headerlink" title="平台："></a>平台：</h4><p>LeetCode</p>
+<h4 id="題號："><a href="#題號：" class="headerlink" title="題號："></a>題號：</h4><p>217 - Contains Duplicate</p>
+<h4 id="題目連結："><a href="#題目連結：" class="headerlink" title="題目連結："></a>題目連結：</h4><p><a href="https://leetcode.com/problems/contains-duplicate/">https://leetcode.com/problems/contains-duplicate/</a></p>
+<h4 id="題目說明："><a href="#題目說明：" class="headerlink" title="題目說明："></a>題目說明：</h4><p>輸入1個陣列nums，求nums元素是否有重複。</p>
+<p>比如範例輸入的nums &#x3D; [1,2,3,1]，元素1重複，所以要回傳true。</p>
+<h4 id="解題方法："><a href="#解題方法：" class="headerlink" title="解題方法："></a>解題方法：</h4><p>使用HashSet，每次檢查是否該元素已在HashSet裡，有的話就回傳true，否則把它加進HashSet。</p>
+<p>難度為Easy</p>
+<h4 id="GITHUB位置-C-與-C-："><a href="#GITHUB位置-C-與-C-：" class="headerlink" title="GITHUB位置(C++ 與 C#)："></a>GITHUB位置(C++ 與 C#)：</h4><p><a href="https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%2B%2B/200-299/217.cpp">https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%2B%2B/200-299/217.cpp</a></p>
+<p><a href="https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%23/200-299/217.cs">https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%23/200-299/217.cs</a></p>
 ]]></content>
       <categories>
         <category>C#</category>
@@ -2510,55 +2524,6 @@
       </categories>
   </entry>
   <entry>
-    <title>LeetCode 217 Contains Duplicate</title>
-    <url>/2020/10/04/leetcode-217-contains-duplicate/</url>
-    <content><![CDATA[<p>LeetCode 217 Contains Duplicate 解題報告</p>
-<h4 id="平台："><a href="#平台：" class="headerlink" title="平台："></a>平台：</h4><p>LeetCode</p>
-<h4 id="題號："><a href="#題號：" class="headerlink" title="題號："></a>題號：</h4><p>217 - Contains Duplicate</p>
-<h4 id="題目連結："><a href="#題目連結：" class="headerlink" title="題目連結："></a>題目連結：</h4><p><a href="https://leetcode.com/problems/contains-duplicate/">https://leetcode.com/problems/contains-duplicate/</a></p>
-<h4 id="題目說明："><a href="#題目說明：" class="headerlink" title="題目說明："></a>題目說明：</h4><p>輸入1個陣列nums，求nums元素是否有重複。</p>
-<p>比如範例輸入的nums &#x3D; [1,2,3,1]，元素1重複，所以要回傳true。</p>
-<h4 id="解題方法："><a href="#解題方法：" class="headerlink" title="解題方法："></a>解題方法：</h4><p>使用HashSet，每次檢查是否該元素已在HashSet裡，有的話就回傳true，否則把它加進HashSet。</p>
-<p>難度為Easy</p>
-<h4 id="GITHUB位置-C-與-C-："><a href="#GITHUB位置-C-與-C-：" class="headerlink" title="GITHUB位置(C++ 與 C#)："></a>GITHUB位置(C++ 與 C#)：</h4><p><a href="https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%2B%2B/200-299/217.cpp">https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%2B%2B/200-299/217.cpp</a></p>
-<p><a href="https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%23/200-299/217.cs">https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%23/200-299/217.cs</a></p>
-]]></content>
-      <categories>
-        <category>C#</category>
-        <category>LeetCode</category>
-        <category>Level-Easy</category>
-        <category>程式解題</category>
-        <category>ProgramSolving</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>LeetCode 224 Basic Calculator</title>
-    <url>/2019/09/17/leetcode-224-basic-calculator/</url>
-    <content><![CDATA[<p>LeetCode 224 Basic Calculator 解題報告</p>
-<h4 id="平台："><a href="#平台：" class="headerlink" title="平台："></a>平台：</h4><p>LeetCode</p>
-<h4 id="題號："><a href="#題號：" class="headerlink" title="題號："></a>題號：</h4><p>224 - Basic Calculator</p>
-<h4 id="題目連結："><a href="#題目連結：" class="headerlink" title="題目連結："></a>題目連結：</h4><p><a href="https://leetcode.com/problems/basic-calculator/">https://leetcode.com/problems/basic-calculator/</a></p>
-<h4 id="題目說明："><a href="#題目說明：" class="headerlink" title="題目說明："></a>題目說明：</h4><p>輸入只有 ( ) + - 空格 與 非負整數的數學運算式，求這運算式的結果。</p>
-<h4 id="解題方法："><a href="#解題方法：" class="headerlink" title="解題方法："></a>解題方法：</h4><ol>
-<li>完整的方法，需要使用Stack將中序(Infix)運算式轉成後序 (Postfix)，再解出運算結果。</li>
-<li>網路看到有一種更快的解法，因為只有+ 跟 -，沒有其他優先序的符號，所以遇到 + 跟 - 都直接加起來，如果是有圓括 ( )的，將圓括裡面的加完再補到前面。</li>
-<li>採用網路上另一種解法，用狀態機(Finite State Machine)，分析每一步驟要做的邏輯，如圖1. 共3種狀態，分別為Start、Number與Operatior。一開始在Start的狀態，讀取第1個字元後，將知道要往哪個狀態。Number狀態比較簡單，會一直讀數字，直到有非數字要往Operator狀態。完整的數字都存進Stack，如果前面有 + 或 - 的運算子，從Stack取出運算，再Push運算結果。Operator狀態需要分 ( ) + - 與 數字，遇到數字或( 回到Number狀態；遇到 ) 直接做+ -運算；若是+ 或 -，下一筆若是數字的話可以做+ - 運算 。詳細的方法可以參考程式碼，個人比較喜歡這種用狀態機的分析，比較清楚每一步驟的可能性。</li>
-</ol>
-<p><a href="http://geekcodeparadise.com/wp-content/uploads/2019/09/1-7.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2019/09/1-6.png" alt="LeetCode 224 Basic Calculator 圖解"></a></p>
-<p>圖1</p>
-<p>難度為Hard</p>
-<h4 id="GITHUB位置-C-與-C-："><a href="#GITHUB位置-C-與-C-：" class="headerlink" title="GITHUB位置(C++ 與 C#)："></a>GITHUB位置(C++ 與 C#)：</h4><p><a href="https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%2B%2B/200-299/224.cpp">https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%2B%2B/200-299/224.cpp</a></p>
-<p><a href="https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%23/200-299/224.cs">https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%23/200-299/224.cs</a></p>
-]]></content>
-      <categories>
-        <category>C#</category>
-        <category>LeetCode</category>
-        <category>程式解題</category>
-        <category>Level-Hard</category>
-        <category>ProgramSolving</category>
-      </categories>
-  </entry>
-  <entry>
     <title>LeetCode 225 Implement Stack using Queues</title>
     <url>/2019/09/03/leetcode-225-implement-stack-using-queues/</url>
     <content><![CDATA[<p>LeetCode 225 Implement Stack using Queues 解題報告</p>
@@ -2601,23 +2566,23 @@
       </categories>
   </entry>
   <entry>
-    <title>LeetCode 23 Merge k Sorted Lists</title>
-    <url>/2019/09/01/leetcode-23-merge-k-sorted-lists/</url>
-    <content><![CDATA[<p>LeetCode 23 Merge k Sorted Lists 解題報告</p>
+    <title>LeetCode 224 Basic Calculator</title>
+    <url>/2019/09/17/leetcode-224-basic-calculator/</url>
+    <content><![CDATA[<p>LeetCode 224 Basic Calculator 解題報告</p>
 <h4 id="平台："><a href="#平台：" class="headerlink" title="平台："></a>平台：</h4><p>LeetCode</p>
-<h4 id="題號："><a href="#題號：" class="headerlink" title="題號："></a>題號：</h4><p>23 - Merge k Sorted Lists</p>
-<h4 id="題目連結："><a href="#題目連結：" class="headerlink" title="題目連結："></a>題目連結：</h4><p><a href="https://leetcode.com/problems/merge-k-sorted-lists/">https://leetcode.com/problems/merge-k-sorted-lists/</a></p>
-<h4 id="題目說明："><a href="#題目說明：" class="headerlink" title="題目說明："></a>題目說明：</h4><p>給K串Linked List，並將它們全部合併。合併的規則為每個節點的值由小排到大。</p>
-<h4 id="範例輸入："><a href="#範例輸入：" class="headerlink" title="範例輸入："></a>範例輸入：</h4><p>[ 1-&gt;4-&gt;5, 1-&gt;3-&gt;4, 2-&gt;6 ]</p>
-<h4 id="範例輸出："><a href="#範例輸出：" class="headerlink" title="範例輸出："></a>範例輸出：</h4><p>1-&gt;1-&gt;2-&gt;3-&gt;4-&gt;4-&gt;5-&gt;6</p>
-<h4 id="解題方法："><a href="#解題方法：" class="headerlink" title="解題方法："></a>解題方法：</h4><p>解法有暴力法與Divide&amp;Conquer(分而治之法)，假設有K個Linked List，平均每串有N個Node。</p>
-<p>首先分析暴力法的時間複雜度：先由第1與第2 Linked List互相比較並串新的Linked List，需要花費N + N的時間；第3個與前面新的Linked List互相比較並串新的Linked List，需要花費2N + N的時間；到最後第K個Linked List與前面新的Linked List互相比較並串新的Linked List，需要花費 (K - 1) * N + N的時間，所以全部的時間花費為  (N + N) + (2N + N) + …. + (K - 1) * N + N &#x3D; (2 + K) * (K - 1) &#x2F; 2 * N &#x3D; O(K^2 * N)</p>
-<p>Divide&amp;Conquer的時間複雜度分析：將K個Linked List不斷切一半去合併，切到最小的單位（只剩2個Linked List）時，會需要K&#x2F;2次的比較，每次比較會有2N個Node；合併後再進行K&#x2F;4次的比較，每次比較會有4N個Node；到最後一次時；會變成K &#x2F; 2^logK次的比較，每次比較會有2^logK * N個Node。所以全部的時間花費為 (K&#x2F;2 * 2N) + (K&#x2F;4 * 4N) + …. + (K &#x2F; 2^ logK) * 2^logK * N  &#x3D; KN + KN + …. + KN &#x3D; O(logK * KN) 　</p>
-<p>以時間上的比較，Divide&amp;Conquer快了暴力法logK &#x2F; K倍。採用Divide&amp;Conquer的2串合併時，延續<a href="https://geekcodeparadise.com/2019/09/leetcode-21-merge-two-sorted-lists/">[解題] LeetCode - 21 Merge Two Sorted Lists</a>的解法。實作上可參考Merge Sort或Quick Sort在切分子問題的精神。</p>
+<h4 id="題號："><a href="#題號：" class="headerlink" title="題號："></a>題號：</h4><p>224 - Basic Calculator</p>
+<h4 id="題目連結："><a href="#題目連結：" class="headerlink" title="題目連結："></a>題目連結：</h4><p><a href="https://leetcode.com/problems/basic-calculator/">https://leetcode.com/problems/basic-calculator/</a></p>
+<h4 id="題目說明："><a href="#題目說明：" class="headerlink" title="題目說明："></a>題目說明：</h4><p>輸入只有 ( ) + - 空格 與 非負整數的數學運算式，求這運算式的結果。</p>
+<h4 id="解題方法："><a href="#解題方法：" class="headerlink" title="解題方法："></a>解題方法：</h4><ol>
+<li>完整的方法，需要使用Stack將中序(Infix)運算式轉成後序 (Postfix)，再解出運算結果。</li>
+<li>網路看到有一種更快的解法，因為只有+ 跟 -，沒有其他優先序的符號，所以遇到 + 跟 - 都直接加起來，如果是有圓括 ( )的，將圓括裡面的加完再補到前面。</li>
+<li>採用網路上另一種解法，用狀態機(Finite State Machine)，分析每一步驟要做的邏輯，如圖1. 共3種狀態，分別為Start、Number與Operatior。一開始在Start的狀態，讀取第1個字元後，將知道要往哪個狀態。Number狀態比較簡單，會一直讀數字，直到有非數字要往Operator狀態。完整的數字都存進Stack，如果前面有 + 或 - 的運算子，從Stack取出運算，再Push運算結果。Operator狀態需要分 ( ) + - 與 數字，遇到數字或( 回到Number狀態；遇到 ) 直接做+ -運算；若是+ 或 -，下一筆若是數字的話可以做+ - 運算 。詳細的方法可以參考程式碼，個人比較喜歡這種用狀態機的分析，比較清楚每一步驟的可能性。</li>
+</ol>
+<p><a href="http://geekcodeparadise.com/wp-content/uploads/2019/09/1-7.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2019/09/1-6.png" alt="LeetCode 224 Basic Calculator 圖解"></a></p>
+<p>圖1</p>
 <p>難度為Hard</p>
-<h4 id="GITHUB位置-C-與-C-："><a href="#GITHUB位置-C-與-C-：" class="headerlink" title="GITHUB位置(C++ 與 C#)："></a>GITHUB位置(C++ 與 C#)：</h4><p><a href="https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%2B%2B/1-99/23.cpp">https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%2B%2B/1-99/23.cpp</a></p>
-<p><a href="https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%23/1-99/23.cs">https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%23/1-99/23.cs</a></p>
-<p>LeetCode 23 Merge k Sorted Lists</p>
+<h4 id="GITHUB位置-C-與-C-："><a href="#GITHUB位置-C-與-C-：" class="headerlink" title="GITHUB位置(C++ 與 C#)："></a>GITHUB位置(C++ 與 C#)：</h4><p><a href="https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%2B%2B/200-299/224.cpp">https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%2B%2B/200-299/224.cpp</a></p>
+<p><a href="https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%23/200-299/224.cs">https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%23/200-299/224.cs</a></p>
 ]]></content>
       <categories>
         <category>C#</category>
@@ -2667,6 +2632,33 @@
       </categories>
   </entry>
   <entry>
+    <title>LeetCode 23 Merge k Sorted Lists</title>
+    <url>/2019/09/01/leetcode-23-merge-k-sorted-lists/</url>
+    <content><![CDATA[<p>LeetCode 23 Merge k Sorted Lists 解題報告</p>
+<h4 id="平台："><a href="#平台：" class="headerlink" title="平台："></a>平台：</h4><p>LeetCode</p>
+<h4 id="題號："><a href="#題號：" class="headerlink" title="題號："></a>題號：</h4><p>23 - Merge k Sorted Lists</p>
+<h4 id="題目連結："><a href="#題目連結：" class="headerlink" title="題目連結："></a>題目連結：</h4><p><a href="https://leetcode.com/problems/merge-k-sorted-lists/">https://leetcode.com/problems/merge-k-sorted-lists/</a></p>
+<h4 id="題目說明："><a href="#題目說明：" class="headerlink" title="題目說明："></a>題目說明：</h4><p>給K串Linked List，並將它們全部合併。合併的規則為每個節點的值由小排到大。</p>
+<h4 id="範例輸入："><a href="#範例輸入：" class="headerlink" title="範例輸入："></a>範例輸入：</h4><p>[ 1-&gt;4-&gt;5, 1-&gt;3-&gt;4, 2-&gt;6 ]</p>
+<h4 id="範例輸出："><a href="#範例輸出：" class="headerlink" title="範例輸出："></a>範例輸出：</h4><p>1-&gt;1-&gt;2-&gt;3-&gt;4-&gt;4-&gt;5-&gt;6</p>
+<h4 id="解題方法："><a href="#解題方法：" class="headerlink" title="解題方法："></a>解題方法：</h4><p>解法有暴力法與Divide&amp;Conquer(分而治之法)，假設有K個Linked List，平均每串有N個Node。</p>
+<p>首先分析暴力法的時間複雜度：先由第1與第2 Linked List互相比較並串新的Linked List，需要花費N + N的時間；第3個與前面新的Linked List互相比較並串新的Linked List，需要花費2N + N的時間；到最後第K個Linked List與前面新的Linked List互相比較並串新的Linked List，需要花費 (K - 1) * N + N的時間，所以全部的時間花費為  (N + N) + (2N + N) + …. + (K - 1) * N + N &#x3D; (2 + K) * (K - 1) &#x2F; 2 * N &#x3D; O(K^2 * N)</p>
+<p>Divide&amp;Conquer的時間複雜度分析：將K個Linked List不斷切一半去合併，切到最小的單位（只剩2個Linked List）時，會需要K&#x2F;2次的比較，每次比較會有2N個Node；合併後再進行K&#x2F;4次的比較，每次比較會有4N個Node；到最後一次時；會變成K &#x2F; 2^logK次的比較，每次比較會有2^logK * N個Node。所以全部的時間花費為 (K&#x2F;2 * 2N) + (K&#x2F;4 * 4N) + …. + (K &#x2F; 2^ logK) * 2^logK * N  &#x3D; KN + KN + …. + KN &#x3D; O(logK * KN) 　</p>
+<p>以時間上的比較，Divide&amp;Conquer快了暴力法logK &#x2F; K倍。採用Divide&amp;Conquer的2串合併時，延續<a href="https://geekcodeparadise.com/2019/09/leetcode-21-merge-two-sorted-lists/">[解題] LeetCode - 21 Merge Two Sorted Lists</a>的解法。實作上可參考Merge Sort或Quick Sort在切分子問題的精神。</p>
+<p>難度為Hard</p>
+<h4 id="GITHUB位置-C-與-C-："><a href="#GITHUB位置-C-與-C-：" class="headerlink" title="GITHUB位置(C++ 與 C#)："></a>GITHUB位置(C++ 與 C#)：</h4><p><a href="https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%2B%2B/1-99/23.cpp">https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%2B%2B/1-99/23.cpp</a></p>
+<p><a href="https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%23/1-99/23.cs">https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%23/1-99/23.cs</a></p>
+<p>LeetCode 23 Merge k Sorted Lists</p>
+]]></content>
+      <categories>
+        <category>C#</category>
+        <category>LeetCode</category>
+        <category>程式解題</category>
+        <category>Level-Hard</category>
+        <category>ProgramSolving</category>
+      </categories>
+  </entry>
+  <entry>
     <title>LeetCode 238 Product of Array Except Self</title>
     <url>/2020/09/30/leetcode-238-product-of-array-except-self/</url>
     <content><![CDATA[<p>LeetCode 238 Product of Array Except Self 解題報告</p>
@@ -2694,28 +2686,6 @@
       </categories>
   </entry>
   <entry>
-    <title>LeetCode 242 Valid Anagram</title>
-    <url>/2020/10/13/leetcode-242-valid-anagram/</url>
-    <content><![CDATA[<p>LeetCode - 242 Valid Anagram 解題報告</p>
-<h4 id="平台："><a href="#平台：" class="headerlink" title="平台："></a>平台：</h4><p>LeetCode</p>
-<h4 id="題號："><a href="#題號：" class="headerlink" title="題號："></a>題號：</h4><p>242 - Valid Anagram</p>
-<h4 id="題目連結："><a href="#題目連結：" class="headerlink" title="題目連結："></a>題目連結：</h4><p><a href="https://leetcode.com/problems/valid-anagram/">https://leetcode.com/problems/valid-anagram/</a></p>
-<h4 id="題目說明："><a href="#題目說明：" class="headerlink" title="題目說明："></a>題目說明：</h4><p>給2個字串s和t，求t是否為s的anagram，anagram的定義是一個字串的字母經過不同的排列組合，形成另一個字串。題目保證只有小寫英文字母。</p>
-<p>比如範例輸入s &#x3D; “anagram”, t &#x3D; “nagaram”，它們彼此是anagram；但s &#x3D; “rat”, t &#x3D; “car”，並不是anagram，因為t沒有s的r字母、且多了c字母。</p>
-<h4 id="解題方法："><a href="#解題方法：" class="headerlink" title="解題方法："></a>解題方法：</h4><p>建立2個陣列，分別記錄s和t每個a-z字母出現的次數，最後再比對這2個陣列a-z的次數是否相同，相同則代表是anagram。</p>
-<p>難度為Easy  </p>
-<h4 id="GITHUB位置-C-與-C-："><a href="#GITHUB位置-C-與-C-：" class="headerlink" title="GITHUB位置(C++ 與 C#)："></a>GITHUB位置(C++ 與 C#)：</h4><p><a href="https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%2B%2B/200-299/242.cpp">https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%2B%2B/200-299/242.cpp</a></p>
-<p><a href="https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%23/200-299/242.cs">https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%23/200-299/242.cs</a></p>
-]]></content>
-      <categories>
-        <category>C#</category>
-        <category>LeetCode</category>
-        <category>Level-Easy</category>
-        <category>程式解題</category>
-        <category>ProgramSolving</category>
-      </categories>
-  </entry>
-  <entry>
     <title>LeetCode 26 Remove Duplicates from Sorted Array</title>
     <url>/2020/10/01/leetcode-26-remove-duplicates-from-sorted-array/</url>
     <content><![CDATA[<p>LeetCode 26 Remove Duplicates from Sorted Array 解題報告</p>
@@ -2735,6 +2705,28 @@
 <p>難度為Easy</p>
 <h4 id="GITHUB位置-C-與-C-："><a href="#GITHUB位置-C-與-C-：" class="headerlink" title="GITHUB位置(C++ 與 C#)："></a>GITHUB位置(C++ 與 C#)：</h4><p><a href="https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%2B%2B/1-99/26.cpp">https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%2B%2B/1-99/26.cpp</a></p>
 <p><a href="https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%23/1-99/26.cs">https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%23/1-99/26.cs</a></p>
+]]></content>
+      <categories>
+        <category>C#</category>
+        <category>LeetCode</category>
+        <category>Level-Easy</category>
+        <category>程式解題</category>
+        <category>ProgramSolving</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>LeetCode 242 Valid Anagram</title>
+    <url>/2020/10/13/leetcode-242-valid-anagram/</url>
+    <content><![CDATA[<p>LeetCode - 242 Valid Anagram 解題報告</p>
+<h4 id="平台："><a href="#平台：" class="headerlink" title="平台："></a>平台：</h4><p>LeetCode</p>
+<h4 id="題號："><a href="#題號：" class="headerlink" title="題號："></a>題號：</h4><p>242 - Valid Anagram</p>
+<h4 id="題目連結："><a href="#題目連結：" class="headerlink" title="題目連結："></a>題目連結：</h4><p><a href="https://leetcode.com/problems/valid-anagram/">https://leetcode.com/problems/valid-anagram/</a></p>
+<h4 id="題目說明："><a href="#題目說明：" class="headerlink" title="題目說明："></a>題目說明：</h4><p>給2個字串s和t，求t是否為s的anagram，anagram的定義是一個字串的字母經過不同的排列組合，形成另一個字串。題目保證只有小寫英文字母。</p>
+<p>比如範例輸入s &#x3D; “anagram”, t &#x3D; “nagaram”，它們彼此是anagram；但s &#x3D; “rat”, t &#x3D; “car”，並不是anagram，因為t沒有s的r字母、且多了c字母。</p>
+<h4 id="解題方法："><a href="#解題方法：" class="headerlink" title="解題方法："></a>解題方法：</h4><p>建立2個陣列，分別記錄s和t每個a-z字母出現的次數，最後再比對這2個陣列a-z的次數是否相同，相同則代表是anagram。</p>
+<p>難度為Easy  </p>
+<h4 id="GITHUB位置-C-與-C-："><a href="#GITHUB位置-C-與-C-：" class="headerlink" title="GITHUB位置(C++ 與 C#)："></a>GITHUB位置(C++ 與 C#)：</h4><p><a href="https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%2B%2B/200-299/242.cpp">https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%2B%2B/200-299/242.cpp</a></p>
+<p><a href="https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%23/200-299/242.cs">https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%23/200-299/242.cs</a></p>
 ]]></content>
       <categories>
         <category>C#</category>
@@ -3336,51 +3328,6 @@
       </categories>
   </entry>
   <entry>
-    <title>Pig 0.15.0 安裝</title>
-    <url>/2015/11/05/pig-0-15-0/</url>
-    <content><![CDATA[<p>Pig 0.15.0 安裝</p>
-<h4 id="1-Pig簡介"><a href="#1-Pig簡介" class="headerlink" title="1.Pig簡介"></a>1.Pig簡介</h4><p>　　Pig是資料分析的工具，可以用Pig Latin類似SQL的語言對資料做分析，比如排序、過濾特定條件、分組等。Pig可以透過Hadoop的MapReduce對巨量資量做分散式運算，對於不會寫JAVA的使用者，透過Pig Latin簡短的程式碼即可完成資料的分析。</p>
-<h4 id="2-安裝Pig"><a href="#2-安裝Pig" class="headerlink" title="2.安裝Pig"></a>2.安裝Pig</h4><p>　　本篇Pig會以分散式模式安裝。首先用wget下載0.15.0版的Pig：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo wget http://apache.stu.edu.tw/pig/pig-0.15.0/pig-0.15.0.tar.gz</span><br><span class="line">tar -zxf pig-0.15.0.tar.gz</span><br></pre></td></tr></table></figure>
-
-<p>　　解壓縮後，新增Pig相關的環境變數：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">vim ~/.bashrc</span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$PATH</span>:/home/test/pig-0.15.0/bin </span><br><span class="line"><span class="built_in">export</span> HADOOP_CLASSPATH=<span class="variable">$HADOOP_CLASSPATH</span>:/home/test/pig-0.15.0/lib</span><br><span class="line"><span class="built_in">export</span> PIG_HOME=/home/test/pig-0.15.0</span><br><span class="line"><span class="built_in">export</span> PIG_CONF_DIR=/home/test/pig-0.15.0/conf</span><br><span class="line"><span class="built_in">export</span> PIG_CLASSPATH=/home/test/hadoop-2.7.1/etc/hadoop <span class="comment">#此行要讀取hadoop的conf資料</span></span><br></pre></td></tr></table></figure>
-
-<p>　　Pig要在MapReduce運行，要將相關的lib複製到Hadoop的lib底下。雖然我有設定HADOOP_CLASSPATH了，但不知為何不會work….</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cp</span> /home/test/pig-0.15.0/lib/antlr-runtime-3.4.jar /home/test/hadoop-2.7.1/share/hadoop/mapreduce</span><br><span class="line"><span class="built_in">cp</span> /home/test/pig-0.15.0/lib/automaton-1.11-8.jar /home/test/hadoop-2.7.1/share/hadoop/mapreduce</span><br><span class="line"><span class="built_in">cp</span> /home/test/pig-0.15.0/lib/jline-1.0.jar /home/test/hadoop-2.7.1/share/hadoop/mapreduce</span><br><span class="line"><span class="built_in">cp</span> /home/test/pig-0.15.0/lib/joda-time-2.5.jar /home/test/hadoop-2.7.1/share/hadoop/mapreduce</span><br></pre></td></tr></table></figure>
-
-<h4 id="3-執行Pig"><a href="#3-執行Pig" class="headerlink" title="3.執行Pig"></a>3.執行Pig</h4><p>　　Hadoop啟動後，在command輸入pig，可以進入到grunt shell，如下圖所示：</p>
-<p><a href="http://geekcodeparadise.com/wp-content/uploads/2015/11/pig2Bcommand-1.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2015/11/pig2Bcommand.png" alt=" shell script"></a></p>
-<p>　　在HDFS裡，有放了一筆在美國一座城市的薪資資料，用此.csv資料做示範。檔案下載位置：<a href="https://catalog.data.gov/dataset/employee-salaries-2014">data.montgomerycountymd.gov：Employee Salaries - 2014</a>。下載可以看其header的定義，匯入到HDFS前要把Header去掉。<br>　　假設我們要撈出的資料是在科技業工作、年薪高於7萬美元的人，首先在shell輸入讀取資料的指令：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">grunt&gt; salarydata = LOAD <span class="string">&#x27;hdfs://hadoop01:9000/salary_data/Employee_Salaries.csv&#x27;</span> USING PigStorage(<span class="string">&#x27;,&#x27;</span>) AS ( FullName1:chararray , FullName2:chararray ,</span><br><span class="line">Gender:chararray , CurrentAnnualSalary : chararray, GrossPayReceived2014 : chararray ,OvertimePay2014:chararray , Department:chararray , DepartmentName:chararray,Division:chararray, AssignmentCategory: chararray , PositionTitle: chararray, </span><br><span class="line">UnderfilledJobTitle: chararray,DateFirstHired:chararray);</span><br></pre></td></tr></table></figure>
-
-<p>　　用LOAD讀取HDFS上的資料，要帶入完整的路徑；USING PigStorage(‘,’)代表資料是用逗點分隔；AS之後一串為每列資料的變數名稱與資料型態chararray 為字串，其他的型別有int、long、float、double、tuple、bag、map等。這一串資料讀取後存到salarydata 變數。 　　<br>　　這一份資料有些需要額外轉型、合併的處理,比如FullName切成兩個，要把它們合併在一起；另一個是三種薪水的值前面都有$符號，要把他們刪除並轉型成double，因此使用下面的指令可以快速轉型：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">grunt&gt; transformdata = FOREACH salarydata GENERATE (FullName1 , FullName2) ,Gender , (double) REPLACE(CurrentAnnualSalary, <span class="string">&#x27;\\\$&#x27;</span>, <span class="string">&#x27;&#x27;</span>) AS (CurrentAnnualSalary), (double) REPLACE(GrossPayReceived2014, <span class="string">&#x27;\\\$&#x27;</span>, <span class="string">&#x27;&#x27;</span>) As (GrossPayReceived2014),　(double) REPLACE(OvertimePay2014, <span class="string">&#x27;\\\$&#x27;</span>, <span class="string">&#x27;&#x27;</span>) AS (OvertimePay2014) , Department, DepartmentName , Division , AssignmentCategory , PositionTitle , UnderfilledJobTitle ,　DateFirstHired;</span><br></pre></td></tr></table></figure>
-
-<p>　　用GENERATE 語法可以將salarydata的內容轉成另一份變數，其中FullName1和FullName2合併為一組field，而CurrentAnnualSalary、GrossPayReceived2014和OvertimePay2014用REPLACE把$符號去除，再用(double)轉型。經過這一些的轉型，產生了新的transformdata變數。 　　<br>　　再用FILTER將transformdata的CurrentAnnualSalary 和 Department 做條件運算，運算的結果存到變數filterdata ：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">grunt&gt; filterdata = FILTER transformdata BY CurrentAnnualSalary &gt; 70000 AND Department == <span class="string">&#x27;DTS&#x27;</span>;</span><br></pre></td></tr></table></figure>
-
-<p>　　最後將filterdata儲存到檔案裡：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">grunt&gt; STORE filterdata INTO <span class="string">&#x27;hdfs://hadoop01:9000/salary_data/filter_data&#x27;</span> USING PigStorage();</span><br></pre></td></tr></table></figure>
-
-<p>　　輸入STORE指令後，將會啟動MapReduce工作。之前的LOAD、GENERATE、FILTER還沒遇到STORE指令是不會work，等遇到STORE相同的Action指令才會運算。最後執行出來會存在hdfs:&#x2F;&#x2F;hadoop01:9000&#x2F;salary_data&#x2F;filter_data資料夾裡。分析後的結果如下：</p>
-<p><img src="http://geekcodeparadise.com/wp-content/uploads/2015/11/result.png" alt="Pig 0.15.0 result"></p>
-<h4 id="4-結論"><a href="#4-結論" class="headerlink" title="4.結論"></a>4.結論</h4><p>　　Pig安裝不麻煩，而是在研究Pig Latin語法花了一段時間…被$符號搞好久～～但覺得若熟Pig語法，做資料分析會蠻方便的，跟之前Hive很像，未來再來研究Hive跟Pig的使用比較。</p>
-<h4 id="參考文獻"><a href="#參考文獻" class="headerlink" title="參考文獻"></a>參考文獻</h4><ol>
-<li>劉鵬 實戰Hadoop 第6章 Pig</li>
-<li><a href="https://pig.apache.org/">Apache Pig官方網站</a></li>
-<li><a href="http://stackoverflow.com/questions/23774447/pig-script-replace-with-pipe-symbol">Stackoverflow：PIG Script REPLACE with pipe symbol</a></li>
-<li><a href="http://stackoverflow.com/questions/16840483/replace-a-value-of-a-field-in-a-tuple-in-pig">Stackoverflow：Replace a value of a field in a tuple in Pig</a></li>
-<li><a href="http://stackoverflow.com/questions/25939194/unable-to-remove-special-characters-in-pig">Stackoverflow：Unable to Remove Special Characters In Pig</a></li>
-</ol>
-<p>Pig 0.15.0</p>
-]]></content>
-      <categories>
-        <category>Hadoop</category>
-        <category>Pig</category>
-      </categories>
-  </entry>
-  <entry>
     <title>LeetCode 92 Reverse Linked List II</title>
     <url>/2019/08/25/leetcode-92-reverse-linked-list-ii/</url>
     <content><![CDATA[<p>LeetCode 92 Reverse Linked List II 解題報告</p>
@@ -3434,6 +3381,51 @@
         <category>Level-Medium</category>
         <category>程式解題</category>
         <category>ProgramSolving</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Pig 0.15.0 安裝</title>
+    <url>/2015/11/05/pig-0-15-0/</url>
+    <content><![CDATA[<p>Pig 0.15.0 安裝</p>
+<h4 id="1-Pig簡介"><a href="#1-Pig簡介" class="headerlink" title="1.Pig簡介"></a>1.Pig簡介</h4><p>　　Pig是資料分析的工具，可以用Pig Latin類似SQL的語言對資料做分析，比如排序、過濾特定條件、分組等。Pig可以透過Hadoop的MapReduce對巨量資量做分散式運算，對於不會寫JAVA的使用者，透過Pig Latin簡短的程式碼即可完成資料的分析。</p>
+<h4 id="2-安裝Pig"><a href="#2-安裝Pig" class="headerlink" title="2.安裝Pig"></a>2.安裝Pig</h4><p>　　本篇Pig會以分散式模式安裝。首先用wget下載0.15.0版的Pig：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo wget http://apache.stu.edu.tw/pig/pig-0.15.0/pig-0.15.0.tar.gz</span><br><span class="line">tar -zxf pig-0.15.0.tar.gz</span><br></pre></td></tr></table></figure>
+
+<p>　　解壓縮後，新增Pig相關的環境變數：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">vim ~/.bashrc</span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$PATH</span>:/home/test/pig-0.15.0/bin </span><br><span class="line"><span class="built_in">export</span> HADOOP_CLASSPATH=<span class="variable">$HADOOP_CLASSPATH</span>:/home/test/pig-0.15.0/lib</span><br><span class="line"><span class="built_in">export</span> PIG_HOME=/home/test/pig-0.15.0</span><br><span class="line"><span class="built_in">export</span> PIG_CONF_DIR=/home/test/pig-0.15.0/conf</span><br><span class="line"><span class="built_in">export</span> PIG_CLASSPATH=/home/test/hadoop-2.7.1/etc/hadoop <span class="comment">#此行要讀取hadoop的conf資料</span></span><br></pre></td></tr></table></figure>
+
+<p>　　Pig要在MapReduce運行，要將相關的lib複製到Hadoop的lib底下。雖然我有設定HADOOP_CLASSPATH了，但不知為何不會work….</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cp</span> /home/test/pig-0.15.0/lib/antlr-runtime-3.4.jar /home/test/hadoop-2.7.1/share/hadoop/mapreduce</span><br><span class="line"><span class="built_in">cp</span> /home/test/pig-0.15.0/lib/automaton-1.11-8.jar /home/test/hadoop-2.7.1/share/hadoop/mapreduce</span><br><span class="line"><span class="built_in">cp</span> /home/test/pig-0.15.0/lib/jline-1.0.jar /home/test/hadoop-2.7.1/share/hadoop/mapreduce</span><br><span class="line"><span class="built_in">cp</span> /home/test/pig-0.15.0/lib/joda-time-2.5.jar /home/test/hadoop-2.7.1/share/hadoop/mapreduce</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-執行Pig"><a href="#3-執行Pig" class="headerlink" title="3.執行Pig"></a>3.執行Pig</h4><p>　　Hadoop啟動後，在command輸入pig，可以進入到grunt shell，如下圖所示：</p>
+<p><a href="http://geekcodeparadise.com/wp-content/uploads/2015/11/pig2Bcommand-1.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2015/11/pig2Bcommand.png" alt=" shell script"></a></p>
+<p>　　在HDFS裡，有放了一筆在美國一座城市的薪資資料，用此.csv資料做示範。檔案下載位置：<a href="https://catalog.data.gov/dataset/employee-salaries-2014">data.montgomerycountymd.gov：Employee Salaries - 2014</a>。下載可以看其header的定義，匯入到HDFS前要把Header去掉。<br>　　假設我們要撈出的資料是在科技業工作、年薪高於7萬美元的人，首先在shell輸入讀取資料的指令：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">grunt&gt; salarydata = LOAD <span class="string">&#x27;hdfs://hadoop01:9000/salary_data/Employee_Salaries.csv&#x27;</span> USING PigStorage(<span class="string">&#x27;,&#x27;</span>) AS ( FullName1:chararray , FullName2:chararray ,</span><br><span class="line">Gender:chararray , CurrentAnnualSalary : chararray, GrossPayReceived2014 : chararray ,OvertimePay2014:chararray , Department:chararray , DepartmentName:chararray,Division:chararray, AssignmentCategory: chararray , PositionTitle: chararray, </span><br><span class="line">UnderfilledJobTitle: chararray,DateFirstHired:chararray);</span><br></pre></td></tr></table></figure>
+
+<p>　　用LOAD讀取HDFS上的資料，要帶入完整的路徑；USING PigStorage(‘,’)代表資料是用逗點分隔；AS之後一串為每列資料的變數名稱與資料型態chararray 為字串，其他的型別有int、long、float、double、tuple、bag、map等。這一串資料讀取後存到salarydata 變數。 　　<br>　　這一份資料有些需要額外轉型、合併的處理,比如FullName切成兩個，要把它們合併在一起；另一個是三種薪水的值前面都有$符號，要把他們刪除並轉型成double，因此使用下面的指令可以快速轉型：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">grunt&gt; transformdata = FOREACH salarydata GENERATE (FullName1 , FullName2) ,Gender , (double) REPLACE(CurrentAnnualSalary, <span class="string">&#x27;\\\$&#x27;</span>, <span class="string">&#x27;&#x27;</span>) AS (CurrentAnnualSalary), (double) REPLACE(GrossPayReceived2014, <span class="string">&#x27;\\\$&#x27;</span>, <span class="string">&#x27;&#x27;</span>) As (GrossPayReceived2014),　(double) REPLACE(OvertimePay2014, <span class="string">&#x27;\\\$&#x27;</span>, <span class="string">&#x27;&#x27;</span>) AS (OvertimePay2014) , Department, DepartmentName , Division , AssignmentCategory , PositionTitle , UnderfilledJobTitle ,　DateFirstHired;</span><br></pre></td></tr></table></figure>
+
+<p>　　用GENERATE 語法可以將salarydata的內容轉成另一份變數，其中FullName1和FullName2合併為一組field，而CurrentAnnualSalary、GrossPayReceived2014和OvertimePay2014用REPLACE把$符號去除，再用(double)轉型。經過這一些的轉型，產生了新的transformdata變數。 　　<br>　　再用FILTER將transformdata的CurrentAnnualSalary 和 Department 做條件運算，運算的結果存到變數filterdata ：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">grunt&gt; filterdata = FILTER transformdata BY CurrentAnnualSalary &gt; 70000 AND Department == <span class="string">&#x27;DTS&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<p>　　最後將filterdata儲存到檔案裡：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">grunt&gt; STORE filterdata INTO <span class="string">&#x27;hdfs://hadoop01:9000/salary_data/filter_data&#x27;</span> USING PigStorage();</span><br></pre></td></tr></table></figure>
+
+<p>　　輸入STORE指令後，將會啟動MapReduce工作。之前的LOAD、GENERATE、FILTER還沒遇到STORE指令是不會work，等遇到STORE相同的Action指令才會運算。最後執行出來會存在hdfs:&#x2F;&#x2F;hadoop01:9000&#x2F;salary_data&#x2F;filter_data資料夾裡。分析後的結果如下：</p>
+<p><img src="http://geekcodeparadise.com/wp-content/uploads/2015/11/result.png" alt="Pig 0.15.0 result"></p>
+<h4 id="4-結論"><a href="#4-結論" class="headerlink" title="4.結論"></a>4.結論</h4><p>　　Pig安裝不麻煩，而是在研究Pig Latin語法花了一段時間…被$符號搞好久～～但覺得若熟Pig語法，做資料分析會蠻方便的，跟之前Hive很像，未來再來研究Hive跟Pig的使用比較。</p>
+<h4 id="參考文獻"><a href="#參考文獻" class="headerlink" title="參考文獻"></a>參考文獻</h4><ol>
+<li>劉鵬 實戰Hadoop 第6章 Pig</li>
+<li><a href="https://pig.apache.org/">Apache Pig官方網站</a></li>
+<li><a href="http://stackoverflow.com/questions/23774447/pig-script-replace-with-pipe-symbol">Stackoverflow：PIG Script REPLACE with pipe symbol</a></li>
+<li><a href="http://stackoverflow.com/questions/16840483/replace-a-value-of-a-field-in-a-tuple-in-pig">Stackoverflow：Replace a value of a field in a tuple in Pig</a></li>
+<li><a href="http://stackoverflow.com/questions/25939194/unable-to-remove-special-characters-in-pig">Stackoverflow：Unable to Remove Special Characters In Pig</a></li>
+</ol>
+<p>Pig 0.15.0</p>
+]]></content>
+      <categories>
+        <category>Hadoop</category>
+        <category>Pig</category>
       </categories>
   </entry>
   <entry>
@@ -3919,9 +3911,9 @@ public void CalculateRevenueRecognitions(Contract contract)
 <p>INSERT INTO Products<br>VALUES (1, ‘Code Paradise Database’, ‘D’);</p>
 <p>INSERT INTO Products<br>VALUES (2, ‘Code Paradise Spreadsheet’, ‘S’);</p>
 <p>INSERT INTO Products<br>VALUES (3, ‘Code Paradise Word Processor’, ‘W’);</p>
-<p>INSERT INTO Contracts<br>VALUES (1, 1, 9999, date(‘2020-01-01’), ‘<a href="mailto:&#x74;&#101;&#115;&#x74;&#x31;&#x40;&#116;&#101;&#x73;&#116;&#x2e;&#99;&#x6f;&#x6d;">&#x74;&#101;&#115;&#x74;&#x31;&#x40;&#116;&#101;&#x73;&#116;&#x2e;&#99;&#x6f;&#x6d;</a>‘);</p>
-<p>INSERT INTO Contracts<br>VALUES (2, 2, 1000, date(‘2020-03-15’), ‘<a href="mailto:&#116;&#101;&#x73;&#x74;&#x32;&#x40;&#116;&#101;&#115;&#x74;&#x2e;&#x63;&#x6f;&#109;">&#116;&#101;&#x73;&#x74;&#x32;&#x40;&#116;&#101;&#115;&#x74;&#x2e;&#x63;&#x6f;&#109;</a>‘);</p>
-<p>INSERT INTO Contracts<br>VALUES (3, 3, 24000, date(‘2020-07-25’), ‘<a href="mailto:&#116;&#101;&#x73;&#116;&#51;&#64;&#x74;&#x65;&#115;&#x74;&#x2e;&#x63;&#x6f;&#109;">&#116;&#101;&#x73;&#116;&#51;&#64;&#x74;&#x65;&#115;&#x74;&#x2e;&#x63;&#x6f;&#109;</a>‘);<br>“;<br>command.ExecuteNonQuery();<br>}</p>
+<p>INSERT INTO Contracts<br>VALUES (1, 1, 9999, date(‘2020-01-01’), ‘<a href="mailto:&#x74;&#x65;&#115;&#x74;&#49;&#x40;&#116;&#101;&#115;&#116;&#x2e;&#x63;&#111;&#x6d;">&#x74;&#x65;&#115;&#x74;&#49;&#x40;&#116;&#101;&#115;&#116;&#x2e;&#x63;&#111;&#x6d;</a>‘);</p>
+<p>INSERT INTO Contracts<br>VALUES (2, 2, 1000, date(‘2020-03-15’), ‘<a href="mailto:&#116;&#101;&#x73;&#x74;&#50;&#x40;&#116;&#101;&#x73;&#116;&#x2e;&#x63;&#111;&#109;">&#116;&#101;&#x73;&#x74;&#50;&#x40;&#116;&#101;&#x73;&#116;&#x2e;&#x63;&#111;&#109;</a>‘);</p>
+<p>INSERT INTO Contracts<br>VALUES (3, 3, 24000, date(‘2020-07-25’), ‘<a href="mailto:&#x74;&#x65;&#115;&#116;&#x33;&#x40;&#x74;&#101;&#x73;&#x74;&#46;&#99;&#x6f;&#109;">&#x74;&#x65;&#115;&#116;&#x33;&#x40;&#x74;&#101;&#x73;&#x74;&#46;&#99;&#x6f;&#109;</a>‘);<br>“;<br>command.ExecuteNonQuery();<br>}</p>
 <p>RecognitionService service &#x3D; new RecognitionService();</p>
 <p>&#x2F;&#x2F; database product<br>service.CalculateRevenueRecognitions(1);<br>var databaseRevenue &#x3D; service.RecognizedRevenue(1, new System.DateTime(2020, 1, 25));<br>Console.WriteLine($”database revenue before 2020-01-25 &#x3D; {databaseRevenue.Amount}”);</p>
 <p>&#x2F;&#x2F; spreadsheet product<br>service.CalculateRevenueRecognitions(2);<br>var spreadsheetRevenue &#x3D; service.RecognizedRevenue(2, new System.DateTime(2020, 6, 1));<br>Console.WriteLine($”spreadsheet revenue before 2020-06-01 &#x3D; {spreadsheetRevenue.Amount}”);</p>
@@ -4372,34 +4364,11 @@ public void CalculateRevenueRecognitions(Contract contract)
       </tags>
   </entry>
   <entry>
-    <title>程式解題 學習過程</title>
-    <url>/2016/04/23/programming-contest-learning-process/</url>
-    <content><![CDATA[<p>本篇描述在大學時期對 程式解題 的 學習過程</p>
-<h4 id="1-為何會接觸程式解題？"><a href="#1-為何會接觸程式解題？" class="headerlink" title="1.　為何會接觸程式解題？"></a>1.　為何會接觸程式解題？</h4><p>　　在大二時，由學長姊帶著去參加NCPC比賽，當時幾乎是不懂資料結構、演算法，就抱著「嘿嘿，我修過C&#x2F;C++，成績又還不錯」的菜鳥心態與同學在考場盯著五小時的題目與電腦。結果當然是砲灰一枚，啥都寫不出來．．．但自從這一次的經驗，好比阿光摸古老帶血跡的棋盤一樣，開始了解程式解題的歷史、所需的能力等，原來正是資料結構與演算法！但這時只知道這些名詞….</p>
-<h4 id="2-寫解題的第一步"><a href="#2-寫解題的第一步" class="headerlink" title="2.　寫解題的第一步"></a>2.　寫解題的第一步</h4><p>　　解題最有名的平台是UVa，世界比賽與各大區域賽的題目全都蒐集在這平台裡。最經典的第一道題目：<a href="https://uva.onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=36">100 - The 3n + 1 problem</a>，是我第一次解出的題目(寫這題的日期是 2011-01-16 XD)。這題如題目敘述的內容，依照步驟算出3n+1的值，實作上沒有太多的困難，使用scanf、printf、if else、while這些基本的語法就能解決。第一次上傳code到UVa平台做評分，結果是Wrong Answer．．．想說這麼簡單的題目還會出錯，是測試資料有什麼陷阱！？之後再回頭檢查題目，發現題目有個陷阱，但陷阱在此先不說，將陷阱處理掉後，再一次上傳code，得到Accepted的結果，成功啦～～</p>
-<p>　　以3n + 1這題為例，對於題目了解是否完整，是解題的關鍵技能之一，包含題目要什麼答案、輸入值的範圍、輸出值的格式等。再更進階到軟體工程的敘述，這技能是「需求分析」，到業界會是非常重要的能力。</p>
-<h4 id="3-寫多點簡單的題目"><a href="#3-寫多點簡單的題目" class="headerlink" title="3.　寫多點簡單的題目"></a>3.　寫多點簡單的題目</h4><p>　　當收到Accepted的這綠色的訊息，會有一種愉♂悅♀感，開始解題之路。當課堂的上課內容複習與作業完成的空閒時間，會打開UVa繼續練解題，但題目該如何找呢？當時是用<a href="http://luckycat.kshs.kh.edu.tw/">Lucky貓的 UVA（ACM）園地</a>，是一個翻譯UVa題目的網站，且有標上該題目的等級與解法提示。一開始把每一種等級的題目列表瀏覽一下，看到三等星以上的提示，不斷冒著WTF的問號，看不懂啥是DP、Graph、DFS、BFS、Greedy、Backtracking等提示，就轉往1~2等星練，不要隨意越級打怪．．．</p>
-<p>　　在1~2等星的題目裡，自己最常犯錯的地方有這些：</p>
-<ul>
-<li>輸入值的範圍沒有看完整，比如int的範圍可能會超過32bit，則需要用到long long int</li>
-<li>輸出值的格式與題目要求不符，比如每一筆case之間要多一個跳行</li>
-</ul>
-<p>　　再次說明題目的分析非常重要，往往是能否解出題目的關鍵阿！</p>
-<h4 id="4-進階題目的瓶頸"><a href="#4-進階題目的瓶頸" class="headerlink" title="4.　進階題目的瓶頸"></a>4.　進階題目的瓶頸</h4><p>當簡單的題目寫個十幾題後，開始做些較難的題目，有一次挑了3等星的<a href="http://luckycat.kshs.kh.edu.tw/homework/q10465.htm">10465: Homer Simpson</a>（單純看到辛普森這知名卡通人物就點進去XD)，了解題目後，給我感覺非常簡單呀，為何還要3等星呢？於是就開始實作，開心地上傳code－－－－Wrong Answer，改了三次後還是一樣錯誤。開始google別人的解法，看到別人寫說要使用「DP - Dynamic Programming」演算法才能解，而且解法的code非常簡短，於是放下了這題，而思考為何演算法是如此的奧妙～ 　　在大三時有上演算法，但當時還是無法融會貫通如何將課程知識轉成解題的技能．．．只會寫老師出的程式作業而已，漸漸對解題感到大障礙，也沒有人能指導，就荒廢了好幾個月沒去碰。</p>
-<h4 id="5-頓悟"><a href="#5-頓悟" class="headerlink" title="5.　頓悟"></a>5.　頓悟</h4><p>　　突然某天有人分享這篇文章<a href="http://blog.vgod.tw/2008/07/05/%E8%BF%BD%E6%B1%82%E7%A5%9E%E4%B9%8E%E5%85%B6%E6%8A%80%E7%9A%84%E7%A8%8B%E5%BC%8F%E8%A8%AD%E8%A8%88%E4%B9%8B%E9%81%93%E4%B8%80%EF%BC%89/">追求神乎其技的程式設計之道(一）</a>，將整個全系列看完後心情是大翻轉，了解到解題的好處是以前沒想到的多，有如一道希望之光在眼前鋪路，導引著我從頭學資料結構與演算法，再次開起UVa平台解題。</p>
-<h4 id="6-UVa的另一舞台-uhunt"><a href="#6-UVa的另一舞台-uhunt" class="headerlink" title="6.　UVa的另一舞台: uhunt"></a>6.　UVa的另一舞台: uhunt</h4><p>　　<a href="http://uhunt.felix-halim.net/">uhunt</a>是不斷取得每位參賽者在UVa submit code的狀況，將解題數、錯誤數等即時顯示在網頁上，讓使用者可以輕鬆的做解題～在uhunt網頁中間有個Competitive Programming Exercises，是由新加坡大學解題團隊訂的題目分類表，可以透過這分類可以選擇自己想解的題目類型，而且也有難度分級。因此先從introduction開始解，再來是Data Structures and Libraries、Problem Solving Paradigms。<br>　　資料結構類型的普通陣列題目不太有問題，但遇到要使用set、hash(map)、stack、queue等題目時會卡關，因為不知道怎麼實作…於是再去google別人解法，但看了別人解法後，我會將別人的code先讀懂，然後再用自己的方式寫出程式碼，當submit有error，再回頭去對照跟別人的差在哪裡，這樣才能真的學到技術，而不是單純的去copy別人code。<br>　　演算法題目也是，剛開始解DP問題時，也是不懂怎麼實作，一樣要去學別人技術，會發現到DP題目的思路模型都一樣：遞迴 + 記憶化，這是DP題目學很久才了解到的技術～<br>　　每當解完一個題目，會打開word去紀錄我解這一題所使用的技術與解法、遇到的困難點在哪等，這樣下次遇到同類型的題目時，就可以再用學到的技術來解決。<br>　　突然某天我練到遇到題目就能想出解決題目的資料結構與演算法時，代表我終於踏進到神乎其技的邊邊吧！？有種說不出的感動，因為這種解題能力是自己獨有又無價的～</p>
-<h4 id="7-與其他高手的競爭"><a href="#7-與其他高手的競爭" class="headerlink" title="7.　與其他高手的競爭"></a>7.　與其他高手的競爭</h4><p>　　除了每天用UVa解題的樂趣外，另一個樂趣是參加全國的競賽，像是ITSA桂冠賽、南區程式競賽、NCPC等，因為參加比賽能展現自己真正的能力、感受與他人待在同一緊張氣氛裡互相切磋、且又能到外縣市走走，看看別的校園風景～<br>　　參加比賽有三年經驗，同期的高手名字大都記住了XD，他們幾乎是解過千題以上、參加過國際區域賽的國手，是真的有一身神乎其技～有時候google學技術時會發現這些高手的blog，他們分享解法的行為令人讚嘆～<br>　　目前自己最好的成績是CPE(大學程式能力檢定) 拿到A+吧，個人覺得很滿意了，這幾年解題的辛苦有個美好成果～</p>
-<h4 id="8-現在的我"><a href="#8-現在的我" class="headerlink" title="8.　現在的我"></a>8.　現在的我</h4><p>　　在外工作也快一年，回想起大學時代的解題是多麼好玩。在業界寫程式所需的能力不太需要用特別的資料結構、演算法等，而需要的能力是如何整合各種api做出個系統。從解題學到且派上用場的能力正是需求分析與實作能力，了解系統的輸入與輸出有什麼、要用到什麼api來實作等，將系統的每一個module串一起後，這系統正是解題成果～</p>
-]]></content>
-      <categories>
-        <category>ACM</category>
-        <category>程式解題</category>
-      </categories>
-  </entry>
-  <entry>
     <title>JavaScript Basic Reference Type</title>
     <url>/2021/12/26/professional-javascript-for-web-developers-chapter-5-basic-reference-types/</url>
     <content><![CDATA[<p>本篇為 Professional JavaScript for Web Developers 第5章 Basic Reference Type 的讀書筆記</p>
+<span id="more"></span>
+
 <h4 id="1-1-Date-Type"><a href="#1-1-Date-Type" class="headerlink" title="1.1 Date Type"></a>1.1 Date Type</h4><ul>
 <li>Date儲存從1970年1月1日 UTC 前後經過的毫秒.</li>
 <li>new Date()可得到local的現在時間</li>
@@ -4744,6 +4713,31 @@ public void CalculateRevenueRecognitions(Contract contract)
       </categories>
   </entry>
   <entry>
+    <title>程式解題 學習過程</title>
+    <url>/2016/04/23/programming-contest-learning-process/</url>
+    <content><![CDATA[<p>本篇描述在大學時期對 程式解題 的 學習過程</p>
+<h4 id="1-為何會接觸程式解題？"><a href="#1-為何會接觸程式解題？" class="headerlink" title="1.　為何會接觸程式解題？"></a>1.　為何會接觸程式解題？</h4><p>　　在大二時，由學長姊帶著去參加NCPC比賽，當時幾乎是不懂資料結構、演算法，就抱著「嘿嘿，我修過C&#x2F;C++，成績又還不錯」的菜鳥心態與同學在考場盯著五小時的題目與電腦。結果當然是砲灰一枚，啥都寫不出來．．．但自從這一次的經驗，好比阿光摸古老帶血跡的棋盤一樣，開始了解程式解題的歷史、所需的能力等，原來正是資料結構與演算法！但這時只知道這些名詞….</p>
+<h4 id="2-寫解題的第一步"><a href="#2-寫解題的第一步" class="headerlink" title="2.　寫解題的第一步"></a>2.　寫解題的第一步</h4><p>　　解題最有名的平台是UVa，世界比賽與各大區域賽的題目全都蒐集在這平台裡。最經典的第一道題目：<a href="https://uva.onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=36">100 - The 3n + 1 problem</a>，是我第一次解出的題目(寫這題的日期是 2011-01-16 XD)。這題如題目敘述的內容，依照步驟算出3n+1的值，實作上沒有太多的困難，使用scanf、printf、if else、while這些基本的語法就能解決。第一次上傳code到UVa平台做評分，結果是Wrong Answer．．．想說這麼簡單的題目還會出錯，是測試資料有什麼陷阱！？之後再回頭檢查題目，發現題目有個陷阱，但陷阱在此先不說，將陷阱處理掉後，再一次上傳code，得到Accepted的結果，成功啦～～</p>
+<p>　　以3n + 1這題為例，對於題目了解是否完整，是解題的關鍵技能之一，包含題目要什麼答案、輸入值的範圍、輸出值的格式等。再更進階到軟體工程的敘述，這技能是「需求分析」，到業界會是非常重要的能力。</p>
+<h4 id="3-寫多點簡單的題目"><a href="#3-寫多點簡單的題目" class="headerlink" title="3.　寫多點簡單的題目"></a>3.　寫多點簡單的題目</h4><p>　　當收到Accepted的這綠色的訊息，會有一種愉♂悅♀感，開始解題之路。當課堂的上課內容複習與作業完成的空閒時間，會打開UVa繼續練解題，但題目該如何找呢？當時是用<a href="http://luckycat.kshs.kh.edu.tw/">Lucky貓的 UVA（ACM）園地</a>，是一個翻譯UVa題目的網站，且有標上該題目的等級與解法提示。一開始把每一種等級的題目列表瀏覽一下，看到三等星以上的提示，不斷冒著WTF的問號，看不懂啥是DP、Graph、DFS、BFS、Greedy、Backtracking等提示，就轉往1~2等星練，不要隨意越級打怪．．．</p>
+<p>　　在1~2等星的題目裡，自己最常犯錯的地方有這些：</p>
+<ul>
+<li>輸入值的範圍沒有看完整，比如int的範圍可能會超過32bit，則需要用到long long int</li>
+<li>輸出值的格式與題目要求不符，比如每一筆case之間要多一個跳行</li>
+</ul>
+<p>　　再次說明題目的分析非常重要，往往是能否解出題目的關鍵阿！</p>
+<h4 id="4-進階題目的瓶頸"><a href="#4-進階題目的瓶頸" class="headerlink" title="4.　進階題目的瓶頸"></a>4.　進階題目的瓶頸</h4><p>當簡單的題目寫個十幾題後，開始做些較難的題目，有一次挑了3等星的<a href="http://luckycat.kshs.kh.edu.tw/homework/q10465.htm">10465: Homer Simpson</a>（單純看到辛普森這知名卡通人物就點進去XD)，了解題目後，給我感覺非常簡單呀，為何還要3等星呢？於是就開始實作，開心地上傳code－－－－Wrong Answer，改了三次後還是一樣錯誤。開始google別人的解法，看到別人寫說要使用「DP - Dynamic Programming」演算法才能解，而且解法的code非常簡短，於是放下了這題，而思考為何演算法是如此的奧妙～ 　　在大三時有上演算法，但當時還是無法融會貫通如何將課程知識轉成解題的技能．．．只會寫老師出的程式作業而已，漸漸對解題感到大障礙，也沒有人能指導，就荒廢了好幾個月沒去碰。</p>
+<h4 id="5-頓悟"><a href="#5-頓悟" class="headerlink" title="5.　頓悟"></a>5.　頓悟</h4><p>　　突然某天有人分享這篇文章<a href="http://blog.vgod.tw/2008/07/05/%E8%BF%BD%E6%B1%82%E7%A5%9E%E4%B9%8E%E5%85%B6%E6%8A%80%E7%9A%84%E7%A8%8B%E5%BC%8F%E8%A8%AD%E8%A8%88%E4%B9%8B%E9%81%93%E4%B8%80%EF%BC%89/">追求神乎其技的程式設計之道(一）</a>，將整個全系列看完後心情是大翻轉，了解到解題的好處是以前沒想到的多，有如一道希望之光在眼前鋪路，導引著我從頭學資料結構與演算法，再次開起UVa平台解題。</p>
+<h4 id="6-UVa的另一舞台-uhunt"><a href="#6-UVa的另一舞台-uhunt" class="headerlink" title="6.　UVa的另一舞台: uhunt"></a>6.　UVa的另一舞台: uhunt</h4><p>　　<a href="http://uhunt.felix-halim.net/">uhunt</a>是不斷取得每位參賽者在UVa submit code的狀況，將解題數、錯誤數等即時顯示在網頁上，讓使用者可以輕鬆的做解題～在uhunt網頁中間有個Competitive Programming Exercises，是由新加坡大學解題團隊訂的題目分類表，可以透過這分類可以選擇自己想解的題目類型，而且也有難度分級。因此先從introduction開始解，再來是Data Structures and Libraries、Problem Solving Paradigms。<br>　　資料結構類型的普通陣列題目不太有問題，但遇到要使用set、hash(map)、stack、queue等題目時會卡關，因為不知道怎麼實作…於是再去google別人解法，但看了別人解法後，我會將別人的code先讀懂，然後再用自己的方式寫出程式碼，當submit有error，再回頭去對照跟別人的差在哪裡，這樣才能真的學到技術，而不是單純的去copy別人code。<br>　　演算法題目也是，剛開始解DP問題時，也是不懂怎麼實作，一樣要去學別人技術，會發現到DP題目的思路模型都一樣：遞迴 + 記憶化，這是DP題目學很久才了解到的技術～<br>　　每當解完一個題目，會打開word去紀錄我解這一題所使用的技術與解法、遇到的困難點在哪等，這樣下次遇到同類型的題目時，就可以再用學到的技術來解決。<br>　　突然某天我練到遇到題目就能想出解決題目的資料結構與演算法時，代表我終於踏進到神乎其技的邊邊吧！？有種說不出的感動，因為這種解題能力是自己獨有又無價的～</p>
+<h4 id="7-與其他高手的競爭"><a href="#7-與其他高手的競爭" class="headerlink" title="7.　與其他高手的競爭"></a>7.　與其他高手的競爭</h4><p>　　除了每天用UVa解題的樂趣外，另一個樂趣是參加全國的競賽，像是ITSA桂冠賽、南區程式競賽、NCPC等，因為參加比賽能展現自己真正的能力、感受與他人待在同一緊張氣氛裡互相切磋、且又能到外縣市走走，看看別的校園風景～<br>　　參加比賽有三年經驗，同期的高手名字大都記住了XD，他們幾乎是解過千題以上、參加過國際區域賽的國手，是真的有一身神乎其技～有時候google學技術時會發現這些高手的blog，他們分享解法的行為令人讚嘆～<br>　　目前自己最好的成績是CPE(大學程式能力檢定) 拿到A+吧，個人覺得很滿意了，這幾年解題的辛苦有個美好成果～</p>
+<h4 id="8-現在的我"><a href="#8-現在的我" class="headerlink" title="8.　現在的我"></a>8.　現在的我</h4><p>　　在外工作也快一年，回想起大學時代的解題是多麼好玩。在業界寫程式所需的能力不太需要用特別的資料結構、演算法等，而需要的能力是如何整合各種api做出個系統。從解題學到且派上用場的能力正是需求分析與實作能力，了解系統的輸入與輸出有什麼、要用到什麼api來實作等，將系統的每一個module串一起後，這系統正是解題成果～</p>
+]]></content>
+      <categories>
+        <category>ACM</category>
+        <category>程式解題</category>
+      </categories>
+  </entry>
+  <entry>
     <title>程式解題的學習</title>
     <url>/2014/06/16/programming-contest-learning/</url>
     <content><![CDATA[<p>程式解題的學習</p>
@@ -4781,9 +4775,88 @@ public void CalculateRevenueRecognitions(Contract contract)
       </categories>
   </entry>
   <entry>
+    <title>Simplifying Conditional Logic</title>
+    <url>/2022/04/09/refactoring-chapter-10-simplifying-conditional-logic/</url>
+    <content><![CDATA[<p>This article references the chapter 10 “ Simplifying Conditional Logic “ of <a href="https://amzn.to/3LUmBwI">Refactoring: Improving the Design of Existing Code (2nd Edition)</a>. Author had highlighted many important refactorings in this chapter.</p>
+<span id="more"></span>
+
+<p>I use .NET C# to practice with these refactorings and upload to Github.</p>
+<p><img src="https://geekcodeparadise.com/wp-content/uploads/2022/04/direction-2320124_1920-1024x1024.jpg" alt="Simplifying Conditional Logic"></p>
+<p>(Photo from Pixabay: <a href="https://pixabay.com/illustrations/direction-path-decision-goal-2320124/">https://pixabay.com/illustrations/direction-path-decision-goal-2320124/</a><a href="https://pixabay.com/illustrations/moving-boxes-mover-moving-truck-3671446/">)</a></p>
+<h2 id="Decompose-Conditional"><a href="#Decompose-Conditional" class="headerlink" title="Decompose Conditional"></a>Decompose Conditional</h2><h5 id="Tips"><a href="#Tips" class="headerlink" title="Tips"></a>Tips</h5><ul>
+<li>If the condition is complex, extract the condition and its branches as functions.</li>
+</ul>
+<h5 id="Examples"><a href="#Examples" class="headerlink" title="Examples:"></a>Examples:</h5><ul>
+<li>A simple example</li>
+</ul>
+<p><a href="https://github.com/u8989332/martin-fowler-refactoring-2nd/tree/master/Ch10.Simplifying%20Conditional%20Logic/Decompose%20Conditional">Github</a></p>
+<hr>
+<h2 id="Consolidate-Conditional-Expression"><a href="#Consolidate-Conditional-Expression" class="headerlink" title="Consolidate Conditional Expression"></a>Consolidate Conditional Expression</h2><h5 id="Tips-1"><a href="#Tips-1" class="headerlink" title="Tips"></a>Tips</h5><ul>
+<li>Some conditions can be reduced into an “Ands” or “Ors” expression. Then this “Ands” or “Ors” expression can be extracted as a function.</li>
+<li>Sequences combine with Or, nested if statements combine with And.</li>
+<li>If the conditions have side-effect, use <strong>Separate Query from Modifier</strong> to process it.</li>
+</ul>
+<h5 id="Examples-1"><a href="#Examples-1" class="headerlink" title="Examples:"></a>Examples:</h5><ul>
+<li>An Ors example</li>
+<li>An Ands example</li>
+</ul>
+<p><a href="https://github.com/u8989332/martin-fowler-refactoring-2nd/tree/master/Ch10.Simplifying%20Conditional%20Logic/Consolidate%20Conditional%20Expression">Github</a></p>
+<hr>
+<h2 id="Replace-Nested-Conditional-with-Guard-Clauses"><a href="#Replace-Nested-Conditional-with-Guard-Clauses" class="headerlink" title="Replace Nested Conditional with Guard Clauses"></a>Replace Nested Conditional with Guard Clauses</h2><h5 id="Tips-2"><a href="#Tips-2" class="headerlink" title="Tips"></a>Tips</h5><ul>
+<li>If a condition is not normal, check it and return if it’s true. This check is a <strong>Guard Clause</strong></li>
+<li>Guard Clause means that it is not the core logic of the function But if it happens, it does the necessary cleaning job to exit the function.</li>
+<li>Choose the outermost condition and replace it by Guard Clause. If some Guard Clauses have the same result, use <strong>Consolidate Conditional Expression</strong>.</li>
+</ul>
+<h5 id="Examples-2"><a href="#Examples-2" class="headerlink" title="Examples:"></a>Examples:</h5><ul>
+<li>An simple example</li>
+<li>Reversing the Conditions example</li>
+</ul>
+<p><a href="https://github.com/u8989332/martin-fowler-refactoring-2nd/tree/master/Ch10.Simplifying%20Conditional%20Logic/Replace%20Nested%20Conditional%20with%20Guard%20Clauses">Github</a></p>
+<h2 id="Replace-Conditional-with-Polymorphism"><a href="#Replace-Conditional-with-Polymorphism" class="headerlink" title="Replace Conditional with Polymorphism"></a>Replace Conditional with Polymorphism</h2><hr>
+<h5 id="Tips-3"><a href="#Tips-3" class="headerlink" title="Tips"></a>Tips</h5><ul>
+<li>If a condition is complex, split it by using polymorphism and make its logic clear</li>
+<li>For a variation condition, we put the basic logic into a superclass, and put the variation logic into derived class.</li>
+<li>Don’t abuse using polymorphism when the condition is simple.</li>
+<li>If the current class has no polymorphism, we create a <strong>factory function</strong> to return its object instance. Then we put every condition logic into derived class.</li>
+</ul>
+<h5 id="Examples-3"><a href="#Examples-3" class="headerlink" title="Examples:"></a>Examples:</h5><ul>
+<li>An simple example</li>
+<li>Using Polymorphism for Variation</li>
+</ul>
+<p><a href="https://github.com/u8989332/martin-fowler-refactoring-2nd/tree/master/Ch10.Simplifying%20Conditional%20Logic/Replace%20Conditional%20with%20Polymorphism">Github</a></p>
+<hr>
+<h2 id="Introduce-Special-Case"><a href="#Introduce-Special-Case" class="headerlink" title="Introduce Special Case"></a>Introduce Special Case</h2><h5 id="Tips-4"><a href="#Tips-4" class="headerlink" title="Tips"></a>Tips</h5><ul>
+<li>If clients always check a structure’s value, we separate this check into a special-case.</li>
+<li>NullObject is a common pattern for null value.</li>
+<li>Add the special-case check property to the target structure. Use <strong>Combine Functions into Class</strong> or <strong>Combine Functions into Transform</strong> to move the special-case logic into a new class. Then the previous special-case check property will return it when check triggers.</li>
+</ul>
+<h5 id="Examples-4"><a href="#Examples-4" class="headerlink" title="Examples:"></a>Examples:</h5><ul>
+<li>A Class example</li>
+<li>An Object Literal example</li>
+<li>A Transform example</li>
+</ul>
+<p><a href="https://github.com/u8989332/martin-fowler-refactoring-2nd/tree/master/Ch10.Simplifying%20Conditional%20Logic/Introduce%20Special%20Case">Github</a></p>
+<hr>
+<h2 id="Introduce-Assertion"><a href="#Introduce-Assertion" class="headerlink" title="Introduce Assertion"></a>Introduce Assertion</h2><h5 id="Tips-5"><a href="#Tips-5" class="headerlink" title="Tips"></a>Tips</h5><ul>
+<li>Assertion definitely marks the assumption(expression). Assertion avoid programmer’s error.</li>
+<li>Don’t abuse assertion. We only use it when the expression must be true.</li>
+</ul>
+<h5 id="Examples-5"><a href="#Examples-5" class="headerlink" title="Examples:"></a>Examples:</h5><p>&#x2F;&#x2F; before refactoring<br>public void SaveMoneyIntoAccount(decimal money)<br>{<br>     acount +&#x3D; money;<br>}</p>
+<p>&#x2F;&#x2F; after refactoring<br>public void SaveMoneyIntoAccount(decimal money)<br>{<br>     Debug.Assert(money &gt; 0);<br>     acount +&#x3D; money;<br>}</p>
+<hr>
+<h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><p>This chapter introduces me how to simplify conditional logic. I had ever written complex conditional branches and they were very ugly long…… I had no idea to reafactor them until I read this chapter. If you want to learn detailed motivation and mechanics, study the chapter 10 “ Simplifying Conditional Logic “ of <a href="https://amzn.to/3LUmBwI">Refactoring: Improving the Design of Existing Code (2nd Edition)</a>. and it improves our programmer’s ability.</p>
+]]></content>
+      <categories>
+        <category>C#</category>
+        <category>Refactoring</category>
+      </categories>
+  </entry>
+  <entry>
     <title>Refactoring Example - RPG Game Hunting Mission</title>
     <url>/2022/01/09/refactoring-2nd-chapter-1-example/</url>
     <content><![CDATA[<h1 id="Welcome-to-Refactoring-World"><a href="#Welcome-to-Refactoring-World" class="headerlink" title="Welcome to Refactoring World!"></a>Welcome to Refactoring World!</h1><h4 id="1-Introduction"><a href="#1-Introduction" class="headerlink" title="1. Introduction"></a>1. Introduction</h4><p>I will write a series of refactoring article based on Martin Fowler’s <a href="https://amzn.to/3LUmBwI">Refactoring: Improving the Design of Existing Code (2nd Edition)</a>. This book introduced many useful refactoring techniques. So I want to share what I learned from this book by explaining some refactoring examples and noting important concepts&#x2F;tips. The first one refactoring example in this article!</p>
+<span id="more"></span>
+
 <p>In the chapter 1 of the book, it introduced a case about the bill calculation of performing theatrical plays. The case first was an ugly function code to generate a bill. After some refactoring skills, the code looked CLEAR. How beautiful the code is!</p>
 <p>According to this case, I will mock a similar function code to show how the refactoring skill works in this example. The following code is written by C# &amp; .NET 5.</p>
 <h4 id="2-RPG-Game-Hunting-Mission"><a href="#2-RPG-Game-Hunting-Mission" class="headerlink" title="2. RPG Game Hunting Mission"></a>2. RPG Game Hunting Mission</h4><p>This scenario is a RPG Game. In a RPG Game, a player can take hunting mission to earn bonus and experience. If player completes the mission, then mission manager will give you the bonus&#x2F;experience. The type and level of monster killed by player determines the amount of bonus and experience.</p>
@@ -4981,83 +5054,6 @@ public void CalculateRevenueRecognitions(Contract contract)
 </blockquote>
 <p>It’s also a ABSOLUTE TRUTH! I have learned classic 23 design patterns and applied them in some projects. Although these patterns were helpful to extend features, but I lacked some skills to decide when&#x2F;how I should refactor these patterns.This book provides many concepts to refactor those legacy codes. I think it should be read by every developer!<br>This example can be download in my <a href="https://github.com/u8989332/martin-fowler-refactoring-2nd.git">Github repository</a></p>
 <h4 id="4-References"><a href="#4-References" class="headerlink" title="4. References"></a>4. References</h4><p><a href="https://draft.blogger.com/blog/post/edit/760085690055515370/8483927943229049666?hl=zh-TW#">Refactoring: Improving the Design of Existing Code (2nd Edition)</a></p>
-]]></content>
-      <categories>
-        <category>C#</category>
-        <category>Refactoring</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>Simplifying Conditional Logic</title>
-    <url>/2022/04/09/refactoring-chapter-10-simplifying-conditional-logic/</url>
-    <content><![CDATA[<p>This article references the chapter 10 “ Simplifying Conditional Logic “ of <a href="https://amzn.to/3LUmBwI">Refactoring: Improving the Design of Existing Code (2nd Edition)</a>. Author had highlighted many important refactorings in this chapter.</p>
-<span id="more"></span>
-
-<p>I use .NET C# to practice with these refactorings and upload to Github.</p>
-<p><img src="https://geekcodeparadise.com/wp-content/uploads/2022/04/direction-2320124_1920-1024x1024.jpg" alt="Simplifying Conditional Logic"></p>
-<p>(Photo from Pixabay: <a href="https://pixabay.com/illustrations/direction-path-decision-goal-2320124/">https://pixabay.com/illustrations/direction-path-decision-goal-2320124/</a><a href="https://pixabay.com/illustrations/moving-boxes-mover-moving-truck-3671446/">)</a></p>
-<h2 id="Decompose-Conditional"><a href="#Decompose-Conditional" class="headerlink" title="Decompose Conditional"></a>Decompose Conditional</h2><h5 id="Tips"><a href="#Tips" class="headerlink" title="Tips"></a>Tips</h5><ul>
-<li>If the condition is complex, extract the condition and its branches as functions.</li>
-</ul>
-<h5 id="Examples"><a href="#Examples" class="headerlink" title="Examples:"></a>Examples:</h5><ul>
-<li>A simple example</li>
-</ul>
-<p><a href="https://github.com/u8989332/martin-fowler-refactoring-2nd/tree/master/Ch10.Simplifying%20Conditional%20Logic/Decompose%20Conditional">Github</a></p>
-<hr>
-<h2 id="Consolidate-Conditional-Expression"><a href="#Consolidate-Conditional-Expression" class="headerlink" title="Consolidate Conditional Expression"></a>Consolidate Conditional Expression</h2><h5 id="Tips-1"><a href="#Tips-1" class="headerlink" title="Tips"></a>Tips</h5><ul>
-<li>Some conditions can be reduced into an “Ands” or “Ors” expression. Then this “Ands” or “Ors” expression can be extracted as a function.</li>
-<li>Sequences combine with Or, nested if statements combine with And.</li>
-<li>If the conditions have side-effect, use <strong>Separate Query from Modifier</strong> to process it.</li>
-</ul>
-<h5 id="Examples-1"><a href="#Examples-1" class="headerlink" title="Examples:"></a>Examples:</h5><ul>
-<li>An Ors example</li>
-<li>An Ands example</li>
-</ul>
-<p><a href="https://github.com/u8989332/martin-fowler-refactoring-2nd/tree/master/Ch10.Simplifying%20Conditional%20Logic/Consolidate%20Conditional%20Expression">Github</a></p>
-<hr>
-<h2 id="Replace-Nested-Conditional-with-Guard-Clauses"><a href="#Replace-Nested-Conditional-with-Guard-Clauses" class="headerlink" title="Replace Nested Conditional with Guard Clauses"></a>Replace Nested Conditional with Guard Clauses</h2><h5 id="Tips-2"><a href="#Tips-2" class="headerlink" title="Tips"></a>Tips</h5><ul>
-<li>If a condition is not normal, check it and return if it’s true. This check is a <strong>Guard Clause</strong></li>
-<li>Guard Clause means that it is not the core logic of the function But if it happens, it does the necessary cleaning job to exit the function.</li>
-<li>Choose the outermost condition and replace it by Guard Clause. If some Guard Clauses have the same result, use <strong>Consolidate Conditional Expression</strong>.</li>
-</ul>
-<h5 id="Examples-2"><a href="#Examples-2" class="headerlink" title="Examples:"></a>Examples:</h5><ul>
-<li>An simple example</li>
-<li>Reversing the Conditions example</li>
-</ul>
-<p><a href="https://github.com/u8989332/martin-fowler-refactoring-2nd/tree/master/Ch10.Simplifying%20Conditional%20Logic/Replace%20Nested%20Conditional%20with%20Guard%20Clauses">Github</a></p>
-<h2 id="Replace-Conditional-with-Polymorphism"><a href="#Replace-Conditional-with-Polymorphism" class="headerlink" title="Replace Conditional with Polymorphism"></a>Replace Conditional with Polymorphism</h2><hr>
-<h5 id="Tips-3"><a href="#Tips-3" class="headerlink" title="Tips"></a>Tips</h5><ul>
-<li>If a condition is complex, split it by using polymorphism and make its logic clear</li>
-<li>For a variation condition, we put the basic logic into a superclass, and put the variation logic into derived class.</li>
-<li>Don’t abuse using polymorphism when the condition is simple.</li>
-<li>If the current class has no polymorphism, we create a <strong>factory function</strong> to return its object instance. Then we put every condition logic into derived class.</li>
-</ul>
-<h5 id="Examples-3"><a href="#Examples-3" class="headerlink" title="Examples:"></a>Examples:</h5><ul>
-<li>An simple example</li>
-<li>Using Polymorphism for Variation</li>
-</ul>
-<p><a href="https://github.com/u8989332/martin-fowler-refactoring-2nd/tree/master/Ch10.Simplifying%20Conditional%20Logic/Replace%20Conditional%20with%20Polymorphism">Github</a></p>
-<hr>
-<h2 id="Introduce-Special-Case"><a href="#Introduce-Special-Case" class="headerlink" title="Introduce Special Case"></a>Introduce Special Case</h2><h5 id="Tips-4"><a href="#Tips-4" class="headerlink" title="Tips"></a>Tips</h5><ul>
-<li>If clients always check a structure’s value, we separate this check into a special-case.</li>
-<li>NullObject is a common pattern for null value.</li>
-<li>Add the special-case check property to the target structure. Use <strong>Combine Functions into Class</strong> or <strong>Combine Functions into Transform</strong> to move the special-case logic into a new class. Then the previous special-case check property will return it when check triggers.</li>
-</ul>
-<h5 id="Examples-4"><a href="#Examples-4" class="headerlink" title="Examples:"></a>Examples:</h5><ul>
-<li>A Class example</li>
-<li>An Object Literal example</li>
-<li>A Transform example</li>
-</ul>
-<p><a href="https://github.com/u8989332/martin-fowler-refactoring-2nd/tree/master/Ch10.Simplifying%20Conditional%20Logic/Introduce%20Special%20Case">Github</a></p>
-<hr>
-<h2 id="Introduce-Assertion"><a href="#Introduce-Assertion" class="headerlink" title="Introduce Assertion"></a>Introduce Assertion</h2><h5 id="Tips-5"><a href="#Tips-5" class="headerlink" title="Tips"></a>Tips</h5><ul>
-<li>Assertion definitely marks the assumption(expression). Assertion avoid programmer’s error.</li>
-<li>Don’t abuse assertion. We only use it when the expression must be true.</li>
-</ul>
-<h5 id="Examples-5"><a href="#Examples-5" class="headerlink" title="Examples:"></a>Examples:</h5><p>&#x2F;&#x2F; before refactoring<br>public void SaveMoneyIntoAccount(decimal money)<br>{<br>     acount +&#x3D; money;<br>}</p>
-<p>&#x2F;&#x2F; after refactoring<br>public void SaveMoneyIntoAccount(decimal money)<br>{<br>     Debug.Assert(money &gt; 0);<br>     acount +&#x3D; money;<br>}</p>
-<hr>
-<h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><p>This chapter introduces me how to simplify conditional logic. I had ever written complex conditional branches and they were very ugly long…… I had no idea to reafactor them until I read this chapter. If you want to learn detailed motivation and mechanics, study the chapter 10 “ Simplifying Conditional Logic “ of <a href="https://amzn.to/3LUmBwI">Refactoring: Improving the Design of Existing Code (2nd Edition)</a>. and it improves our programmer’s ability.</p>
 ]]></content>
       <categories>
         <category>C#</category>
@@ -5363,6 +5359,8 @@ public void CalculateRevenueRecognitions(Contract contract)
     <title>A First Set of Refactorings</title>
     <url>/2022/01/30/refactoring-chapter-6-a-first-set-of-refactorings/</url>
     <content><![CDATA[<p>This article references the chapter 6 “ A First Set of Refactorings “ of <a href="https://amzn.to/3LUmBwI">Refactoring: Improving the Design of Existing Code (2nd Edition)</a>. Author had highlighted many important refactorings in this chapter.</p>
+<span id="more"></span>
+
 <p>I use .NET C# to practice with these refactorings and upload to Github.</p>
 <p><a href="https://geekcodeparadise.com/wp-content/uploads/2022/01/plumber-4427401_1920-1024x620.jpg"><img src="https://geekcodeparadise.com/wp-content/uploads/2022/01/plumber-4427401_1920-1024x620.jpg" alt="A first set of refactorings"></a></p>
 <p>(Photo from Pixabay: <a href="https://pixabay.com/illustrations/plumber-repair-tools-pipe-plunger-4427401/">https://pixabay.com/illustrations/plumber-repair-tools-pipe-plunger-4427401/ )</a></p>
@@ -5477,6 +5475,8 @@ public void CalculateRevenueRecognitions(Contract contract)
     <title>Encapsulation</title>
     <url>/2022/02/13/refactoring-chapter-7-encapsulation/</url>
     <content><![CDATA[<p>This article references the chapter 7 “ Encapsulation “ of <a href="https://amzn.to/3LUmBwI">Refactoring: Improving the Design of Existing Code (2nd Edition)</a>. Author had highlighted many important refactorings in this chapter.</p>
+<span id="more"></span>
+
 <p>I use .NET C# to practice with these refactorings and upload to Github.</p>
 <p><a href="https://geekcodeparadise.com/wp-content/uploads/2022/02/archive-1850170_1920-1024x683.jpg"><img src="https://geekcodeparadise.com/wp-content/uploads/2022/02/archive-1850170_1920-1024x683.jpg" alt="Encapsulation"></a></p>
 <p>(Photo from Pixabay: <a href="https://pixabay.com/photos/archive-boxes-shelf-folders-1850170/">https://pixabay.com/illustrations/plumber-repair-tools-pipe-plunger-4427401/ )</a></p>
@@ -5560,6 +5560,8 @@ public void CalculateRevenueRecognitions(Contract contract)
     <title>Moving Features</title>
     <url>/2022/03/10/refactoring-chapter-8-moving-features/</url>
     <content><![CDATA[<p>This article references the chapter 8 “ Moving Features “ of <a href="https://amzn.to/3LUmBwI">Refactoring: Improving the Design of Existing Code (2nd Edition)</a>. Author had highlighted many important refactorings in this chapter.</p>
+<span id="more"></span>
+
 <p>I use .NET C# to practice with these refactorings and upload to Github.</p>
 <p><img src="https://geekcodeparadise.com/wp-content/uploads/2022/03/moving-3671446_1920-1024x757.png" alt="Moving Features"></p>
 <p>(Photo from Pixabay: <a href="https://pixabay.com/illustrations/moving-boxes-mover-moving-truck-3671446/">https://pixabay.com/illustrations/plumber-repair-tools-pipe-plunger-4427401/https://pixabay.com/illustrations/moving-boxes-mover-moving-truck-3671446/ )</a></p>
@@ -5643,6 +5645,8 @@ public void CalculateRevenueRecognitions(Contract contract)
     <title>Organizing Data</title>
     <url>/2022/03/26/refactoring-chapter-9-organizing-data/</url>
     <content><![CDATA[<p>This article references the chapter 9 “ Organizing Data “ of <a href="https://amzn.to/3LUmBwI">Refactoring: Improving the Design of Existing Code (2nd Edition)</a>. Author had highlighted many important refactorings in this chapter.</p>
+<span id="more"></span>
+
 <p>I use .NET C# to practice with these refactorings and upload to Github.</p>
 <p><img src="https://geekcodeparadise.com/wp-content/uploads/2022/03/cabinet-3283536_960_720.jpg" alt="organizing data"></p>
 <p>(Photo from Pixabay: <a href="https://pixabay.com/photos/cabinet-drawer-wood-catalogue-3283536/">https://pixabay.com/photos/cabinet-drawer-wood-catalogue-3283536/</a><a href="https://pixabay.com/illustrations/moving-boxes-mover-moving-truck-3671446/">)</a></p>
@@ -6585,11 +6589,36 @@ class Program
       </categories>
   </entry>
   <entry>
+    <title>ubuntu 移除與安裝 MySQL</title>
+    <url>/2015/10/06/ubuntu-install-uninstall-mysql/</url>
+    <content><![CDATA[<p>ubuntu 移除與安裝 MySQL</p>
+<h4 id="1-移除MySQL"><a href="#1-移除MySQL" class="headerlink" title="1.移除MySQL"></a>1.移除MySQL</h4><p>　　若在ubuntu上有安裝MySQL且想移除它，可用下面這些指令來完整的移除：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt-get remove --purge mysql-server mysql-client mysql-common</span><br><span class="line">sudo apt-get autoremove</span><br><span class="line">sudo apt-get autoclean</span><br><span class="line">sudo <span class="built_in">rm</span> -rf /var/lib/mysql</span><br><span class="line">sudo <span class="built_in">rm</span> -rf /etc/mysql</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-安裝MySQL"><a href="#2-安裝MySQL" class="headerlink" title="2.安裝MySQL"></a>2.安裝MySQL</h4><p>　　若要在ubuntu上安裝MySQL，可用下面這些指令安裝：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt-get install mysql-server </span><br></pre></td></tr></table></figure>
+
+<p>　　安裝過程會要求設定root的密碼，切記密碼不要用<strong>root</strong>，因為我之前一直設定root為密碼，害我無法登入mysql。。。不知是MySQL的BUG還是啥特殊設定</p>
+<p>　　安裝完成後，啟動MySQL就大功造成：</p>
+<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line">sudo service mysql start</span><br></pre></td></tr></table></figure>
+
+<h4 id="參考文獻"><a href="#參考文獻" class="headerlink" title="參考文獻"></a>參考文獻</h4><ol>
+<li><a href="http://www.liquidweb.com/kb/how-to-install-mysql-on-ubuntu-14-04-lts/">liquidweb : How to Install MySQL on Ubuntu 14.04 LTS</a> </li>
+<li><a href="http://askubuntu.com/questions/172514/how-do-i-uninstall-mysql">ask ubuntu : How do I uninstall Mysql?</a></li>
+</ol>
+]]></content>
+      <categories>
+        <category>MySQL</category>
+      </categories>
+  </entry>
+  <entry>
     <title>Threading in C# - USING THREADS</title>
     <url>/2021/12/05/threading-in-csharp-part-3-using-threads/</url>
     <content><![CDATA[<h3 id="Threading-in-C-PART-3-USING-THREADS"><a href="#Threading-in-C-PART-3-USING-THREADS" class="headerlink" title="Threading in C# - PART 3: USING THREADS"></a>Threading in C# - PART 3: USING THREADS</h3><p>這篇文章為閱讀 Threading in C# 系列的Part 3筆記.</p>
 <p><img src="https://geekcodeparadise.com/wp-content/uploads/2021/12/NewThread.png" alt="Multi-Threading"></p>
 <p>Multi-Threading in C# (Picture source: <a href="http://www.albahari.com/threading/">Threading in C#<br>Joseph Albahari</a>)</p>
+<span id="more"></span>
+
 <h3 id="Threading-Pattern-The-Event-Based-Asynchronous-Pattern"><a href="#Threading-Pattern-The-Event-Based-Asynchronous-Pattern" class="headerlink" title="Threading Pattern - The Event-Based Asynchronous Pattern"></a>Threading Pattern - The Event-Based Asynchronous Pattern</h3><ul>
 <li>EAP可啟用多執行緒且不需要Consumer主動或管理thread, 有以下特徵</li>
 </ul>
@@ -7320,29 +7349,6 @@ class RulyCanceler
       </categories>
   </entry>
   <entry>
-    <title>ubuntu 移除與安裝 MySQL</title>
-    <url>/2015/10/06/ubuntu-install-uninstall-mysql/</url>
-    <content><![CDATA[<p>ubuntu 移除與安裝 MySQL</p>
-<h4 id="1-移除MySQL"><a href="#1-移除MySQL" class="headerlink" title="1.移除MySQL"></a>1.移除MySQL</h4><p>　　若在ubuntu上有安裝MySQL且想移除它，可用下面這些指令來完整的移除：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt-get remove --purge mysql-server mysql-client mysql-common</span><br><span class="line">sudo apt-get autoremove</span><br><span class="line">sudo apt-get autoclean</span><br><span class="line">sudo <span class="built_in">rm</span> -rf /var/lib/mysql</span><br><span class="line">sudo <span class="built_in">rm</span> -rf /etc/mysql</span><br></pre></td></tr></table></figure>
-
-<h4 id="2-安裝MySQL"><a href="#2-安裝MySQL" class="headerlink" title="2.安裝MySQL"></a>2.安裝MySQL</h4><p>　　若要在ubuntu上安裝MySQL，可用下面這些指令安裝：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt-get install mysql-server </span><br></pre></td></tr></table></figure>
-
-<p>　　安裝過程會要求設定root的密碼，切記密碼不要用<strong>root</strong>，因為我之前一直設定root為密碼，害我無法登入mysql。。。不知是MySQL的BUG還是啥特殊設定</p>
-<p>　　安裝完成後，啟動MySQL就大功造成：</p>
-<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line">sudo service mysql start</span><br></pre></td></tr></table></figure>
-
-<h4 id="參考文獻"><a href="#參考文獻" class="headerlink" title="參考文獻"></a>參考文獻</h4><ol>
-<li><a href="http://www.liquidweb.com/kb/how-to-install-mysql-on-ubuntu-14-04-lts/">liquidweb : How to Install MySQL on Ubuntu 14.04 LTS</a> </li>
-<li><a href="http://askubuntu.com/questions/172514/how-do-i-uninstall-mysql">ask ubuntu : How do I uninstall Mysql?</a></li>
-</ol>
-]]></content>
-      <categories>
-        <category>MySQL</category>
-      </categories>
-  </entry>
-  <entry>
     <title>UVa 10037 Bridge</title>
     <url>/2019/07/25/uva-10037-bridge/</url>
     <content><![CDATA[<p>UVa 10037 Bridge 解題報告</p>
@@ -7632,6 +7638,41 @@ class RulyCanceler
       </categories>
   </entry>
   <entry>
+    <title>UVa 11809 Floating-Point Numbers</title>
+    <url>/2019/10/05/uva-11809-floating-point-numbers/</url>
+    <content><![CDATA[<p>UVa 11809 Floating-Point Numbers 解題報告</p>
+<h4 id="平台："><a href="#平台：" class="headerlink" title="平台："></a>平台：</h4><p>UVa Online Judge</p>
+<h4 id="題號："><a href="#題號：" class="headerlink" title="題號："></a>題號：</h4><p>11809 - Floating-Point Numbers</p>
+<h4 id="題目連結："><a href="#題目連結：" class="headerlink" title="題目連結："></a>題目連結：</h4><p><a href="https://uva.onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=2909">https://uva.onlinejudge.org/index.php?option=com_onlinejudge&amp;Itemid&#x3D;8&amp;page&#x3D;show_problem&amp;problem&#x3D;2909</a></p>
+<h4 id="題目說明："><a href="#題目說明：" class="headerlink" title="題目說明："></a>題目說明：</h4><p>題目很長，經過整理的意思是</p>
+<p>A\times10^{B} &#x3D; (2^{-1}+2^{-2}+..+2^{-M-1})\times2^{2^{E}-1}</p>
+<p>，求M與E。輸入0e0則結束程式。</p>
+<h4 id="範例輸入："><a href="#範例輸入：" class="headerlink" title="範例輸入："></a>範例輸入：</h4><p>5.699141892149156e76<br>9.205357638345294e18<br>0e0</p>
+<h4 id="範例輸出："><a href="#範例輸出：" class="headerlink" title="範例輸出："></a>範例輸出：</h4><p>5 8<br>8 6</p>
+<h4 id="解題方法："><a href="#解題方法：" class="headerlink" title="解題方法："></a>解題方法：</h4><p>以範例第1筆輸入 A &#x3D; 5.699141892149156，B &#x3D; 76，其對應的浮點數2進位轉10進位表示法為</p>
+<p>0.111111111_{2} \times 2^{111111}&#x3D;(2^{-1}+2^{-2}+..+2^{-8-1})\times2^{2^{6}-1}</p>
+<p>　　將10進位等式轉成通式，另外命名m與e。</p>
+<p>(2^{-1}+2^{-2}+..+2^{-M-1})\times2^{2^{E}-1}&#x3D;(1-2^{-M-1})\times2^{2^{E}-1}&#x3D;m\times2^{e}</p>
+<p>與輸入格式兩邊取log10</p>
+<p>\log_{10}(A\times10^{B}) &#x3D; \log_{10}(m\times2^{e}) \\<br>\log_{10}(A) + B &#x3D; \log_{10}(m) + e\times\log_{10}(2)</p>
+<p>由於0 &lt; A &lt; 10，使</p>
+<p>\log_{10}(A) &lt; 1</p>
+<p>，則</p>
+<p>B&#x3D;\lfloor \log_{10}(m) + e\times\log_{10}(2)\rfloor \\<br>A&#x3D;10^{\log_{10}(m) + e\times\log_{10}(2)-B}</p>
+<p>知道A與B的規則，且M與E的範圍不大，可以將所有M與E產生的A與B做建表。</p>
+<p>難度為Medium</p>
+<h4 id="GITHUB位置："><a href="#GITHUB位置：" class="headerlink" title="GITHUB位置："></a>GITHUB位置：</h4><p><a href="https://github.com/u8989332/ProblemSolving/blob/master/UVaOnlineJudge/11800-11899/11809.c">https://github.com/u8989332/ProblemSolving/blob/master/UVaOnlineJudge/11800-11899/11809.c</a></p>
+]]></content>
+      <categories>
+        <category>C#</category>
+        <category>ACM</category>
+        <category>Level-Medium</category>
+        <category>程式解題</category>
+        <category>ProgramSolving</category>
+        <category>UVa</category>
+      </categories>
+  </entry>
+  <entry>
     <title>UVa 12096 The SetStack Computer</title>
     <url>/2019/11/11/uva-12096-the-setstack-computer/</url>
     <content><![CDATA[<p>UVa 12096 The SetStack Computer 解題報告</p>
@@ -7698,41 +7739,6 @@ class RulyCanceler
       </categories>
   </entry>
   <entry>
-    <title>UVa 11809 Floating-Point Numbers</title>
-    <url>/2019/10/05/uva-11809-floating-point-numbers/</url>
-    <content><![CDATA[<p>UVa 11809 Floating-Point Numbers 解題報告</p>
-<h4 id="平台："><a href="#平台：" class="headerlink" title="平台："></a>平台：</h4><p>UVa Online Judge</p>
-<h4 id="題號："><a href="#題號：" class="headerlink" title="題號："></a>題號：</h4><p>11809 - Floating-Point Numbers</p>
-<h4 id="題目連結："><a href="#題目連結：" class="headerlink" title="題目連結："></a>題目連結：</h4><p><a href="https://uva.onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=2909">https://uva.onlinejudge.org/index.php?option=com_onlinejudge&amp;Itemid&#x3D;8&amp;page&#x3D;show_problem&amp;problem&#x3D;2909</a></p>
-<h4 id="題目說明："><a href="#題目說明：" class="headerlink" title="題目說明："></a>題目說明：</h4><p>題目很長，經過整理的意思是</p>
-<p>A\times10^{B} &#x3D; (2^{-1}+2^{-2}+..+2^{-M-1})\times2^{2^{E}-1}</p>
-<p>，求M與E。輸入0e0則結束程式。</p>
-<h4 id="範例輸入："><a href="#範例輸入：" class="headerlink" title="範例輸入："></a>範例輸入：</h4><p>5.699141892149156e76<br>9.205357638345294e18<br>0e0</p>
-<h4 id="範例輸出："><a href="#範例輸出：" class="headerlink" title="範例輸出："></a>範例輸出：</h4><p>5 8<br>8 6</p>
-<h4 id="解題方法："><a href="#解題方法：" class="headerlink" title="解題方法："></a>解題方法：</h4><p>以範例第1筆輸入 A &#x3D; 5.699141892149156，B &#x3D; 76，其對應的浮點數2進位轉10進位表示法為</p>
-<p>0.111111111_{2} \times 2^{111111}&#x3D;(2^{-1}+2^{-2}+..+2^{-8-1})\times2^{2^{6}-1}</p>
-<p>　　將10進位等式轉成通式，另外命名m與e。</p>
-<p>(2^{-1}+2^{-2}+..+2^{-M-1})\times2^{2^{E}-1}&#x3D;(1-2^{-M-1})\times2^{2^{E}-1}&#x3D;m\times2^{e}</p>
-<p>與輸入格式兩邊取log10</p>
-<p>\log_{10}(A\times10^{B}) &#x3D; \log_{10}(m\times2^{e}) \\<br>\log_{10}(A) + B &#x3D; \log_{10}(m) + e\times\log_{10}(2)</p>
-<p>由於0 &lt; A &lt; 10，使</p>
-<p>\log_{10}(A) &lt; 1</p>
-<p>，則</p>
-<p>B&#x3D;\lfloor \log_{10}(m) + e\times\log_{10}(2)\rfloor \\<br>A&#x3D;10^{\log_{10}(m) + e\times\log_{10}(2)-B}</p>
-<p>知道A與B的規則，且M與E的範圍不大，可以將所有M與E產生的A與B做建表。</p>
-<p>難度為Medium</p>
-<h4 id="GITHUB位置："><a href="#GITHUB位置：" class="headerlink" title="GITHUB位置："></a>GITHUB位置：</h4><p><a href="https://github.com/u8989332/ProblemSolving/blob/master/UVaOnlineJudge/11800-11899/11809.c">https://github.com/u8989332/ProblemSolving/blob/master/UVaOnlineJudge/11800-11899/11809.c</a></p>
-]]></content>
-      <categories>
-        <category>C#</category>
-        <category>ACM</category>
-        <category>Level-Medium</category>
-        <category>程式解題</category>
-        <category>ProgramSolving</category>
-        <category>UVa</category>
-      </categories>
-  </entry>
-  <entry>
     <title>UVa 12100 Printer Queue</title>
     <url>/2020/01/19/uva-12100-printer-queue/</url>
     <content><![CDATA[<p>UVa 12100 Printer Queue 解題報告</p>
@@ -7778,6 +7784,29 @@ class RulyCanceler
       </categories>
   </entry>
   <entry>
+    <title>UVa 1225 Digit Counting</title>
+    <url>/2019/08/22/uva-1225-digit-counting/</url>
+    <content><![CDATA[<p>UVa 1225 Digit Counting 解題報告</p>
+<h4 id="平台："><a href="#平台：" class="headerlink" title="平台："></a>平台：</h4><p>UVa Online Judge</p>
+<h4 id="題號："><a href="#題號：" class="headerlink" title="題號："></a>題號：</h4><p>1225 - Digit Counting</p>
+<h4 id="題目連結："><a href="#題目連結：" class="headerlink" title="題目連結："></a>題目連結：</h4><p><a href="https://uva.onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=24&page=show_problem&problem=3666">https://uva.onlinejudge.org/index.php?option=com_onlinejudge&amp;Itemid&#x3D;8&amp;category&#x3D;24&amp;page&#x3D;show_problem&amp;problem&#x3D;3666</a></p>
+<h4 id="題目說明："><a href="#題目說明：" class="headerlink" title="題目說明："></a>題目說明：</h4><p>給一個數字N，計算出從1 、 2、….、N每一位數的出現數量。以範例N &#x3D; 13，其包含1、2、3、4、….、11、12、13，而數字1出現6次、數字2與3出現3次，其他數字出現1次。輸出為0 至 9的數量。</p>
+<h4 id="範例輸入："><a href="#範例輸入：" class="headerlink" title="範例輸入："></a>範例輸入：</h4><p>2<br>3<br>13</p>
+<h4 id="範例輸出："><a href="#範例輸出：" class="headerlink" title="範例輸出："></a>範例輸出：</h4><p>0 1 1 1 0 0 0 0 0 0<br>1 6 2 2 1 1 1 1 1 1</p>
+<h4 id="解題方法："><a href="#解題方法：" class="headerlink" title="解題方法："></a>解題方法：</h4><p>　　N的範圍不大，可以一開始先建表，求出1~9999的各個位數的數量。求位數只用 % 與 &#x2F; 即可。</p>
+<p>難度為Easy</p>
+<h4 id="GITHUB位置："><a href="#GITHUB位置：" class="headerlink" title="GITHUB位置："></a>GITHUB位置：</h4><p><a href="https://github.com/u8989332/ProblemSolving/blob/master/UVaOnlineJudge/1200-1299/1225.c">https://github.com/u8989332/ProblemSolving/blob/master/UVaOnlineJudge/1200-1299/1225.c</a></p>
+]]></content>
+      <categories>
+        <category>C#</category>
+        <category>ACM</category>
+        <category>Level-Easy</category>
+        <category>程式解題</category>
+        <category>ProgramSolving</category>
+        <category>UVa</category>
+      </categories>
+  </entry>
+  <entry>
     <title>UVa 12333 Revenge of Fibonacci</title>
     <url>/2020/06/07/uva-12333-revenge-of-fibonacci/</url>
     <content><![CDATA[<p>UVa 12333 Revenge of Fibonacci 解題報告</p>
@@ -7803,29 +7832,6 @@ class RulyCanceler
         <category>Level-Medium</category>
         <category>程式解題</category>
         <category>Big Number</category>
-        <category>ProgramSolving</category>
-        <category>UVa</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>UVa 1225 Digit Counting</title>
-    <url>/2019/08/22/uva-1225-digit-counting/</url>
-    <content><![CDATA[<p>UVa 1225 Digit Counting 解題報告</p>
-<h4 id="平台："><a href="#平台：" class="headerlink" title="平台："></a>平台：</h4><p>UVa Online Judge</p>
-<h4 id="題號："><a href="#題號：" class="headerlink" title="題號："></a>題號：</h4><p>1225 - Digit Counting</p>
-<h4 id="題目連結："><a href="#題目連結：" class="headerlink" title="題目連結："></a>題目連結：</h4><p><a href="https://uva.onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=24&page=show_problem&problem=3666">https://uva.onlinejudge.org/index.php?option=com_onlinejudge&amp;Itemid&#x3D;8&amp;category&#x3D;24&amp;page&#x3D;show_problem&amp;problem&#x3D;3666</a></p>
-<h4 id="題目說明："><a href="#題目說明：" class="headerlink" title="題目說明："></a>題目說明：</h4><p>給一個數字N，計算出從1 、 2、….、N每一位數的出現數量。以範例N &#x3D; 13，其包含1、2、3、4、….、11、12、13，而數字1出現6次、數字2與3出現3次，其他數字出現1次。輸出為0 至 9的數量。</p>
-<h4 id="範例輸入："><a href="#範例輸入：" class="headerlink" title="範例輸入："></a>範例輸入：</h4><p>2<br>3<br>13</p>
-<h4 id="範例輸出："><a href="#範例輸出：" class="headerlink" title="範例輸出："></a>範例輸出：</h4><p>0 1 1 1 0 0 0 0 0 0<br>1 6 2 2 1 1 1 1 1 1</p>
-<h4 id="解題方法："><a href="#解題方法：" class="headerlink" title="解題方法："></a>解題方法：</h4><p>　　N的範圍不大，可以一開始先建表，求出1~9999的各個位數的數量。求位數只用 % 與 &#x2F; 即可。</p>
-<p>難度為Easy</p>
-<h4 id="GITHUB位置："><a href="#GITHUB位置：" class="headerlink" title="GITHUB位置："></a>GITHUB位置：</h4><p><a href="https://github.com/u8989332/ProblemSolving/blob/master/UVaOnlineJudge/1200-1299/1225.c">https://github.com/u8989332/ProblemSolving/blob/master/UVaOnlineJudge/1200-1299/1225.c</a></p>
-]]></content>
-      <categories>
-        <category>C#</category>
-        <category>ACM</category>
-        <category>Level-Easy</category>
-        <category>程式解題</category>
         <category>ProgramSolving</category>
         <category>UVa</category>
       </categories>
@@ -8278,7 +8284,7 @@ class RulyCanceler
 <h4 id="題號："><a href="#題號：" class="headerlink" title="題號："></a>題號：</h4><p>1592 - Database</p>
 <h4 id="題目連結："><a href="#題目連結：" class="headerlink" title="題目連結："></a>題目連結：</h4><p><a href="https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=4467">https://onlinejudge.org/index.php?option=com_onlinejudge&amp;Itemid&#x3D;8&amp;page&#x3D;show_problem&amp;problem&#x3D;4467</a></p>
 <h4 id="題目說明："><a href="#題目說明：" class="headerlink" title="題目說明："></a>題目說明：</h4><p>有n列資料，每列資料有m個欄位的值。m個欄位值用逗點 , 分隔組成1列資料。求這n列資料是否為PNF，PNF的定義沒有出現2個不同列r1 與 r2在2個不同欄位c1與c2，同欄位有相同的值，也就是table[r1][c1] &#x3D; table[r2][c1] 且 table[r1][c2] &#x3D; table[r2][c2]。<br>　　如果是PNF，輸出YES；如果非PNF，則輸出NO，並輸出r1、r2、c1、c2。</p>
-<h4 id="範例輸入："><a href="#範例輸入：" class="headerlink" title="範例輸入："></a>範例輸入：</h4><p>3 3<br>How to compete in ACM ICPC,Peter,<a href="mailto:&#x70;&#x65;&#x74;&#101;&#x72;&#64;&#110;&#101;&#x65;&#x72;&#99;&#46;&#x69;&#102;&#x6d;&#x6f;&#46;&#114;&#x75;">&#x70;&#x65;&#x74;&#101;&#x72;&#64;&#110;&#101;&#x65;&#x72;&#99;&#46;&#x69;&#102;&#x6d;&#x6f;&#46;&#114;&#x75;</a><br>How to win ACM ICPC,Michael,<a href="mailto:&#x6d;&#105;&#x63;&#x68;&#x61;&#x65;&#x6c;&#64;&#110;&#x65;&#x65;&#114;&#x63;&#x2e;&#105;&#102;&#x6d;&#x6f;&#x2e;&#x72;&#x75;">&#x6d;&#105;&#x63;&#x68;&#x61;&#x65;&#x6c;&#64;&#110;&#x65;&#x65;&#114;&#x63;&#x2e;&#105;&#102;&#x6d;&#x6f;&#x2e;&#x72;&#x75;</a><br>Notes from ACM ICPC champion,Michael,<a href="mailto:&#x6d;&#105;&#99;&#104;&#x61;&#x65;&#x6c;&#64;&#110;&#x65;&#101;&#114;&#x63;&#46;&#105;&#x66;&#x6d;&#x6f;&#x2e;&#x72;&#x75;">&#x6d;&#105;&#99;&#104;&#x61;&#x65;&#x6c;&#64;&#110;&#x65;&#101;&#114;&#x63;&#46;&#105;&#x66;&#x6d;&#x6f;&#x2e;&#x72;&#x75;</a><br>2 3<br>1,Peter,<a href="mailto:&#x70;&#101;&#116;&#x65;&#114;&#64;&#110;&#x65;&#x65;&#x72;&#99;&#x2e;&#105;&#102;&#109;&#111;&#x2e;&#114;&#x75;">&#x70;&#101;&#116;&#x65;&#114;&#64;&#110;&#x65;&#x65;&#x72;&#99;&#x2e;&#105;&#102;&#109;&#111;&#x2e;&#114;&#x75;</a><br>2,Michael,<a href="mailto:&#x6d;&#105;&#99;&#x68;&#x61;&#101;&#x6c;&#64;&#110;&#x65;&#x65;&#x72;&#99;&#46;&#x69;&#x66;&#x6d;&#x6f;&#46;&#x72;&#117;">&#x6d;&#105;&#99;&#x68;&#x61;&#101;&#x6c;&#64;&#110;&#x65;&#x65;&#x72;&#99;&#46;&#x69;&#x66;&#x6d;&#x6f;&#46;&#x72;&#117;</a></p>
+<h4 id="範例輸入："><a href="#範例輸入：" class="headerlink" title="範例輸入："></a>範例輸入：</h4><p>3 3<br>How to compete in ACM ICPC,Peter,<a href="mailto:&#x70;&#101;&#116;&#101;&#114;&#64;&#x6e;&#101;&#101;&#x72;&#x63;&#46;&#105;&#x66;&#x6d;&#x6f;&#x2e;&#x72;&#x75;">&#x70;&#101;&#116;&#101;&#114;&#64;&#x6e;&#101;&#101;&#x72;&#x63;&#46;&#105;&#x66;&#x6d;&#x6f;&#x2e;&#x72;&#x75;</a><br>How to win ACM ICPC,Michael,<a href="mailto:&#109;&#x69;&#99;&#104;&#97;&#x65;&#x6c;&#x40;&#x6e;&#101;&#101;&#114;&#99;&#46;&#x69;&#102;&#x6d;&#x6f;&#x2e;&#114;&#117;">&#109;&#x69;&#99;&#104;&#97;&#x65;&#x6c;&#x40;&#x6e;&#101;&#101;&#114;&#99;&#46;&#x69;&#102;&#x6d;&#x6f;&#x2e;&#114;&#117;</a><br>Notes from ACM ICPC champion,Michael,<a href="mailto:&#x6d;&#105;&#x63;&#x68;&#x61;&#x65;&#108;&#x40;&#110;&#101;&#101;&#114;&#x63;&#46;&#x69;&#102;&#109;&#x6f;&#x2e;&#114;&#x75;">&#x6d;&#105;&#x63;&#x68;&#x61;&#x65;&#108;&#x40;&#110;&#101;&#101;&#114;&#x63;&#46;&#x69;&#102;&#109;&#x6f;&#x2e;&#114;&#x75;</a><br>2 3<br>1,Peter,<a href="mailto:&#x70;&#x65;&#x74;&#101;&#114;&#x40;&#110;&#x65;&#x65;&#x72;&#99;&#46;&#105;&#102;&#x6d;&#111;&#x2e;&#114;&#x75;">&#x70;&#x65;&#x74;&#101;&#114;&#x40;&#110;&#x65;&#x65;&#x72;&#99;&#46;&#105;&#102;&#x6d;&#111;&#x2e;&#114;&#x75;</a><br>2,Michael,<a href="mailto:&#109;&#105;&#99;&#x68;&#x61;&#101;&#x6c;&#64;&#x6e;&#x65;&#x65;&#x72;&#x63;&#46;&#x69;&#x66;&#x6d;&#111;&#x2e;&#114;&#117;">&#109;&#105;&#99;&#x68;&#x61;&#101;&#x6c;&#64;&#x6e;&#x65;&#x65;&#x72;&#x63;&#46;&#x69;&#x66;&#x6d;&#111;&#x2e;&#114;&#117;</a></p>
 <h4 id="範例輸出："><a href="#範例輸出：" class="headerlink" title="範例輸出："></a>範例輸出：</h4><p>NO<br>2 3<br>2 3<br>YES</p>
 <h4 id="解題方法："><a href="#解題方法：" class="headerlink" title="解題方法："></a>解題方法：</h4><p>每1列每1欄位的值可存在2維的Table，並用Map紀錄第j欄的字串出現在哪幾列。當第i筆的字串有出現在Map時，需要檢查同列且其他欄位的字串，是否他們的Map對應的列數有交集，交集可以用STL的set_intersection。<br>　　這題有個速度優化技巧，比如m如果只有1，一定是PNF，因為它定義c1 !&#x3D; c2。</p>
 <p>難度為Medium</p>
@@ -8536,34 +8542,6 @@ class RulyCanceler
       </categories>
   </entry>
   <entry>
-    <title>UVa 201 Squares</title>
-    <url>/2019/10/14/uva-201-squares/</url>
-    <content><![CDATA[<p>UVa 201 Squares 解題報告</p>
-<h4 id="平台："><a href="#平台：" class="headerlink" title="平台："></a>平台：</h4><p>UVa Online Judge</p>
-<h4 id="題號："><a href="#題號：" class="headerlink" title="題號："></a>題號：</h4><p>201 - Squares</p>
-<h4 id="題目連結："><a href="#題目連結：" class="headerlink" title="題目連結："></a>題目連結：</h4><p><a href="https://uva.onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=137">https://uva.onlinejudge.org/index.php?option=com_onlinejudge&amp;Itemid&#x3D;8&amp;page&#x3D;show_problem&amp;problem&#x3D;137</a></p>
-<h4 id="題目說明："><a href="#題目說明：" class="headerlink" title="題目說明："></a>題目說明：</h4><p>給予每個邊長為n個的正方點盤，再給m個連線，每個連線有H i j或V i j的表示，<br>其中H i j 代表點座標(row i, col j) 與 (row i , col j+1) 連線；V i j 代表點座標(row j, col i) 與 (row j+1 , col i) 連線。<br>　　求這正方點盤的連線可以形成多少個正方形。</p>
-<h4 id="範例輸入："><a href="#範例輸入：" class="headerlink" title="範例輸入："></a>範例輸入：</h4><p>4<br>16<br>H 1 1<br>H 1 3<br>H 2 1<br>H 2 2<br>H 2 3<br>H 3 2<br>H 4 2<br>H 4 3<br>V 1 1<br>V 2 1<br>V 2 2<br>V 2 3<br>V 3 2<br>V 4 1<br>V 4 2<br>V 4 3<br>2<br>3<br>H 1 1<br>H 2 1<br>V 2 1</p>
-<h4 id="範例輸出："><a href="#範例輸出：" class="headerlink" title="範例輸出："></a>範例輸出：</h4><p>Problem #1  </p>
-<p>2 square (s) of size 1<br>1 square (s) of size 2  </p>
-<p>**********************************  </p>
-<p>Problem #2  </p>
-<p>No completed squares can be found.</p>
-<h4 id="解題方法："><a href="#解題方法：" class="headerlink" title="解題方法："></a>解題方法：</h4><p>依照題意建立點與點之間的地圖，再從(1, 1)開始尋找各種邊長是否能組成正方形。</p>
-<p>難度為Easy</p>
-<h4 id="GITHUB位置："><a href="#GITHUB位置：" class="headerlink" title="GITHUB位置："></a>GITHUB位置：</h4><p><a href="https://github.com/u8989332/ProblemSolving/blob/master/UVaOnlineJudge/200-299/201.c">https://github.com/u8989332/ProblemSolving/blob/master/UVaOnlineJudge/200-299/201.c</a></p>
-<p>UVa 201 Squares</p>
-]]></content>
-      <categories>
-        <category>C#</category>
-        <category>ACM</category>
-        <category>Level-Easy</category>
-        <category>程式解題</category>
-        <category>ProgramSolving</category>
-        <category>UVa</category>
-      </categories>
-  </entry>
-  <entry>
     <title>UVa 202 Repeating Decimals</title>
     <url>/2019/09/13/uva-202-repeating-decimals/</url>
     <content><![CDATA[<p>UVa 202 Repeating Decimals 解題報告</p>
@@ -8600,6 +8578,34 @@ class RulyCanceler
 <p>難度為Easy</p>
 <h4 id="GITHUB位置："><a href="#GITHUB位置：" class="headerlink" title="GITHUB位置："></a>GITHUB位置：</h4><p><a href="https://github.com/u8989332/ProblemSolving/blob/master/UVaOnlineJudge/200-299/202.c">https://github.com/u8989332/ProblemSolving/blob/master/UVaOnlineJudge/200-299/202.c</a></p>
 <p>UVa 202 Repeating Decimals</p>
+]]></content>
+      <categories>
+        <category>C#</category>
+        <category>ACM</category>
+        <category>Level-Easy</category>
+        <category>程式解題</category>
+        <category>ProgramSolving</category>
+        <category>UVa</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>UVa 201 Squares</title>
+    <url>/2019/10/14/uva-201-squares/</url>
+    <content><![CDATA[<p>UVa 201 Squares 解題報告</p>
+<h4 id="平台："><a href="#平台：" class="headerlink" title="平台："></a>平台：</h4><p>UVa Online Judge</p>
+<h4 id="題號："><a href="#題號：" class="headerlink" title="題號："></a>題號：</h4><p>201 - Squares</p>
+<h4 id="題目連結："><a href="#題目連結：" class="headerlink" title="題目連結："></a>題目連結：</h4><p><a href="https://uva.onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=137">https://uva.onlinejudge.org/index.php?option=com_onlinejudge&amp;Itemid&#x3D;8&amp;page&#x3D;show_problem&amp;problem&#x3D;137</a></p>
+<h4 id="題目說明："><a href="#題目說明：" class="headerlink" title="題目說明："></a>題目說明：</h4><p>給予每個邊長為n個的正方點盤，再給m個連線，每個連線有H i j或V i j的表示，<br>其中H i j 代表點座標(row i, col j) 與 (row i , col j+1) 連線；V i j 代表點座標(row j, col i) 與 (row j+1 , col i) 連線。<br>　　求這正方點盤的連線可以形成多少個正方形。</p>
+<h4 id="範例輸入："><a href="#範例輸入：" class="headerlink" title="範例輸入："></a>範例輸入：</h4><p>4<br>16<br>H 1 1<br>H 1 3<br>H 2 1<br>H 2 2<br>H 2 3<br>H 3 2<br>H 4 2<br>H 4 3<br>V 1 1<br>V 2 1<br>V 2 2<br>V 2 3<br>V 3 2<br>V 4 1<br>V 4 2<br>V 4 3<br>2<br>3<br>H 1 1<br>H 2 1<br>V 2 1</p>
+<h4 id="範例輸出："><a href="#範例輸出：" class="headerlink" title="範例輸出："></a>範例輸出：</h4><p>Problem #1  </p>
+<p>2 square (s) of size 1<br>1 square (s) of size 2  </p>
+<p>**********************************  </p>
+<p>Problem #2  </p>
+<p>No completed squares can be found.</p>
+<h4 id="解題方法："><a href="#解題方法：" class="headerlink" title="解題方法："></a>解題方法：</h4><p>依照題意建立點與點之間的地圖，再從(1, 1)開始尋找各種邊長是否能組成正方形。</p>
+<p>難度為Easy</p>
+<h4 id="GITHUB位置："><a href="#GITHUB位置：" class="headerlink" title="GITHUB位置："></a>GITHUB位置：</h4><p><a href="https://github.com/u8989332/ProblemSolving/blob/master/UVaOnlineJudge/200-299/201.c">https://github.com/u8989332/ProblemSolving/blob/master/UVaOnlineJudge/200-299/201.c</a></p>
+<p>UVa 201 Squares</p>
 ]]></content>
       <categories>
         <category>C#</category>
