@@ -1627,9 +1627,9 @@ static string Go(string name, int n)
 <p>INSERT INTO Products<br>VALUES (1, ‘Code Paradise Database’, ‘D’);</p>
 <p>INSERT INTO Products<br>VALUES (2, ‘Code Paradise Spreadsheet’, ‘S’);</p>
 <p>INSERT INTO Products<br>VALUES (3, ‘Code Paradise Word Processor’, ‘W’);</p>
-<p>INSERT INTO Contracts<br>VALUES (1, 1, 9999, date(‘2020-01-01’), ‘<a href="mailto:&#x74;&#x65;&#115;&#x74;&#49;&#x40;&#116;&#101;&#115;&#116;&#x2e;&#x63;&#111;&#x6d;">&#x74;&#x65;&#115;&#x74;&#49;&#x40;&#116;&#101;&#115;&#116;&#x2e;&#x63;&#111;&#x6d;</a>‘);</p>
-<p>INSERT INTO Contracts<br>VALUES (2, 2, 1000, date(‘2020-03-15’), ‘<a href="mailto:&#116;&#101;&#x73;&#x74;&#50;&#x40;&#116;&#101;&#x73;&#116;&#x2e;&#x63;&#111;&#109;">&#116;&#101;&#x73;&#x74;&#50;&#x40;&#116;&#101;&#x73;&#116;&#x2e;&#x63;&#111;&#109;</a>‘);</p>
-<p>INSERT INTO Contracts<br>VALUES (3, 3, 24000, date(‘2020-07-25’), ‘<a href="mailto:&#x74;&#x65;&#115;&#116;&#x33;&#x40;&#x74;&#101;&#x73;&#x74;&#46;&#99;&#x6f;&#109;">&#x74;&#x65;&#115;&#116;&#x33;&#x40;&#x74;&#101;&#x73;&#x74;&#46;&#99;&#x6f;&#109;</a>‘);<br>“;<br>command.ExecuteNonQuery();<br>}</p>
+<p>INSERT INTO Contracts<br>VALUES (1, 1, 9999, date(‘2020-01-01’), ‘<a href="mailto:&#x74;&#101;&#115;&#116;&#49;&#64;&#116;&#101;&#x73;&#116;&#x2e;&#x63;&#x6f;&#x6d;">&#x74;&#101;&#115;&#116;&#49;&#64;&#116;&#101;&#x73;&#116;&#x2e;&#x63;&#x6f;&#x6d;</a>‘);</p>
+<p>INSERT INTO Contracts<br>VALUES (2, 2, 1000, date(‘2020-03-15’), ‘<a href="mailto:&#x74;&#101;&#115;&#116;&#50;&#64;&#x74;&#x65;&#115;&#116;&#46;&#99;&#x6f;&#109;">&#x74;&#101;&#115;&#116;&#50;&#64;&#x74;&#x65;&#115;&#116;&#46;&#99;&#x6f;&#109;</a>‘);</p>
+<p>INSERT INTO Contracts<br>VALUES (3, 3, 24000, date(‘2020-07-25’), ‘<a href="mailto:&#x74;&#101;&#x73;&#116;&#51;&#64;&#x74;&#x65;&#115;&#116;&#x2e;&#99;&#111;&#x6d;">&#x74;&#101;&#x73;&#116;&#51;&#64;&#x74;&#x65;&#115;&#116;&#x2e;&#99;&#111;&#x6d;</a>‘);<br>“;<br>command.ExecuteNonQuery();<br>}</p>
 <p>RecognitionService service &#x3D; new RecognitionService();</p>
 <p>&#x2F;&#x2F; database product<br>service.CalculateRevenueRecognitions(1);<br>var databaseRevenue &#x3D; service.RecognizedRevenue(1, new System.DateTime(2020, 1, 25));<br>Console.WriteLine($”database revenue before 2020-01-25 &#x3D; {databaseRevenue.Amount}”);</p>
 <p>&#x2F;&#x2F; spreadsheet product<br>service.CalculateRevenueRecognitions(2);<br>var spreadsheetRevenue &#x3D; service.RecognizedRevenue(2, new System.DateTime(2020, 6, 1));<br>Console.WriteLine($”spreadsheet revenue before 2020-06-01 &#x3D; {spreadsheetRevenue.Amount}”);</p>
