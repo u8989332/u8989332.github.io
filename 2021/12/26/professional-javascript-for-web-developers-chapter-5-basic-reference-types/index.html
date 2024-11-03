@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="本篇為 Professional JavaScript for Web Developers 第5章 Basic Reference Type 的讀書筆記 1.1 Date Type Date儲存從1970年1月1日 UTC 前後經過的毫秒. new Date()可得到local的現在時間 Date的constructor可代入毫秒做初始化為別的時間 Date.parse()和Date.UTC()">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JavaScript Basic Reference Type">
+<meta property="og:url" content="http://example.com/2021/12/26/professional-javascript-for-web-developers-chapter-5-basic-reference-types/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="本篇為 Professional JavaScript for Web Developers 第5章 Basic Reference Type 的讀書筆記 1.1 Date Type Date儲存從1970年1月1日 UTC 前後經過的毫秒. new Date()可得到local的現在時間 Date的constructor可代入毫秒做初始化為別的時間 Date.parse()和Date.UTC()">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-12-26T08:22:00.000Z">
+<meta property="article:modified_time" content="2023-11-19T07:47:26.006Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://example.com/2021/12/26/professional-javascript-for-web-developers-chapter-5-basic-reference-types/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>JavaScript Basic Reference Type | Hexo</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Hexo</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/12/26/professional-javascript-for-web-developers-chapter-5-basic-reference-types/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          JavaScript Basic Reference Type
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-12-26 16:22:00" itemprop="dateCreated datePublished" datetime="2021-12-26T16:22:00+08:00">2021-12-26</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-11-19 15:47:26" itemprop="dateModified" datetime="2023-11-19T15:47:26+08:00">2023-11-19</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/JavaScript/" itemprop="url" rel="index"><span itemprop="name">JavaScript</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%AE%80%E6%9B%B8%E7%AD%86%E8%A8%98/" itemprop="url" rel="index"><span itemprop="name">讀書筆記</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>本篇為 Professional JavaScript for Web Developers 第5章 Basic Reference Type 的讀書筆記</p>
+<h4 id="1-1-Date-Type"><a href="#1-1-Date-Type" class="headerlink" title="1.1 Date Type"></a>1.1 Date Type</h4><ul>
+<li>Date儲存從1970年1月1日 UTC 前後經過的毫秒.</li>
+<li>new Date()可得到local的現在時間</li>
+<li>Date的constructor可代入毫秒做初始化為別的時間</li>
+<li>Date.parse()和Date.UTC()可回傳1970&#x2F;1&#x2F;1 UTC的經過毫秒時間</li>
+<li>Date.parse()可解析多種日期字串, 且會受地區影響</li>
+<li>在Date() constructor代入日期字串, 其背後也是Date.parse()</li>
+<li>Date.UTC()以UTC時間為基準</li>
+<li>但在Date() constructor代入和UTC的參數方式, 是得到local time</li>
+<li>一段程式碼運行的時間差可以用2筆Date.now()相減, 取得執行前後的毫秒差</li>
+</ul>
+<p>&#x2F;&#x2F; 假如現在是台灣 GMT+8 的 2020&#x2F;6&#x2F;13 下午2點<br>let d1 &#x3D; new Date();<br>console.log(d1.getUTCHours()); &#x2F;&#x2F; 輸出 UTC的 早上6點</p>
+<p>let d2 &#x3D; new Date(Date.parse(“2020&#x2F;6&#x2F;13 14:00:00”));<br>console.log(d2.getUTCHours()); &#x2F;&#x2F; 輸出 UTC的 早上6點</p>
+<p>let d3 &#x3D; new Date(Date.UTC(2020, 5, 13, 14, 0, 0));<br>console.log(d3.getUTCHours()); &#x2F;&#x2F; 輸出 UTC的 下午2點</p>
+<p>let d4 &#x3D; new Date(2020, 5, 13, 14, 0, 0);<br>console.log(d4.getUTCHours()); &#x2F;&#x2F; 輸出 UTC的 早上6點</p>
+<p>let startD &#x3D; Date.now();<br>console.log(‘do something’);<br>let endD &#x3D; Date.now();<br>let diff &#x3D; endD - startD;<br>console.log(diff); &#x2F;&#x2F; 輸出 毫秒差</p>
+<h5 id="1-1-1-Inherited-Methods"><a href="#1-1-1-Inherited-Methods" class="headerlink" title="1.1.1 Inherited Methods"></a>1.1.1 Inherited Methods</h5><ul>
+<li>toLocaleString()和toString()每個瀏覽器輸出的格式稍微不同, 只能用在Debug</li>
+<li>valueOf()會用在比較的operator等, 做時間前後的比較運算, 實際邏輯是取出毫秒值做大小比對</li>
+</ul>
+<h5 id="1-1-2-Date-Formatting-Methods"><a href="#1-1-2-Date-Formatting-Methods" class="headerlink" title="1.1.2 Date-Formatting Methods"></a>1.1.2 Date-Formatting Methods</h5><ul>
+<li>有toDateString(), toTimeString(), toLocaleDateString(), toLocalseTimeString(), toUTCString(), 都和toString()一樣, 每個瀏覽器的輸出各有稍微不同</li>
+<li>還有個toGMTString(), 和toUTCString()結果一樣, 所以建議用toUTCString()</li>
+</ul>
+<h5 id="1-1-3-Date-Time-Component-Methods"><a href="#1-1-3-Date-Time-Component-Methods" class="headerlink" title="1.1.3 Date&#x2F;Time Component Methods"></a>1.1.3 Date&#x2F;Time Component Methods</h5><ul>
+<li>剩下的Date方法有取特定日期&#x2F;時間格式、設置特定日期&#x2F;格式, 以getXXXX()或setXXXX()命名.</li>
+<li>其中getTime()和valueOf()一樣, 都是取UTC為準的毫秒差.</li>
+</ul>
+<h4 id="1-2-RexExp-Type"><a href="#1-2-RexExp-Type" class="headerlink" title="1.2 RexExp Type"></a>1.2 RexExp Type</h4><ul>
+<li>用這type支援regular expression的匹配</li>
+<li>格式為 let expression &#x3D; &#x2F;pattern&#x2F;flags</li>
+<li>pattern為任意的regular expression, 而flags可以是1個或多個</li>
+<li>flag有6種</li>
+</ul>
+<ol>
+<li>g : 代表global模式, 應用所有字串, 而不是只有前面字串有match就停止</li>
+<li>i: 不區分大小寫</li>
+<li>m: 多行模式, 遇到結尾符號仍繼續往下找</li>
+<li>y: sticky模式, pattern從lastIndex開始找</li>
+<li>u: unicode模式</li>
+<li>s: (這本書還未提到) ES2018出現的新模式, 允許 . 字元 match跳行, 可參考<a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp/dotAll">https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects&#x2F;RegExp&#x2F;dotAll</a></li>
+</ol>
+<p>let pattern1 &#x3D; &#x2F;ad&#x2F;g; &#x2F;&#x2F; match字串中有ad的子字串</p>
+<p>let pattern2 &#x3D; &#x2F;[bs]ad&#x2F;i; &#x2F;&#x2F; match第1個有bad或sad的子字串, 且不分大小寫</p>
+<p>let pattern3 &#x3D; &#x2F;.ad&#x2F;gi; &#x2F;&#x2F; match以ad結尾, 且不區分大小寫</p>
+<ul>
+<li>Regular expression有些特殊的字元, 其有特殊的意義, 想把特殊字元當作比對的字, 加上 \ 符號</li>
+<li>( { [ ^ $ ) ] } ? * + .</li>
+</ul>
+<p> </p>
+<p>let pattern1 &#x3D; &#x2F;[bs]ad&#x2F;i; &#x2F;&#x2F; match第1個有bad或sad的子字串, 且不分大小寫</p>
+<p>let pattern2 &#x3D; &#x2F;[bs]ad&#x2F;i; &#x2F;&#x2F; match第1個有[bs]ad的子字串, 且不分大小寫</p>
+<p>let pattern3 &#x3D; &#x2F;.ad&#x2F;gi; &#x2F;&#x2F; match以ad結尾, 且不區分大小寫</p>
+<p>let pattern4 &#x3D; &#x2F;.ad&#x2F;gi; &#x2F;&#x2F; match字串有.ad的子字串, 且不區分大小寫</p>
+<ul>
+<li>使用RegExp構造函數和一般expression的是同一個Type</li>
+<li>RegExp代入的字串pattern, 要再經過轉換才能用</li>
+</ul>
+<p>let pattern1 &#x3D; &#x2F;[bs]ad&#x2F;i; &#x2F;&#x2F; match第1個有bad或sad的子字串, 且不分大小寫</p>
+<p>let pattern2 &#x3D; new RegExp(“[bs]ad”, “i”); &#x2F;&#x2F; 和pattern1一樣</p>
+<p>let pattern3 &#x3D; &#x2F;[bs]ad&#x2F;i; &#x2F;&#x2F; match第1個有[bs]ad的子字串, 且不分大小寫</p>
+<p>let pattern4 &#x3D; new RegExp(“\[bs\]ad”, “i”); &#x2F;&#x2F; 和pattern3一樣</p>
+<p>let pattern5 &#x3D; &#x2F;.ad&#x2F;gi; &#x2F;&#x2F; match字串有.ad的子字串, 且不區分大小寫</p>
+<p>let pattern6 &#x3D; new RegExp(“\.ad&#x2F;gi”, “i”); &#x2F;&#x2F; 和pattern5一樣</p>
+<ul>
+<li>用RegExp的test, 可測試是否某字串有match此pattern</li>
+<li>但RegExp只要做比對的功能, 內部的比對index不會重置, 所以會有需要重新初始化的功能</li>
+</ul>
+<p>let pattern1 &#x3D; &#x2F;[bs]ad&#x2F;g; &#x2F;&#x2F; match有bad或sad的子字串</p>
+<p>console.log(pattern1.test(‘sad_man’)); &#x2F;&#x2F; 輸出true</p>
+<p>console.log(pattern1.test(‘sad_man’)); &#x2F;&#x2F; 因為前面比對過而index往後沒再match, 輸出false</p>
+<h5 id="1-2-1-RegExp-Instance-Properties"><a href="#1-2-1-RegExp-Instance-Properties" class="headerlink" title="1.2.1 RegExp Instance Properties"></a>1.2.1 RegExp Instance Properties</h5><ul>
+<li>global: boolean, 是否有設定g flag</li>
+<li>ignoreCase: boolean, 是否有設置i flag</li>
+<li>unicode: boolean, 是否有設置u flag</li>
+<li>sticky: boolean, 是否有設置y flag</li>
+<li>lastIndex: integer, 下次匹配開始的位置, 位置是從0開始</li>
+<li>multiline: boolean, 是否有設置m flag</li>
+<li>source: expression pattern字串</li>
+<li>flags: expression flag字串</li>
+<li>dotAll: (這本書尚未提到) boolean, 是否有設置s flag</li>
+</ul>
+<p>let pattern1 &#x3D; &#x2F;[bs]ad&#x2F;i; &#x2F;&#x2F; match第1個有[bs]ad的子字串, 且不分大小寫</p>
+<p>console.log(pattern1.global); &#x2F;&#x2F; false<br>console.log(pattern1.ignoreCase); &#x2F;&#x2F; true<br>console.log(pattern1.multiline); &#x2F;&#x2F; false<br>console.log(pattern1.dotAll); &#x2F;&#x2F; false<br>console.log(pattern1.lastIndex); &#x2F;&#x2F; 0<br>console.log(pattern1.source); &#x2F;&#x2F; “[bs]ad”<br>console.log(pattern1.flags); &#x2F;&#x2F; “i”</p>
+<p>let pattern2 &#x3D; new RegExp(“\[bs\]ad”, “i”); &#x2F;&#x2F; 和pattern1一樣<br>console.log(pattern2.global); &#x2F;&#x2F; false<br>console.log(pattern2.ignoreCase); &#x2F;&#x2F; true<br>console.log(pattern2.multiline); &#x2F;&#x2F; false<br>console.log(pattern2.dotAll); &#x2F;&#x2F; false<br>console.log(pattern2.lastIndex); &#x2F;&#x2F; 0<br>console.log(pattern2.source); &#x2F;&#x2F; “[bs]ad”<br>console.log(pattern2.flags); &#x2F;&#x2F; “i”</p>
+<h5 id="1-2-2-RegExp-Instance-Methods"><a href="#1-2-2-RegExp-Instance-Methods" class="headerlink" title="1.2.2 RegExp Instance Methods"></a>1.2.2 RegExp Instance Methods</h5><ul>
+<li>exec()是主要做match的函式, 回傳的物件是Array和一些額外屬性: index和input</li>
+<li>index代表目前match到的字串起始位置, 而input是被比對的字串</li>
+<li>假如沒有任何match, 回傳的物件是Null, 否則Array的第1筆資料是有比對到的字串, 第2筆以後是有用 () 分組的capturing group</li>
+<li>RegExp物件會更新lastIndex的值, 代表下次要match的起始位置</li>
+<li>RegExp的valueOf()是回傳本身RegExp物件</li>
+</ul>
+<p>let text &#x3D; ‘hello my mom my dad’;<br>let pattern &#x3D; &#x2F;hello( my mom( my dad)?)?&#x2F;gi;</p>
+<p>let arr &#x3D; pattern.exec(text);<br>console.log(arr.index); &#x2F;&#x2F; 比對到的起始位置是 0<br>console.log(arr.input); &#x2F;&#x2F; 比對的原始字串 ‘hello my mom my dad’<br>console.log(arr[0]); &#x2F;&#x2F; 比對到的結果 ‘hello my mom my dad’<br>console.log(arr[1]); &#x2F;&#x2F; 最外層分組 ‘ my mom my dad’<br>console.log(arr[2]); &#x2F;&#x2F; 第2層分組 ‘ my dad’</p>
+<p>&#x2F;&#x2F; 假如沒有用 g flag, pattern只會從第1個開始<br>let text &#x3D; ‘sad, bad, cad, dad’;<br>let pattern &#x3D; &#x2F;.ad&#x2F;; &#x2F;&#x2F; 前面有任意字元, 接著用ad</p>
+<p>let arr &#x3D; pattern.exec(text);<br>console.log(arr.index); &#x2F;&#x2F; 比對到的起始位置是 0<br>console.log(arr[0]); &#x2F;&#x2F; 比對到的結果 ‘sad’<br>console.log(pattern.lastIndex); &#x2F;&#x2F; 下次比對仍從位置 0 開始</p>
+<p>arr &#x3D; pattern.exec(text);<br>console.log(arr.index); &#x2F;&#x2F; 比對到的起始位置還是 0<br>console.log(arr[0]); &#x2F;&#x2F; 比對到的結果 ‘sad’<br>console.log(pattern.lastIndex); &#x2F;&#x2F; 下次比對仍從位置 0 開始</p>
+<p>&#x2F;&#x2F; 假如有用 g flag, pattern不只比對到第1個字就停, 下次繼續往後面搜尋<br>let text &#x3D; ‘sad, bad, cad, dad’;<br>let pattern &#x3D; &#x2F;.ad&#x2F;g; &#x2F;&#x2F; 前面有任意字元, 接著用ad</p>
+<p>let arr &#x3D; pattern.exec(text);<br>console.log(arr.index); &#x2F;&#x2F; 比對到的起始位置是 0<br>console.log(arr[0]); &#x2F;&#x2F; 比對到的結果 ‘sad’<br>console.log(pattern.lastIndex); &#x2F;&#x2F; 下次比對從位置 3 開始</p>
+<p>arr &#x3D; pattern.exec(text);<br>console.log(arr.index); &#x2F;&#x2F; 比對到的起始位置是 5<br>console.log(arr[0]); &#x2F;&#x2F; 比對到的結果 ‘bad’<br>console.log(pattern.lastIndex); &#x2F;&#x2F; 下次比對從位置 8 開始</p>
+<h5 id="1-2-3-RegExp-Constructor-Properties"><a href="#1-2-3-RegExp-Constructor-Properties" class="headerlink" title="1.2.3 RegExp Constructor Properties"></a>1.2.3 RegExp Constructor Properties</h5><ul>
+<li>RegExp有些屬性是當前scope共通的屬性, 每個RegExp 物件會共用這些屬性</li>
+<li>Constructor Properties並非所有瀏覽器有實作</li>
+<li>常見的Constructor屬性有完整名字和短名字</li>
+</ul>
+<ol>
+<li>input, 短名字為 $_ , 代表最近被比對的字串</li>
+<li>lastMatch, 短名字為 $&amp;, 代表最近比對成功的字串</li>
+<li>lastParen, 短名字為 $+, 代表最近比對的capturing group</li>
+<li>leftContext, 短名字為 $`, 於input的lastMatch之前的字串</li>
+<li>rightContext, 短名字為 $’, 於input的lastMatch之後的字串 </li>
+<li>用$1、$2…到$9, 也能顯示最近比對的capturing group, 最多能取9個</li>
+</ol>
+<p>let text &#x3D; ‘choose character: captain teemo on duty’;<br>let pattern &#x3D; &#x2F;(.)aptain&#x2F;g;</p>
+<p>if(pattern.test(text)){<br>   console.log(RegExp.input); &#x2F;&#x2F; 輸出 ‘choose character: captain teemo on duty’<br>   console.log(RegExp.$_); &#x2F;&#x2F; 輸出 ‘choose character: captain teemo on duty’</p>
+<p>   console.log(RegExp.leftContext); &#x2F;&#x2F; 輸出 ‘choose character: ‘<br>   console.log(RegExp[“$`“]); &#x2F;&#x2F; 輸出 ‘choose character: ‘</p>
+<p>   console.log(RegExp.rightContext); &#x2F;&#x2F; 輸出 ‘ teemo on duty’<br>   console.log(RegExp[“$’”]); &#x2F;&#x2F; 輸出 ‘ teemo on duty’</p>
+<p>   console.log(RegExp.lastMatch); &#x2F;&#x2F; 輸出 ‘captain’<br>   console.log(RegExp[“$&amp;”]); &#x2F;&#x2F; 輸出 ‘captain’</p>
+<p>   console.log(RegExp.lastParen); &#x2F;&#x2F; 輸出 ‘c’<br>   console.log(RegExp[“$+”]); &#x2F;&#x2F; 輸出 ‘c’<br>   console.log(RegExp.$1); &#x2F;&#x2F; 輸出 ‘c’<br>}</p>
+<h5 id="1-2-4-Pattern-Limitations"><a href="#1-2-4-Pattern-Limitations" class="headerlink" title="1.2.4 Pattern Limitations"></a>1.2.4 Pattern Limitations</h5><ul>
+<li>ECMAScript並非完整支援Regular Expression</li>
+<li>不支援的功能有</li>
+</ul>
+<ol>
+<li>開始和結尾A和Z anchor</li>
+<li>往後尋找 lookbehind</li>
+<li>union 和 intersection 類</li>
+<li>atomic grouping</li>
+<li>unicode</li>
+<li>有命名的capturing group</li>
+<li>單行s 和 無間隔x 的match 模式</li>
+<li>條件式</li>
+<li>comments</li>
+</ol>
+<h4 id="1-3-Primitive-Wrapper-Types"><a href="#1-3-Primitive-Wrapper-Types" class="headerlink" title="1.3 Primitive Wrapper Types"></a>1.3 Primitive Wrapper Types</h4><ul>
+<li>有String, Boolean和Number, 可以用 new 的方式建立object包裝的物件</li>
+<li>只要讀取這3種Primitive, JS背後會自動建立Wrapper Object, 讓我們能呼叫一些方法</li>
+<li>使用自動Wrapper Object, 被動態指定的屬性都會立即銷毀</li>
+</ul>
+<p>let text &#x3D; ‘hello world’;<br>let text2 &#x3D; text.substring(3); &#x2F;&#x2F; 這背後使用Wrapper Object, 才能讓我們有函式可用</p>
+<p>text.myWord &#x3D; ‘not work’;<br>console.log(text.myWord); &#x2F;&#x2F; 已經被銷毀, 所以輸出 undefined</p>
+<h5 id="1-3-1-Boolean-Type"><a href="#1-3-1-Boolean-Type" class="headerlink" title="1.3.1 Boolean Type"></a>1.3.1 Boolean Type</h5><ul>
+<li>建議不要用new Boolean物件, 容易有誤解</li>
+</ul>
+<p>let v1 &#x3D; new Boolean(false);<br>let result &#x3D; v1 &amp;&amp; true;<br>console.log(result); &#x2F;&#x2F; 輸出true, 因為v1 是 object, 並非Boolean值</p>
+<h5 id="1-3-2-Number-Type"><a href="#1-3-2-Number-Type" class="headerlink" title="1.3.2 Number Type"></a>1.3.2 Number Type</h5><ul>
+<li>常見數字格式化的方法 toFixed(數字)、toExponential(數字)、toPrecision(數字), 有些瀏覽器實作的範圍不一樣</li>
+<li>和Boolean一樣, 也不建議用new Number物件</li>
+<li>在ES6導入Number.isInteger()方法判斷是否整數、Number.isSafeInteger()判斷是否為整數且在Number.MAX_SAFE_INTEGER與 Number.MIN_SAFE_INTEGER範圍之間</li>
+</ul>
+<p> </p>
+<h5 id="1-3-3-String-Type"><a href="#1-3-3-String-Type" class="headerlink" title="1.3.3 String Type"></a>1.3.3 String Type</h5><h6 id="1-3-3-1-The-JavaScript-Character"><a href="#1-3-3-1-The-JavaScript-Character" class="headerlink" title="1.3.3.1 The JavaScript Character"></a>1.3.3.1 The JavaScript Character</h6><ul>
+<li>每個字元使用16bit儲存</li>
+<li>JS的字串會判斷2種Unicode編碼: UCS-2 和 UTF-16 , 都是16bit</li>
+<li>可用charCodeAt(位置)顯示該字元的編碼整數</li>
+<li>可用fromCharCode(編碼整數1, 編碼整數2, ….)組成UTF-16表示的字串, 編碼範圍是從U+0000 到 U+FFFF, 也稱之為 Basic Multilingual Plane 涵蓋範圍 </li>
+<li>有的特殊符號超過U+FFFF範圍, 會變成佔2個16bit, length和charAt等會取到異位的值, </li>
+<li>在U+10000到U+1FFFD範圍稱之 Supplementary Multilingual Plane,</li>
+</ul>
+<p>let text1 &#x3D; ‘大家好’;<br>console.log(text1.charCodeAt(1)); &#x2F;&#x2F; 輸出 23478</p>
+<p>let text2 &#x3D; String.fromCharCode(0x7a0b, 0x5f0f, 0x8a2d, 0x8a08);<br>console.log(text2); &#x2F;&#x2F; 輸出 程式設計</p>
+<p>let text3 &#x3D; ‘😭’; &#x2F;&#x2F; 用哭臉符號作範例, 它用UTF-16為 0xD83D 0xDE2D<br>console.log(text3.length); &#x2F;&#x2F; 佔了2個16 bit, 所以length為2<br>console.log(text3.charAt(0)); &#x2F;&#x2F; 輸出無法識別的編碼 �<br>console.log(text3.charAt(1)); &#x2F;&#x2F; 輸出無法識別的編碼 �</p>
+<p>console.log(text3.charCodeAt(0)); &#x2F;&#x2F; 輸出第1個16bit 55357 &#x3D; 0xD83D<br>console.log(text3.charCodeAt(1)); &#x2F;&#x2F; 輸出第2個16bit 36877 &#x3D; 0xDE2D</p>
+<h6 id="1-3-3-2-The-normalize-method"><a href="#1-3-3-2-The-normalize-method" class="headerlink" title="1.3.3.2 The normalize() method"></a>1.3.3.2 The normalize() method</h6><ul>
+<li>Unicode有些字是同樣的, 但出現在不同的編碼, 而不同編碼的字用 &#x3D;&#x3D; 比對必為false</li>
+<li>依照<a target="_blank" rel="noopener" href="http://www.unicode.org/reports/tr15/">http://www.unicode.org/reports/tr15/</a> , 共區分4種Normalization Form: C、D、KC、KD</li>
+<li>normalization的規則, 很像象形符號的組合</li>
+</ul>
+<p>&#x2F;&#x2F; 符號 ḉ 的原始Unicode-16 是0x1E09, 也能從另外2種編碼取得</p>
+<p>let c1 &#x3D; String.fromCharCode(0x1E09),<br> c2 &#x3D; String.fromCharCode(0x00E7, 0x0301),<br>c3 &#x3D; String.fromCharCode(0x0063, 0x0327, 0x0301);<br>console.log(c1); &#x2F;&#x2F; 輸出 ḉ<br>console.log(c2); &#x2F;&#x2F; 輸出 ḉ<br>console.log(c3); &#x2F;&#x2F; 輸出 ḉ</p>
+<p>console.log(c1 &#x3D;&#x3D;&#x3D; c2); &#x2F;&#x2F; 輸出 false<br>console.log(c2 &#x3D;&#x3D;&#x3D; c3); &#x2F;&#x2F; 輸出 false<br>console.log(c3 &#x3D;&#x3D;&#x3D; c1); &#x2F;&#x2F; 輸出 false</p>
+<p>&#x2F;&#x2F; U+1E09 已經是 0x00E7&#x2F;0x0301 的 NFC&#x2F;NFKC的normalization, 所以比對仍相等<br>console.log(c1 &#x3D;&#x3D;&#x3D; c1.normalize(“NFD”)); &#x2F;&#x2F; false<br>console.log(c1 &#x3D;&#x3D;&#x3D; c1.normalize(“NFC”)); &#x2F;&#x2F; true<br>console.log(c1 &#x3D;&#x3D;&#x3D; c1.normalize(“NFKD”)); &#x2F;&#x2F; false<br>console.log(c1 &#x3D;&#x3D;&#x3D; c1.normalize(“NFKC”)); &#x2F;&#x2F; true</p>
+<p>&#x2F;&#x2F; U+00E7&#x2F;U+0301 尚未normalization, 所以比對都不相等<br>console.log(c2 &#x3D;&#x3D;&#x3D; c2.normalize(“NFD”)); &#x2F;&#x2F; false<br>console.log(c2 &#x3D;&#x3D;&#x3D; c2.normalize(“NFC”)); &#x2F;&#x2F; false<br>console.log(c2 &#x3D;&#x3D;&#x3D; c2.normalize(“NFKD”)); &#x2F;&#x2F; false<br>console.log(c2 &#x3D;&#x3D;&#x3D; c2.normalize(“NFKC”)); &#x2F;&#x2F; false</p>
+<p>&#x2F;&#x2F; U+0063&#x2F;U+0327&#x2F;U+0301 已經是 0x00E7&#x2F;0x0301 的 NFD&#x2F;NFKD的normalization, 所以比對仍相等<br>console.log(c3 &#x3D;&#x3D;&#x3D; c3.normalize(“NFD”)); &#x2F;&#x2F; true<br>console.log(c3 &#x3D;&#x3D;&#x3D; c3.normalize(“NFC”)); &#x2F;&#x2F; false<br>console.log(c3 &#x3D;&#x3D;&#x3D; c3.normalize(“NFKD”)); &#x2F;&#x2F; true<br>console.log(c3 &#x3D;&#x3D;&#x3D; c3.normalize(“NFKC”)); &#x2F;&#x2F; false</p>
+<h6 id="1-3-3-3-String-Manipulation-Methods"><a href="#1-3-3-3-String-Manipulation-Methods" class="headerlink" title="1.3.3.3 String-Manipulation Methods"></a>1.3.3.3 String-Manipulation Methods</h6><ul>
+<li>concat可串接多個字串, 但常用 + 運算符號</li>
+<li>slice(), substring()和 substr()都可以回傳子字串, 但用法有些不同, 可參考<a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/substring">https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects&#x2F;String&#x2F;substring</a></li>
+</ul>
+<h6 id="1-3-3-4-String-Location-Methods"><a href="#1-3-3-4-String-Location-Methods" class="headerlink" title="1.3.3.4 String Location Methods"></a>1.3.3.4 String Location Methods</h6><ul>
+<li>indexOf()和lastIndexOf()可找字串的起始位置, 前者從前面找, 後者從後面找, 沒找到回傳-1</li>
+<li>都可以代第2個參數, 開始尋找的位置.</li>
+</ul>
+<h6 id="1-3-3-5-String-Inclusion-Methods"><a href="#1-3-3-5-String-Inclusion-Methods" class="headerlink" title="1.3.3.5 String Inclusion Methods"></a>1.3.3.5 String Inclusion Methods</h6><ul>
+<li>ES6導入的功能, 分別是startWith(), endWith(), includes(), 代表從開頭、結尾和中間是否有存在某字串, 若符合回傳true, 否則為false.</li>
+<li>startWith()和includes()可以代第2個參數, 開始尋找的位置.</li>
+</ul>
+<h6 id="1-3-3-6-The-trim-Method"><a href="#1-3-3-6-The-trim-Method" class="headerlink" title="1.3.3.6 The trim() Method"></a>1.3.3.6 The trim() Method</h6><ul>
+<li>trim()會刪除前後有空白的字串</li>
+<li>trimLeft()和trimRight()則只刪除最前&#x2F;最後的空白字串</li>
+</ul>
+<h6 id="1-3-3-7-The-repeat-Method"><a href="#1-3-3-7-The-repeat-Method" class="headerlink" title="1.3.3.7 The repeat() Method"></a>1.3.3.7 The repeat() Method</h6><ul>
+<li>可代入數字, 代表要重複字串的次數</li>
+</ul>
+<h6 id="1-3-3-8-The-padStart-and-padEnd-Method"><a href="#1-3-3-8-The-padStart-and-padEnd-Method" class="headerlink" title="1.3.3.8 The padStart() and padEnd() Method"></a>1.3.3.8 The padStart() and padEnd() Method</h6><ul>
+<li>有2個參數, 若只代第1個參數數字, 代表要擴充成長度為n的字串, 預設補上空白</li>
+<li>第2個參數是要擴充的字串</li>
+</ul>
+<h6 id="1-3-3-9-String-Iterators-and-Destructuring"><a href="#1-3-3-9-String-Iterators-and-Destructuring" class="headerlink" title="1.3.3.9 String Iterators and Destructuring"></a>1.3.3.9 String Iterators and Destructuring</h6><ul>
+<li>string有iterator, 可以歷遍每個字元</li>
+<li>基於iterator, 可以用for … of的方式取每個字元</li>
+<li>用[…某字串]可以拆成字元陣列(Destructuring)</li>
+</ul>
+<p>let text1 &#x3D; ‘hello’;<br>let stringIterator &#x3D; text1[Symbol.iterator]();<br>console.log(stringIterator.next()); &#x2F;&#x2F; 輸出 {value: ‘h’, done: false}<br>console.log(stringIterator.next()); &#x2F;&#x2F; 輸出 {value: ‘e’, done: false}<br>console.log(stringIterator.next()); &#x2F;&#x2F; 輸出 {value: ‘l’, done: false}<br>console.log(stringIterator.next()); &#x2F;&#x2F; 輸出 {value: ‘l’, done: false}<br>console.log(stringIterator.next()); &#x2F;&#x2F; 輸出 {value: ‘o’, done: false}<br>console.log(stringIterator.next()); &#x2F;&#x2F; 輸出 {value: undefined, done: true}</p>
+<p>for(const c of text1){<br>console.log(c); &#x2F;&#x2F; 依序輸出 h e l l o<br>}</p>
+<p>console.log([…text1]); &#x2F;&#x2F; 輸出 [‘h’, ‘e’, ‘l’, ‘l’, ‘o’]</p>
+<h6 id="1-3-3-10-String-Case-Methods"><a href="#1-3-3-10-String-Case-Methods" class="headerlink" title="1.3.3.10 String Case Methods"></a>1.3.3.10 String Case Methods</h6><ul>
+<li>除了toLowerCase(), toUpperCase()轉換大小寫, 還有toLocaleLowerCase(), toLocaleUpperCase()能指定特定地區的大小寫, 比如土耳其語.</li>
+<li>不確定要執行的環境, 直接用locale的方法做大小寫轉換</li>
+</ul>
+<h6 id="1-3-3-11-String-Pattern-Matching-Methods"><a href="#1-3-3-11-String-Pattern-Matching-Methods" class="headerlink" title="1.3.3.11 String Pattern-Matching Methods"></a>1.3.3.11 String Pattern-Matching Methods</h6><ul>
+<li>這些pattern方法都支援RegExp物件</li>
+<li>用字串的match(pattern)等同RegExp的exec(pattern)</li>
+<li>search(pattern)是從字串的頭往後搜尋有比對到pattern第1個出現位置, 若沒比對到則回傳-1. 和indexOf差異是能用RegExp</li>
+<li>replace(pattern, 要替換的單字)能找到pattern符合的字並替換掉. 其中要替換的單字能用特殊的字串, 比如用$1可以把captured group回填</li>
+<li>replace(pattern, someFunction), 可以用某個function來做替換的邏輯</li>
+</ul>
+<p>let text &#x3D; ‘sad, bad, cad, dad’;<br>let result &#x3D; text.replace(&#x2F;(.ad)&#x2F;g, ‘myWord ($1)’);<br>console.log(result); &#x2F;&#x2F; 輸出 myWord (sad), myWord (bad), myWord (cad), myWord (dad)</p>
+<p>let text2 &#x3D; ‘I am a boy, my dog is tall. So what is your name?’;<br>function replaceArticle(text){<br>return text.replace(&#x2F;[,.?]&#x2F;g, function(match, pos, originalText){<br> switch(match){<br> case ‘,’:<br> return ‘!’;<br> case ‘.’:<br> return ‘*‘;<br> case ‘?’:<br> return ‘#’;<br> }<br> });<br>}<br>console.log(replaceArticle(text2)); &#x2F;&#x2F; 輸出 I am a boy! my dog is tall* So what is your name#</p>
+<ul>
+<li>split也能支援RegExp pattern做切割字串成陣列, 第2個參數是切割後陣列的最大Size</li>
+</ul>
+<h6 id="1-3-3-12-The-localeCompare-Method"><a href="#1-3-3-12-The-localeCompare-Method" class="headerlink" title="1.3.3.12 The localeCompare() Method"></a>1.3.3.12 The localeCompare() Method</h6><ul>
+<li>做字串的字典排序比對, 小的回傳 -1、相等回傳0、大的回傳1</li>
+<li>支援locale代表大小寫有差異</li>
+</ul>
+<h6 id="1-3-3-13-HTML-Methods"><a href="#1-3-3-13-HTML-Methods" class="headerlink" title="1.3.3.13 HTML Methods"></a>1.3.3.13 HTML Methods</h6><ul>
+<li>字串有HTML相關的方法, 產生HTML字串, 比如anchor, big, link等</li>
+</ul>
+<p>let text &#x3D; ‘Hello World’;<br>console.log(text.anchor(‘test’)); &#x2F;&#x2F; 輸出 <a name="test">Hello World</a><br>console.log(text.big()); &#x2F;&#x2F; 輸出 <big>Hello World</big><br>console.log(text.link(‘<a target="_blank" rel="noopener" href="http://www.example.com/">http://www.example.com</a>‘)); &#x2F;&#x2F; 輸出 <a target="_blank" rel="noopener" href="http://www.example.com">Hello World</a></p>
+<h4 id="1-4-Singleton-Built-in-Objects"><a href="#1-4-Singleton-Built-in-Objects" class="headerlink" title="1.4 Singleton Built-in Objects"></a>1.4 Singleton Built-in Objects</h4><ul>
+<li>不依賴host environment的物件, 且在JS程式執行前已初始化.</li>
+<li>包含Global和Math 2種.</li>
+</ul>
+<h5 id="1-4-1-The-Global-Object"><a href="#1-4-1-The-Global-Object" class="headerlink" title="1.4.1 The Global Object"></a>1.4.1 The Global Object</h5><ul>
+<li>不屬於特定物件的屬性和方法, 那就會是Global的屬性和方法.</li>
+<li>比如parseInt(), isNaN()等, 都是Global的方法</li>
+</ul>
+<h6 id="1-4-1-1-URI-Encoding-Methods"><a href="#1-4-1-1-URI-Encoding-Methods" class="headerlink" title="1.4.1.1 URI-Encoding Methods"></a>1.4.1.1 URI-Encoding Methods</h6><ul>
+<li>encodeURI()和encodeURIComponent()可對URI做編碼, 將一些不符合URI的字元做UTF-8編碼</li>
+<li>encodeURI只對部分字元編碼、encodeURIComponent()全部字元都編碼</li>
+<li>實務上常用encodeURIComponent對query string做編碼</li>
+</ul>
+<p>let text &#x3D; ‘<a target="_blank" rel="noopener" href="https://www.example.com/special%20and%20words/#mobile-devices">https://www.example.com/special%20and%20words/#mobile-devices</a>‘;<br>console.log(encodeURI(text)); &#x2F;&#x2F; 輸出 <a target="_blank" rel="noopener" href="https://www.example.com/special%2520and%2520words/#mobile-devices">https://www.example.com/special%2520and%2520words/#mobile-devices</a><br>console.log(encodeURIComponent(text)); &#x2F;&#x2F; 輸出 https%3A%2F%2F<a href="http://www.example.com%2Fspecial%2520and%2520words%2F%23mobile-devices">www.example.com%2Fspecial%2520and%2520words%2F%23mobile-devices</a></p>
+<ul>
+<li>對應解碼的方法為decodeURI()和decodeURIComponent()</li>
+<li>encodeURI&#x2F;decodeURI等已取代舊版的escape&#x2F;unescape</li>
+</ul>
+<h6 id="1-4-1-2-The-eval-Method"><a href="#1-4-1-2-The-eval-Method" class="headerlink" title="1.4.1.2 The eval() Method"></a>1.4.1.2 The eval() Method</h6><ul>
+<li>eval()可以將ES語法做直譯, 並且裡面的變數、函式等都可是同個Scope</li>
+</ul>
+<p>eval(“console.log(‘hello’)”); &#x2F;&#x2F; 輸出hello</p>
+<p>let myWord &#x3D; ‘Testing’;<br>eval(“console.log(myWord)”); &#x2F;&#x2F; 輸出myWord</p>
+<p>eval(“function sayHi() { console.log(‘hiiii’); }”);<br>sayHi(); &#x2F;&#x2F; 輸出 hiiii</p>
+<ul>
+<li>在strict mode環境, 在eval宣告的變數、函式都不能被外部用, 且eval不能被指定為變數</li>
+<li>小心使用eval(), 以免 XSS 攻擊</li>
+</ul>
+<h6 id="1-4-1-3-Global-Object-Properties"><a href="#1-4-1-3-Global-Object-Properties" class="headerlink" title="1.4.1.3 Global Object Properties"></a>1.4.1.3 Global Object Properties</h6><ul>
+<li>目前有這些properties:</li>
+</ul>
+<ol>
+<li>undefined</li>
+<li>NaN</li>
+<li>Infinity</li>
+<li>Object</li>
+<li>Array</li>
+<li>Function</li>
+<li>Boolean</li>
+<li>String</li>
+<li>Number</li>
+<li>Date</li>
+<li>RegExp</li>
+<li>Symbol</li>
+<li>Error</li>
+<li>EvalError</li>
+<li>RangeError</li>
+<li>ReferenceError</li>
+<li>SyntaxError</li>
+<li>TypeError</li>
+<li>URIError</li>
+</ol>
+<h6 id="1-4-1-4-The-Window-Object"><a href="#1-4-1-4-The-Window-Object" class="headerlink" title="1.4.1.4 The Window Object"></a>1.4.1.4 The Window Object</h6><ul>
+<li>ES無規範如何直接存取Global Object, 但Web的全域變數和方法, 都可存取window物件取得.</li>
+<li>可用return this取得Global object</li>
+</ul>
+<p>var text &#x3D; ‘Hello World’; &#x2F;&#x2F; 要用var, 才會指定到window物件</p>
+<p>function sayHello(){<br>console.log(window.text); &#x2F;&#x2F; text已在window物件<br>}</p>
+<p>window.sayHello(); &#x2F;&#x2F; sayHello已在window物件, 輸出 Hello World</p>
+<p>&#x2F;&#x2F; this能代表global, 在debug console能看見global變數有許多瀏覽器相關的變數和函數<br>let global &#x3D; function(){<br>return this;<br>}();</p>
+<h5 id="1-4-2-The-Math-Object"><a href="#1-4-2-The-Math-Object" class="headerlink" title="1.4.2 The Math Object"></a>1.4.2 The Math Object</h5><ul>
+<li>提供計算相關的常數和函式</li>
+<li>Math提供的函式會比自己寫的函式還要有效率, 但因瀏覽器、作業系統等環境, 精準度會有差異</li>
+</ul>
+<h6 id="1-4-2-1-Math-Object-Properties"><a href="#1-4-2-1-Math-Object-Properties" class="headerlink" title="1.4.2.1 Math Object Properties"></a>1.4.2.1 Math Object Properties</h6><ul>
+<li>常見的常數</li>
+<li>Math.E</li>
+<li>Math.LN10</li>
+<li>Math.LN2</li>
+<li>Math.LOG2E</li>
+<li>Math.LOG10E</li>
+<li>Math.PI</li>
+<li>Math.SQRT1_2</li>
+<li>Math.SQRT2</li>
+</ul>
+<h6 id="1-4-2-2-The-min-and-max-Methods"><a href="#1-4-2-2-The-min-and-max-Methods" class="headerlink" title="1.4.2.2 The min() and max() Methods"></a>1.4.2.2 The min() and max() Methods</h6><ul>
+<li>回傳一組數字裡最小&#x2F;最大值</li>
+<li>如果是array, 要用apply, 第1個參數代入Math, 第2個參數帶入陣列</li>
+</ul>
+<p>console.log(Math.min(1, 2, 3)); &#x2F;&#x2F; 輸出 1<br>console.log(Math.max.apply(Math, [4, 5, 6])); &#x2F;&#x2F; 輸出 6</p>
+<h6 id="1-4-2-3-Rounding-Methods"><a href="#1-4-2-3-Rounding-Methods" class="headerlink" title="1.4.2.3 Rounding Methods"></a>1.4.2.3 Rounding Methods</h6><ul>
+<li>Rounding的中文是捨入, Math有4種捨入函式</li>
+</ul>
+<ol>
+<li>Math.ceil(): 回傳ceiling function的整數結果</li>
+<li>Math.floor(): 回傳floor function的整數結果</li>
+<li>Math.round(): 四捨五入的函式, 小數點 &gt;&#x3D; 0.5 則進位</li>
+<li>Math.fround(): 將浮點數轉換成最接近的single precision 32 bit表示. 可以參考此網站做驗證 <a target="_blank" rel="noopener" href="https://www.exploringbinary.com/floating-point-converter/">https://www.exploringbinary.com/floating-point-converter/</a></li>
+</ol>
+<p>console.log(Math.ceil(11.6)); &#x2F;&#x2F; 輸出 12<br>console.log(Math.ceil(11.1)); &#x2F;&#x2F; 輸出 12</p>
+<p>console.log(Math.floor(11.6)); &#x2F;&#x2F; 輸出 11<br>console.log(Math.floor(11.1)); &#x2F;&#x2F; 輸出 11</p>
+<p>console.log(Math.round(11.6)); &#x2F;&#x2F; 輸出 12<br>console.log(Math.round(11.1)); &#x2F;&#x2F; 輸出 11</p>
+<p>console.log(Math.fround(0.4)); &#x2F;&#x2F; JS的浮點數都是64-bit, 實際上0.4是0.40000000000000002220446049250313080847263336181640625, 轉成32-bit是 0.4000000059604644775390625<br>console.log(Math.fround(0.5)); &#x2F;&#x2F; 輸出 0.5</p>
+<h6 id="1-4-2-4-The-random-Method"><a href="#1-4-2-4-The-random-Method" class="headerlink" title="1.4.2.4 The random() Method"></a>1.4.2.4 The random() Method</h6><ul>
+<li>Math.random()會回傳 0~1之間的數字, 但不包含0與1</li>
+<li>實用的方式是可以從某lowerValue ~ upperValue裡隨機挑1個整數, 延伸的用法是隨機挑選陣列裡的值</li>
+<li>密碼學產生隨機數字建議用window.crypto.getRandomValues()</li>
+</ul>
+<p>function selectFrom(lowerValue, upperValue){<br>let choices &#x3D; upperValue - lowerValue + 1;<br> return Math.floor(Math.random() * choices + lowerValue);<br>}</p>
+<p>let num &#x3D; selectFrom(3, 6); &#x2F;&#x2F; 從3 4 5 6 的4個數字挑1個<br>console.log(num);</p>
+<p>let words &#x3D; [‘hello’, ‘sky’, ‘snow’, ‘happy’];<br>console.log(words[selectFrom(0, words.length - 1)]); </p>
+<h6 id="1-4-2-5-Other-Methods"><a href="#1-4-2-5-Other-Methods" class="headerlink" title="1.4.2.5 Other Methods"></a>1.4.2.5 Other Methods</h6><ul>
+<li>其它的方法請參考 MDN <a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math">https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects&#x2F;Math</a></li>
+</ul>
+<h4 id="2-參考資料"><a href="#2-參考資料" class="headerlink" title="2. 參考資料"></a>2. 參考資料</h4><ol>
+<li><a target="_blank" rel="noopener" href="https://www.amazon.com/-/zh_TW/Matt-Frisbie/dp/1119366445?crid=2IKRLQD88C73Q&keywords=javascript&qid=1640523661&sprefix=javascrip,aps,272&sr=8-24&linkCode=ll1&tag=glj89893320b-20&linkId=0a4b475800517718840fceead024db61&language=zh_TW&ref_=as_li_ss_tl">Professional JavaScript for Web Developers 4th Edition, Chapter 5 : Basic Reference Types, Matt Frisbie.</a></li>
+</ol>
+<p>Javascript Basic Reference Type</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/12/05/threading-in-csharp-part-3-using-threads/" rel="prev" title="Threading in C# - USING THREADS">
+      <i class="fa fa-chevron-left"></i> Threading in C# - USING THREADS
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/01/09/home/" rel="next" title="Home">
+      Home <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1-Date-Type"><span class="nav-number">1.</span> <span class="nav-text">1.1 Date Type</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-1-1-Inherited-Methods"><span class="nav-number">1.1.</span> <span class="nav-text">1.1.1 Inherited Methods</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-1-2-Date-Formatting-Methods"><span class="nav-number">1.2.</span> <span class="nav-text">1.1.2 Date-Formatting Methods</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-1-3-Date-Time-Component-Methods"><span class="nav-number">1.3.</span> <span class="nav-text">1.1.3 Date&#x2F;Time Component Methods</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-RexExp-Type"><span class="nav-number">2.</span> <span class="nav-text">1.2 RexExp Type</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-2-1-RegExp-Instance-Properties"><span class="nav-number">2.1.</span> <span class="nav-text">1.2.1 RegExp Instance Properties</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-2-2-RegExp-Instance-Methods"><span class="nav-number">2.2.</span> <span class="nav-text">1.2.2 RegExp Instance Methods</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-2-3-RegExp-Constructor-Properties"><span class="nav-number">2.3.</span> <span class="nav-text">1.2.3 RegExp Constructor Properties</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-2-4-Pattern-Limitations"><span class="nav-number">2.4.</span> <span class="nav-text">1.2.4 Pattern Limitations</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-3-Primitive-Wrapper-Types"><span class="nav-number">3.</span> <span class="nav-text">1.3 Primitive Wrapper Types</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-3-1-Boolean-Type"><span class="nav-number">3.1.</span> <span class="nav-text">1.3.1 Boolean Type</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-3-2-Number-Type"><span class="nav-number">3.2.</span> <span class="nav-text">1.3.2 Number Type</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-3-3-String-Type"><span class="nav-number">3.3.</span> <span class="nav-text">1.3.3 String Type</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#1-3-3-1-The-JavaScript-Character"><span class="nav-number">3.3.1.</span> <span class="nav-text">1.3.3.1 The JavaScript Character</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#1-3-3-2-The-normalize-method"><span class="nav-number">3.3.2.</span> <span class="nav-text">1.3.3.2 The normalize() method</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#1-3-3-3-String-Manipulation-Methods"><span class="nav-number">3.3.3.</span> <span class="nav-text">1.3.3.3 String-Manipulation Methods</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#1-3-3-4-String-Location-Methods"><span class="nav-number">3.3.4.</span> <span class="nav-text">1.3.3.4 String Location Methods</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#1-3-3-5-String-Inclusion-Methods"><span class="nav-number">3.3.5.</span> <span class="nav-text">1.3.3.5 String Inclusion Methods</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#1-3-3-6-The-trim-Method"><span class="nav-number">3.3.6.</span> <span class="nav-text">1.3.3.6 The trim() Method</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#1-3-3-7-The-repeat-Method"><span class="nav-number">3.3.7.</span> <span class="nav-text">1.3.3.7 The repeat() Method</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#1-3-3-8-The-padStart-and-padEnd-Method"><span class="nav-number">3.3.8.</span> <span class="nav-text">1.3.3.8 The padStart() and padEnd() Method</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#1-3-3-9-String-Iterators-and-Destructuring"><span class="nav-number">3.3.9.</span> <span class="nav-text">1.3.3.9 String Iterators and Destructuring</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#1-3-3-10-String-Case-Methods"><span class="nav-number">3.3.10.</span> <span class="nav-text">1.3.3.10 String Case Methods</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#1-3-3-11-String-Pattern-Matching-Methods"><span class="nav-number">3.3.11.</span> <span class="nav-text">1.3.3.11 String Pattern-Matching Methods</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#1-3-3-12-The-localeCompare-Method"><span class="nav-number">3.3.12.</span> <span class="nav-text">1.3.3.12 The localeCompare() Method</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#1-3-3-13-HTML-Methods"><span class="nav-number">3.3.13.</span> <span class="nav-text">1.3.3.13 HTML Methods</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-4-Singleton-Built-in-Objects"><span class="nav-number">4.</span> <span class="nav-text">1.4 Singleton Built-in Objects</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-4-1-The-Global-Object"><span class="nav-number">4.1.</span> <span class="nav-text">1.4.1 The Global Object</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#1-4-1-1-URI-Encoding-Methods"><span class="nav-number">4.1.1.</span> <span class="nav-text">1.4.1.1 URI-Encoding Methods</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#1-4-1-2-The-eval-Method"><span class="nav-number">4.1.2.</span> <span class="nav-text">1.4.1.2 The eval() Method</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#1-4-1-3-Global-Object-Properties"><span class="nav-number">4.1.3.</span> <span class="nav-text">1.4.1.3 Global Object Properties</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#1-4-1-4-The-Window-Object"><span class="nav-number">4.1.4.</span> <span class="nav-text">1.4.1.4 The Window Object</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-4-2-The-Math-Object"><span class="nav-number">4.2.</span> <span class="nav-text">1.4.2 The Math Object</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#1-4-2-1-Math-Object-Properties"><span class="nav-number">4.2.1.</span> <span class="nav-text">1.4.2.1 Math Object Properties</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#1-4-2-2-The-min-and-max-Methods"><span class="nav-number">4.2.2.</span> <span class="nav-text">1.4.2.2 The min() and max() Methods</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#1-4-2-3-Rounding-Methods"><span class="nav-number">4.2.3.</span> <span class="nav-text">1.4.2.3 Rounding Methods</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#1-4-2-4-The-random-Method"><span class="nav-number">4.2.4.</span> <span class="nav-text">1.4.2.4 The random() Method</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#1-4-2-5-Other-Methods"><span class="nav-number">4.2.5.</span> <span class="nav-text">1.4.2.5 Other Methods</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E5%8F%83%E8%80%83%E8%B3%87%E6%96%99"><span class="nav-number">5.</span> <span class="nav-text">2. 參考資料</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">208</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">49</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

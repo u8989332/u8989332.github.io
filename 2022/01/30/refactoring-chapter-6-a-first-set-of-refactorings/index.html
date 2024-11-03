@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="This article references the chapter 6 “ A First Set of Refactorings “ of Refactoring: Improving the Design of Existing Code (2nd Edition). Author had highlighted many important refactorings in this ch">
+<meta property="og:type" content="article">
+<meta property="og:title" content="A First Set of Refactorings">
+<meta property="og:url" content="http://example.com/2022/01/30/refactoring-chapter-6-a-first-set-of-refactorings/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="This article references the chapter 6 “ A First Set of Refactorings “ of Refactoring: Improving the Design of Existing Code (2nd Edition). Author had highlighted many important refactorings in this ch">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://geekcodeparadise.com/wp-content/uploads/2022/01/plumber-4427401_1920-1024x620.jpg">
+<meta property="article:published_time" content="2022-01-30T10:51:21.000Z">
+<meta property="article:modified_time" content="2023-11-19T07:47:26.011Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://geekcodeparadise.com/wp-content/uploads/2022/01/plumber-4427401_1920-1024x620.jpg">
+
+<link rel="canonical" href="http://example.com/2022/01/30/refactoring-chapter-6-a-first-set-of-refactorings/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>A First Set of Refactorings | Hexo</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Hexo</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/01/30/refactoring-chapter-6-a-first-set-of-refactorings/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          A First Set of Refactorings
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-01-30 18:51:21" itemprop="dateCreated datePublished" datetime="2022-01-30T18:51:21+08:00">2022-01-30</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-11-19 15:47:26" itemprop="dateModified" datetime="2023-11-19T15:47:26+08:00">2023-11-19</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C#</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Refactoring/" itemprop="url" rel="index"><span itemprop="name">Refactoring</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>This article references the chapter 6 “ A First Set of Refactorings “ of <a target="_blank" rel="noopener" href="https://amzn.to/3LUmBwI">Refactoring: Improving the Design of Existing Code (2nd Edition)</a>. Author had highlighted many important refactorings in this chapter.</p>
+<p>I use .NET C# to practice with these refactorings and upload to Github.</p>
+<p><a target="_blank" rel="noopener" href="https://geekcodeparadise.com/wp-content/uploads/2022/01/plumber-4427401_1920-1024x620.jpg"><img src="https://geekcodeparadise.com/wp-content/uploads/2022/01/plumber-4427401_1920-1024x620.jpg" alt="A first set of refactorings"></a></p>
+<p>(Photo from Pixabay: <a target="_blank" rel="noopener" href="https://pixabay.com/illustrations/plumber-repair-tools-pipe-plunger-4427401/">https://pixabay.com/illustrations/plumber-repair-tools-pipe-plunger-4427401/ )</a></p>
+<h4 id="Extract-Function"><a href="#Extract-Function" class="headerlink" title="Extract Function"></a>Extract Function</h4><h5 id="Tips"><a href="#Tips" class="headerlink" title="Tips"></a>Tips</h5><ul>
+<li>Redundant logics should be extracted as a function</li>
+<li>A function is best when developers see its naming and understand what it does without looking at its implementation.</li>
+<li>A function usually has few lines of code.</li>
+<li>Sometimes a extracted function is not proper, then transfer it into inline lines.</li>
+</ul>
+<h5 id="Examples"><a href="#Examples" class="headerlink" title="Examples:"></a>Examples:</h5><ul>
+<li>No Variables Out of Scope</li>
+<li>Using Local Variables</li>
+<li>Reassigning a Local Variable</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://github.com/u8989332/martin-fowler-refactoring-2nd/tree/master/Ch6.A%20First%20Set%20of%20Refactorings/Extract%20Function">Github</a></p>
+<h4 id="Inline-Function"><a href="#Inline-Function" class="headerlink" title="Inline Function"></a>Inline Function</h4><h5 id="Tips-1"><a href="#Tips-1" class="headerlink" title="Tips"></a>Tips</h5><ul>
+<li>If the indirect call of this function is not required, make it as inline function</li>
+<li>This function has no polymorphism. It means that if this function belongs to a class and subclass uses it, inline function doesn’t work.</li>
+</ul>
+<h5 id="Examples-1"><a href="#Examples-1" class="headerlink" title="Examples:"></a>Examples:</h5><ul>
+<li>Rating</li>
+<li>Report Lines</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://github.com/u8989332/martin-fowler-refactoring-2nd/tree/master/Ch6.A%20First%20Set%20of%20Refactorings/Inline%20Function">Github</a></p>
+<h4 id="Extract-Variable"><a href="#Extract-Variable" class="headerlink" title="Extract Variable"></a>Extract Variable</h4><h5 id="Tips-2"><a href="#Tips-2" class="headerlink" title="Tips"></a>Tips</h5><ul>
+<li>Some expressions are complex, so use Extract Variable to improve readability.</li>
+<li>Check the target expression has no side-effect before extract it</li>
+</ul>
+<h5 id="Examples-2"><a href="#Examples-2" class="headerlink" title="Examples:"></a>Examples:</h5><ul>
+<li>Static Function</li>
+<li>In a Class</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://github.com/u8989332/martin-fowler-refactoring-2nd/tree/master/Ch6.A%20First%20Set%20of%20Refactorings/Extract%20Variable">Github</a></p>
+<h4 id="Inline-Variable"><a href="#Inline-Variable" class="headerlink" title="Inline Variable"></a>Inline Variable</h4><h5 id="Tips-3"><a href="#Tips-3" class="headerlink" title="Tips"></a>Tips</h5><ul>
+<li>If this variable hinders the nearby refactoring, this variable should be removed.</li>
+<li>Check the right side of the assignment to the variable has no side-effect.</li>
+</ul>
+<h5 id="Examples-3"><a href="#Examples-3" class="headerlink" title="Examples:"></a>Examples:</h5><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">int</span> grade = student.Grade;</span><br><span class="line"><span class="keyword">return</span> (grade &gt;= <span class="number">60</span>);</span><br><span class="line"><span class="comment">// after Inline Variable</span></span><br><span class="line"><span class="keyword">return</span> student.Grade &gt;= <span class="number">60</span>;</span><br></pre></td></tr></table></figure>
+
+<h4 id="Change-Function-Declaration"><a href="#Change-Function-Declaration" class="headerlink" title="Change Function Declaration"></a>Change Function Declaration</h4><h5 id="Tips-4"><a href="#Tips-4" class="headerlink" title="Tips"></a>Tips</h5><ul>
+<li>A good function name increases readability.</li>
+<li>Changing parameters of a function decouple between the modules.</li>
+<li>If an published API should be refactored, then use [deprecated] for the original function. After a period, migrate the old function to the new one and remove the old one.</li>
+</ul>
+<h5 id="Examples-4"><a href="#Examples-4" class="headerlink" title="Examples:"></a>Examples:</h5><ul>
+<li>Renaming a Function (Simple Mechanics)</li>
+<li>Renaming a Function (Migration Mechanics)</li>
+<li>Adding a Paramete</li>
+<li>Changing a Parameter to One of Its Properties</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://github.com/u8989332/martin-fowler-refactoring-2nd/tree/master/Ch6.A%20First%20Set%20of%20Refactorings/Change%20Function%20Declaration">Github</a></p>
+<h4 id="Encapsulate-Variable"><a href="#Encapsulate-Variable" class="headerlink" title="Encapsulate Variable"></a>Encapsulate Variable</h4><h5 id="Tips-5"><a href="#Tips-5" class="headerlink" title="Tips"></a>Tips</h5><ul>
+<li>Usually use function to encapsulate access of variables</li>
+<li>For mutable data, if its scope exceeds one function, we encapsulate it.</li>
+<li>If the variable’s value is a record, we can use <strong><em>Encapsulate Record</em></strong></li>
+</ul>
+<h5 id="Examples-5"><a href="#Examples-5" class="headerlink" title="Examples:"></a>Examples:</h5><ul>
+<li>Simple</li>
+<li>Encapsulating the Value</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://github.com/u8989332/martin-fowler-refactoring-2nd/tree/master/Ch6.A%20First%20Set%20of%20Refactorings/Encapsulate%20Variable">Github</a></p>
+<h4 id="Rename-Variable"><a href="#Rename-Variable" class="headerlink" title="Rename Variable"></a>Rename Variable</h4><h5 id="Tips-6"><a href="#Tips-6" class="headerlink" title="Tips"></a>Tips</h5><ul>
+<li>Good naming increases readability</li>
+<li>If the variable is widely used, we can use <strong><em>Encapsulate Variable</em></strong></li>
+<li>If this variable is a published variable, we can’t use this refactoring</li>
+</ul>
+<h5 id="Examples-6"><a href="#Examples-6" class="headerlink" title="Examples:"></a>Examples:</h5><ul>
+<li>Encapsulating Variable</li>
+<li>Renaming a Constant</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://github.com/u8989332/martin-fowler-refactoring-2nd/tree/master/Ch6.A%20First%20Set%20of%20Refactorings/Rename%20Variable">Github</a></p>
+<h4 id="Introduce-Parameter-Object"><a href="#Introduce-Parameter-Object" class="headerlink" title="Introduce Parameter Object"></a>Introduce Parameter Object</h4><h5 id="Tips-7"><a href="#Tips-7" class="headerlink" title="Tips"></a>Tips</h5><ul>
+<li>Use a class to packs the parameters of a function</li>
+<li>Keep these classes as Value Objects (DDD)</li>
+<li>Use <strong><em>Change Function Declaration</em></strong> to create the new class parameter</li>
+</ul>
+<h5 id="Examples-7"><a href="#Examples-7" class="headerlink" title="Examples:"></a>Examples:</h5><ul>
+<li>Change Function Declaration</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://github.com/u8989332/martin-fowler-refactoring-2nd/tree/master/Ch6.A%20First%20Set%20of%20Refactorings/Introduce%20Parameter%20Object">Github</a></p>
+<h4 id="Combine-Functions-into-Class"><a href="#Combine-Functions-into-Class" class="headerlink" title="Combine Functions into Class"></a>Combine Functions into Class</h4><h5 id="Tips-8"><a href="#Tips-8" class="headerlink" title="Tips"></a>Tips</h5><ul>
+<li>If some parameter exists in multiple functions, creating a class is a good choice. Move the parameter to class field and reduce parameter of function.</li>
+<li><strong><em>Combine Functions into Transform</em></strong> is another choice depending on the context</li>
+<li>Use <strong><em>Encapsulate Record</em></strong> for the previously mentioned parameters. Then use <strong><em>Move Function</em></strong> for those function into a new class.</li>
+<li>We can use <strong><em>Extract Function</em></strong> for the logic processing the record data into the new class.</li>
+</ul>
+<h5 id="Examples-8"><a href="#Examples-8" class="headerlink" title="Examples:"></a>Examples:</h5><p><a target="_blank" rel="noopener" href="https://github.com/u8989332/martin-fowler-refactoring-2nd/tree/master/Ch6.A%20First%20Set%20of%20Refactorings/Combine%20Functions%20into%20Class">Github</a></p>
+<h4 id="Combine-Functions-into-Transform"><a href="#Combine-Functions-into-Transform" class="headerlink" title="Combine Functions into Transform"></a>Combine Functions into Transform</h4><h5 id="Tips-9"><a href="#Tips-9" class="headerlink" title="Tips"></a>Tips</h5><ul>
+<li>Transform function loads the original data, then use some functions to get new data and set it the fields of <strong>derivation</strong> data.</li>
+<li>Comparing with <strong><em>Combine Functions into Class,</em></strong> if some code logic updates the original data, <strong><em>Combine Functions into Class</em></strong> is better.</li>
+<li>In a transform function, first <strong>deep copy</strong> the loaded original data into result(derivation) data. Finally return this result data.</li>
+<li>If the structure of the result is the same as the original, the transform function uses “Enrich” as prefix naming. If the structure changes, then use “Transform” as prefix naming.</li>
+<li>It’s not recommended for JavaScript to use this refactoring instead of using <strong><em>Combine Functions into Class</em></strong> because of <strong>Immutable data</strong></li>
+</ul>
+<h5 id="Examples-9"><a href="#Examples-9" class="headerlink" title="Examples:"></a>Examples:</h5><p><a target="_blank" rel="noopener" href="https://github.com/u8989332/martin-fowler-refactoring-2nd/tree/master/Ch6.A%20First%20Set%20of%20Refactorings/Combine%20Functions%20into%20Transform">Github</a></p>
+<h4 id="Split-Phase"><a href="#Split-Phase" class="headerlink" title="Split Phase"></a>Split Phase</h4><h5 id="Tips-10"><a href="#Tips-10" class="headerlink" title="Tips"></a>Tips</h5><ul>
+<li>If some logic concurrently processes 2 different things, then separate it into 2 independent modules.</li>
+<li>Extract the second phase code as a new function. And create an intermediate data structure as the parameter of the new function.</li>
+<li>If some parameters in second phase are used by first phase, then move these parameters into the intermediate data structure.</li>
+<li>Extract the first phase as a function and this function returns the intermediate data structure.</li>
+</ul>
+<h5 id="Examples-10"><a href="#Examples-10" class="headerlink" title="Examples:"></a>Examples:</h5><p><a target="_blank" rel="noopener" href="https://github.com/u8989332/martin-fowler-refactoring-2nd/tree/master/Ch6.A%20First%20Set%20of%20Refactorings/Split%20Phase">Github</a></p>
+<h4 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h4><p>This chapter introduces me to a whole clever coding environment! I think I ever did some similar refactorings in my previous projects without so detailed guidelines. If you want to learn detailed motivation and mechanics, study the chapter 6 “ A First Set of Refactorings “ of <a target="_blank" rel="noopener" href="https://amzn.to/3LUmBwI">Refactoring: Improving the Design of Existing Code (2nd Edition)</a>. and it improves our programmer’s ability.</p>
+<p>A First Set of Refactorings</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/01/09/refactoring-2nd-chapter-1-example/" rel="prev" title="Refactoring Example - RPG Game Hunting Mission">
+      <i class="fa fa-chevron-left"></i> Refactoring Example - RPG Game Hunting Mission
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/02/13/refactoring-chapter-7-encapsulation/" rel="next" title="Encapsulation">
+      Encapsulation <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#Extract-Function"><span class="nav-number">1.</span> <span class="nav-text">Extract Function</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Tips"><span class="nav-number">1.1.</span> <span class="nav-text">Tips</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Examples"><span class="nav-number">1.2.</span> <span class="nav-text">Examples:</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Inline-Function"><span class="nav-number">2.</span> <span class="nav-text">Inline Function</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Tips-1"><span class="nav-number">2.1.</span> <span class="nav-text">Tips</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Examples-1"><span class="nav-number">2.2.</span> <span class="nav-text">Examples:</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Extract-Variable"><span class="nav-number">3.</span> <span class="nav-text">Extract Variable</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Tips-2"><span class="nav-number">3.1.</span> <span class="nav-text">Tips</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Examples-2"><span class="nav-number">3.2.</span> <span class="nav-text">Examples:</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Inline-Variable"><span class="nav-number">4.</span> <span class="nav-text">Inline Variable</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Tips-3"><span class="nav-number">4.1.</span> <span class="nav-text">Tips</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Examples-3"><span class="nav-number">4.2.</span> <span class="nav-text">Examples:</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Change-Function-Declaration"><span class="nav-number">5.</span> <span class="nav-text">Change Function Declaration</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Tips-4"><span class="nav-number">5.1.</span> <span class="nav-text">Tips</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Examples-4"><span class="nav-number">5.2.</span> <span class="nav-text">Examples:</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Encapsulate-Variable"><span class="nav-number">6.</span> <span class="nav-text">Encapsulate Variable</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Tips-5"><span class="nav-number">6.1.</span> <span class="nav-text">Tips</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Examples-5"><span class="nav-number">6.2.</span> <span class="nav-text">Examples:</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Rename-Variable"><span class="nav-number">7.</span> <span class="nav-text">Rename Variable</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Tips-6"><span class="nav-number">7.1.</span> <span class="nav-text">Tips</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Examples-6"><span class="nav-number">7.2.</span> <span class="nav-text">Examples:</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Introduce-Parameter-Object"><span class="nav-number">8.</span> <span class="nav-text">Introduce Parameter Object</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Tips-7"><span class="nav-number">8.1.</span> <span class="nav-text">Tips</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Examples-7"><span class="nav-number">8.2.</span> <span class="nav-text">Examples:</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Combine-Functions-into-Class"><span class="nav-number">9.</span> <span class="nav-text">Combine Functions into Class</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Tips-8"><span class="nav-number">9.1.</span> <span class="nav-text">Tips</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Examples-8"><span class="nav-number">9.2.</span> <span class="nav-text">Examples:</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Combine-Functions-into-Transform"><span class="nav-number">10.</span> <span class="nav-text">Combine Functions into Transform</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Tips-9"><span class="nav-number">10.1.</span> <span class="nav-text">Tips</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Examples-9"><span class="nav-number">10.2.</span> <span class="nav-text">Examples:</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Split-Phase"><span class="nav-number">11.</span> <span class="nav-text">Split Phase</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Tips-10"><span class="nav-number">11.1.</span> <span class="nav-text">Tips</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Examples-10"><span class="nav-number">11.2.</span> <span class="nav-text">Examples:</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Conclusion"><span class="nav-number">12.</span> <span class="nav-text">Conclusion</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">208</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">49</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

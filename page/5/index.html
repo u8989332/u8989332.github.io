@@ -1,0 +1,1441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta property="og:type" content="website">
+<meta property="og:title" content="Hexo">
+<meta property="og:url" content="http://example.com/page/5/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:locale" content="en_US">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://example.com/page/5/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : true,
+    isPost : false,
+    lang   : 'en'
+  };
+</script>
+
+  <title>Hexo</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Hexo</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content index posts-expand">
+            
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/10/08/leetcode-1-two-sum/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/10/08/leetcode-1-two-sum/" class="post-title-link" itemprop="url">LeetCode 1 Two Sum</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-10-08 22:52:00" itemprop="dateCreated datePublished" datetime="2020-10-08T22:52:00+08:00">2020-10-08</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-11-19 15:47:25" itemprop="dateModified" datetime="2023-11-19T15:47:25+08:00">2023-11-19</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C#</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/LeetCode/" itemprop="url" rel="index"><span itemprop="name">LeetCode</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Level-Easy/" itemprop="url" rel="index"><span itemprop="name">Level-Easy</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%A8%8B%E5%BC%8F%E8%A7%A3%E9%A1%8C/" itemprop="url" rel="index"><span itemprop="name">程式解題</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ProgramSolving/" itemprop="url" rel="index"><span itemprop="name">ProgramSolving</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>LeetCode 1 Two Sum 解題報告</p>
+<h4 id="平台："><a href="#平台：" class="headerlink" title="平台："></a>平台：</h4><p>LeetCode</p>
+<h4 id="題號："><a href="#題號：" class="headerlink" title="題號："></a>題號：</h4><p>1 - Two Sum</p>
+<h4 id="題目連結："><a href="#題目連結：" class="headerlink" title="題目連結："></a>題目連結：</h4><p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/two-sum/">https://leetcode.com/problems/two-sum/</a></p>
+<h4 id="題目說明："><a href="#題目說明：" class="headerlink" title="題目說明："></a>題目說明：</h4><p>LeetCode經典題目，輸入1個陣列nums和一個目標和target，求找到nums的2個元素相加會等於target的索引值。題目確保一定只有一個解，且回傳索引的順序沒差異。</p>
+<p>比如範例輸入的nums &#x3D; [2,7,11,15], target &#x3D; 9，相加變成9的只有2和7，所以回傳這2個元素的索引值[0, 1]。</p>
+<h4 id="解題方法："><a href="#解題方法：" class="headerlink" title="解題方法："></a>解題方法：</h4><p>如果考慮暴力法，需要用雙層迴圈找所有的組合，需要花O(n2)。 更好的設計方法，是用一個HashMap記錄缺少的那一個值(target - nums[i])和對應的索引。 稍微改變範例輸入，nums &#x3D; [2,11, 7,15]：</p>
+<ol>
+<li>nums[0]是2，在HashMap[2]不存在，於是建立HashMap[9 - 2 &#x3D; 7] &#x3D; 0</li>
+<li>nums[1]是11，在HashMap[11]不存在，於是建立HashMap[9 - 11 &#x3D; -2] &#x3D; 1</li>
+<li>nums[2]是7，在HashMap[7]存在，於是回傳[2, HashMap[7]] &#x3D; [2, 0]</li>
+</ol>
+<p>由於是用沒有排序的HashMap，寫值和讀值都是O(1)，整體時間需要O(n)</p>
+<p>難度為Easy</p>
+<h4 id="GITHUB位置-C-與-C-："><a href="#GITHUB位置-C-與-C-：" class="headerlink" title="GITHUB位置(C++ 與 C#)："></a>GITHUB位置(C++ 與 C#)：</h4><p><a target="_blank" rel="noopener" href="https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%2B%2B/1-99/1.cpp">https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%2B%2B/1-99/1.cpp</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%23/1-99/1.cs">https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%23/1-99/1.cs</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/10/07/%E4%B8%80%E8%A2%8B-net%E8%A6%81%E6%89%9B%E5%B9%BE%E6%A8%93%EF%BC%9F%E6%89%93%E9%80%A0%E5%AE%B9%E5%99%A8%E5%8C%96%E7%9A%84asp-net-core%E7%B6%B2%E7%AB%99%EF%BC%81%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0-7/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/10/07/%E4%B8%80%E8%A2%8B-net%E8%A6%81%E6%89%9B%E5%B9%BE%E6%A8%93%EF%BC%9F%E6%89%93%E9%80%A0%E5%AE%B9%E5%99%A8%E5%8C%96%E7%9A%84asp-net-core%E7%B6%B2%E7%AB%99%EF%BC%81%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0-7/" class="post-title-link" itemprop="url">一袋.NET要扛幾樓？打造容器化的ASP.NET Core網站！系列文章 - (22) 建立購物車系統 - 5</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-10-07 23:54:00" itemprop="dateCreated datePublished" datetime="2020-10-07T23:54:00+08:00">2020-10-07</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-11-19 15:47:25" itemprop="dateModified" datetime="2023-11-19T15:47:25+08:00">2023-11-19</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ASP-NET-Core/" itemprop="url" rel="index"><span itemprop="name">ASP.NET Core</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Docker/" itemprop="url" rel="index"><span itemprop="name">Docker</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="1-建立Dockerfile"><a href="#1-建立Dockerfile" class="headerlink" title="1. 建立Dockerfile"></a>1. 建立Dockerfile</h1><p>　　在CartApi專案右鍵&#x3D;&gt;加入&#x3D;&gt;Dokcer支援，選擇目標平台Linux，將會在根目錄新增Dockerfile檔案，需要再手動修改，變成下方的內容。其內容主要功能是在Docker容器內載入NET Core SDK編譯我們的程式碼，將編譯後的目錄檔案複製到Runtime環境的&#x2F;app目錄，再用NET Core Runtime執行購物車服務。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS buildWORKDIR /codeEXPOSE 80COPY . .RUN dotnet restoreRUN dotnet publish -o /out/ -c ReleaseFROM mcr.microsoft.com/dotnet/core/aspnet:3.1-buster-slim AS baseCOPY --from=build /out /app/WORKDIR /appENTRYPOINT [&quot;dotnet&quot;, &quot;CartApi.dll&quot;]</span><br></pre></td></tr></table></figure>
+
+<h1 id="2-修改dokcer-compose-yml"><a href="#2-修改dokcer-compose-yml" class="headerlink" title="2. 修改dokcer-compose.yml"></a>2. 修改dokcer-compose.yml</h1><p>在docker-compose.yml加入CartApi的container，如下方的yml。主要的參數包含：</p>
+<ul>
+<li>build的dockerfile：Dockerfile的檔名</li>
+<li>build的context：購物車系統的Dockerfile所在的目錄</li>
+<li>environment：這些參數將會覆蓋appSettings.json的內容，包含Redis的連線資訊。</li>
+<li>ports：將此Api的80 port對應為本機的7400</li>
+<li>depends_on：需要先等redis的容器啟動完，才輪到此Api啟動容器</li>
+<li>networks：設計在frontend&#x2F;backend的網路區域</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">version: &quot;3.4&quot;networks:   frontend:   backend:   services:   webmvc:      build:         context: .srcPresentationWebMvc         dockerfile: Dockerfile      environment:         - CatalogUrl=http://catalog         - IdentityUrl=https://$&#123;RPGSHOP_EXTERNAL_DNS_NAME_OR_IP&#125;:7101         - CallBackUrl=http://$&#123;RPGSHOP_EXTERNAL_DNS_NAME_OR_IP&#125;:7500/      container_name: rpgwebmvc      ports:         - &quot;7500:80&quot;      networks:         - frontend      depends_on:         - catalog         - auth   catalog:      build:         context: .srcServicesCatalogApi         dockerfile: Dockerfile      image: rpgshop/catalog      environment:         - DatabaseServer=mssqlserver         - DatabaseName=CatalogDb         - DatabaseUser=sa         - DatabasePassword=JustTest!         - ExternalCatalogBaseUrl=http://$&#123;RPGSHOP_EXTERNAL_DNS_NAME_OR_IP&#125;:7000      container_name: rpgcatalogapi      ports:         - &quot;7000:80&quot;      networks:         - backend         - frontend      depends_on:         - mssqlserver   auth:      build:         context: .srcServicesAuthApi         dockerfile: Dockerfile      image: rpgshop/auth      environment:         - MvcClient=http://$&#123;RPGSHOP_EXTERNAL_DNS_NAME_OR_IP&#125;:7500         - DatabaseServer=mssqlserver         - DatabaseName=AuthDb         - DatabaseUser=sa         - DatabasePassword=JustTest!         - ExternalCatalogBaseUrl=http://$&#123;RPGSHOP_EXTERNAL_DNS_NAME_OR_IP&#125;:7000         - ASPNETCORE_URLS=http://+:80;https://+:443         - ASPNETCORE_Kestrel__Certificates__Default__Password=crypticpassword         - ASPNETCORE_Kestrel__Certificates__Default__Path=./AuthApi.pfx      container_name: rpgauthapi      ports:         - &quot;7100:80&quot;         - &quot;7101:443&quot;      networks:         - backend         - frontend      depends_on:         - mssqlserver   cart:      build:         context: .srcServicesCartApi         dockerfile: Dockerfile      image: rpgshop/cart      environment:         - ConnectionString=cart.data      container_name: rpgcartapi      ports:         - &quot;7400:80&quot;      networks:         - backend         - frontend      depends_on:         - cart.data   mssqlserver:      image: &quot;microsoft/mssql-server-linux:latest&quot;      ports:         - &quot;1445:1433&quot;      container_name: rpgmssqlcontainer      environment:         - ACCEPT_EULA=Y         - SA_PASSWORD=JustTest!      networks:         - backend   cart.data:      image: redis      ports:         - &quot;6377:6379&quot;      networks:         - backend</span><br></pre></td></tr></table></figure>
+
+<h1 id="3-用cmd執行docker-compose"><a href="#3-用cmd執行docker-compose" class="headerlink" title="3. 用cmd執行docker-compose"></a>3. 用cmd執行docker-compose</h1><p>目前只先執行購物車服務，所以用cmd在docker-compose.yml所在位置輸入指令：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker-compose builddocker-compose up cart.data cart</span><br></pre></td></tr></table></figure>
+
+<p>執行完後，在瀏覽器輸入<a target="_blank" rel="noopener" href="http://docker.for.win.localhost:7400/swagger">http://docker.for.win.localhost:7400/swagger</a> ，顯示Swagger對API的功能，如圖1。</p>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2020/10/docker2Bcart2Bapi-1.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2020/10/docker2Bcart2Bapi.png"></a></p>
+<p>圖1</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/10/07/leetcode-283-move-zeroes/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/10/07/leetcode-283-move-zeroes/" class="post-title-link" itemprop="url">LeetCode 283 Move Zeroes</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-10-07 23:12:00" itemprop="dateCreated datePublished" datetime="2020-10-07T23:12:00+08:00">2020-10-07</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-11-19 15:47:25" itemprop="dateModified" datetime="2023-11-19T15:47:25+08:00">2023-11-19</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C#</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/LeetCode/" itemprop="url" rel="index"><span itemprop="name">LeetCode</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Level-Easy/" itemprop="url" rel="index"><span itemprop="name">Level-Easy</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%A8%8B%E5%BC%8F%E8%A7%A3%E9%A1%8C/" itemprop="url" rel="index"><span itemprop="name">程式解題</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ProgramSolving/" itemprop="url" rel="index"><span itemprop="name">ProgramSolving</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>LeetCode 283 Move Zeroes 解題報告</p>
+<h4 id="平台："><a href="#平台：" class="headerlink" title="平台："></a>平台：</h4><p>LeetCode</p>
+<h4 id="題號："><a href="#題號：" class="headerlink" title="題號："></a>題號：</h4><p>283 - Move Zeroes</p>
+<h4 id="題目連結："><a href="#題目連結：" class="headerlink" title="題目連結："></a>題目連結：</h4><p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/move-zeroes/">https://leetcode.com/problems/move-zeroes/</a></p>
+<h4 id="題目說明："><a href="#題目說明：" class="headerlink" title="題目說明："></a>題目說明：</h4><p>輸入1個陣列nums，將有0的元素都移到陣列最後面，而前面非0的元素相對順序要和原本一樣。</p>
+<p>比如範例輸入的[0,1,0,3,12]，移動完後變成[1,3,12,0,0]。</p>
+<h4 id="解題方法："><a href="#解題方法：" class="headerlink" title="解題方法："></a>解題方法：</h4><p>使用一個變數lastZeroIndex，用來記錄0的位置。從索引值最小開始檢查每個nums的元素 ，只要是非0就做與nums[lastZeroIndex]交換的動作，這動作會把0一直往後移。 以範例輸入[0,1,0,3,12]：</p>
+<ol>
+<li>nums[0] &#x3D; 0，換下一個元素</li>
+<li>nums[1] &#x3D; 1，交換nums[1] 與 nums[lastZeroIndex &#x3D; 0] &#x3D;&gt; 變成[1, 0, 0, 3, 12], lastZeroIndex + 1，換下一個元素</li>
+<li>nums[2] &#x3D; 0，換下一個元素</li>
+<li>nums[3] &#x3D; 3，交換nums[3] 與 nums[lastZeroIndex &#x3D; 1] &#x3D;&gt; 變成[1, 3, 0, 0, 12], lastZeroIndex + 1，換下一個元素</li>
+<li>nums[4] &#x3D; 12，交換nums[4] 與 nums[lastZeroIndex &#x3D; 2] &#x3D;&gt; 變成[1, 3, 12, 0, 0], lastZeroIndex + 1</li>
+</ol>
+<p>所以最終答案是[1, 3, 12, 0, 0]</p>
+<p>難度為Easy</p>
+<h4 id="GITHUB位置-C-與-C-："><a href="#GITHUB位置-C-與-C-：" class="headerlink" title="GITHUB位置(C++ 與 C#)："></a>GITHUB位置(C++ 與 C#)：</h4><p><a target="_blank" rel="noopener" href="https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%2B%2B/200-299/283.cpp">https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%2B%2B/200-299/283.cpp</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%23/200-299/283.cs">https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%23/200-299/283.cs</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/10/06/%E4%B8%80%E8%A2%8B-net%E8%A6%81%E6%89%9B%E5%B9%BE%E6%A8%93%EF%BC%9F%E6%89%93%E9%80%A0%E5%AE%B9%E5%99%A8%E5%8C%96%E7%9A%84asp-net-core%E7%B6%B2%E7%AB%99%EF%BC%81%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0-8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/10/06/%E4%B8%80%E8%A2%8B-net%E8%A6%81%E6%89%9B%E5%B9%BE%E6%A8%93%EF%BC%9F%E6%89%93%E9%80%A0%E5%AE%B9%E5%99%A8%E5%8C%96%E7%9A%84asp-net-core%E7%B6%B2%E7%AB%99%EF%BC%81%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0-8/" class="post-title-link" itemprop="url">一袋.NET要扛幾樓？打造容器化的ASP.NET Core網站！系列文章 - (21) 建立購物車系統 - 4</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-10-06 23:56:00" itemprop="dateCreated datePublished" datetime="2020-10-06T23:56:00+08:00">2020-10-06</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-11-19 15:47:25" itemprop="dateModified" datetime="2023-11-19T15:47:25+08:00">2023-11-19</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ASP-NET-Core/" itemprop="url" rel="index"><span itemprop="name">ASP.NET Core</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Swagger/" itemprop="url" rel="index"><span itemprop="name">Swagger</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="1-安裝Swagger"><a href="#1-安裝Swagger" class="headerlink" title="1. 安裝Swagger"></a>1. 安裝Swagger</h1><p>在CartApi專案右鍵[管理NuGet套件]，安裝Swagger相關的套件：：</p>
+<p>Swashbuckle.AspNetCore.SwaggerGen , 版本 5.6.1</p>
+<p>Swashbuckle.AspNetCore.SwaggerUI , 版本 5.6.1</p>
+<h1 id="2-在Startup-cs註冊與使用Swagger"><a href="#2-在Startup-cs註冊與使用Swagger" class="headerlink" title="2. 在Startup.cs註冊與使用Swagger"></a>2. 在Startup.cs註冊與使用Swagger</h1><h2 id="2-1-ConfigureServices的服務註冊"><a href="#2-1-ConfigureServices的服務註冊" class="headerlink" title="2.1 ConfigureServices的服務註冊"></a>2.1 ConfigureServices的服務註冊</h2><p>需使用SwaggerGen註冊Swagger的功能，並加上對此Api專案的描述。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public void ConfigureServices(IServiceCollection services)&#123;// other code...services.AddSwaggerGen(options =&gt; &#123;                options.SwaggerDoc(&quot;v1&quot;, new Microsoft.OpenApi.Models.OpenApiInfo                &#123;                    Version = &quot;v1&quot;,                    Title = &quot;Cart HTTP API&quot;,                    Description = &quot;The Cart Service HTTP API&quot;                &#125;);            &#125;);&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-2-Configure加上Swagger的Middleware"><a href="#2-2-Configure加上Swagger的Middleware" class="headerlink" title="2.2 Configure加上Swagger的Middleware"></a>2.2 Configure加上Swagger的Middleware</h2><p>在Pipeline加上Swagger的Middleware，放在app.UseRouting之前，指定它的json endpoint與名稱。</p>
+<p>  &#96;<br>public void Configure(IApplicationBuilder app, IWebHostEnvironment env)<br>{<br>&#x2F;&#x2F; other code…  </p>
+<p>app.UseSwagger()<br>             .UseSwaggerUI(c &#x3D;&gt;<br>             {<br>                 c.SwaggerEndpoint(<br>                     $”&#x2F;swagger&#x2F;v1&#x2F;swagger.json”,<br>                     “Cart.API V1”);<br>             });  </p>
+<p>app.UseRouting();  </p>
+<p>&#x2F;&#x2F; other code…<br>}&#96;</p>
+<h1 id="3-修改launchSettings-json"><a href="#3-修改launchSettings-json" class="headerlink" title="3. 修改launchSettings.json"></a>3. 修改launchSettings.json</h1><h1 id=""><a href="#" class="headerlink" title=""></a></h1><p>從VS執行程式的參數會依照launchSettings.json，包含URL與其他環境變數。而原先預設在IIS Express的launchUrl是weatherforecast，將它改成swagger，這樣VS啟用IIS的設定會用swagger：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;  &quot;$schema&quot;: &quot;http://json.schemastore.org/launchsettings.json&quot;,  &quot;iisSettings&quot;: &#123;    &quot;windowsAuthentication&quot;: false,    &quot;anonymousAuthentication&quot;: true,    &quot;iisExpress&quot;: &#123;      &quot;applicationUrl&quot;: &quot;http://localhost:1028&quot;,      &quot;sslPort&quot;: 0    &#125;  &#125;,  &quot;profiles&quot;: &#123;    &quot;IIS Express&quot;: &#123;      &quot;commandName&quot;: &quot;IISExpress&quot;,      &quot;launchBrowser&quot;: true,      &quot;launchUrl&quot;: &quot;swagger&quot;,      &quot;environmentVariables&quot;: &#123;        &quot;ASPNETCORE_ENVIRONMENT&quot;: &quot;Development&quot;      &#125;    &#125;,    &quot;CartApi&quot;: &#123;      &quot;commandName&quot;: &quot;Project&quot;,      &quot;launchBrowser&quot;: true,      &quot;applicationUrl&quot;: &quot;http://localhost:5000&quot;,      &quot;environmentVariables&quot;: &#123;        &quot;ASPNETCORE_ENVIRONMENT&quot;: &quot;Development&quot;      &#125;    &#125;  &#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="4-移除預設專案的範例"><a href="#4-移除預設專案的範例" class="headerlink" title="4. 移除預設專案的範例"></a>4. 移除預設專案的範例</h1><p>原先建立CartApi專案時，會有WeatherForecast的Controller與Model，將這些都移除。</p>
+<h1 id="-1"><a href="#-1" class="headerlink" title=""></a></h1><h1 id="-2"><a href="#-2" class="headerlink" title=""></a></h1><h1 id="5-修改docker-compose-yml"><a href="#5-修改docker-compose-yml" class="headerlink" title="5. 修改docker-compose.yml"></a>5. 修改docker-compose.yml</h1><h1 id="-3"><a href="#-3" class="headerlink" title=""></a></h1><p>在docker-compose.yml新增redis的container，service的名字為cart.data，內部6379 port對應本機的 6377 port：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">version: &quot;3.4&quot;networks:   frontend:   backend:   services:   webmvc:      build:         context: .srcPresentationWebMvc         dockerfile: Dockerfile      environment:         - CatalogUrl=http://catalog         - IdentityUrl=https://$&#123;RPGSHOP_EXTERNAL_DNS_NAME_OR_IP&#125;:7101         - CallBackUrl=http://$&#123;RPGSHOP_EXTERNAL_DNS_NAME_OR_IP&#125;:7500/      container_name: rpgwebmvc      ports:         - &quot;7500:80&quot;      networks:         - frontend      depends_on:         - catalog         - auth   catalog:      build:         context: .srcServicesCatalogApi         dockerfile: Dockerfile      image: rpgshop/catalog      environment:         - DatabaseServer=mssqlserver         - DatabaseName=CatalogDb         - DatabaseUser=sa         - DatabasePassword=JustTest!         - ExternalCatalogBaseUrl=http://$&#123;RPGSHOP_EXTERNAL_DNS_NAME_OR_IP&#125;:7000      container_name: rpgcatalogapi      ports:         - &quot;7000:80&quot;      networks:         - backend         - frontend      depends_on:         - mssqlserver   auth:      build:         context: .srcServicesAuthApi         dockerfile: Dockerfile      image: rpgshop/auth      environment:         - MvcClient=http://$&#123;RPGSHOP_EXTERNAL_DNS_NAME_OR_IP&#125;:7500         - DatabaseServer=mssqlserver         - DatabaseName=AuthDb         - DatabaseUser=sa         - DatabasePassword=JustTest!         - ExternalCatalogBaseUrl=http://$&#123;RPGSHOP_EXTERNAL_DNS_NAME_OR_IP&#125;:7000         - ASPNETCORE_URLS=http://+:80;https://+:443         - ASPNETCORE_Kestrel__Certificates__Default__Password=crypticpassword         - ASPNETCORE_Kestrel__Certificates__Default__Path=./AuthApi.pfx      container_name: rpgauthapi      ports:         - &quot;7100:80&quot;         - &quot;7101:443&quot;      networks:         - backend         - frontend      depends_on:         - mssqlserver   mssqlserver:      image: &quot;microsoft/mssql-server-linux:latest&quot;      ports:         - &quot;1445:1433&quot;      container_name: rpgmssqlcontainer      environment:         - ACCEPT_EULA=Y         - SA_PASSWORD=JustTest!      networks:         - backend   cart.data:      image: redis      ports:         - &quot;6377:6379&quot;      networks:         - backend</span><br></pre></td></tr></table></figure>
+
+<h1 id="-4"><a href="#-4" class="headerlink" title=""></a></h1><h1 id="6-執行docker-compose啟用redis"><a href="#6-執行docker-compose啟用redis" class="headerlink" title="6. 執行docker-compose啟用redis"></a>6. 執行docker-compose啟用redis</h1><p>　　目前只需要執行redis，所以在docker-compose.yml的目錄使用cmd執行：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker-compose up cart.data</span><br></pre></td></tr></table></figure>
+
+<h1 id="-5"><a href="#-5" class="headerlink" title=""></a></h1><h1 id="-6"><a href="#-6" class="headerlink" title=""></a></h1><h1 id="-7"><a href="#-7" class="headerlink" title=""></a></h1><h1 id="7-VS執行"><a href="#7-VS執行" class="headerlink" title="7. VS執行"></a>7. VS執行</h1><p>將CartApi設為預設專案並開啟Debug，看到畫面是Swagger的介面，包含我們所寫的Controller的Action，如圖1。每個API都能點擊，並按下Try it out的按鈕，輸入參數做實際的API運作。</p>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2020/10/cart2Bapi2Bswagger-1.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2020/10/cart2Bapi2Bswagger.png"></a></p>
+<p>圖1</p>
+<p>比如點Http Post的&#x2F;api&#x2F;Cart，新增一筆Buyer Id對應的購物車商品列表，再用Http Get的&#x2F;api&#x2F;Cart&#x2F;{id}取得該Buyer Id的資料，再用Http Delete的&#x2F;api&#x2F;Cart&#x2F;{id}刪除該物件。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/10/06/leetcode-66-plus-one/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/10/06/leetcode-66-plus-one/" class="post-title-link" itemprop="url">LeetCode 66 Plus One</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-10-06 22:54:00" itemprop="dateCreated datePublished" datetime="2020-10-06T22:54:00+08:00">2020-10-06</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-11-19 15:47:25" itemprop="dateModified" datetime="2023-11-19T15:47:25+08:00">2023-11-19</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C#</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/LeetCode/" itemprop="url" rel="index"><span itemprop="name">LeetCode</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Level-Easy/" itemprop="url" rel="index"><span itemprop="name">Level-Easy</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%A8%8B%E5%BC%8F%E8%A7%A3%E9%A1%8C/" itemprop="url" rel="index"><span itemprop="name">程式解題</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ProgramSolving/" itemprop="url" rel="index"><span itemprop="name">ProgramSolving</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>LeetCode 66 Plus One 解題報告</p>
+<h4 id="平台："><a href="#平台：" class="headerlink" title="平台："></a>平台：</h4><p>LeetCode</p>
+<h4 id="題號："><a href="#題號：" class="headerlink" title="題號："></a>題號：</h4><p>66 - Plus One</p>
+<h4 id="題目連結："><a href="#題目連結：" class="headerlink" title="題目連結："></a>題目連結：</h4><p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/plus-one/">https://leetcode.com/problems/plus-one/</a></p>
+<h4 id="題目說明："><a href="#題目說明：" class="headerlink" title="題目說明："></a>題目說明：</h4><p>輸入1個陣列digits，每個元素代表1個整數的位數，求第1位數加1後的digits的變化，包含能進位。</p>
+<p>比如範例輸入的digits &#x3D; [1,2,3]，代表整數123，加1後變成124，而要回傳[1,2,4]。 如果digits &#x3D; [9]，代表整數9，加1後變成10，而要回傳[1, 0]。</p>
+<h4 id="解題方法："><a href="#解題方法：" class="headerlink" title="解題方法："></a>解題方法：</h4><p>從最小位數開始加1後，檢查是否有進位，有進位則往更高位數加1。特殊狀況是遇到最高位數是9且又加1，需另外開空間存。</p>
+<p>難度為Easy</p>
+<h4 id="GITHUB位置-C-與-C-："><a href="#GITHUB位置-C-與-C-：" class="headerlink" title="GITHUB位置(C++ 與 C#)："></a>GITHUB位置(C++ 與 C#)：</h4><p><a target="_blank" rel="noopener" href="https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%2B%2B/1-99/66.cpp">https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%2B%2B/1-99/66.cpp</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%23/1-99/66.cs">https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%23/1-99/66.cs</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/10/05/%E4%B8%80%E8%A2%8B-net%E8%A6%81%E6%89%9B%E5%B9%BE%E6%A8%93%EF%BC%9F%E6%89%93%E9%80%A0%E5%AE%B9%E5%99%A8%E5%8C%96%E7%9A%84asp-net-core%E7%B6%B2%E7%AB%99%EF%BC%81%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0-9/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/10/05/%E4%B8%80%E8%A2%8B-net%E8%A6%81%E6%89%9B%E5%B9%BE%E6%A8%93%EF%BC%9F%E6%89%93%E9%80%A0%E5%AE%B9%E5%99%A8%E5%8C%96%E7%9A%84asp-net-core%E7%B6%B2%E7%AB%99%EF%BC%81%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0-9/" class="post-title-link" itemprop="url">一袋.NET要扛幾樓？打造容器化的ASP.NET Core網站！系列文章 - (20) 建立購物車系統 - 3</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-10-05 23:53:00" itemprop="dateCreated datePublished" datetime="2020-10-05T23:53:00+08:00">2020-10-05</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-11-19 15:47:25" itemprop="dateModified" datetime="2023-11-19T15:47:25+08:00">2023-11-19</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ASP-NET-Core/" itemprop="url" rel="index"><span itemprop="name">ASP.NET Core</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="1-新增CartController"><a href="#1-新增CartController" class="headerlink" title="1. 新增CartController"></a>1. 新增CartController</h1><p>在CartApi專案的資料夾Controllers，新增CartController類別且繼承ControllerBase，此類別是購物車系統的Http Api，之後要讓WebMvc呼叫。Action包含對購物車的更新、取得與刪除，需依靠注入的CartRepository物件。</p>
+<pre><code>    `  
+</code></pre>
+<p>using CartApi.Models;<br>using Microsoft.AspNetCore.Mvc;<br>using Microsoft.Extensions.Logging;<br>using System.Net;<br>using System.Threading.Tasks;  </p>
+<p>namespace CartApi.Controllers<br>{<br>    [ApiController]<br>    [Route(“api&#x2F;[controller]”)]<br>    public class CartController : ControllerBase<br>    {<br>        private readonly ILogger<CartController> _logger;<br>        private readonly ICartRepository _repository;  </p>
+<pre><code>    public CartController(ILogger&lt;CartController&gt; logger, ICartRepository repository)  
+    &#123;  
+        _logger = logger;  
+        _repository = repository;  
+    &#125;  
+
+    [HttpGet(&quot;&#123;id&#125;&quot;)]  
+    [ProducesResponseType(typeof(Cart), (int)HttpStatusCode.OK)]  
+    public async Task&lt;IActionResult&gt; Get(string id)  
+    &#123;  
+        var basket = await _repository.GetCartAsync(id);  
+        return Ok(basket);  
+    &#125;  
+
+    [HttpPost]  
+    [ProducesResponseType(typeof(Cart), (int)HttpStatusCode.OK)]  
+    public async Task&lt;IActionResult&gt; Post([FromBody] Cart value)  
+    &#123;  
+        var basket = await _repository.UpdateCartAsync(value);  
+        return Ok(basket);  
+    &#125;  
+
+    [HttpDelete(&quot;&#123;id&#125;&quot;)]  
+    public void Delete(string id)  
+    &#123;  
+        _repository.DeleteCartAsync(id);  
+    &#125;  
+&#125;  
+</code></pre>
+<p>}  </p>
+<p>&#96;  </p>
+<h1 id=""><a href="#" class="headerlink" title=""></a></h1><h1 id="2-修改Startup-cs"><a href="#2-修改Startup-cs" class="headerlink" title="2. 修改Startup.cs"></a>2. 修改Startup.cs</h1><p>在Startup.cs，註冊所需的Redis、Repository服務。在AddControllers需要在Filters增加之前寫的HttpGlobalExceptionFilter功能，並且要安裝Microsoft.AspNetCore.Mvc.NewtonsoftJson，才能用AddNewtonsoftJson的功能，使Json不檢查自我參考的迴圈問題。Redis ConnectionMultiplexer註冊的是單例模式，不用每次都新增連線物件。</p>
+<pre><code>  `  
+</code></pre>
+<p>public void ConfigureServices(IServiceCollection services)<br>        {<br>            services.AddControllers(options &#x3D;&gt;<br>            {<br>                options.Filters.Add(typeof(HttpGlobalExceptionFilter));<br>            }).AddNewtonsoftJson(options &#x3D;&gt; {<br>                options.SerializerSettings.ReferenceLoopHandling &#x3D; Newtonsoft.Json.ReferenceLoopHandling.Ignore;<br>            });  </p>
+<pre><code>        services.Configure&lt;CartSettings&gt;(Configuration);  
+
+        services.AddSingleton&lt;ConnectionMultiplexer&gt;(sp =&gt;  
+        &#123;  
+            var settings = sp.GetRequiredService&lt;IOptions&lt;CartSettings&gt;&gt;().Value;  
+            var configuration = ConfigurationOptions.Parse(settings.ConnectionString, true);  
+
+            configuration.ResolveDns = true;  
+            configuration.AbortOnConnectFail = false;  
+
+            return ConnectionMultiplexer.Connect(configuration);  
+        &#125;);  
+
+        services.AddTransient&lt;ICartRepository, CartRepository&gt;();  
+        services.AddSingleton&lt;IHttpContextAccessor, HttpContextAccessor&gt;();  
+    &#125;  
+</code></pre>
+<p>&#96;  </p>
+<p>-—————————————————-</p>
+<p>之後再來寫Docker啟用Redis和使用Swagger測試CartController</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/10/05/leetcode-350-intersection-of-two-arrays-ii/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/10/05/leetcode-350-intersection-of-two-arrays-ii/" class="post-title-link" itemprop="url">LeetCode 350 Intersection of Two Arrays II</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-10-05 23:10:00" itemprop="dateCreated datePublished" datetime="2020-10-05T23:10:00+08:00">2020-10-05</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-11-19 15:47:25" itemprop="dateModified" datetime="2023-11-19T15:47:25+08:00">2023-11-19</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C#</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/LeetCode/" itemprop="url" rel="index"><span itemprop="name">LeetCode</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Level-Easy/" itemprop="url" rel="index"><span itemprop="name">Level-Easy</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%A8%8B%E5%BC%8F%E8%A7%A3%E9%A1%8C/" itemprop="url" rel="index"><span itemprop="name">程式解題</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ProgramSolving/" itemprop="url" rel="index"><span itemprop="name">ProgramSolving</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>LeetCode 350 Intersection of Two Arrays II 解題報告</p>
+<h4 id="平台："><a href="#平台：" class="headerlink" title="平台："></a>平台：</h4><p>LeetCode</p>
+<h4 id="題號："><a href="#題號：" class="headerlink" title="題號："></a>題號：</h4><p>350 - Intersection of Two Arrays II</p>
+<h4 id="題目連結："><a href="#題目連結：" class="headerlink" title="題目連結："></a>題目連結：</h4><p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/intersection-of-two-arrays-ii/">https://leetcode.com/problems/intersection-of-two-arrays-ii/</a></p>
+<h4 id="題目說明："><a href="#題目說明：" class="headerlink" title="題目說明："></a>題目說明：</h4><p>輸入2個陣列nums1和nums2，求這2個陣列有交集的元素。</p>
+<p>比如範例輸入的nums1 &#x3D; [1,2,2,1], nums2 &#x3D; [2,2]，元素有2個2都出現，所以要回傳[2, 2]。</p>
+<h4 id="解題方法："><a href="#解題方法：" class="headerlink" title="解題方法："></a>解題方法：</h4><p>對此2個陣列都從小到大排序，建立兩個指標i和j各自從nums1和nums2的最小值往上比對：</p>
+<ul>
+<li>如果目前指標指向的值一樣，代表是交集的元素，加入答案，i和j都遞增</li>
+<li>如果目前指標指向的值nums1[i] &gt; nums2[j]，代表nums2更後面的值要拿來與nums1比對，所以只有j遞增</li>
+<li>如果目前指標指向的值nums1[i] &lt; nums2[j]，代表nums1更後面的值要拿來與nums2比對，所以只有i遞增</li>
+</ul>
+<p>最終i和j有超過nums1&#x2F;nums2的長度就結束。 難度為Easy</p>
+<h4 id="GITHUB位置-C-與-C-："><a href="#GITHUB位置-C-與-C-：" class="headerlink" title="GITHUB位置(C++ 與 C#)："></a>GITHUB位置(C++ 與 C#)：</h4><p><a target="_blank" rel="noopener" href="https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%2B%2B/300-399/350.cpp">https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%2B%2B/300-399/350.cpp</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%23/300-399/350.cs">https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%23/300-399/350.cs</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/10/04/%E4%B8%80%E8%A2%8B-net%E8%A6%81%E6%89%9B%E5%B9%BE%E6%A8%93%EF%BC%9F%E6%89%93%E9%80%A0%E5%AE%B9%E5%99%A8%E5%8C%96%E7%9A%84asp-net-core%E7%B6%B2%E7%AB%99%EF%BC%81%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0-10/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/10/04/%E4%B8%80%E8%A2%8B-net%E8%A6%81%E6%89%9B%E5%B9%BE%E6%A8%93%EF%BC%9F%E6%89%93%E9%80%A0%E5%AE%B9%E5%99%A8%E5%8C%96%E7%9A%84asp-net-core%E7%B6%B2%E7%AB%99%EF%BC%81%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0-10/" class="post-title-link" itemprop="url">一袋.NET要扛幾樓？打造容器化的ASP.NET Core網站！系列文章 - (19) 建立購物車系統 - 2</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-10-04 23:37:00" itemprop="dateCreated datePublished" datetime="2020-10-04T23:37:00+08:00">2020-10-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-11-19 15:47:25" itemprop="dateModified" datetime="2023-11-19T15:47:25+08:00">2023-11-19</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ASP-NET-Core/" itemprop="url" rel="index"><span itemprop="name">ASP.NET Core</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="1-建立共通的Infrastructure"><a href="#1-建立共通的Infrastructure" class="headerlink" title="1. 建立共通的Infrastructure"></a>1. 建立共通的Infrastructure</h1><h2 id="1-1-新增InternalServerErrorObjectResult類別"><a href="#1-1-新增InternalServerErrorObjectResult類別" class="headerlink" title="1.1 新增InternalServerErrorObjectResult類別"></a>1.1 新增InternalServerErrorObjectResult類別</h2><p>在CartApi專案新增資料夾Infrastructure&#x2F;ActionResults，並新增InternalServerErrorObjectResult類別且繼承ObjectResult，此類別是用在統一回傳Status Code 500：</p>
+<pre><code>    `  
+</code></pre>
+<p>using Microsoft.AspNetCore.Http;<br>using Microsoft.AspNetCore.Mvc;  </p>
+<p>namespace CartApi.Infrastructure.ActionResults<br>{<br>    public class InternalServerErrorObjectResult : ObjectResult<br>    {<br>        public InternalServerErrorObjectResult(object error) : base(error)<br>        {<br>            StatusCode &#x3D; StatusCodes.Status500InternalServerError;<br>        }<br>    }<br>}<br>&#96;  </p>
+<h1 id=""><a href="#" class="headerlink" title=""></a></h1><h2 id="1-2-新增CartDomainException類別"><a href="#1-2-新增CartDomainException類別" class="headerlink" title="1.2 新增CartDomainException類別"></a>1.2 新增CartDomainException類別</h2><p>在CartApi專案新增資料夾Infrastructure&#x2F;Exceptions，並新增CartDomainException類別且繼承Exception，當一些購物車服務有出問題，可以拋此異常：</p>
+<pre><code>  `  
+</code></pre>
+<p>using System;  </p>
+<p>namespace CartApi.Infrastructure.Exceptions<br>{<br>    public class CartDomainException : Exception<br>    {<br>        public CartDomainException()<br>        {<br>        }  </p>
+<pre><code>    public CartDomainException(string message) : base(message)  
+    &#123;  
+
+    &#125;  
+
+    public CartDomainException(string message, Exception innerException) : base(message, innerException)  
+    &#123;  
+
+    &#125;  
+&#125;  
+</code></pre>
+<p>}<br>&#96;  </p>
+<h1 id="-1"><a href="#-1" class="headerlink" title=""></a></h1><h2 id="1-3-新增HttpGlobalExceptionFilter類別"><a href="#1-3-新增HttpGlobalExceptionFilter類別" class="headerlink" title="1.3 新增HttpGlobalExceptionFilter類別"></a>1.3 新增HttpGlobalExceptionFilter類別</h2><p>在CartApi專案新增資料夾Infrastructure&#x2F;Filters，並新增HttpGlobalExceptionFilter類別且實作IExceptionFilter，當Controller內部有功能異常時，依此Filter客製化要回傳的HTTP內容：</p>
+<pre><code>  `  
+</code></pre>
+<p>using CartApi.Infrastructure.ActionResults;<br>using CartApi.Infrastructure.Exceptions;<br>using Microsoft.AspNetCore.Hosting;<br>using Microsoft.AspNetCore.Mvc;<br>using Microsoft.AspNetCore.Mvc.Filters;<br>using Microsoft.Extensions.Hosting;<br>using Microsoft.Extensions.Logging;<br>using System.Net;  </p>
+<p>namespace CartApi.Infrastructure.Filters<br>{<br>    public class HttpGlobalExceptionFilter : IExceptionFilter<br>    {<br>        private readonly IWebHostEnvironment env;<br>        private readonly ILogger<HttpGlobalExceptionFilter> logger;  </p>
+<pre><code>    public HttpGlobalExceptionFilter(IWebHostEnvironment env, ILogger&lt;HttpGlobalExceptionFilter&gt; logger)  
+    &#123;  
+        this.env = env;  
+        this.logger = logger;  
+    &#125;  
+
+    public void OnException(ExceptionContext context)  
+    &#123;  
+        logger.LogError(new EventId(context.Exception.HResult),  
+            context.Exception,  
+            context.Exception.Message);  
+
+        if(context.Exception.GetType() == typeof(CartDomainException))  
+        &#123;  
+            var json = new JsonErrorResponse  
+            &#123;  
+                Messages = new[] &#123; context.Exception.Message &#125;  
+            &#125;;  
+
+            context.Result = new BadRequestObjectResult(json);  
+            context.HttpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;  
+        &#125;  
+        else  
+        &#123;  
+            var json = new JsonErrorResponse  
+            &#123;  
+                Messages = new[] &#123; &quot;An error occured. Try it again&quot; &#125;  
+            &#125;;  
+
+            if (env.IsDevelopment())  
+            &#123;  
+                json.DeveloperMessage = context.Exception;  
+            &#125;  
+
+            context.Result = new InternalServerErrorObjectResult(json);  
+            context.HttpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;  
+        &#125;  
+        context.ExceptionHandled = true;  
+    &#125;  
+
+    private class JsonErrorResponse  
+    &#123;  
+        public string[] Messages &#123; get; set; &#125;  
+        public object DeveloperMessage &#123; get; set; &#125;  
+    &#125;  
+&#125;  
+</code></pre>
+<p>}  </p>
+<p>&#96;  </p>
+<h1 id="2-修改appSettings-json"><a href="#2-修改appSettings-json" class="headerlink" title="2. 修改appSettings.json"></a>2. 修改appSettings.json</h1><p>在appSettings.json，新增Redis的連線資訊，由於本機有安裝過的Redis，於是配置它為6377 port，對應到Docker的配置仍是預設的6379 port：</p>
+<ul>
+<li>“ConnectionString”: “127.0.0.1:6377”,</li>
+</ul>
+<h1 id="3-新增CartSettings類別"><a href="#3-新增CartSettings類別" class="headerlink" title="3. 新增CartSettings類別"></a>3. 新增CartSettings類別</h1><p>在CartApi根目錄新增CartSettings.cs類別，只有一個ConnectionString屬性，是用來讀設定檔：</p>
+<pre><code>  `  
+</code></pre>
+<p>namespace CartApi<br>{<br>    public class CartSettings<br>    {<br>        public string ConnectionString { get; set; }<br>    }<br>}  </p>
+<p>&#96;  </p>
+<p>-—————————————————-</p>
+<p>之後再來寫Controller和註冊Startup的方法</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/10/04/leetcode-217-contains-duplicate/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/10/04/leetcode-217-contains-duplicate/" class="post-title-link" itemprop="url">LeetCode 217 Contains Duplicate</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-10-04 22:30:00" itemprop="dateCreated datePublished" datetime="2020-10-04T22:30:00+08:00">2020-10-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-11-19 15:47:25" itemprop="dateModified" datetime="2023-11-19T15:47:25+08:00">2023-11-19</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C#</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/LeetCode/" itemprop="url" rel="index"><span itemprop="name">LeetCode</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Level-Easy/" itemprop="url" rel="index"><span itemprop="name">Level-Easy</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%A8%8B%E5%BC%8F%E8%A7%A3%E9%A1%8C/" itemprop="url" rel="index"><span itemprop="name">程式解題</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ProgramSolving/" itemprop="url" rel="index"><span itemprop="name">ProgramSolving</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>LeetCode 217 Contains Duplicate 解題報告</p>
+<h4 id="平台："><a href="#平台：" class="headerlink" title="平台："></a>平台：</h4><p>LeetCode</p>
+<h4 id="題號："><a href="#題號：" class="headerlink" title="題號："></a>題號：</h4><p>217 - Contains Duplicate</p>
+<h4 id="題目連結："><a href="#題目連結：" class="headerlink" title="題目連結："></a>題目連結：</h4><p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/contains-duplicate/">https://leetcode.com/problems/contains-duplicate/</a></p>
+<h4 id="題目說明："><a href="#題目說明：" class="headerlink" title="題目說明："></a>題目說明：</h4><p>輸入1個陣列nums，求nums元素是否有重複。</p>
+<p>比如範例輸入的nums &#x3D; [1,2,3,1]，元素1重複，所以要回傳true。</p>
+<h4 id="解題方法："><a href="#解題方法：" class="headerlink" title="解題方法："></a>解題方法：</h4><p>使用HashSet，每次檢查是否該元素已在HashSet裡，有的話就回傳true，否則把它加進HashSet。</p>
+<p>難度為Easy</p>
+<h4 id="GITHUB位置-C-與-C-："><a href="#GITHUB位置-C-與-C-：" class="headerlink" title="GITHUB位置(C++ 與 C#)："></a>GITHUB位置(C++ 與 C#)：</h4><p><a target="_blank" rel="noopener" href="https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%2B%2B/200-299/217.cpp">https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%2B%2B/200-299/217.cpp</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%23/200-299/217.cs">https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%23/200-299/217.cs</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/10/03/%E4%B8%80%E8%A2%8B-net%E8%A6%81%E6%89%9B%E5%B9%BE%E6%A8%93%EF%BC%9F%E6%89%93%E9%80%A0%E5%AE%B9%E5%99%A8%E5%8C%96%E7%9A%84asp-net-core%E7%B6%B2%E7%AB%99%EF%BC%81%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0-11/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/10/03/%E4%B8%80%E8%A2%8B-net%E8%A6%81%E6%89%9B%E5%B9%BE%E6%A8%93%EF%BC%9F%E6%89%93%E9%80%A0%E5%AE%B9%E5%99%A8%E5%8C%96%E7%9A%84asp-net-core%E7%B6%B2%E7%AB%99%EF%BC%81%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0-11/" class="post-title-link" itemprop="url">一袋.NET要扛幾樓？打造容器化的ASP.NET Core網站！系列文章 - (18) 建立購物車系統 - 1</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-10-03 23:51:00" itemprop="dateCreated datePublished" datetime="2020-10-03T23:51:00+08:00">2020-10-03</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-11-19 15:47:25" itemprop="dateModified" datetime="2023-11-19T15:47:25+08:00">2023-11-19</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ASP-NET-Core/" itemprop="url" rel="index"><span itemprop="name">ASP.NET Core</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="1-建立購物車服務的Api專案"><a href="#1-建立購物車服務的Api專案" class="headerlink" title="1. 建立購物車服務的Api專案"></a>1. 建立購物車服務的Api專案</h1><p>開啟VS，在RPGShop方案的src&#x2F;Services的方案資料夾，加入新的ASP.NET Core專案，專案名稱為CartApi，選擇專案類型Api，不要用Docker和HTTPS。</p>
+<h1 id="2-安裝Redis"><a href="#2-安裝Redis" class="headerlink" title="2. 安裝Redis"></a>2. 安裝Redis</h1><p>在CartApi專案右鍵&#x3D;&gt;選擇[管理NuGet套件]，安裝Redis的相關套件，包含這項：</p>
+<ul>
+<li>StackExchange.Redis, 版本 2.1.58</li>
+</ul>
+<h1 id="3-為何要用Redis"><a href="#3-為何要用Redis" class="headerlink" title="3. 為何要用Redis?"></a>3. 為何要用Redis?</h1><p>傳統購物網站大部分使用Session紀錄目前連線者的購物車內容，但缺點有幾項：</p>
+<ol>
+<li>預設Session在購物網站的伺服器，使用者越多則記憶體消耗越大</li>
+<li>Session只能記住目前連線的資料，如果換別的電腦或瀏覽器登入，則是不一樣的資料</li>
+</ol>
+<p>採用Redis的話，可以將Redis架在別的伺服器，且能依照Client的Id存取資料</p>
+<h1 id="4-建立購物車的模型"><a href="#4-建立購物車的模型" class="headerlink" title="4. 建立購物車的模型"></a>4. 建立購物車的模型</h1><p>新增Models資料夾並新增Cart和CartItem兩個類別，主要紀錄購物車的內容：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">using System.Collections.Generic;namespace CartApi.Models&#123;    public class Cart    &#123;        public string BuyerId &#123; get; set; &#125;        public List&lt;CartItem&gt; Items &#123; get; set; &#125;        public Cart(string cartId)        &#123;            BuyerId = cartId;            Items = new List&lt;CartItem&gt;();        &#125;    &#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">namespace CartApi.Models&#123;    public class CartItem    &#123;        public string Id &#123; get; set; &#125;        public string ProductId &#123; get; set; &#125;        public string ProductName &#123; get; set; &#125;        public decimal UnitPrice &#123; get; set; &#125;        public decimal OldUnitPrice &#123; get; set; &#125;        public int Quantity &#123; get; set; &#125;        public string PictureUrl &#123; get; set; &#125;    &#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="5-建立購物車的Repository"><a href="#5-建立購物車的Repository" class="headerlink" title="5. 建立購物車的Repository"></a>5. 建立購物車的Repository</h1><p>　　在Models資料夾新增ICartRepository介面和CartRepository，包含購物車內容的更新、刪除、讀取和取得所有使用者的Id列表。實作類別需注入Redis的物件，並針對Client的Id作為Redis的Key，來存取購物車的資料。</p>
+<p>.</p>
+<h1 id=""><a href="#" class="headerlink" title=""></a></h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">using System.Collections.Generic;using System.Threading.Tasks;namespace CartApi.Models&#123;    public interface ICartRepository    &#123;        Task&lt;Cart&gt; GetCartAsync(string cartId);        IEnumerable&lt;string&gt; GetUsers();        Task&lt;Cart&gt; UpdateCartAsync(Cart basket);        Task&lt;bool&gt; DeleteCartAsync(string id);    &#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">using Microsoft.Extensions.Logging;using Newtonsoft.Json;using StackExchange.Redis;using System.Collections.Generic;using System.Linq;using System.Threading.Tasks;namespace CartApi.Models&#123;    public class CartRepository : ICartRepository    &#123;        private readonly ILogger&lt;CartRepository&gt; _logger;        private readonly ConnectionMultiplexer _redis;        private readonly IDatabase _database;        public CartRepository(ILogger&lt;CartRepository&gt; logger, ConnectionMultiplexer redis)        &#123;            _logger = logger;            _redis = redis;            _database = redis.GetDatabase();        &#125;        public async Task&lt;Cart&gt; GetCartAsync(string cartId)        &#123;            var data = await _database.StringGetAsync(cartId);            if (data.IsNullOrEmpty)            &#123;                return null;            &#125;            return JsonConvert.DeserializeObject&lt;Cart&gt;(data);        &#125;        public IEnumerable&lt;string&gt; GetUsers()        &#123;            var server = GetServers();            var data = server.Keys();            return data?.Select(k =&gt; k.ToString());        &#125;        private IServer GetServers()        &#123;            var endpoint = _redis.GetEndPoints();            return _redis.GetServer(endpoint.First());        &#125;        public async Task&lt;Cart&gt; UpdateCartAsync(Cart basket)        &#123;            var created = await _database.StringSetAsync(basket.BuyerId, JsonConvert.SerializeObject(basket));            if (!created)            &#123;                _logger.LogInformation(&quot;Problem occur persisting the item&quot;);                return null;            &#125;            return await GetCartAsync(basket.BuyerId);        &#125;        public async Task&lt;bool&gt; DeleteCartAsync(string id)        &#123;            return await _database.KeyDeleteAsync(id);        &#125;    &#125;&#125;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+
+  
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" href="/page/4/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/21/">21</a><a class="extend next" rel="next" href="/page/6/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+  </nav>
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">208</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">49</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

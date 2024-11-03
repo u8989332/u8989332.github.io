@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="1. 建立購物車服務的Api專案開啟VS，在RPGShop方案的src&#x2F;Services的方案資料夾，加入新的ASP.NET Core專案，專案名稱為CartApi，選擇專案類型Api，不要用Docker和HTTPS。 2. 安裝Redis在CartApi專案右鍵&#x3D;&gt;選擇[管理NuGet套件]，安裝Redis的相關套件，包含這項：  StackExchange.Redis">
+<meta property="og:type" content="article">
+<meta property="og:title" content="一袋.NET要扛幾樓？打造容器化的ASP.NET Core網站！系列文章 - (18) 建立購物車系統 - 1">
+<meta property="og:url" content="http://example.com/2020/10/03/%E4%B8%80%E8%A2%8B-net%E8%A6%81%E6%89%9B%E5%B9%BE%E6%A8%93%EF%BC%9F%E6%89%93%E9%80%A0%E5%AE%B9%E5%99%A8%E5%8C%96%E7%9A%84asp-net-core%E7%B6%B2%E7%AB%99%EF%BC%81%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0-11/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="1. 建立購物車服務的Api專案開啟VS，在RPGShop方案的src&#x2F;Services的方案資料夾，加入新的ASP.NET Core專案，專案名稱為CartApi，選擇專案類型Api，不要用Docker和HTTPS。 2. 安裝Redis在CartApi專案右鍵&#x3D;&gt;選擇[管理NuGet套件]，安裝Redis的相關套件，包含這項：  StackExchange.Redis">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-10-03T15:51:00.000Z">
+<meta property="article:modified_time" content="2023-11-19T07:47:25.915Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://example.com/2020/10/03/%E4%B8%80%E8%A2%8B-net%E8%A6%81%E6%89%9B%E5%B9%BE%E6%A8%93%EF%BC%9F%E6%89%93%E9%80%A0%E5%AE%B9%E5%99%A8%E5%8C%96%E7%9A%84asp-net-core%E7%B6%B2%E7%AB%99%EF%BC%81%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0-11/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>一袋.NET要扛幾樓？打造容器化的ASP.NET Core網站！系列文章 - (18) 建立購物車系統 - 1 | Hexo</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Hexo</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/10/03/%E4%B8%80%E8%A2%8B-net%E8%A6%81%E6%89%9B%E5%B9%BE%E6%A8%93%EF%BC%9F%E6%89%93%E9%80%A0%E5%AE%B9%E5%99%A8%E5%8C%96%E7%9A%84asp-net-core%E7%B6%B2%E7%AB%99%EF%BC%81%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0-11/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          一袋.NET要扛幾樓？打造容器化的ASP.NET Core網站！系列文章 - (18) 建立購物車系統 - 1
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-10-03 23:51:00" itemprop="dateCreated datePublished" datetime="2020-10-03T23:51:00+08:00">2020-10-03</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-11-19 15:47:25" itemprop="dateModified" datetime="2023-11-19T15:47:25+08:00">2023-11-19</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ASP-NET-Core/" itemprop="url" rel="index"><span itemprop="name">ASP.NET Core</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="1-建立購物車服務的Api專案"><a href="#1-建立購物車服務的Api專案" class="headerlink" title="1. 建立購物車服務的Api專案"></a>1. 建立購物車服務的Api專案</h1><p>開啟VS，在RPGShop方案的src&#x2F;Services的方案資料夾，加入新的ASP.NET Core專案，專案名稱為CartApi，選擇專案類型Api，不要用Docker和HTTPS。</p>
+<h1 id="2-安裝Redis"><a href="#2-安裝Redis" class="headerlink" title="2. 安裝Redis"></a>2. 安裝Redis</h1><p>在CartApi專案右鍵&#x3D;&gt;選擇[管理NuGet套件]，安裝Redis的相關套件，包含這項：</p>
+<ul>
+<li>StackExchange.Redis, 版本 2.1.58</li>
+</ul>
+<h1 id="3-為何要用Redis"><a href="#3-為何要用Redis" class="headerlink" title="3. 為何要用Redis?"></a>3. 為何要用Redis?</h1><p>傳統購物網站大部分使用Session紀錄目前連線者的購物車內容，但缺點有幾項：</p>
+<ol>
+<li>預設Session在購物網站的伺服器，使用者越多則記憶體消耗越大</li>
+<li>Session只能記住目前連線的資料，如果換別的電腦或瀏覽器登入，則是不一樣的資料</li>
+</ol>
+<p>採用Redis的話，可以將Redis架在別的伺服器，且能依照Client的Id存取資料</p>
+<h1 id="4-建立購物車的模型"><a href="#4-建立購物車的模型" class="headerlink" title="4. 建立購物車的模型"></a>4. 建立購物車的模型</h1><p>新增Models資料夾並新增Cart和CartItem兩個類別，主要紀錄購物車的內容：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">using System.Collections.Generic;namespace CartApi.Models&#123;    public class Cart    &#123;        public string BuyerId &#123; get; set; &#125;        public List&lt;CartItem&gt; Items &#123; get; set; &#125;        public Cart(string cartId)        &#123;            BuyerId = cartId;            Items = new List&lt;CartItem&gt;();        &#125;    &#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">namespace CartApi.Models&#123;    public class CartItem    &#123;        public string Id &#123; get; set; &#125;        public string ProductId &#123; get; set; &#125;        public string ProductName &#123; get; set; &#125;        public decimal UnitPrice &#123; get; set; &#125;        public decimal OldUnitPrice &#123; get; set; &#125;        public int Quantity &#123; get; set; &#125;        public string PictureUrl &#123; get; set; &#125;    &#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="5-建立購物車的Repository"><a href="#5-建立購物車的Repository" class="headerlink" title="5. 建立購物車的Repository"></a>5. 建立購物車的Repository</h1><p>　　在Models資料夾新增ICartRepository介面和CartRepository，包含購物車內容的更新、刪除、讀取和取得所有使用者的Id列表。實作類別需注入Redis的物件，並針對Client的Id作為Redis的Key，來存取購物車的資料。</p>
+<p>.</p>
+<h1 id=""><a href="#" class="headerlink" title=""></a></h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">using System.Collections.Generic;using System.Threading.Tasks;namespace CartApi.Models&#123;    public interface ICartRepository    &#123;        Task&lt;Cart&gt; GetCartAsync(string cartId);        IEnumerable&lt;string&gt; GetUsers();        Task&lt;Cart&gt; UpdateCartAsync(Cart basket);        Task&lt;bool&gt; DeleteCartAsync(string id);    &#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">using Microsoft.Extensions.Logging;using Newtonsoft.Json;using StackExchange.Redis;using System.Collections.Generic;using System.Linq;using System.Threading.Tasks;namespace CartApi.Models&#123;    public class CartRepository : ICartRepository    &#123;        private readonly ILogger&lt;CartRepository&gt; _logger;        private readonly ConnectionMultiplexer _redis;        private readonly IDatabase _database;        public CartRepository(ILogger&lt;CartRepository&gt; logger, ConnectionMultiplexer redis)        &#123;            _logger = logger;            _redis = redis;            _database = redis.GetDatabase();        &#125;        public async Task&lt;Cart&gt; GetCartAsync(string cartId)        &#123;            var data = await _database.StringGetAsync(cartId);            if (data.IsNullOrEmpty)            &#123;                return null;            &#125;            return JsonConvert.DeserializeObject&lt;Cart&gt;(data);        &#125;        public IEnumerable&lt;string&gt; GetUsers()        &#123;            var server = GetServers();            var data = server.Keys();            return data?.Select(k =&gt; k.ToString());        &#125;        private IServer GetServers()        &#123;            var endpoint = _redis.GetEndPoints();            return _redis.GetServer(endpoint.First());        &#125;        public async Task&lt;Cart&gt; UpdateCartAsync(Cart basket)        &#123;            var created = await _database.StringSetAsync(basket.BuyerId, JsonConvert.SerializeObject(basket));            if (!created)            &#123;                _logger.LogInformation(&quot;Problem occur persisting the item&quot;);                return null;            &#125;            return await GetCartAsync(basket.BuyerId);        &#125;        public async Task&lt;bool&gt; DeleteCartAsync(string id)        &#123;            return await _database.KeyDeleteAsync(id);        &#125;    &#125;&#125;</span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/10/03/leetcode-189-rotate-array/" rel="prev" title="LeetCode 189 Rotate Array">
+      <i class="fa fa-chevron-left"></i> LeetCode 189 Rotate Array
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/10/04/leetcode-217-contains-duplicate/" rel="next" title="LeetCode 217 Contains Duplicate">
+      LeetCode 217 Contains Duplicate <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E5%BB%BA%E7%AB%8B%E8%B3%BC%E7%89%A9%E8%BB%8A%E6%9C%8D%E5%8B%99%E7%9A%84Api%E5%B0%88%E6%A1%88"><span class="nav-number">1.</span> <span class="nav-text">1. 建立購物車服務的Api專案</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E5%AE%89%E8%A3%9DRedis"><span class="nav-number">2.</span> <span class="nav-text">2. 安裝Redis</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-%E7%82%BA%E4%BD%95%E8%A6%81%E7%94%A8Redis"><span class="nav-number">3.</span> <span class="nav-text">3. 為何要用Redis?</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-%E5%BB%BA%E7%AB%8B%E8%B3%BC%E7%89%A9%E8%BB%8A%E7%9A%84%E6%A8%A1%E5%9E%8B"><span class="nav-number">4.</span> <span class="nav-text">4. 建立購物車的模型</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-%E5%BB%BA%E7%AB%8B%E8%B3%BC%E7%89%A9%E8%BB%8A%E7%9A%84Repository"><span class="nav-number">5.</span> <span class="nav-text">5. 建立購物車的Repository</span></a></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">6.</span> <span class="nav-text"></span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">208</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">49</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

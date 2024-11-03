@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="(Photo from Upsplash: https:&#x2F;&#x2F;unsplash.com&#x2F;photos&#x2F;3V8xo5Gbusk) Refactoring To PatternsMy practices of the book Refactoring To Patterns. Joshua Kerievsky’s book Refactoring to Patterns. The code sampl">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Practices of Refactoring To Patterns">
+<meta property="og:url" content="http://example.com/2023/03/27/practices-of-refactoring-to-patterns/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="(Photo from Upsplash: https:&#x2F;&#x2F;unsplash.com&#x2F;photos&#x2F;3V8xo5Gbusk) Refactoring To PatternsMy practices of the book Refactoring To Patterns. Joshua Kerievsky’s book Refactoring to Patterns. The code sampl">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://geekcodeparadise.com/wp-content/uploads/2023/03/kaleidico-3V8xo5Gbusk-unsplash-1024x683.jpg">
+<meta property="article:published_time" content="2023-03-26T16:00:08.000Z">
+<meta property="article:modified_time" content="2023-11-24T13:50:21.601Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="C#">
+<meta property="article:tag" content="REFACTORING">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://geekcodeparadise.com/wp-content/uploads/2023/03/kaleidico-3V8xo5Gbusk-unsplash-1024x683.jpg">
+
+<link rel="canonical" href="http://example.com/2023/03/27/practices-of-refactoring-to-patterns/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>Practices of Refactoring To Patterns | Hexo</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Hexo</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/03/27/practices-of-refactoring-to-patterns/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Practices of Refactoring To Patterns
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2023-03-27 00:00:08" itemprop="dateCreated datePublished" datetime="2023-03-27T00:00:08+08:00">2023-03-27</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-11-24 21:50:21" itemprop="dateModified" datetime="2023-11-24T21:50:21+08:00">2023-11-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C#</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Refactoring/" itemprop="url" rel="index"><span itemprop="name">Refactoring</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><img src="https://geekcodeparadise.com/wp-content/uploads/2023/03/kaleidico-3V8xo5Gbusk-unsplash-1024x683.jpg" alt="refactoring"></p>
+<p>(Photo from Upsplash: <a target="_blank" rel="noopener" href="https://unsplash.com/photos/3V8xo5Gbusk">https://unsplash.com/photos/3V8xo5Gbusk</a><a target="_blank" rel="noopener" href="https://pixabay.com/illustrations/moving-boxes-mover-moving-truck-3671446/">)</a></p>
+<h1 id="Refactoring-To-Patterns"><a href="#Refactoring-To-Patterns" class="headerlink" title="Refactoring To Patterns"></a>Refactoring To Patterns</h1><p>My practices of the book Refactoring To Patterns.</p>
+<p>Joshua Kerievsky’s book <a target="_blank" rel="noopener" href="https://amzn.to/3FNMrhJ">Refactoring to Patterns</a>.</p>
+<p>The code samples are placed in my <a target="_blank" rel="noopener" href="https://github.com/u8989332/RefactoringToPatterns_Practice">Github</a>.</p>
+<p>The content of the book is listed from chapter 6 to chapter 11 and maps to my Github subfolders:</p>
+<h2 id="Chapter-6-Creation"><a href="#Chapter-6-Creation" class="headerlink" title="Chapter 6 Creation"></a>Chapter 6 Creation</h2><span id="more"></span>
+
+<h3 id="Replace-Constructors-with-Creation-Methods"><a href="#Replace-Constructors-with-Creation-Methods" class="headerlink" title="-Replace Constructors with Creation Methods"></a>-<a target="_blank" rel="noopener" href="https://github.com/u8989332/RefactoringToPatterns_Practice/tree/master/ch6/Replace%20Constructors%20with%20Creation%20Methods">Replace Constructors with Creation Methods</a></h3><h3 id="Move-Creation-Knowledge-to-Factory"><a href="#Move-Creation-Knowledge-to-Factory" class="headerlink" title="-Move Creation Knowledge to Factory"></a>-<a target="_blank" rel="noopener" href="https://github.com/u8989332/RefactoringToPatterns_Practice/tree/master/ch6/Move%20Creation%20Knowledge%20to%20Factory">Move Creation Knowledge to Factory</a></h3><h3 id="Encapsulate-Classes-with-Factory"><a href="#Encapsulate-Classes-with-Factory" class="headerlink" title="-Encapsulate Classes with Factory"></a>-<a target="_blank" rel="noopener" href="https://github.com/u8989332/RefactoringToPatterns_Practice/tree/master/ch6/Encapsulate%20Classes%20with%20Factory">Encapsulate Classes with Factory</a></h3><h3 id="Introduce-Polymorphic-Creation-with-Factory-Method"><a href="#Introduce-Polymorphic-Creation-with-Factory-Method" class="headerlink" title="-Introduce Polymorphic Creation with Factory Method"></a>-<a target="_blank" rel="noopener" href="https://github.com/u8989332/RefactoringToPatterns_Practice/tree/master/ch6/Introduce%20Polymorphic%20Creation%20with%20Factory%20Method">Introduce Polymorphic Creation with Factory Method</a></h3><h3 id="Encapsulate-Composite-with-Builder"><a href="#Encapsulate-Composite-with-Builder" class="headerlink" title="-Encapsulate Composite with Builder"></a>-<a target="_blank" rel="noopener" href="https://github.com/u8989332/RefactoringToPatterns_Practice/tree/master/ch6/Encapsulate%20Composite%20with%20Builder">Encapsulate Composite with Builder</a></h3><h3 id="Inline-Singleton"><a href="#Inline-Singleton" class="headerlink" title="-Inline Singleton"></a>-<a target="_blank" rel="noopener" href="https://github.com/u8989332/RefactoringToPatterns_Practice/tree/master/ch6/Inline%20Singleton">Inline Sin</a><a target="_blank" rel="noopener" href="https://github.com/u8989332/RefactoringToPatterns_Practice/tree/master/ch6/Inline%20Singleton">gleton</a></h3><h2 id="Chapter-7-Simplification"><a href="#Chapter-7-Simplification" class="headerlink" title="Chapter 7 Simplification"></a>Chapter 7 Simplification</h2><h3 id="Compose-Method"><a href="#Compose-Method" class="headerlink" title="-Compose Method"></a>-<a target="_blank" rel="noopener" href="https://github.com/u8989332/RefactoringToPatterns_Practice/tree/master/ch7/Composed%20Method">Compose Method</a></h3><h3 id="Replace-Conditional-Logic-with-Strategy"><a href="#Replace-Conditional-Logic-with-Strategy" class="headerlink" title="-Replace Conditional Logic with Strategy"></a>-<a target="_blank" rel="noopener" href="https://github.com/u8989332/RefactoringToPatterns_Practice/tree/master/ch7/Replace%20Conditional%20Logic%20with%20Strategy">Replace Conditional Logic with Strategy</a></h3><h3 id="Move-Embellishment-to-Decorator"><a href="#Move-Embellishment-to-Decorator" class="headerlink" title="-Move Embellishment to Decorator"></a>-<a target="_blank" rel="noopener" href="https://github.com/u8989332/RefactoringToPatterns_Practice/tree/master/ch7/Move%20Embellishment%20to%20Decorator">Move Embellishment to Decorator</a></h3><h3 id="Replace-State-Altering-Conditionals-with-State"><a href="#Replace-State-Altering-Conditionals-with-State" class="headerlink" title="-Replace State-Altering Conditionals with State"></a>-<a target="_blank" rel="noopener" href="https://github.com/u8989332/RefactoringToPatterns_Practice/tree/master/ch7/Replace%20State-Altering%20Conditionals%20with%20State">Replace State-Altering Conditionals with State</a></h3><h3 id="Replace-Implicit-Tree-with-Composite"><a href="#Replace-Implicit-Tree-with-Composite" class="headerlink" title="-Replace Implicit Tree with Composite"></a>-<a target="_blank" rel="noopener" href="https://github.com/u8989332/RefactoringToPatterns_Practice/tree/master/ch7/Replace%20Implicit%20Tree%20with%20Composite">Replace Implicit Tree with Composite</a></h3><h3 id="Replace-Conditional-Dispatcher-with-Command"><a href="#Replace-Conditional-Dispatcher-with-Command" class="headerlink" title="-Replace Conditional Dispatcher with Command"></a>-<a target="_blank" rel="noopener" href="https://github.com/u8989332/RefactoringToPatterns_Practice/tree/master/ch7/Replace%20Conditional%20Dispatcher%20with%20Command">Replace Conditional Dispatcher with Command</a></h3><h2 id="Chapter-8-Generalization"><a href="#Chapter-8-Generalization" class="headerlink" title="Chapter 8 Generalization"></a>Chapter 8 Generalization</h2><h3 id="Form-Template-Method"><a href="#Form-Template-Method" class="headerlink" title="-Form Template Method"></a>-<a target="_blank" rel="noopener" href="https://github.com/u8989332/RefactoringToPatterns_Practice/tree/master/ch8/Form%20Template%20Method">Form Template Method</a></h3><h3 id="Extract-Composite"><a href="#Extract-Composite" class="headerlink" title="-Extract Composite"></a>-<a target="_blank" rel="noopener" href="https://github.com/u8989332/RefactoringToPatterns_Practice/tree/master/ch8/Extract%20Composite">Extract Composite</a></h3><h3 id="Replace-One-Many-Distinctions-with-Composite"><a href="#Replace-One-Many-Distinctions-with-Composite" class="headerlink" title="-Replace One&#x2F;Many Distinctions with Composite"></a>-<a target="_blank" rel="noopener" href="https://github.com/u8989332/RefactoringToPatterns_Practice/tree/master/ch8/Replace%20OneMany%20Distinctions%20with%20Composite">Replace One&#x2F;Many Distinctions with Composite</a></h3><h3 id="Replace-Hard-Coded-Notifications-with-Observer"><a href="#Replace-Hard-Coded-Notifications-with-Observer" class="headerlink" title="-Replace Hard-Coded Notifications with Observer"></a>-<a target="_blank" rel="noopener" href="https://github.com/u8989332/RefactoringToPatterns_Practice/tree/master/ch8/Replace%20Hard-Coded%20Notifications%20with%20Observer">Replace Hard-Coded Notifications with Observer</a></h3><h3 id="Unify-Interfaces-with-Adapter"><a href="#Unify-Interfaces-with-Adapter" class="headerlink" title="-Unify Interfaces with Adapter"></a>-<a target="_blank" rel="noopener" href="https://github.com/u8989332/RefactoringToPatterns_Practice/tree/master/ch8/Unify%20Interfaces%20with%20Adapter">Unify Interfaces with Adapter</a></h3><h3 id="Extract-Adapter"><a href="#Extract-Adapter" class="headerlink" title="-Extract Adapter"></a>-<a target="_blank" rel="noopener" href="https://github.com/u8989332/RefactoringToPatterns_Practice/tree/master/ch8/Extract%20Adapter">Extract Adapter</a></h3><h3 id="R-eplace-Implicit-Language-with-Interpreter"><a href="#R-eplace-Implicit-Language-with-Interpreter" class="headerlink" title="-R eplace Implicit Language with Interpreter"></a>-<a target="_blank" rel="noopener" href="https://github.com/u8989332/RefactoringToPatterns_Practice/tree/master/ch8/Replace%20Implicit%20Language%20with%20Interpreter">R eplace Implicit Language with Interpreter</a></h3><h2 id="Chapter-9-Protection"><a href="#Chapter-9-Protection" class="headerlink" title="Chapter 9 Protection"></a>Chapter 9 Protection</h2><h3 id="Replace-Type-Code-with-Class"><a href="#Replace-Type-Code-with-Class" class="headerlink" title="-Replace Type Code with Class"></a>-<a target="_blank" rel="noopener" href="https://github.com/u8989332/RefactoringToPatterns_Practice/tree/master/ch9/Replace%20Type%20Code%20with%20Class">Replace Type Code with Class</a></h3><h3 id="Limit-Instantiation-with-Singleton"><a href="#Limit-Instantiation-with-Singleton" class="headerlink" title="-Limit Instantiation with Singleton"></a>-<a target="_blank" rel="noopener" href="https://github.com/u8989332/RefactoringToPatterns_Practice/tree/master/ch9/Limit%20Instantiation%20with%20Singleton">Limit Instantiation with Singleton</a></h3><h3 id="Introduce-Null-Object"><a href="#Introduce-Null-Object" class="headerlink" title="-Introduce Null Object"></a>-<a target="_blank" rel="noopener" href="https://github.com/u8989332/RefactoringToPatterns_Practice/tree/master/ch9/Introduce%20Null%20Object">Introduce Null Object</a></h3><h2 id="Chapter-10-Protection"><a href="#Chapter-10-Protection" class="headerlink" title="Chapter 10 Protection"></a>Chapter 10 Protection</h2><h3 id="Move-Accumulation-to-Collecting-Parameter"><a href="#Move-Accumulation-to-Collecting-Parameter" class="headerlink" title="-Move Accumulation to Collecting Parameter"></a>-<a target="_blank" rel="noopener" href="https://github.com/u8989332/RefactoringToPatterns_Practice/tree/master/ch10/Move%20Accumulation%20to%20Collecting%20Parameter">Move Accumulation to Collecting Parameter</a></h3><h3 id="Move-Accumulation-to-Visitor"><a href="#Move-Accumulation-to-Visitor" class="headerlink" title="-Move Accumulation to Visitor"></a>-<a target="_blank" rel="noopener" href="https://github.com/u8989332/RefactoringToPatterns_Practice/tree/master/ch10/Move%20Accumulation%20to%20Visitor">Move Accumulation to Visitor</a></h3><h2 id="Chapter-11-Utilities"><a href="#Chapter-11-Utilities" class="headerlink" title="Chapter 11 Utilities"></a>Chapter 11 Utilities</h2><h3 id="Chain-Constructors"><a href="#Chain-Constructors" class="headerlink" title="-Chain Constructors"></a>-<a target="_blank" rel="noopener" href="https://github.com/u8989332/RefactoringToPatterns_Practice/tree/master/ch11/Chain%20Constructors">Chain Constructors</a></h3><h3 id="Unify-Interfaces"><a href="#Unify-Interfaces" class="headerlink" title="-Unify Interfaces"></a>-<a target="_blank" rel="noopener" href="https://github.com/u8989332/RefactoringToPatterns_Practice/tree/master/ch11/Unify%20Interfaces">Unify Interfaces</a></h3><h3 id="Extract-Parameter"><a href="#Extract-Parameter" class="headerlink" title="-Extract Parameter"></a>-<a target="_blank" rel="noopener" href="https://github.com/u8989332/RefactoringToPatterns_Practice/tree/master/ch11/Extract%20Parameter">Extract Parameter</a></h3>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/C/" rel="tag"># C#</a>
+              <a href="/tags/REFACTORING/" rel="tag"># REFACTORING</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/04/09/refactoring-chapter-10-simplifying-conditional-logic/" rel="prev" title="Simplifying Conditional Logic">
+      <i class="fa fa-chevron-left"></i> Simplifying Conditional Logic
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2023/11/19/hello-world/" rel="next" title="Hello World">
+      Hello World <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Refactoring-To-Patterns"><span class="nav-number">1.</span> <span class="nav-text">Refactoring To Patterns</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Chapter-6-Creation"><span class="nav-number">1.1.</span> <span class="nav-text">Chapter 6 Creation</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Replace-Constructors-with-Creation-Methods"><span class="nav-number">1.1.1.</span> <span class="nav-text">-Replace Constructors with Creation Methods</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Move-Creation-Knowledge-to-Factory"><span class="nav-number">1.1.2.</span> <span class="nav-text">-Move Creation Knowledge to Factory</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Encapsulate-Classes-with-Factory"><span class="nav-number">1.1.3.</span> <span class="nav-text">-Encapsulate Classes with Factory</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Introduce-Polymorphic-Creation-with-Factory-Method"><span class="nav-number">1.1.4.</span> <span class="nav-text">-Introduce Polymorphic Creation with Factory Method</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Encapsulate-Composite-with-Builder"><span class="nav-number">1.1.5.</span> <span class="nav-text">-Encapsulate Composite with Builder</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Inline-Singleton"><span class="nav-number">1.1.6.</span> <span class="nav-text">-Inline Singleton</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Chapter-7-Simplification"><span class="nav-number">1.2.</span> <span class="nav-text">Chapter 7 Simplification</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Compose-Method"><span class="nav-number">1.2.1.</span> <span class="nav-text">-Compose Method</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Replace-Conditional-Logic-with-Strategy"><span class="nav-number">1.2.2.</span> <span class="nav-text">-Replace Conditional Logic with Strategy</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Move-Embellishment-to-Decorator"><span class="nav-number">1.2.3.</span> <span class="nav-text">-Move Embellishment to Decorator</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Replace-State-Altering-Conditionals-with-State"><span class="nav-number">1.2.4.</span> <span class="nav-text">-Replace State-Altering Conditionals with State</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Replace-Implicit-Tree-with-Composite"><span class="nav-number">1.2.5.</span> <span class="nav-text">-Replace Implicit Tree with Composite</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Replace-Conditional-Dispatcher-with-Command"><span class="nav-number">1.2.6.</span> <span class="nav-text">-Replace Conditional Dispatcher with Command</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Chapter-8-Generalization"><span class="nav-number">1.3.</span> <span class="nav-text">Chapter 8 Generalization</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Form-Template-Method"><span class="nav-number">1.3.1.</span> <span class="nav-text">-Form Template Method</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Extract-Composite"><span class="nav-number">1.3.2.</span> <span class="nav-text">-Extract Composite</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Replace-One-Many-Distinctions-with-Composite"><span class="nav-number">1.3.3.</span> <span class="nav-text">-Replace One&#x2F;Many Distinctions with Composite</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Replace-Hard-Coded-Notifications-with-Observer"><span class="nav-number">1.3.4.</span> <span class="nav-text">-Replace Hard-Coded Notifications with Observer</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Unify-Interfaces-with-Adapter"><span class="nav-number">1.3.5.</span> <span class="nav-text">-Unify Interfaces with Adapter</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Extract-Adapter"><span class="nav-number">1.3.6.</span> <span class="nav-text">-Extract Adapter</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#R-eplace-Implicit-Language-with-Interpreter"><span class="nav-number">1.3.7.</span> <span class="nav-text">-R eplace Implicit Language with Interpreter</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Chapter-9-Protection"><span class="nav-number">1.4.</span> <span class="nav-text">Chapter 9 Protection</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Replace-Type-Code-with-Class"><span class="nav-number">1.4.1.</span> <span class="nav-text">-Replace Type Code with Class</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Limit-Instantiation-with-Singleton"><span class="nav-number">1.4.2.</span> <span class="nav-text">-Limit Instantiation with Singleton</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Introduce-Null-Object"><span class="nav-number">1.4.3.</span> <span class="nav-text">-Introduce Null Object</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Chapter-10-Protection"><span class="nav-number">1.5.</span> <span class="nav-text">Chapter 10 Protection</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Move-Accumulation-to-Collecting-Parameter"><span class="nav-number">1.5.1.</span> <span class="nav-text">-Move Accumulation to Collecting Parameter</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Move-Accumulation-to-Visitor"><span class="nav-number">1.5.2.</span> <span class="nav-text">-Move Accumulation to Visitor</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Chapter-11-Utilities"><span class="nav-number">1.6.</span> <span class="nav-text">Chapter 11 Utilities</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Chain-Constructors"><span class="nav-number">1.6.1.</span> <span class="nav-text">-Chain Constructors</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Unify-Interfaces"><span class="nav-number">1.6.2.</span> <span class="nav-text">-Unify Interfaces</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Extract-Parameter"><span class="nav-number">1.6.3.</span> <span class="nav-text">-Extract Parameter</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">208</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">49</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

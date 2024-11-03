@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="HDFS Java API 1.HDFS的Java APIHDFS提供Java的API，可以用Java開發對HDFS做存取功能的程式。本篇開發環境一樣是Java EE Eclipse，以下會介紹HDFS常使用的API。 1.1 繼承 TestCase class的.java檔如果您已經熟悉JUnit這項功能，可直接跳過本節。由於HDFS的API很多重複性的函式／類別要呼叫，如果每做一個功能就要建一">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HDFS Java API">
+<meta property="og:url" content="http://example.com/2015/10/01/hdfs-java-api/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="HDFS Java API 1.HDFS的Java APIHDFS提供Java的API，可以用Java開發對HDFS做存取功能的程式。本篇開發環境一樣是Java EE Eclipse，以下會介紹HDFS常使用的API。 1.1 繼承 TestCase class的.java檔如果您已經熟悉JUnit這項功能，可直接跳過本節。由於HDFS的API很多重複性的函式／類別要呼叫，如果每做一個功能就要建一">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://geekcodeparadise.com/wp-content/uploads/2015/10/right2Bclick2Brun2Bjunit.png">
+<meta property="og:image" content="http://geekcodeparadise.com/wp-content/uploads/2015/10/read2Boutput.png">
+<meta property="og:image" content="http://geekcodeparadise.com/wp-content/uploads/2015/10/RUN2BCONIG2BHADOOP2BUSER.png">
+<meta property="article:published_time" content="2015-09-30T23:44:00.000Z">
+<meta property="article:modified_time" content="2023-11-19T07:47:25.432Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://geekcodeparadise.com/wp-content/uploads/2015/10/right2Bclick2Brun2Bjunit.png">
+
+<link rel="canonical" href="http://example.com/2015/10/01/hdfs-java-api/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>HDFS Java API | Hexo</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Hexo</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2015/10/01/hdfs-java-api/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          HDFS Java API
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2015-10-01 07:44:00" itemprop="dateCreated datePublished" datetime="2015-10-01T07:44:00+08:00">2015-10-01</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-11-19 15:47:25" itemprop="dateModified" datetime="2023-11-19T15:47:25+08:00">2023-11-19</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Hadoop/" itemprop="url" rel="index"><span itemprop="name">Hadoop</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/HDFS/" itemprop="url" rel="index"><span itemprop="name">HDFS</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>HDFS Java API</p>
+<h4 id="1-HDFS的Java-API"><a href="#1-HDFS的Java-API" class="headerlink" title="1.HDFS的Java API"></a>1.HDFS的Java API</h4><p>HDFS提供Java的API，可以用Java開發對HDFS做存取功能的程式。本篇開發環境一樣是Java EE Eclipse，以下會介紹HDFS常使用的API。</p>
+<h5 id="1-1-繼承-TestCase-class的-java檔"><a href="#1-1-繼承-TestCase-class的-java檔" class="headerlink" title="1.1 繼承 TestCase class的.java檔"></a>1.1 繼承 TestCase class的.java檔</h5><p>如果您已經熟悉JUnit這項功能，可直接跳過本節。由於HDFS的API很多重複性的函式／類別要呼叫，如果每做一個功能就要建一個.java來測試短短幾行程式碼，個人覺得蠻占空間的。而外界有提供JUnit API（已內建於Java EE Eclipse Maven Project），這API可以在同一份.java檔針對某個函式做執行。首先要建立個MyHDFSControl.java，在檔案上方import：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> junit.framework.TestCase;</span><br></pre></td></tr></table></figure>
+
+<p>　　之後在class名稱後面用extends繼承TestCase：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MyHDFSControl</span> <span class="keyword">extends</span> <span class="title class_">TestCase</span> &#123;　　<span class="comment">//code....&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>　　如此一來該類別的每個函式都可以獨自執行。</p>
+<h5 id="1-2-讀取HDFS檔案的內容"><a href="#1-2-讀取HDFS檔案的內容" class="headerlink" title="1.2 讀取HDFS檔案的內容"></a>1.2 讀取HDFS檔案的內容</h5><p>　　首先先貼這簡短的程式碼，在依序介紹每行的作用：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">testRead</span><span class="params">()</span> <span class="keyword">throws</span> Exception</span><br><span class="line">&#123;</span><br><span class="line"> <span class="comment">//hadoop01 HDFS的Uri</span></span><br><span class="line"> <span class="type">String</span> <span class="variable">basicUri</span> <span class="operator">=</span> <span class="string">&quot;webhdfs://hadoop01&quot;</span>;</span><br><span class="line"> <span class="comment">//之前做Wordcount的計算結果Uri</span></span><br><span class="line"> <span class="type">String</span> <span class="variable">uri</span> <span class="operator">=</span> <span class="string">&quot;webhdfs://hadoop01/output01/part-r-00000&quot;</span>;</span><br><span class="line"> <span class="comment">//建立HDFS操作，都一定要呼叫環境變數類別Configuration</span></span><br><span class="line"> <span class="type">Configuration</span> <span class="variable">conf</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Configuration</span>();</span><br><span class="line"> <span class="comment">//建立HDFS的類別FileSystem，參數帶入hadoop01的Uri與Configuration</span></span><br><span class="line"> <span class="type">FileSystem</span> <span class="variable">hdfs</span> <span class="operator">=</span> FileSystem.get(URI.create(basicUri),conf);</span><br><span class="line"></span><br><span class="line"> <span class="comment">//建立HDFS路徑的類別Path，參數帶入要做存取檔案的Uri</span></span><br><span class="line"> <span class="type">Path</span> <span class="variable">path</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Path</span>(uri);</span><br><span class="line">  </span><br><span class="line"> <span class="comment">/*建立HDFS讀取檔案的類別FSDataInputStream,</span></span><br><span class="line"><span class="comment">    由FileSystem的open函式傳遞path的stream*/</span></span><br><span class="line"> <span class="type">FSDataInputStream</span> <span class="variable">inStream</span> <span class="operator">=</span> hdfs.open(path);</span><br><span class="line"> <span class="comment">/*透過hadoop的IO API IOUtils，參數分別是(1)inStream讀取的資料 (2)stdout(console)輸出，</span></span><br><span class="line"><span class="comment"> 　(3)每次的存取buffer size是預設的4096 Bytes，(4)設false代表存取完不close stream */</span></span><br><span class="line"> IOUtils.copyBytes(inStream, System.out, <span class="number">4096</span>,<span class="literal">false</span>);</span><br><span class="line"> <span class="comment">//關掉stream</span></span><br><span class="line"> IOUtils.closeStream(inStream);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　首先介紹Uri與FileSystem：用Java做開發時，都要先透過FileSystem建立連線，使FileSystem能知道要存取HDFS的位置。而連線的Uri是帶入host hadoop01(master)的位置：webhdfs:&#x2F;&#x2F;hadoop01。<br>　　若有讀者曾開發過，會看出比較特別的地方是我Uri使用webhdfs:&#x2F;&#x2F; protocol，而不是hdfs:&#x2F;&#x2F;。因為webhdfs是可以兼容各種版本的HDFS，不用擔心版本的差異會導致無法存取HDFS。<br>　　接著Path是帶入要存取的HDFS檔案路徑，再透過FileSystem.open的方式，將該Path的FSInputStream指定給inStream變數，如此一來建立了對此檔案的檔案輸入指標。<br>　　Hadoop的IO類別的IOUtils可以對stream做讀取&#x2F;寫入，因此使用IOUtils將inStream讀到的資料，輸出到stdout(console)，最後再關閉inStream。<br> 　　執行程式的方式與結果如下：</p>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2015/10/right2Bclick2Brun2Bjunit-1.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2015/10/right2Bclick2Brun2Bjunit.png" alt="HDFS Java API running"></a></p>
+<p>對函式的名稱testRead右鍵-&gt;Run As-&gt;JUnit Test，或者在右邊的Outline也是一樣做法</p>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2015/10/read2Boutput-1.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2015/10/read2Boutput.png" alt="HDFS Java API run unit testing"></a></p>
+<p>Console的輸出結果是之前做Wordcount的結果</p>
+<p>　　大部分HDFS操作的流程： 建立環境Configuration -&gt; 建立FileSystem -&gt; 與host Uri連線 -&gt; 建立檔案的Path -&gt; 用FileSystem對Path做存取的操作。<br>　　以下各種程式碼的大同小異，會針對較特殊的地方再做補充說明。</p>
+<h5 id="1-3-HDFS目錄下的資料屬性"><a href="#1-3-HDFS目錄下的資料屬性" class="headerlink" title="1.3 HDFS目錄下的資料屬性"></a>1.3 HDFS目錄下的資料屬性</h5><p>程式碼：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">testList</span><span class="params">()</span> <span class="keyword">throws</span> Exception</span><br><span class="line">&#123;</span><br><span class="line"> <span class="type">String</span> <span class="variable">basicUri</span> <span class="operator">=</span> <span class="string">&quot;webhdfs://hadoop01/&quot;</span>;</span><br><span class="line"> <span class="type">String</span> <span class="variable">uri</span> <span class="operator">=</span> <span class="string">&quot;webhdfs://hadoop01/input01&quot;</span>;</span><br><span class="line"> <span class="type">Configuration</span> <span class="variable">conf</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Configuration</span>();</span><br><span class="line"> <span class="type">FileSystem</span> <span class="variable">hdfs</span> <span class="operator">=</span> FileSystem.get(URI.create(basicUri),conf);</span><br><span class="line"> <span class="type">Path</span> <span class="variable">path</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Path</span>(uri);</span><br><span class="line"> <span class="comment">//用listStatus函式，讀取input01目錄下的資料</span></span><br><span class="line"> FileStatus[] fileStatus = hdfs.listStatus(path);</span><br><span class="line"> <span class="comment">//用迴圈執行判斷每個資料是file或directory</span></span><br><span class="line"> <span class="keyword">for</span> (FileStatus fs : fileStatus)</span><br><span class="line"> &#123;</span><br><span class="line">  <span class="type">Path</span> <span class="variable">p</span> <span class="operator">=</span> fs.getPath();</span><br><span class="line">  <span class="type">String</span> <span class="variable">info</span> <span class="operator">=</span> fs.isDir() ? <span class="string">&quot;Directory&quot;</span> : <span class="string">&quot;File&quot;</span>;</span><br><span class="line">  System.out.println(info + <span class="string">&quot; : &quot;</span> + p);</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　用listStatus的函式，可以將一個目錄下所有資料的屬性，再透過迴圈讀取每個檔案的內容，本節使用Path的函式isDir判斷這檔案是否為directory。Path的函式還有很多種，例如該檔案的大小、owner是誰等。</p>
+<h5 id="1-4-建立HDFS目錄"><a href="#1-4-建立HDFS目錄" class="headerlink" title="1.4 建立HDFS目錄"></a>1.4 建立HDFS目錄</h5><p>程式碼：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">testCreateDir</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line"> <span class="keyword">try</span></span><br><span class="line"> &#123;</span><br><span class="line">  <span class="type">String</span> <span class="variable">basicUri</span> <span class="operator">=</span> <span class="string">&quot;webhdfs://hadoop01/&quot;</span>;</span><br><span class="line"><span class="comment">//建立testNewDir/testDir01目錄</span></span><br><span class="line">  <span class="type">String</span> <span class="variable">uri</span> <span class="operator">=</span> <span class="string">&quot;webhdfs://hadoop01/testNewDir/testDir01&quot;</span>;</span><br><span class="line">  <span class="type">Configuration</span> <span class="variable">conf</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Configuration</span>();</span><br><span class="line">  <span class="type">FileSystem</span> <span class="variable">hdfs</span> <span class="operator">=</span> FileSystem.get(URI.create(basicUri),conf);</span><br><span class="line">   </span><br><span class="line">  <span class="type">Path</span> <span class="variable">path</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Path</span>(uri);</span><br><span class="line">  <span class="type">boolean</span> <span class="variable">isSuccess</span> <span class="operator">=</span> hdfs.mkdirs(path);</span><br><span class="line">  <span class="type">String</span> <span class="variable">info</span> <span class="operator">=</span> isSuccess ? <span class="string">&quot;success&quot;</span> : <span class="string">&quot;fail&quot;</span>;</span><br><span class="line">  System.out.println(<span class="string">&quot;Create directory [&quot;</span> + path + <span class="string">&quot;]&quot;</span> + info);</span><br><span class="line"> &#125;</span><br><span class="line"> <span class="keyword">catch</span>(Exception e)</span><br><span class="line"> &#123;</span><br><span class="line">  e.printStackTrace();</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　對於資料的寫入有個較謹慎的問題：權限！原先我的HDFS沒有testNewDir目錄，也沒有testDir01目錄，所以若是直接執行這段程式，會出現Permission denied的訊息：</p>
+<p>Permission denied: user&#x3D;GAO, access&#x3D;WRITE, inode&#x3D;”&#x2F;testNewDir&#x2F;testDir01”:test:supergroup:drwxr-xr-x</p>
+<p>　　解決的辦法有2種：<br>　　1.Server用指令先建立個testNewDir目錄，並用chmod改變這目錄的權限：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">hadoop fs -<span class="built_in">mkdir</span> /testNewDir</span><br><span class="line">hadoop fs -<span class="built_in">chmod</span> 777 /testNewDir</span><br></pre></td></tr></table></figure>
+
+<p>　　執行完這程式碼後，再執行testCreateDir()程式就可以正常在testNewDir目錄下建立testDir01目錄(或寫入檔案）</p>
+<p>　　2.更改hdfs-site.xml的內容，將dfs.permissions設置為false。但這方法不建議，會變成所有人都能隨意存取，有很多安全性的問題。</p>
+<p>　　3.在Eclipse裡設定Java執行的環境變數，在Eclipse上方點Run -&gt; Run Configurations… -&gt; Environment -&gt; New -&gt; 新增一個NAME為HADOOP_USER_NAME ，Value為test（代表server的user），設定好按下Apply。如下圖所示：</p>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2015/10/RUN2BCONIG2BHADOOP2BUSER-1.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2015/10/RUN2BCONIG2BHADOOP2BUSER.png" alt="HDFS Java API environment"></a></p>
+<h5 id="1-5-複製local端的資料到HDFS"><a href="#1-5-複製local端的資料到HDFS" class="headerlink" title="1.5 複製local端的資料到HDFS"></a>1.5 複製local端的資料到HDFS</h5><p>　　程式碼：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">testPut</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line"> <span class="keyword">try</span></span><br><span class="line"> &#123;</span><br><span class="line">  </span><br><span class="line">  <span class="type">String</span> <span class="variable">basicUri</span> <span class="operator">=</span> <span class="string">&quot;webhdfs://hadoop01/&quot;</span>;</span><br><span class="line">  <span class="type">String</span> <span class="variable">srcUri</span> <span class="operator">=</span> <span class="string">&quot;c:/testfile.txt&quot;</span>;</span><br><span class="line">  <span class="type">String</span> <span class="variable">destUri</span> <span class="operator">=</span> <span class="string">&quot;webhdfs://hadoop01/testNewDir&quot;</span>;</span><br><span class="line">  <span class="type">Configuration</span> <span class="variable">conf</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Configuration</span>();</span><br><span class="line">  <span class="type">FileSystem</span> <span class="variable">hdfs</span> <span class="operator">=</span> FileSystem.get(URI.create(basicUri),conf);</span><br><span class="line">  </span><br><span class="line">  <span class="type">Path</span> <span class="variable">srcPath</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Path</span>(srcUri);</span><br><span class="line">  <span class="type">Path</span> <span class="variable">destPath</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Path</span>(destUri);</span><br><span class="line">  <span class="comment">/* 將local端的資料放到HDFS上 */</span></span><br><span class="line">  hdfs.copyFromLocalFile(srcPath, destPath);</span><br><span class="line">  </span><br><span class="line"> &#125;</span><br><span class="line"> <span class="keyword">catch</span>(Exception e)</span><br><span class="line"> &#123;</span><br><span class="line">  e.printStackTrace();</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　使用copyFromLocalFile函式可以將local的資料寫到HDFS上。</p>
+<h5 id="1-6-在HDFS寫入檔案"><a href="#1-6-在HDFS寫入檔案" class="headerlink" title="1.6 在HDFS寫入檔案"></a>1.6 在HDFS寫入檔案</h5><p>　　程式碼：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">testCreateFile</span><span class="params">()</span></span><br><span class="line"> &#123;</span><br><span class="line">  <span class="keyword">try</span></span><br><span class="line">  &#123;</span><br><span class="line">   <span class="type">String</span> <span class="variable">basicUri</span> <span class="operator">=</span> <span class="string">&quot;webhdfs://hadoop01/&quot;</span>;</span><br><span class="line">   <span class="type">String</span> <span class="variable">uri</span> <span class="operator">=</span> <span class="string">&quot;webhdfs://hadoop01/testNewDir/test1.txt&quot;</span>;</span><br><span class="line">   <span class="type">Configuration</span> <span class="variable">conf</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Configuration</span>();</span><br><span class="line">   <span class="type">FileSystem</span> <span class="variable">hdfs</span> <span class="operator">=</span> FileSystem.get(URI.create(basicUri),conf);</span><br><span class="line">   <span class="type">Path</span> <span class="variable">path</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Path</span>(uri);</span><br><span class="line">   <span class="comment">/* 在HDFS寫入FILE要用FSDataOutputStream */</span></span><br><span class="line">   <span class="type">FSDataOutputStream</span> <span class="variable">fsDataOutputStream</span> <span class="operator">=</span> hdfs.create(path);</span><br><span class="line">   fsDataOutputStream.write(<span class="string">&quot;This is test&quot;</span>.getBytes());</span><br><span class="line">   IOUtils.closeStream(fsDataOutputStream);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">catch</span>(Exception e)</span><br><span class="line">  &#123;</span><br><span class="line">   e.printStackTrace();</span><br><span class="line">  &#125;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　在HDFS寫入檔案使用FSDataOutputStream類別，透過hdfs的.create()回傳stream（FSInputStream是用open，有差別）。寫入資料的方式是用FsDataOutputStream.write()，這邊要注意的是若要寫入字串，盡可能使用getBytes()來寫入，若是用writeUTF()或writeChars()等函式寫入字串，寫出來的檔案會多一些字元，這屬於編碼的問題，詳細的原因待探討。</p>
+<h5 id="1-7-更改HDFS檔案的名稱"><a href="#1-7-更改HDFS檔案的名稱" class="headerlink" title="1.7 更改HDFS檔案的名稱"></a>1.7 更改HDFS檔案的名稱</h5><p>程式碼：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">testRename</span><span class="params">()</span></span><br><span class="line"> &#123;</span><br><span class="line">  <span class="keyword">try</span></span><br><span class="line">  &#123;</span><br><span class="line">   <span class="type">String</span> <span class="variable">basicUri</span> <span class="operator">=</span> <span class="string">&quot;webhdfs://hadoop01/&quot;</span>;</span><br><span class="line">   <span class="type">String</span> <span class="variable">srcuri</span> <span class="operator">=</span> <span class="string">&quot;webhdfs://hadoop01/testNewDir/test1.txt&quot;</span>;</span><br><span class="line">   <span class="type">String</span> <span class="variable">dsturi</span> <span class="operator">=</span> <span class="string">&quot;webhdfs://hadoop01/testNewDir/test2.txt&quot;</span>;</span><br><span class="line">   <span class="type">Configuration</span> <span class="variable">conf</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Configuration</span>();</span><br><span class="line">   </span><br><span class="line">   <span class="type">FileSystem</span> <span class="variable">hdfs</span> <span class="operator">=</span> FileSystem.get(URI.create(basicUri),conf);</span><br><span class="line">   </span><br><span class="line">   <span class="type">Path</span> <span class="variable">srcpath</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Path</span>(srcuri);</span><br><span class="line">   <span class="type">Path</span> <span class="variable">dstpath</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Path</span>(dsturi);</span><br><span class="line">   <span class="type">boolean</span> <span class="variable">flag</span> <span class="operator">=</span> hdfs.rename(srcpath,dstpath);</span><br><span class="line">   System.out.println(flag);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">catch</span>(Exception e)</span><br><span class="line">  &#123;</span><br><span class="line">   e.printStackTrace();</span><br><span class="line">  &#125;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="1-8-刪除HDFS檔案-目錄"><a href="#1-8-刪除HDFS檔案-目錄" class="headerlink" title="1.8 刪除HDFS檔案&#x2F;目錄"></a>1.8 刪除HDFS檔案&#x2F;目錄</h5><p>程式碼：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">testDeleteFile</span><span class="params">()</span></span><br><span class="line"> &#123;</span><br><span class="line">  <span class="keyword">try</span></span><br><span class="line">  &#123;</span><br><span class="line">   <span class="type">String</span> <span class="variable">basicUri</span> <span class="operator">=</span> <span class="string">&quot;webhdfs://hadoop01/&quot;</span>;</span><br><span class="line">   <span class="type">String</span> <span class="variable">uri</span> <span class="operator">=</span> <span class="string">&quot;webhdfs://hadoop01/testNewDir&quot;</span>;</span><br><span class="line">   <span class="type">Configuration</span> <span class="variable">conf</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Configuration</span>();</span><br><span class="line">   <span class="type">FileSystem</span> <span class="variable">hdfs</span> <span class="operator">=</span> FileSystem.get(URI.create(basicUri),conf);</span><br><span class="line">   <span class="type">Path</span> <span class="variable">path</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Path</span>(uri);</span><br><span class="line">   <span class="comment">/* 第二個參數:是否遞迴方式刪除, 若刪除對象是目錄,則目錄也會跟著被刪 */</span></span><br><span class="line">   <span class="type">boolean</span> <span class="variable">flag</span> <span class="operator">=</span> hdfs.delete(path,<span class="literal">true</span>);</span><br><span class="line">   System.out.println(flag);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">catch</span>(Exception e)</span><br><span class="line">  &#123;</span><br><span class="line">   e.printStackTrace();</span><br><span class="line">  &#125;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="1-9-列出HDFS的各個Datanode-Hostname"><a href="#1-9-列出HDFS的各個Datanode-Hostname" class="headerlink" title="1.9 列出HDFS的各個Datanode Hostname"></a>1.9 列出HDFS的各個Datanode Hostname</h5><p>程式碼：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">testCluster</span><span class="params">()</span></span><br><span class="line"> &#123;</span><br><span class="line">  <span class="keyword">try</span></span><br><span class="line">  &#123;</span><br><span class="line">   <span class="comment">// 要用hdfs protocol,且port要用9000</span></span><br><span class="line">   <span class="type">String</span> <span class="variable">basicUri</span> <span class="operator">=</span> <span class="string">&quot;hdfs://hadoop01:9000/&quot;</span>;</span><br><span class="line">   <span class="type">Configuration</span> <span class="variable">conf</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Configuration</span>();</span><br><span class="line">   <span class="type">FileSystem</span> <span class="variable">hdfs</span> <span class="operator">=</span> FileSystem.get(URI.create(basicUri),conf);</span><br><span class="line">   </span><br><span class="line">   <span class="comment">//將FileSystem轉型給DistributedFileSystem</span></span><br><span class="line">   <span class="type">DistributedFileSystem</span> <span class="variable">distributedFileSystem</span> <span class="operator">=</span> (DistributedFileSystem) hdfs;</span><br><span class="line">   <span class="comment">//回傳各個datanode的資訊</span></span><br><span class="line">   DatanodeInfo[] datanodeInfos = distributedFileSystem.getDataNodeStats();</span><br><span class="line">   <span class="keyword">for</span>(DatanodeInfo dn : datanodeInfos)</span><br><span class="line">   &#123;</span><br><span class="line">    <span class="comment">//回傳每個datanode的hostname</span></span><br><span class="line">    <span class="type">String</span> <span class="variable">hostname</span> <span class="operator">=</span> dn.getHostName();</span><br><span class="line">    System.out.println(hostname);</span><br><span class="line">   &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">catch</span>(Exception e)</span><br><span class="line">  &#123;</span><br><span class="line">   e.printStackTrace();</span><br><span class="line">  &#125;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　這邊較特別的是，要用DistributedFileSystem必須用hdfs的protocol，且port要用9000，用原本的webhdfs會無法將FileSystem cast給DistributedFileSystem。另外執行Java的環境變數要設置HADOOP_USER_NAME為test。以本人的程式執行會輸出hadoop01、hadoop02與hadoop03。</p>
+<h4 id="2-結論"><a href="#2-結論" class="headerlink" title="2.結論"></a>2.結論</h4><p>　　透過HDFS的Java API，可以想像各種網路雲端空間的實作方式是不是就是這些API呢？只差在GUI、資料安全性、硬體等（其實差很多XD）。預計之後寫Hive與HBase的文章。</p>
+<h4 id="參考文獻"><a href="#參考文獻" class="headerlink" title="參考文獻"></a>參考文獻</h4><ol>
+<li>陸嘉恒 Hadoop實戰 第2版 第9章 HDFS詳解</li>
+<li><a target="_blank" rel="noopener" href="http://www.huqiwen.com/2013/07/18/hdfs-permission-denied/">IT人生录BLOG：HDFS客户端的权限错误：Permission denied</a></li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2015/09/26/eclipse-mapreduce-wordcount/" rel="prev" title="Eclipse MapReduce Wordcount">
+      <i class="fa fa-chevron-left"></i> Eclipse MapReduce Wordcount
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2015/10/05/hive-1-2-1/" rel="next" title="Hive 1.2.1 安裝">
+      Hive 1.2.1 安裝 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-HDFS%E7%9A%84Java-API"><span class="nav-number">1.</span> <span class="nav-text">1.HDFS的Java API</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-1-%E7%B9%BC%E6%89%BF-TestCase-class%E7%9A%84-java%E6%AA%94"><span class="nav-number">1.1.</span> <span class="nav-text">1.1 繼承 TestCase class的.java檔</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-2-%E8%AE%80%E5%8F%96HDFS%E6%AA%94%E6%A1%88%E7%9A%84%E5%85%A7%E5%AE%B9"><span class="nav-number">1.2.</span> <span class="nav-text">1.2 讀取HDFS檔案的內容</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-3-HDFS%E7%9B%AE%E9%8C%84%E4%B8%8B%E7%9A%84%E8%B3%87%E6%96%99%E5%B1%AC%E6%80%A7"><span class="nav-number">1.3.</span> <span class="nav-text">1.3 HDFS目錄下的資料屬性</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-4-%E5%BB%BA%E7%AB%8BHDFS%E7%9B%AE%E9%8C%84"><span class="nav-number">1.4.</span> <span class="nav-text">1.4 建立HDFS目錄</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-5-%E8%A4%87%E8%A3%BDlocal%E7%AB%AF%E7%9A%84%E8%B3%87%E6%96%99%E5%88%B0HDFS"><span class="nav-number">1.5.</span> <span class="nav-text">1.5 複製local端的資料到HDFS</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-6-%E5%9C%A8HDFS%E5%AF%AB%E5%85%A5%E6%AA%94%E6%A1%88"><span class="nav-number">1.6.</span> <span class="nav-text">1.6 在HDFS寫入檔案</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-7-%E6%9B%B4%E6%94%B9HDFS%E6%AA%94%E6%A1%88%E7%9A%84%E5%90%8D%E7%A8%B1"><span class="nav-number">1.7.</span> <span class="nav-text">1.7 更改HDFS檔案的名稱</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-8-%E5%88%AA%E9%99%A4HDFS%E6%AA%94%E6%A1%88-%E7%9B%AE%E9%8C%84"><span class="nav-number">1.8.</span> <span class="nav-text">1.8 刪除HDFS檔案&#x2F;目錄</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-9-%E5%88%97%E5%87%BAHDFS%E7%9A%84%E5%90%84%E5%80%8BDatanode-Hostname"><span class="nav-number">1.9.</span> <span class="nav-text">1.9 列出HDFS的各個Datanode Hostname</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E7%B5%90%E8%AB%96"><span class="nav-number">2.</span> <span class="nav-text">2.結論</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%83%E8%80%83%E6%96%87%E7%8D%BB"><span class="nav-number">3.</span> <span class="nav-text">參考文獻</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">208</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">49</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

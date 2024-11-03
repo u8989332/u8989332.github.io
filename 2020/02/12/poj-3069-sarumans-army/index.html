@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="POJ 3069 Saruman’s Army 解題報告 平台：PKU Online Judge 題號：3069 - Saruman’s Army 題目連結：http:&#x2F;&#x2F;poj.org&#x2F;problem?id&#x3D;3069 題目說明：給予N個石頭，每個石頭有各自的X座標位置(0 到 1000)，再給予一個長度R，每個石頭能向它位置的左方&#x2F;右方延伸R單位，涵蓋其他的石頭，這包覆稱為palant">
+<meta property="og:type" content="article">
+<meta property="og:title" content="POJ 3069 Saruman&#39;s Army">
+<meta property="og:url" content="http://example.com/2020/02/12/poj-3069-sarumans-army/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="POJ 3069 Saruman’s Army 解題報告 平台：PKU Online Judge 題號：3069 - Saruman’s Army 題目連結：http:&#x2F;&#x2F;poj.org&#x2F;problem?id&#x3D;3069 題目說明：給予N個石頭，每個石頭有各自的X座標位置(0 到 1000)，再給予一個長度R，每個石頭能向它位置的左方&#x2F;右方延伸R單位，涵蓋其他的石頭，這包覆稱為palant">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://geekcodeparadise.com/wp-content/uploads/2020/02/1.png">
+<meta property="article:published_time" content="2020-02-12T14:26:00.000Z">
+<meta property="article:modified_time" content="2023-11-19T07:47:25.735Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://geekcodeparadise.com/wp-content/uploads/2020/02/1.png">
+
+<link rel="canonical" href="http://example.com/2020/02/12/poj-3069-sarumans-army/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>POJ 3069 Saruman's Army | Hexo</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Hexo</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/02/12/poj-3069-sarumans-army/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          POJ 3069 Saruman's Army
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-02-12 22:26:00" itemprop="dateCreated datePublished" datetime="2020-02-12T22:26:00+08:00">2020-02-12</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-11-19 15:47:25" itemprop="dateModified" datetime="2023-11-19T15:47:25+08:00">2023-11-19</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C#</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ACM/" itemprop="url" rel="index"><span itemprop="name">ACM</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Level-Easy/" itemprop="url" rel="index"><span itemprop="name">Level-Easy</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%A8%8B%E5%BC%8F%E8%A7%A3%E9%A1%8C/" itemprop="url" rel="index"><span itemprop="name">程式解題</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ProgramSolving/" itemprop="url" rel="index"><span itemprop="name">ProgramSolving</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/POJ/" itemprop="url" rel="index"><span itemprop="name">POJ</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>POJ 3069 Saruman’s Army 解題報告</p>
+<h4 id="平台："><a href="#平台：" class="headerlink" title="平台："></a>平台：</h4><p>PKU Online Judge</p>
+<h4 id="題號："><a href="#題號：" class="headerlink" title="題號："></a>題號：</h4><p>3069 - Saruman’s Army</p>
+<h4 id="題目連結："><a href="#題目連結：" class="headerlink" title="題目連結："></a>題目連結：</h4><p><a target="_blank" rel="noopener" href="http://poj.org/problem?id=3069">http://poj.org/problem?id=3069</a></p>
+<h4 id="題目說明："><a href="#題目說明：" class="headerlink" title="題目說明："></a>題目說明：</h4><p>給予N個石頭，每個石頭有各自的X座標位置(0 到 1000)，再給予一個長度R，每個石頭能向它位置的左方&#x2F;右方延伸R單位，涵蓋其他的石頭，這包覆稱為palantir。求palantir最少的使用量。<br>　　以範例第2筆測資，4個palantir最少的位置如圖1.</p>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2020/02/1.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2020/02/1.png" alt="POJ 3069 Saruman&#39;s Army 圖解"></a></p>
+<p>圖1</p>
+<h4 id="範例輸入："><a href="#範例輸入：" class="headerlink" title="範例輸入："></a>範例輸入：</h4><p>0 3<br>10 20 20<br>10 7<br>70 30 1 7 15 20 50<br>-1 -1</p>
+<h4 id="範例輸出："><a href="#範例輸出：" class="headerlink" title="範例輸出："></a>範例輸出：</h4><p>2</p>
+<p>4</p>
+<h4 id="解題方法："><a href="#解題方法：" class="headerlink" title="解題方法："></a>解題方法：</h4><p>　　此題為貪婪法，貪婪的策略為先從最左方的石頭A開始，往右方尋找R單位內最遠的石頭B，找到該石頭B後，再往右方尋找R單位內最遠的石頭C，而B就會是一個palantir。下一次的起點是離C最近的右方石頭開始前述的判斷。<br>　　以範例測資第2筆，R &#x3D; 10，首先從x &#x3D; 1石頭，離它x右邊 1 + 10 &#x3D; 11以內的最右邊石頭為x &#x3D; 7，接著再從 7 + 10 &#x3D; 17 以內最右邊的石頭為x &#x3D; 15，此時x &#x3D; 7為第1個palantir。<br>　　下一個回合的石頭是x &#x3D; 20，離它x右邊 20 + 10 &#x3D; 30以內的最右邊石頭為x &#x3D; 30，接著再從 30 + 10 &#x3D; 40以內最右邊的石頭找不到，此時x &#x3D; 30為第2個palantir。<br>下一個回合的石頭是x &#x3D; 50，離它x右邊 50 + 10 &#x3D; 60以內的最右邊石頭找不到，此時x &#x3D; 50為第3個palantir。<br>下一個回合的石頭是x &#x3D; 70，離它x右邊 70 + 10 &#x3D; 80以內的最右邊石頭找不到，此時x &#x3D; 70為第4個palantir。<br>　　所以第2個測資的答案為4。</p>
+<p>難度為Easy</p>
+<h4 id="GITHUB位置："><a href="#GITHUB位置：" class="headerlink" title="GITHUB位置："></a>GITHUB位置：</h4><p><a target="_blank" rel="noopener" href="https://github.com/u8989332/ProblemSolving/blob/master/PKUOnlineJudge/3000-3099/3069.cpp">https://github.com/u8989332/ProblemSolving/blob/master/PKUOnlineJudge/3000-3099/3069.cpp</a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/01/19/uva-12100-printer-queue/" rel="prev" title="UVa 12100 Printer Queue">
+      <i class="fa fa-chevron-left"></i> UVa 12100 Printer Queue
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/02/28/poj-3253-fence-repair/" rel="next" title="POJ 3253 Fence Repair">
+      POJ 3253 Fence Repair <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B9%B3%E5%8F%B0%EF%BC%9A"><span class="nav-number">1.</span> <span class="nav-text">平台：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%A1%8C%E8%99%9F%EF%BC%9A"><span class="nav-number">2.</span> <span class="nav-text">題號：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%A1%8C%E7%9B%AE%E9%80%A3%E7%B5%90%EF%BC%9A"><span class="nav-number">3.</span> <span class="nav-text">題目連結：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%A1%8C%E7%9B%AE%E8%AA%AA%E6%98%8E%EF%BC%9A"><span class="nav-number">4.</span> <span class="nav-text">題目說明：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AF%84%E4%BE%8B%E8%BC%B8%E5%85%A5%EF%BC%9A"><span class="nav-number">5.</span> <span class="nav-text">範例輸入：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AF%84%E4%BE%8B%E8%BC%B8%E5%87%BA%EF%BC%9A"><span class="nav-number">6.</span> <span class="nav-text">範例輸出：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%A7%A3%E9%A1%8C%E6%96%B9%E6%B3%95%EF%BC%9A"><span class="nav-number">7.</span> <span class="nav-text">解題方法：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#GITHUB%E4%BD%8D%E7%BD%AE%EF%BC%9A"><span class="nav-number">8.</span> <span class="nav-text">GITHUB位置：</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">208</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">49</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

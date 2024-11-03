@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="1. 新增Config.cs在專案AuthApi的根目錄新增類別Config.cs，這裡包含所有IdentityServer4要建立的Client、Scope、Resource。 Client定義應用程式的授權流程以及OIDC的網址，本專案對WebMvc採用混和(Hybrid)。Scope代表資源能存取的範圍、Resource代表有哪些資源。 1using IdentityServer4;usin">
+<meta property="og:type" content="article">
+<meta property="og:title" content="一袋.NET要扛幾樓？打造容器化的ASP.NET Core網站！系列文章 - (14) 建立會員系統 - 3">
+<meta property="og:url" content="http://example.com/2020/09/29/%E4%B8%80%E8%A2%8B-net%E8%A6%81%E6%89%9B%E5%B9%BE%E6%A8%93%EF%BC%9F%E6%89%93%E9%80%A0%E5%AE%B9%E5%99%A8%E5%8C%96%E7%9A%84asp-net-core%E7%B6%B2%E7%AB%99%EF%BC%81%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0-15/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="1. 新增Config.cs在專案AuthApi的根目錄新增類別Config.cs，這裡包含所有IdentityServer4要建立的Client、Scope、Resource。 Client定義應用程式的授權流程以及OIDC的網址，本專案對WebMvc採用混和(Hybrid)。Scope代表資源能存取的範圍、Resource代表有哪些資源。 1using IdentityServer4;usin">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://geekcodeparadise.com/wp-content/uploads/2020/09/login.png">
+<meta property="og:image" content="http://geekcodeparadise.com/wp-content/uploads/2020/09/login2Bsuccess.png">
+<meta property="article:published_time" content="2020-09-29T15:51:00.000Z">
+<meta property="article:modified_time" content="2023-11-19T07:47:25.829Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://geekcodeparadise.com/wp-content/uploads/2020/09/login.png">
+
+<link rel="canonical" href="http://example.com/2020/09/29/%E4%B8%80%E8%A2%8B-net%E8%A6%81%E6%89%9B%E5%B9%BE%E6%A8%93%EF%BC%9F%E6%89%93%E9%80%A0%E5%AE%B9%E5%99%A8%E5%8C%96%E7%9A%84asp-net-core%E7%B6%B2%E7%AB%99%EF%BC%81%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0-15/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>一袋.NET要扛幾樓？打造容器化的ASP.NET Core網站！系列文章 - (14) 建立會員系統 - 3 | Hexo</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Hexo</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/09/29/%E4%B8%80%E8%A2%8B-net%E8%A6%81%E6%89%9B%E5%B9%BE%E6%A8%93%EF%BC%9F%E6%89%93%E9%80%A0%E5%AE%B9%E5%99%A8%E5%8C%96%E7%9A%84asp-net-core%E7%B6%B2%E7%AB%99%EF%BC%81%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0-15/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          一袋.NET要扛幾樓？打造容器化的ASP.NET Core網站！系列文章 - (14) 建立會員系統 - 3
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-09-29 23:51:00" itemprop="dateCreated datePublished" datetime="2020-09-29T23:51:00+08:00">2020-09-29</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-11-19 15:47:25" itemprop="dateModified" datetime="2023-11-19T15:47:25+08:00">2023-11-19</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ASP-NET-Core/" itemprop="url" rel="index"><span itemprop="name">ASP.NET Core</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="1-新增Config-cs"><a href="#1-新增Config-cs" class="headerlink" title="1. 新增Config.cs"></a>1. 新增Config.cs</h1><p>在專案AuthApi的根目錄新增類別Config.cs，這裡包含所有IdentityServer4要建立的Client、Scope、Resource。</p>
+<p>Client定義應用程式的授權流程以及OIDC的網址，本專案對WebMvc採用混和(Hybrid)。Scope代表資源能存取的範圍、Resource代表有哪些資源。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">using IdentityServer4;using IdentityServer4.Models;using Microsoft.Extensions.Configuration;using System.Collections.Generic;namespace TokenServiceApi&#123;    public class Config    &#123;        public static Dictionary&lt;string, string&gt; GetUrls(IConfiguration configuration)        &#123;            Dictionary&lt;string, string&gt; urls = new Dictionary&lt;string, string&gt;();            urls.Add(&quot;Mvc&quot;, configuration.GetValue&lt;string&gt;(&quot;MvcClient&quot;));            return urls;        &#125;        public static IEnumerable&lt;ApiScope&gt; GetApiScopes()        &#123;            return new List&lt;ApiScope&gt;            &#123;                new ApiScope(&quot;basket&quot;, &quot;basket api&quot;),                new ApiScope(&quot;order&quot;, &quot;order api&quot;),                new ApiScope(&quot;report&quot;, &quot;report api&quot;)            &#125;;        &#125;        public static IEnumerable&lt;ApiResource&gt; GetApiResources()        &#123;            return new List&lt;ApiResource&gt;            &#123;                new ApiResource(&quot;basket&quot;, &quot;Shopping Cart Api&quot;)                &#123;                    Scopes = new List&lt;string&gt;                    &#123;                        &quot;basket&quot;                    &#125;                &#125;,                new ApiResource(&quot;order&quot;, &quot;Ordering Api&quot;)                &#123;                    Scopes = new List&lt;string&gt;                    &#123;                        &quot;order&quot;                    &#125;                &#125;,                new ApiResource(&quot;report&quot;, &quot;Report Api&quot;)&#123;                    Scopes = new List&lt;string&gt;                    &#123;                        &quot;report&quot;                    &#125;                &#125;            &#125;;        &#125;        public static IEnumerable&lt;IdentityResource&gt; GetIdentityResources()        &#123;            return new List&lt;IdentityResource&gt;            &#123;                new IdentityResources.OpenId(),                new IdentityResources.Profile()            &#125;;        &#125;        public static IEnumerable&lt;Client&gt; GetClients(Dictionary&lt;string, string&gt; clientUrls)        &#123;            return new List&lt;Client&gt;            &#123;                new Client                &#123;                    ClientId = &quot;mvc&quot;,                    ClientSecrets = new []&#123;new Secret(&quot;secret&quot;.Sha256())&#125;,                    AllowedGrantTypes = GrantTypes.Hybrid,                    RedirectUris = &#123;$&quot;&#123;clientUrls[&quot;Mvc&quot;]&#125;/signin-oidc&quot;&#125;,                    PostLogoutRedirectUris = &#123;$&quot;&#123;clientUrls[&quot;Mvc&quot;]&#125;/signout-callback-oidc&quot;&#125;,                    AllowAccessTokensViaBrowser = false,                    AllowOfflineAccess = true,                    RequireConsent = false,                    RequirePkce = false,                    AlwaysIncludeUserClaimsInIdToken  =true,                    AllowedScopes = new List&lt;string&gt;                    &#123;                        IdentityServerConstants.StandardScopes.OpenId,                        IdentityServerConstants.StandardScopes.Profile,                        IdentityServerConstants.StandardScopes.OfflineAccess,                        &quot;order&quot;,                        &quot;basket&quot;,                        &quot;report&quot;                    &#125;                &#125;            &#125;;        &#125;    &#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="2-新增ApplicationUser類別"><a href="#2-新增ApplicationUser類別" class="headerlink" title="2. 新增ApplicationUser類別"></a>2. 新增ApplicationUser類別</h1><p>　　在Models資料夾新增ApplicationUser.cs，並繼承IdentityUser，這個ApplicationUser可以自己加想要的屬性，在這我們都用空的。</p>
+<h1 id=""><a href="#" class="headerlink" title=""></a></h1><h1 id="3-修改DbContext"><a href="#3-修改DbContext" class="headerlink" title="3. 修改DbContext"></a>3. 修改DbContext</h1><p>　　在Data資料夾會有ApplicationDbContext，將它改成繼承IdentityDbContext<ApplicationUser></p>
+<h1 id="4-新增初始化的登入帳號的類別"><a href="#4-新增初始化的登入帳號的類別" class="headerlink" title="4. 新增初始化的登入帳號的類別"></a>4. 新增初始化的登入帳號的類別</h1><p>　　在Data資料夾新增IdentityDbInit.cs，注入ApplicationDbContext和UserManager<ApplicationUser>，每次程式啟動時會檢查Migrations，並確認是否有測試的帳號，沒有的話則新增它。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">using AuthApi.Models;using Microsoft.AspNetCore.Identity;using Microsoft.EntityFrameworkCore;using System.Linq;using System.Threading.Tasks;namespace AuthApi.Data&#123;    public class IdentityDbInit    &#123;        public static async Task Initialize(            ApplicationDbContext context,            UserManager&lt;ApplicationUser&gt; userManager)        &#123;            context.Database.Migrate();            if (context.Users.Any(r =&gt; r.UserName == &quot;test@test.com&quot;))            &#123;                return;            &#125;                            string user = &quot;test@test.com&quot;;            string password = &quot;P@ssword1&quot;;            await userManager.CreateAsync(new ApplicationUser &#123; UserName = user, EmailConfirmed = true &#125;, password);        &#125;    &#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="5-修改Program-cs"><a href="#5-修改Program-cs" class="headerlink" title="5. 修改Program.cs"></a>5. 修改Program.cs</h1><p>程式啟動都會呼叫IdentityDbInit作資料庫的Migrations和測試帳號的新增與否</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public static void Main(string[] args)        &#123;            var host = CreateHostBuilder(args).Build();            using (var scope = host.Services.CreateScope())            &#123;                var services = scope.ServiceProvider;                try                &#123;                    var context = services.GetRequiredService&lt;ApplicationDbContext&gt;();                    var userManager = services.GetRequiredService&lt;UserManager&lt;ApplicationUser&gt;&gt;();                    IdentityDbInit.Initialize(context, userManager).Wait();                &#125;                catch (Exception ex)                &#123;                    var logger = services.GetRequiredService&lt;ILogger&lt;Program&gt;&gt;();                    logger.LogError(ex, &quot;An error occurred while seeding the Authorization Server database.&quot;);                &#125;            &#125;            host.Run();        &#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="6-修改Startup-cs"><a href="#6-修改Startup-cs" class="headerlink" title="6. 修改Startup.cs"></a>6. 修改Startup.cs</h1><p>註冊IdentityServer4和資料庫整合的相關服務，並在Pipeline新增IdentityServer4的middleware</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">using AuthApi.Data;using AuthApi.Models;using Microsoft.AspNetCore.Builder;using Microsoft.AspNetCore.Hosting;using Microsoft.AspNetCore.Identity;using Microsoft.EntityFrameworkCore;using Microsoft.Extensions.Configuration;using Microsoft.Extensions.DependencyInjection;using Microsoft.Extensions.Hosting;using TokenServiceApi;namespace AuthApi&#123;    public class Startup    &#123;        public Startup(IConfiguration configuration)        &#123;            Configuration = configuration;        &#125;        public IConfiguration Configuration &#123; get; &#125;        // This method gets called by the runtime. Use this method to add services to the container.        public void ConfigureServices(IServiceCollection services)        &#123;            string server = Configuration[&quot;DatabaseServer&quot;];            string database = Configuration[&quot;DatabaseName&quot;];            string user = Configuration[&quot;DatabaseUser&quot;];            string password = Configuration[&quot;DatabasePassword&quot;];            string connectionString = string.Format(&quot;Server=&#123;0&#125;;Database=&#123;1&#125;;User=&#123;2&#125;;Password=&#123;3&#125;;&quot;, server, database, user, password);            services.AddDbContext&lt;ApplicationDbContext&gt;(options =&gt; options.UseSqlServer(connectionString));            services.AddIdentity&lt;ApplicationUser, IdentityRole&gt;()                .AddEntityFrameworkStores&lt;ApplicationDbContext&gt;()                .AddDefaultTokenProviders();            services.AddControllersWithViews();            services.AddRazorPages();            var builder = services.AddIdentityServer(options =&gt;            &#123;                options.Events.RaiseErrorEvents = true;                options.Events.RaiseInformationEvents = true;                options.Events.RaiseFailureEvents = true;                options.Events.RaiseSuccessEvents = true;                options.EmitStaticAudienceClaim = true;            &#125;)            .AddDeveloperSigningCredential()            .AddInMemoryPersistedGrants()            .AddInMemoryApiScopes(Config.GetApiScopes())            .AddInMemoryIdentityResources(Config.GetIdentityResources())            .AddInMemoryApiResources(Config.GetApiResources())            .AddInMemoryClients(Config.GetClients(Config.GetUrls(Configuration)))            .AddAspNetIdentity&lt;ApplicationUser&gt;();            services.AddControllersWithViews();            services.AddAuthentication();        &#125;        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)        &#123;            if (env.IsDevelopment())            &#123;                app.UseDeveloperExceptionPage();                app.UseDatabaseErrorPage();            &#125;            else            &#123;                app.UseExceptionHandler(&quot;/Home/Error&quot;);                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.                app.UseHsts();            &#125;            app.UseHttpsRedirection();            app.UseStaticFiles();            app.UseRouting();            app.UseIdentityServer();            app.UseAuthentication();            app.UseAuthorization();            app.UseEndpoints(endpoints =&gt;            &#123;                endpoints.MapControllerRoute(                    name: &quot;default&quot;,                    pattern: &quot;&#123;controller=Home&#125;/&#123;action=Index&#125;/&#123;id?&#125;&quot;);                endpoints.MapRazorPages();            &#125;);        &#125;    &#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="7-修改appSettings-json"><a href="#7-修改appSettings-json" class="headerlink" title="7. 修改appSettings.json"></a>7. 修改appSettings.json</h1><p>　　新增資料庫的連線資訊，和CatalogApi專案的方式一樣，只是資料庫名稱是AuthDb：</p>
+<p>  “DatabaseServer”: “localhost,1445”,</p>
+<p>  “DatabaseName”: “AuthDb”,</p>
+<p>  “DatabaseUser”: “sa”,</p>
+<p>  “DatabasePassword”: “JustTest!”,</p>
+<h1 id="8-在專案啟用Db-Migrations"><a href="#8-在專案啟用Db-Migrations" class="headerlink" title="8. 在專案啟用Db Migrations"></a>8. 在專案啟用Db Migrations</h1><p>　　專案在初始化後已經有預設的Migrations類別，在根目錄使用cmd執行遷移：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dotnet ef database update</span><br></pre></td></tr></table></figure>
+
+<h1 id="-1"><a href="#-1" class="headerlink" title=""></a></h1><h1 id="9-Debug執行程式"><a href="#9-Debug執行程式" class="headerlink" title="9. Debug執行程式"></a>9. Debug執行程式</h1><p>　　使用VS執行AuthApi，在Account&#x2F;Login做登入，成功的話在diagnostics會顯示JWT相關的值，如圖1與圖2</p>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2020/09/login-1.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2020/09/login.png"></a></p>
+<p>圖1  </p>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2020/09/login2Bsuccess-1.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2020/09/login2Bsuccess.png"></a></p>
+<p>圖2</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/09/29/leetcode-1047-remove-all-adjacent-duplicates-in-string/" rel="prev" title="LeetCode 1047 Remove All Adjacent Duplicates In String">
+      <i class="fa fa-chevron-left"></i> LeetCode 1047 Remove All Adjacent Duplicates In String
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/09/30/leetcode-238-product-of-array-except-self/" rel="next" title="LeetCode 238 Product of Array Except Self">
+      LeetCode 238 Product of Array Except Self <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E6%96%B0%E5%A2%9EConfig-cs"><span class="nav-number">1.</span> <span class="nav-text">1. 新增Config.cs</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E6%96%B0%E5%A2%9EApplicationUser%E9%A1%9E%E5%88%A5"><span class="nav-number">2.</span> <span class="nav-text">2. 新增ApplicationUser類別</span></a></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">3.</span> <span class="nav-text"></span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-%E4%BF%AE%E6%94%B9DbContext"><span class="nav-number">4.</span> <span class="nav-text">3. 修改DbContext</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-%E6%96%B0%E5%A2%9E%E5%88%9D%E5%A7%8B%E5%8C%96%E7%9A%84%E7%99%BB%E5%85%A5%E5%B8%B3%E8%99%9F%E7%9A%84%E9%A1%9E%E5%88%A5"><span class="nav-number">5.</span> <span class="nav-text">4. 新增初始化的登入帳號的類別</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-%E4%BF%AE%E6%94%B9Program-cs"><span class="nav-number">6.</span> <span class="nav-text">5. 修改Program.cs</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#6-%E4%BF%AE%E6%94%B9Startup-cs"><span class="nav-number">7.</span> <span class="nav-text">6. 修改Startup.cs</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#7-%E4%BF%AE%E6%94%B9appSettings-json"><span class="nav-number">8.</span> <span class="nav-text">7. 修改appSettings.json</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#8-%E5%9C%A8%E5%B0%88%E6%A1%88%E5%95%9F%E7%94%A8Db-Migrations"><span class="nav-number">9.</span> <span class="nav-text">8. 在專案啟用Db Migrations</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#-1"><span class="nav-number">10.</span> <span class="nav-text"></span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#9-Debug%E5%9F%B7%E8%A1%8C%E7%A8%8B%E5%BC%8F"><span class="nav-number">11.</span> <span class="nav-text">9. Debug執行程式</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">208</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">49</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

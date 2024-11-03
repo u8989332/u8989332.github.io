@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Data Structure - Trie 1. Trie的介紹 Trie又稱為前綴樹、字典樹，在大量新增單字、查詢單字時有高效能的表現，是一種特殊的樹狀資料結構。 假如今天依序新增3個單字: hello, hey 和 bag，那麼Trie會像圖1。  圖1 2. 資料結構介紹 Trie的實作常用R-way Trie, R代表在某一層的節點數. 比如R &#x3D; 10, 可以記09的10個數字">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Data Structure Trie">
+<meta property="og:url" content="http://example.com/2020/06/07/data-structure-trie/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Data Structure - Trie 1. Trie的介紹 Trie又稱為前綴樹、字典樹，在大量新增單字、查詢單字時有高效能的表現，是一種特殊的樹狀資料結構。 假如今天依序新增3個單字: hello, hey 和 bag，那麼Trie會像圖1。  圖1 2. 資料結構介紹 Trie的實作常用R-way Trie, R代表在某一層的節點數. 比如R &#x3D; 10, 可以記09的10個數字">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://geekcodeparadise.com/wp-content/uploads/2020/06/1.png">
+<meta property="og:image" content="http://geekcodeparadise.com/wp-content/uploads/2020/06/2.png">
+<meta property="og:image" content="http://geekcodeparadise.com/wp-content/uploads/2020/06/3.png">
+<meta property="og:image" content="http://geekcodeparadise.com/wp-content/uploads/2020/06/4.png">
+<meta property="og:image" content="http://geekcodeparadise.com/wp-content/uploads/2020/06/5.png">
+<meta property="og:image" content="http://geekcodeparadise.com/wp-content/uploads/2020/06/6.png">
+<meta property="og:image" content="http://geekcodeparadise.com/wp-content/uploads/2020/06/7.png">
+<meta property="og:image" content="http://geekcodeparadise.com/wp-content/uploads/2020/06/8.png">
+<meta property="og:image" content="http://geekcodeparadise.com/wp-content/uploads/2020/06/9.png">
+<meta property="og:image" content="http://geekcodeparadise.com/wp-content/uploads/2020/06/10.png">
+<meta property="og:image" content="http://geekcodeparadise.com/wp-content/uploads/2020/06/11.png">
+<meta property="og:image" content="http://geekcodeparadise.com/wp-content/uploads/2020/06/12.png">
+<meta property="og:image" content="http://geekcodeparadise.com/wp-content/uploads/2020/06/13.png">
+<meta property="og:image" content="http://geekcodeparadise.com/wp-content/uploads/2020/06/14.png">
+<meta property="og:image" content="http://geekcodeparadise.com/wp-content/uploads/2020/06/15.png">
+<meta property="article:published_time" content="2020-06-06T16:36:00.000Z">
+<meta property="article:modified_time" content="2023-11-19T07:47:25.816Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://geekcodeparadise.com/wp-content/uploads/2020/06/1.png">
+
+<link rel="canonical" href="http://example.com/2020/06/07/data-structure-trie/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>Data Structure Trie | Hexo</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Hexo</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/06/07/data-structure-trie/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Data Structure Trie
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-06-07 00:36:00" itemprop="dateCreated datePublished" datetime="2020-06-07T00:36:00+08:00">2020-06-07</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-11-19 15:47:25" itemprop="dateModified" datetime="2023-11-19T15:47:25+08:00">2023-11-19</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Data-Structure/" itemprop="url" rel="index"><span itemprop="name">Data Structure</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Trie/" itemprop="url" rel="index"><span itemprop="name">Trie</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>Data Structure - Trie</p>
+<h4 id="1-Trie的介紹"><a href="#1-Trie的介紹" class="headerlink" title="1. Trie的介紹"></a>1. Trie的介紹</h4><p> Trie又稱為前綴樹、字典樹，在大量新增單字、查詢單字時有高效能的表現，是一種特殊的樹狀資料結構。</p>
+<p>假如今天依序新增3個單字: hello, hey 和 bag，那麼Trie會像圖1。</p>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2020/06/1-1.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2020/06/1.png" alt="Data Structure Trie example"></a></p>
+<p>圖1</p>
+<h4 id="2-資料結構介紹"><a href="#2-資料結構介紹" class="headerlink" title="2. 資料結構介紹"></a>2. 資料結構介紹</h4><p> Trie的實作常用R-way Trie, R代表在某一層的節點數. 比如R &#x3D; 10, 可以記0<del>9的10個數字、R &#x3D; 26, 可以記A</del>Z的26個字母、 R &#x3D; 256, 可以記ASCII Code.</p>
+<p>本篇的Trie基本功能有5種: </p>
+<ol>
+<li>新增(Insert)</li>
+<li>刪除有包含前綴字的所有單字(Delete Prefix)</li>
+<li>刪除完整單字(Delete Exact)</li>
+<li>搜尋有前綴字的數量(Find Prefix Count)</li>
+<li>搜尋完整單字(Find Exact)</li>
+</ol>
+<p>本篇採用R &#x3D; 26的方式記錄a~z字母的單字, 首先Trie有個Root節點, 如圖2. 有3個重要的欄位:</p>
+<ol>
+<li>sums: 所有Trie的單字在此節點經過的次數</li>
+<li>end: 是否為某單字的最後一個字母</li>
+<li>children: 此字母底下連結其他字母的指標</li>
+</ol>
+<h3 id="2-1-新增-Insert"><a href="#2-1-新增-Insert" class="headerlink" title="2.1 新增 Insert"></a>2.1 新增 Insert</h3><p>Root節點的sums&#x2F;end永遠是0, 而children是初始化全都為空值.</p>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2020/06/2-1.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2020/06/2.png" alt="Data Structure Trie 圖2" title="圖2"></a></p>
+<p>圖2</p>
+<p>接著新增第1個單字hello, 首先是它的第1個字母h, 如圖3. 新增h節點, Root的h索引指向h節點, 且h節點的sums增加為1.</p>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2020/06/3-1.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2020/06/3.png" alt="Data Structure Trie 圖3"></a></p>
+<p>圖3</p>
+<p>第2個字母e, 如圖4. 新增e節點, h節點的e索引指向e節點, 且e節點的sums增加為1.</p>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2020/06/4-1.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2020/06/4.png" alt="Data Structure Trie 圖4"></a></p>
+<p>圖4</p>
+<p>第3個字母l, 如圖5. 新增l節點, e節點的l索引指向l節點, 且l節點的sums增加為1.</p>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2020/06/5-1.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2020/06/5.png" alt="Data Structure Trie 圖5"></a></p>
+<p>圖5</p>
+<p>第4個字母l, 如圖6. 新增第2個l節點, 第1個l節點的l索引指向第2個l節點, 且第2個l節點的sums增加為1.</p>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2020/06/6.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2020/06/6.png" alt="Data Structure Trie 圖6"></a></p>
+<p>圖6</p>
+<p>第5個字母o, 如圖7. 新增o節點, 第2個l節點的o索引指向o節點, 且o節點的sums增加為1、end標記為1.</p>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2020/06/7.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2020/06/7.png" alt="Data Structure Trie 圖7"></a></p>
+<p>圖7</p>
+<p>接著新增第2個單字hey, 如圖8. 首先是它的第1個字母h, 由於Root指向h節點已存在, 所以h節點的sums增加為2. 第2個字母e, 而h節點指向e節點已存在, 所以e節點的sums增加為2. 第3個字母y, 新增y節點, e節點的y索引指向y節點, 且y節點的sums增加為1、end標記為1.</p>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2020/06/8.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2020/06/8.png" alt="Data Structure Trie 圖8"></a></p>
+<p>圖8</p>
+<p>接著新增第3個單字bag, 首先是它的第1個字母b, 如圖9. 新增b節點, Root的b索引指向b節點, 且b節點的sums增加為1.</p>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2020/06/9.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2020/06/9.png" alt="Data Structure Trie 圖9"></a></p>
+<p>圖9</p>
+<p>第2個字母a, 如圖10. 新增a節點, b節點的a索引指向a節點, 且a節點的sums增加為1.</p>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2020/06/10.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2020/06/10.png" alt="Data Structure Trie 圖10"></a></p>
+<p>圖10</p>
+<p>第3個字母g, 如圖11. 新增a節點, b節點的a索引指向a節點, 且a節點的sums增加為1、end標記為1.</p>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2020/06/11.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2020/06/11.png" alt="Data Structure Trie 圖11"></a></p>
+<p>圖11</p>
+<h5 id="2-2-搜尋完整單字-Find-Exact"><a href="#2-2-搜尋完整單字-Find-Exact" class="headerlink" title="2.2 搜尋完整單字 Find Exact"></a>2.2 搜尋完整單字 Find Exact</h5><p>比如要搜尋單字hey, 從根節點往下分別尋找h -&gt; e -&gt; y, 第3個節點的end為1, 代表有完整的hey單字在此trie, 回傳true, 如圖12. 如果最後字母是到end為0的節點 或者 前面無任何子節點到達最後字母, 則回傳false.</p>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2020/06/12.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2020/06/12.png" alt=" Trie 圖12"></a></p>
+<p>圖12</p>
+<h5 id="2-3-搜尋有前綴字的數量-Find-Prefix-Count"><a href="#2-3-搜尋有前綴字的數量-Find-Prefix-Count" class="headerlink" title="2.3 搜尋有前綴字的數量 Find Prefix Count"></a>2.3 搜尋有前綴字的數量 Find Prefix Count</h5><p>比如要搜尋前綴字he, 從根節點往下分別尋找h -&gt; e, 第2個節點的sums為2, 代表有所有單字有前綴字的數量為2, 因此回傳2, 如圖13. 如果前面無任何子節點到達最後字母, 則回傳0.</p>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2020/06/13.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2020/06/13.png" alt="Trie 圖13"></a></p>
+<p>圖13</p>
+<h5 id="2-4-刪除完整單字-Delete-Exact"><a href="#2-4-刪除完整單字-Delete-Exact" class="headerlink" title="2.4 刪除完整單字 Delete Exact"></a>2.4 刪除完整單字 Delete Exact</h5><p>依照2.1的Trie, 比如要刪除完整的單字hey, 首先先用[搜尋完整單字 Find Exact]函式確認有此hey單字, 才可以做刪除.  從根節點往下分別尋找h -&gt; e -&gt; y, 沿途將sums的值減1，最後將第3個節點的end設為0, 完成刪除的功能, 如圖14.</p>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2020/06/14.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2020/06/14.png" alt="Trie 圖14"></a></p>
+<p>圖14</p>
+<h5 id="2-5-刪除完整單字-Delete-Exact"><a href="#2-5-刪除完整單字-Delete-Exact" class="headerlink" title="2.5 刪除完整單字 Delete Exact"></a>2.5 刪除完整單字 Delete Exact</h5><p>依照2.1的Trie, 比如要刪除有前綴字he的所有單字, 首先先用[搜尋有前綴字的數量 Find Prefix Count]函式確認有he前綴字的數量cnt, 才可以做刪除.  從根節點往下分別尋找h -&gt; e, 沿途將sums的值減cnt，最後將第3個節點的子節點都初始化為空值, 完成刪除的功能, 如圖15.</p>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2020/06/15.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2020/06/15.png" alt="Trie 圖15"></a></p>
+<p>圖15</p>
+<h4 id="3-資料結構實作"><a href="#3-資料結構實作" class="headerlink" title="3. 資料結構實作"></a>3. 資料結構實作</h4><p>實作可用Array或Linked List, 本篇先實作Array版本, 可再思考如何做成Linked List版.</p>
+<h5 id="3-1-Array-Version"><a href="#3-1-Array-Version" class="headerlink" title="3.1 Array Version"></a>3.1 Array Version</h5><p>Array版的Trie又稱為靜態Trie, 代表它的節點空間大小一開始都先宣告好. 程式碼和它的功能可參考註解.</p>
+<h4 id="4-效能分析"><a href="#4-效能分析" class="headerlink" title="4. 效能分析"></a><strong>4. 效能分析</strong></h4><p>假如Trie裡有N個單字、每個單字平均長度為Len、使用的R-way為R個字，新增、刪除和搜尋的時間複雜度均為O(Len)、空間複雜度為O(R * Len * N)。</p>
+<p><strong>5. 心得</strong>  </p>
+<p>最近寫題目開始接觸Trie，寫這篇來紀錄它的基礎模板，日後以此模板可做更多變化題。</p>
+<h2 id="參考文獻"><a href="#參考文獻" class="headerlink" title="參考文獻"></a>參考文獻</h2><ol>
+<li><a target="_blank" rel="noopener" href="https://www.amazon.com/-/zh_TW/%E5%88%98%E6%B1%9D%E4%BD%B3%EF%BC%8C%E9%99%88%E9%94%8B%EF%BC%8C%E5%90%B4%E6%B0%B8%E8%BE%89%EF%BC%8C%E7%AD%89/dp/B00G9XHCBW?crid=3PEAUP1LB5BNW&keywords=%E5%88%98%E6%B1%9D%E4%BD%B3&qid=1640528279&s=books&sprefix=%E5%88%98%E6%B1%9D%E4%BD%B3,stripbooks-intl-ship,231&sr=1-2&linkCode=ll1&tag=glj89893320b-20&linkId=fd63e663f641f28c5635a58f40b184d7&language=zh_TW&ref_=as_li_ss_tl">劉汝佳 - 算法竞赛入门经典训练指南</a></li>
+</ol>
+<h3 id="data-structure-trie"><a href="#data-structure-trie" class="headerlink" title="data structure trie"></a>data structure trie</h3>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/05/23/%E8%AE%80%E6%9B%B8%E7%AD%86%E8%A8%98-professional-javascript-for-web-developers-%E7%AC%AC3%E7%AB%A0-%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/" rel="prev" title="[讀書筆記] Professional JavaScript for Web Developers - 第3章 基本概念">
+      <i class="fa fa-chevron-left"></i> [讀書筆記] Professional JavaScript for Web Developers - 第3章 基本概念
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/06/07/uva-12333-revenge-of-fibonacci/" rel="next" title="UVa 12333 Revenge of Fibonacci">
+      UVa 12333 Revenge of Fibonacci <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-Trie%E7%9A%84%E4%BB%8B%E7%B4%B9"><span class="nav-number">1.</span> <span class="nav-text">1. Trie的介紹</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E8%B3%87%E6%96%99%E7%B5%90%E6%A7%8B%E4%BB%8B%E7%B4%B9"><span class="nav-number">2.</span> <span class="nav-text">2. 資料結構介紹</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-%E6%96%B0%E5%A2%9E-Insert"><span class="nav-number"></span> <span class="nav-text">2.1 新增 Insert</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#2-2-%E6%90%9C%E5%B0%8B%E5%AE%8C%E6%95%B4%E5%96%AE%E5%AD%97-Find-Exact"><span class="nav-number">0.1.</span> <span class="nav-text">2.2 搜尋完整單字 Find Exact</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-3-%E6%90%9C%E5%B0%8B%E6%9C%89%E5%89%8D%E7%B6%B4%E5%AD%97%E7%9A%84%E6%95%B8%E9%87%8F-Find-Prefix-Count"><span class="nav-number">0.2.</span> <span class="nav-text">2.3 搜尋有前綴字的數量 Find Prefix Count</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-4-%E5%88%AA%E9%99%A4%E5%AE%8C%E6%95%B4%E5%96%AE%E5%AD%97-Delete-Exact"><span class="nav-number">0.3.</span> <span class="nav-text">2.4 刪除完整單字 Delete Exact</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-5-%E5%88%AA%E9%99%A4%E5%AE%8C%E6%95%B4%E5%96%AE%E5%AD%97-Delete-Exact"><span class="nav-number">0.4.</span> <span class="nav-text">2.5 刪除完整單字 Delete Exact</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-%E8%B3%87%E6%96%99%E7%B5%90%E6%A7%8B%E5%AF%A6%E4%BD%9C"><span class="nav-number">1.</span> <span class="nav-text">3. 資料結構實作</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#3-1-Array-Version"><span class="nav-number">1.1.</span> <span class="nav-text">3.1 Array Version</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-%E6%95%88%E8%83%BD%E5%88%86%E6%9E%90"><span class="nav-number">2.</span> <span class="nav-text">4. 效能分析</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%83%E8%80%83%E6%96%87%E7%8D%BB"><span class="nav-number"></span> <span class="nav-text">參考文獻</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#data-structure-trie"><span class="nav-number"></span> <span class="nav-text">data structure trie</span></a></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">208</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">49</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

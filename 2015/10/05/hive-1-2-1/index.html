@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Hive 1.2.1 安裝 1.Hive簡介Hive是一種透過Hadoop的MapReduce機制，使資料以Database的形式存在HDFS，並能用HiveQL作類似SQL語言來查詢資料，使得大型的資料能有快速的被查詢。Hive原先是由Facebook開發，後來貢獻給Apache，近幾年許多人不斷更改、維護，功能更加完善，目前最新版為1.2.1版。另外Hive存資料schema的格式是放在met">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hive 1.2.1 安裝">
+<meta property="og:url" content="http://example.com/2015/10/05/hive-1-2-1/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Hive 1.2.1 安裝 1.Hive簡介Hive是一種透過Hadoop的MapReduce機制，使資料以Database的形式存在HDFS，並能用HiveQL作類似SQL語言來查詢資料，使得大型的資料能有快速的被查詢。Hive原先是由Facebook開發，後來貢獻給Apache，近幾年許多人不斷更改、維護，功能更加完善，目前最新版為1.2.1版。另外Hive存資料schema的格式是放在met">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://geekcodeparadise.com/wp-content/uploads/2015/10/show2Btables253B.png">
+<meta property="og:image" content="http://geekcodeparadise.com/wp-content/uploads/2015/10/decs2Btable.png">
+<meta property="og:image" content="http://geekcodeparadise.com/wp-content/uploads/2015/10/select2Bid2Band2Bname.png">
+<meta property="og:image" content="http://geekcodeparadise.com/wp-content/uploads/2015/10/SELECT2BFRANK.png">
+<meta property="og:image" content="http://geekcodeparadise.com/wp-content/uploads/2015/10/count2Bmap1.png">
+<meta property="og:image" content="http://geekcodeparadise.com/wp-content/uploads/2015/10/count2Bmap2.png">
+<meta property="og:image" content="http://geekcodeparadise.com/wp-content/uploads/2015/10/mysql2Bselect2Bfrom2Btbls.png">
+<meta property="og:image" content="http://geekcodeparadise.com/wp-content/uploads/2015/10/ECLIPSE2BRUN2BHIVE.png">
+<meta property="article:published_time" content="2015-10-05T15:19:00.000Z">
+<meta property="article:modified_time" content="2023-11-19T07:47:25.429Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://geekcodeparadise.com/wp-content/uploads/2015/10/show2Btables253B.png">
+
+<link rel="canonical" href="http://example.com/2015/10/05/hive-1-2-1/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>Hive 1.2.1 安裝 | Hexo</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Hexo</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2015/10/05/hive-1-2-1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Hive 1.2.1 安裝
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2015-10-05 23:19:00" itemprop="dateCreated datePublished" datetime="2015-10-05T23:19:00+08:00">2015-10-05</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-11-19 15:47:25" itemprop="dateModified" datetime="2023-11-19T15:47:25+08:00">2023-11-19</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Hadoop/" itemprop="url" rel="index"><span itemprop="name">Hadoop</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Hive/" itemprop="url" rel="index"><span itemprop="name">Hive</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>Hive 1.2.1 安裝</p>
+<h4 id="1-Hive簡介"><a href="#1-Hive簡介" class="headerlink" title="1.Hive簡介"></a>1.Hive簡介</h4><p>Hive是一種透過Hadoop的MapReduce機制，使資料以Database的形式存在HDFS，並能用HiveQL作類似SQL語言來查詢資料，使得大型的資料能有快速的被查詢。Hive原先是由Facebook開發，後來貢獻給Apache，近幾年許多人不斷更改、維護，功能更加完善，目前最新版為1.2.1版。另外Hive存資料schema的格式是放在metastore，預設是用in-memory的Derby，但Derby只支援一個User的操作Hive，需要另外用MySQL來存放metastore。本篇會介紹如何安裝Hive、用Hive存資料與透過Java的JDBC存取Hive。</p>
+<h4 id="2-安裝Hive"><a href="#2-安裝Hive" class="headerlink" title="2.安裝Hive"></a>2.安裝Hive</h4><p>在安裝Hive前，先確認環境已經安裝Hadoop與MySQL。若沒安裝過MySQL可以參考這篇文章。<a target="_blank" rel="noopener" href="https://geekcodeparadise.com/2015/10/ubuntu-install-uninstall-mysql/">[My</a><a target="_blank" rel="noopener" href="https://geekcodeparadise.com/2015/10/ubuntu-install-uninstall-mysql/">S</a><a target="_blank" rel="noopener" href="https://geekcodeparadise.com/2015/10/ubuntu-install-uninstall-mysql/">QL]在ubuntu移除與安裝MySQL</a><br>　　Hive是安裝在需要使用的server，所以是安裝在Master（hadoop01）。首先用wget下載1.2.1版的Hive：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo wget http://apache.stu.edu.tw/hive/hive-1.2.1/apache-hive-1.2.1-bin.tar.gz</span><br></pre></td></tr></table></figure>
+
+<p>　　下載後將其解壓縮：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar -zxvf apache-hive-1.2.1-bin.tar.gz</span><br></pre></td></tr></table></figure>
+
+<p>　　在.bashrc增加Hive的環境變數：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#編輯.bashrc檔</span></span><br><span class="line">sudo vim ~/.bashrc</span><br><span class="line"><span class="comment">#export Hive環境變數</span></span><br><span class="line"><span class="built_in">export</span> HIVE_HOME=/home/test/apache-hive-1.2.1-bin</span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$HIVE_HOME</span>/bin:<span class="variable">$HIVE_HOME</span>/conf:<span class="variable">$PATH</span></span><br><span class="line"><span class="comment">#存檔後記得source</span></span><br><span class="line"><span class="built_in">source</span> ~/.bashrc</span><br></pre></td></tr></table></figure>
+
+<p>　　建立Hive所需的HDFS目錄與更改權限：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#/tmp目錄可能已經存在了，若已存在也須改權限</span></span><br><span class="line">hadoop fs -<span class="built_in">mkdir</span> /tmp　　<span class="comment">#主要用在存放一些Hive執行過程的臨時資料</span></span><br><span class="line">hadoop fs -<span class="built_in">mkdir</span> /user/hive/warehouse <span class="comment">#Hive進行管理的資料目錄，例如table都會存在這</span></span><br><span class="line">hadoop fs -<span class="built_in">chmod</span> 777 /tmp</span><br><span class="line">hadoop fs -<span class="built_in">chmod</span> 777 /user/hive/warehouse</span><br></pre></td></tr></table></figure>
+
+<p>　　安裝libmysql-java，用JDBC時需要用到：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install libmysql-java</span><br></pre></td></tr></table></figure>
+
+<p>　　安裝完成後，將&#x2F;usr&#x2F;share&#x2F;java&#x2F;mysql-connector-java-5.1.28.jar複製到hive&#x2F;lib目錄下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo <span class="built_in">cp</span> /usr/share/java/mysql-connector-java-5.1.28.jar ~/apache-hive-1.2.1-bin/lib</span><br></pre></td></tr></table></figure>
+
+<p>　　接著啟動MySQL，建立一個專屬Hive的帳號，啟動方式如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql -u root -p<span class="comment">#接著會要求您輸入root的密碼，輸入完後會進入到mysql &gt; 的command模式</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">mysql &gt; create database hive; <span class="comment">#建立一個hive的database</span></span><br><span class="line">mysql&gt; grant all on *.* to<span class="string">&#x27;hive&#x27;</span>@<span class="string">&#x27;%&#x27;</span> identified by <span class="string">&#x27;hive&#x27;</span>; <span class="comment">#建立一個MySQL使用者，帳號跟密碼都是hive，且用%代表在任何hostname都可登入</span></span><br><span class="line">mysql&gt; flush privileges; <span class="comment">#更新User清單</span></span><br><span class="line">mysql&gt; <span class="built_in">exit</span>; <span class="comment">#結束mysql</span></span><br></pre></td></tr></table></figure>
+
+<p>　　修改MySQL的參數設定檔案my.cnf：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo vim /etc/mysql/my.cnf</span><br><span class="line"><span class="comment">#將bind-address = 127.0.0.1這行用#註解，不要讓MySQL綁定local</span></span><br><span class="line"><span class="comment">#bind-address = 127.0.0.1</span></span><br></pre></td></tr></table></figure>
+
+<p>　　在Hive的目錄裡建立一個新目錄：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> -p /home/test/apache-hive-1.2.1-bin/iotmp <span class="comment">#Hive config會需要用到</span></span><br><span class="line"><span class="built_in">chmod</span> 777 /home/test/apache-hive-1.2.1-bin/iotmp</span><br></pre></td></tr></table></figure>
+
+<p>　　進入到Hive的目錄，將apache-hive-1.2.1-bin&#x2F;conf下的hive-default.xml.template改成hive-site.xml：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cp</span> hive-default.xml.template hive-site.xml</span><br></pre></td></tr></table></figure>
+
+<p>　　更改hive-site.xml的設定：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo vim hive-site.xml</span><br></pre></td></tr></table></figure>
+
+<p>　　另外更改conf的hive-env.sh.template：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cp</span> hive-env.sh.template hive-env.sh</span><br><span class="line">sudo vim hive-env.sh</span><br><span class="line"><span class="comment">#在這檔案內容最下方增加這4項:</span></span><br><span class="line"><span class="built_in">export</span> HADOOP_HEAPSIZE=1024</span><br><span class="line">HADOOP_HOME=/home/test/hadoop-2.7.1</span><br><span class="line"><span class="built_in">export</span> HIVE_CONF_DIR=/home/test/apache-hive-1.2.1-bin/conf</span><br><span class="line"><span class="built_in">export</span> HIVE_AUX_JARS_PATH=/home/test/apache-hive-1.2.1-bin/lib</span><br></pre></td></tr></table></figure>
+
+<p>　　設定檔都存好後，接著啟動metastore：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hive --service metastore &amp; <span class="comment">#後面一定要加個&amp;符號，才可以再按下enter跳過啟動的訊息，之前一直誤會怎啟動卡住了。。。</span></span><br></pre></td></tr></table></figure>
+
+<p>　　用jps -m查看，可以發現多了一個是metastore RunJar的process，代表metastore啟動成功。</p>
+<h4 id="3-用Hive新增table"><a href="#3-用Hive新增table" class="headerlink" title="3.用Hive新增table"></a>3.用Hive新增table</h4><p>　　metastore啟動後，下指令hive，將會進入hive &gt; 的commnad模式。<br>　　首先新增一筆table叫做student：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hive&gt; create table student(<span class="built_in">id</span> int, name string) row format delimited fields terminated by <span class="string">&#x27;t&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<p>　　這一行建立table的意思是這table student是由int型態的id與string型態的name兩種屬性組成，而每一列資料（row format delimited）是預設跳行隔開，每一列資料彼此之間是用tab（terminated by ‘t’）隔開。<br>　　建好後用show tables可以查看table是否新增成功，如下圖：</p>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2015/10/show2Btables253B-1.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2015/10/show2Btables253B.png" alt="Hive 1.2.1 describe"></a></p>
+<p>　　在使用describe student看該table的屬性，如下圖：</p>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2015/10/decs2Btable-1.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2015/10/decs2Btable.png"></a></p>
+<p>　　在&#x2F;home&#x2F;test目錄下，建個要匯入student的資料：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">sudo vim ~/StudentFile.txt</span><br><span class="line"><span class="comment">#資料內容如下，記得id與name是用tab隔開</span></span><br><span class="line">1 John</span><br><span class="line">2 Marry</span><br><span class="line">3 Frank</span><br><span class="line">4 Jessie</span><br></pre></td></tr></table></figure>
+
+<p>　　再次進入hive command模式，將資料匯入：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hive&gt; load data <span class="built_in">local</span> inpath<span class="string">&#x27;/home/test/StudentFile.txt&#x27;</span> overwrite into table student;</span><br></pre></td></tr></table></figure>
+
+<p>　　用HiveQL語法查詢是否有資料匯入：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">hive&gt; <span class="keyword">select</span> <span class="built_in">id</span> from student;</span><br><span class="line">hive&gt; <span class="keyword">select</span> name from student;</span><br><span class="line">hive&gt; <span class="keyword">select</span> <span class="built_in">id</span> from student <span class="built_in">where</span> name=<span class="string">&#x27;Frank&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<p>　　這三筆查詢的結果如下圖，語法跟SQL非常像～</p>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2015/10/select2Bid2Band2Bname-1.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2015/10/select2Bid2Band2Bname.png" alt="Hive 1.2.1 select"></a></p>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2015/10/SELECT2BFRANK-1.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2015/10/SELECT2BFRANK.png" alt="Hive 1.2.1 select"></a></p>
+<p>　　接著下count的語法，會發現有啟動MapReduce的資訊顯示：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hive&gt; <span class="keyword">select</span> count(<span class="built_in">id</span>) from student <span class="built_in">where</span> name like <span class="string">&#x27;%a%&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<p>　　如下圖所示：</p>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2015/10/count2Bmap1-1.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2015/10/count2Bmap1.png" alt="Hive 1.2.1 select like"></a></p>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2015/10/count2Bmap2-1.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2015/10/count2Bmap2.png" alt="Hive 1.2.1 select result"></a></p>
+<p>　　查詢有name有存在小寫a的資料有幾筆，其輸出的2筆為Frank和Marry（當時做紀錄打錯名字。。。懶的更正XD）。<br>　　當Hive有新增table後，可以用hive帳號登入MySQL，查詢TBLS這張表的內容，可看見有Hive新增的table名稱、建立時間等資訊，代表MySQL作為metastore的運作，如下圖所示：</p>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2015/10/mysql2Bselect2Bfrom2Btbls-1.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2015/10/mysql2Bselect2Bfrom2Btbls.png" alt="Hive 1.2.1 select *"></a></p>
+<h4 id="4-用Java連Hive-JDBC"><a href="#4-用Java連Hive-JDBC" class="headerlink" title="4.用Java連Hive JDBC"></a>4.用Java連Hive JDBC</h4><p>　　之前已經複製mysql-connector-java-5.1.28.jar的library了，接著啟動hiveserver2，使Java程式能透過JDBC連到Hive：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hive --service hiveserver2 &amp; <span class="comment">#一樣要用&amp;，啟動後一樣是建立新的RunJar的process</span></span><br></pre></td></tr></table></figure>
+
+<p>　　接著我們在Windows的Eclipse建立一個新的Java class來測試JDBC，其程式碼如下：</p>
+<p>　　基本上程式碼跟自行用hive&gt; 下HiveQL一樣，只差在用DriverManager連JDBC。而程式執行的結果如下圖：</p>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2015/10/ECLIPSE2BRUN2BHIVE-1.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2015/10/ECLIPSE2BRUN2BHIVE.png"></a></p>
+<p>　　也可進入hive command驗證是否有新的table匯入。</p>
+<h4 id="5-結論"><a href="#5-結論" class="headerlink" title="5.結論"></a>5.結論</h4><p>　　安裝Hive花我超多時間在survey資料，新版的安裝方式跟舊版天差地遠，官方文件又少得可憐，蒐集了各方好手的文獻，好不容易才run起這個傢伙。。。<br>　　另外透過上述的HiveQL count，發現用MapReduce在這少量資料是非常浪費時間，需要有用到大筆的資料才能顯現Hive的優勢～</p>
+<h4 id="參考文獻"><a href="#參考文獻" class="headerlink" title="參考文獻"></a>參考文獻</h4><ol>
+<li><a target="_blank" rel="noopener" href="http://1oscar.github.io/blog/2015/07/19/Dive%20into%20hive.html">段家公子blog：dive into hive</a></li>
+<li><a target="_blank" rel="noopener" href="http://blog.csdn.net/x_i_y_u_e/article/details/46845609">x_i_y_u_e blog：Hadoop Hive安装，配置mysql元数据库</a> </li>
+<li><a target="_blank" rel="noopener" href="http://lizhenliang.blog.51cto.com/7876557/1665891">zhenliang8 blog：基于Hadoop数据仓库Hive1.2部署及使用</a> </li>
+<li><a target="_blank" rel="noopener" href="http://yanliu.org/2015/08/13/Hadoop%E9%9B%86%E7%BE%A4%E4%B9%8BHive%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/">Yan’s blog：Hadoop集群之Hive安装配置</a> </li>
+<li> <a target="_blank" rel="noopener" href="http://f.dataguru.cn/thread-459379-1-1.html">jf_32635344論壇文章： [原创] Hive启动时，遇到java.net.URISyntaxException: Relative path in absolute URI</a> </li>
+<li><a target="_blank" rel="noopener" href="https://cwiki.apache.org/confluence/display/Hive/HiveClient">Hive官方JDBC Client程式碼</a></li>
+<li><a target="_blank" rel="noopener" href="http://stackoverflow.com/questions/18128966/where-is-the-mysql-jdbc-jar-file-in-ubuntu">Stackoverflow：Where is the MySQL JDBC jar file in Ubuntu?</a></li>
+</ol>
+<p> </p>
+<h4 id="新增-修改日記"><a href="#新增-修改日記" class="headerlink" title="新增&#x2F;修改日記"></a>新增&#x2F;修改日記</h4><p>2015&#x2F;10&#x2F;6：</p>
+<ol>
+<li>新增MySQL my.cnf檔案內的參數設定，少了這一步驟會無法啟動Hive。</li>
+</ol>
+<p>2015&#x2F;10&#x2F;9：</p>
+<ol>
+<li>新增用MySQL查看Hive註冊過的table資訊。</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2015/10/01/hdfs-java-api/" rel="prev" title="HDFS Java API">
+      <i class="fa fa-chevron-left"></i> HDFS Java API
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2015/10/06/ubuntu-install-uninstall-mysql/" rel="next" title="ubuntu 移除與安裝 MySQL">
+      ubuntu 移除與安裝 MySQL <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-Hive%E7%B0%A1%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">1.Hive簡介</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E5%AE%89%E8%A3%9DHive"><span class="nav-number">2.</span> <span class="nav-text">2.安裝Hive</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-%E7%94%A8Hive%E6%96%B0%E5%A2%9Etable"><span class="nav-number">3.</span> <span class="nav-text">3.用Hive新增table</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-%E7%94%A8Java%E9%80%A3Hive-JDBC"><span class="nav-number">4.</span> <span class="nav-text">4.用Java連Hive JDBC</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-%E7%B5%90%E8%AB%96"><span class="nav-number">5.</span> <span class="nav-text">5.結論</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%83%E8%80%83%E6%96%87%E7%8D%BB"><span class="nav-number">6.</span> <span class="nav-text">參考文獻</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%96%B0%E5%A2%9E-%E4%BF%AE%E6%94%B9%E6%97%A5%E8%A8%98"><span class="nav-number">7.</span> <span class="nav-text">新增&#x2F;修改日記</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">208</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">49</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

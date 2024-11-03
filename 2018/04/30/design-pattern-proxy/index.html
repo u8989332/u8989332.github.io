@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="代理模式 (Proxy Pattern) 的設計模式介紹 1. 案例需求 圖片來源：http:&#x2F;&#x2F;www.horace.org&#x2F;blog&#x2F;2015&#x2F;11&#x2F;22&#x2F;jojo-%E5%A5%87%E5%A6%99%E5%86%92%E9%9A%AA-%E7%AC%AC%E4%BA%8C%E5%AD%A3%EF%BC%88%E5%8B%95%E7%95%AB%E7%89%88%EF%BC%89&#x2F; 知名動畫">
+<meta property="og:type" content="article">
+<meta property="og:title" content="代理模式 Proxy Pattern">
+<meta property="og:url" content="http://example.com/2018/04/30/design-pattern-proxy/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="代理模式 (Proxy Pattern) 的設計模式介紹 1. 案例需求 圖片來源：http:&#x2F;&#x2F;www.horace.org&#x2F;blog&#x2F;2015&#x2F;11&#x2F;22&#x2F;jojo-%E5%A5%87%E5%A6%99%E5%86%92%E9%9A%AA-%E7%AC%AC%E4%BA%8C%E5%AD%A3%EF%BC%88%E5%8B%95%E7%95%AB%E7%89%88%EF%BC%89&#x2F; 知名動畫">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://geekcodeparadise.com/wp-content/uploads/2018/04/3-.jpg">
+<meta property="og:image" content="http://geekcodeparadise.com/wp-content/uploads/2018/04/ProxyPattern_EXAMPLE.png">
+<meta property="og:image" content="http://geekcodeparadise.com/wp-content/uploads/2018/04/EXAMPLE_CONSOLE.png">
+<meta property="og:image" content="http://geekcodeparadise.com/wp-content/uploads/2018/04/c17.gif">
+<meta property="og:image" content="http://geekcodeparadise.com/wp-content/uploads/2018/04/ProxyPattern_GENERAL.png">
+<meta property="article:published_time" content="2018-04-29T23:47:00.000Z">
+<meta property="article:modified_time" content="2023-11-19T07:47:25.478Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://geekcodeparadise.com/wp-content/uploads/2018/04/3-.jpg">
+
+<link rel="canonical" href="http://example.com/2018/04/30/design-pattern-proxy/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>代理模式 Proxy Pattern | Hexo</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Hexo</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2018/04/30/design-pattern-proxy/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          代理模式 Proxy Pattern
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2018-04-30 07:47:00" itemprop="dateCreated datePublished" datetime="2018-04-30T07:47:00+08:00">2018-04-30</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-11-19 15:47:25" itemprop="dateModified" datetime="2023-11-19T15:47:25+08:00">2023-11-19</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Design-Pattern/" itemprop="url" rel="index"><span itemprop="name">Design Pattern</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/OOP/" itemprop="url" rel="index"><span itemprop="name">OOP</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>代理模式 (Proxy Pattern) 的設計模式介紹</p>
+<h4 id="1-案例需求"><a href="#1-案例需求" class="headerlink" title="1. 案例需求"></a>1. 案例需求</h4><p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2018/04/3-1-1.jpg"><img src="http://geekcodeparadise.com/wp-content/uploads/2018/04/3-.jpg" alt="JoJo&#39;s Bizarre Adventure"></a></p>
+<p>圖片來源：<a target="_blank" rel="noopener" href="http://www.horace.org/blog/2015/11/22/jojo-%E5%A5%87%E5%A6%99%E5%86%92%E9%9A%AA-%E7%AC%AC%E4%BA%8C%E5%AD%A3%EF%BC%88%E5%8B%95%E7%95%AB%E7%89%88%EF%BC%89/">http://www.horace.org/blog/2015/11/22/jojo-%E5%A5%87%E5%A6%99%E5%86%92%E9%9A%AA-%E7%AC%AC%E4%BA%8C%E5%AD%A3%EF%BC%88%E5%8B%95%E7%95%AB%E7%89%88%EF%BC%89/</a></p>
+<p>知名動畫-JoJo的奇妙冒险，描述喬斯達家族歷代主人翁與各種敵人戰鬥的故事。在《星塵鬥士》篇幅，引入了替身能力，可以讓人產生另一個戰鬥角色，依照主人的意志代替主人戰鬥。</p>
+<h4 id="2-程式設計"><a href="#2-程式設計" class="headerlink" title="2. 程式設計"></a>2. 程式設計</h4><p>建立一個角色(Character)介面，有一個攻擊(Attack)的方法。以主角_承太郎_(Jotaro)為例，他擁有替身_白金之星_(Star Platinum)，特點是快速又堅硬的攻擊。_承太郎_和_白金之星_實作Character介面，且_白金之星_關連了_承太郎_，如下UML類別圖：</p>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2018/04/ProxyPattern_EXAMPLE-1.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2018/04/ProxyPattern_EXAMPLE.png" alt="代理模式 Proxy Pattern 案例 UML Class"></a></p>
+<p>這三個類別的實作的程式碼：</p>
+<p>public interface Character<br>{<br>    void Attack();<br>}</p>
+<p>public class Jotaro : Character<br>{<br>    public void Attack()<br>    {<br>        Console.WriteLine(“快速連續揮拳(オラオラオラオラオラ)”);<br>    }<br>}</p>
+<p>public class StarPlatinum : Character<br>{<br>    private Jotaro master;<br>    public StarPlatinum()<br>    {<br>        master &#x3D; new Jotaro();<br>    }</p>
+<pre><code>public void Attack()
+&#123;
+    this.master.Attack();
+&#125;
+</code></pre>
+<p>}</p>
+<p>模擬_承太郎_戰鬥的場景程式和輸出結果：</p>
+<p>public class Program<br>{<br>    static void Main(string[] args)<br>    {<br>        &#x2F;&#x2F;為了顯示日文<br>        Console.OutputEncoding &#x3D; Encoding.UTF8;</p>
+<pre><code>    StarPlatinum starPlatinum = new StarPlatinum();
+    starPlatinum.Attack();
+
+    Console.Read();
+&#125;
+</code></pre>
+<p>}</p>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2018/04/EXAMPLE_CONSOLE-1.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2018/04/EXAMPLE_CONSOLE.png" alt="代理模式 Proxy Pattern 案例結果"></a></p>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2018/04/c17-1.gif"><img src="http://geekcodeparadise.com/wp-content/uploads/2018/04/c17.gif" alt="JoJo&#39;s Bizarre Adventure"></a></p>
+<p>圖片來源：<a target="_blank" rel="noopener" href="http://knowyourmeme.com/photos/1202911-jojos-bizarre-adventure">http://knowyourmeme.com/photos/1202911-jojos-bizarre-adventure</a></p>
+<h4 id="3-代理模式介紹"><a href="#3-代理模式介紹" class="headerlink" title="3. 代理模式介紹"></a>3. 代理模式介紹</h4><h5 id="3-1-代理模式定義"><a href="#3-1-代理模式定義" class="headerlink" title="3.1 代理模式定義"></a>3.1 代理模式定義</h5><p>根據書上的介紹，代理模式的定義：Provide a surrogate or placeholder for another object to control access to it.。意思是給一個物件新增一個代理，這代理能控制這物件的引用。</p>
+<p>　　代理模式的通用UML類別圖：</p>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2018/04/ProxyPattern_GENERAL-1.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2018/04/ProxyPattern_GENERAL.png" alt="代理模式 Proxy Pattern 經典 UML Class"></a></p>
+<p>　　而代理模式包含三大角色：</p>
+<p>　　Subject：是一個抽象類別或介面，定義Proxy和RealSubject的共同介面，當任何有使用RealObject的地方皆能使用Proxy。依照前述例子，是Character類別。</p>
+<p>　　RealSubject：被代理的角色，也是實際執行商業邏輯的單位。依照前述例子，是Jotaro類別。</p>
+<p>　　Proxy：代理角色，且引用RealSubject，客戶要與RealSubject互動得透過Proxy。依照前述例子，是StarPlatinum類別，引用了Jotaro物件。</p>
+<h5 id="3-2-代理模式優缺點"><a href="#3-2-代理模式優缺點" class="headerlink" title="3.2 代理模式優缺點"></a>3.2 代理模式優缺點</h5><p>優點</p>
+<ul>
+<li>真實角色(RealSubject)完成實際的商業邏輯，其他非它的職責交由代理完成</li>
+<li>當真實角色商業邏輯變化時，只要Subject定義的介面不變，Proxy仍不用修改而正常使用</li>
+</ul>
+<p>　　缺點</p>
+<ul>
+<li>客戶需透過代理才能請求真實角色做事，處理速度會變慢。</li>
+</ul>
+<h5 id="3-3-代理模式的應用"><a href="#3-3-代理模式的應用" class="headerlink" title="3.3 代理模式的應用"></a>3.3 代理模式的應用</h5><ul>
+<li>遠程代理：可以為不同地址空間的物件提供一個本地的代理物件，比如Web Service，在.NET有WebReference、Java有RMI</li>
+<li>虛擬代理：是根據需建立消耗大資源的物件，先建立一個小的物件，等待真實角色實例化完成。比如使用Web或者視窗程式，在讀取圖片時，會先用＂Loadiing…＂等待畫面給客戶看，當真實圖片載入完成後，再實際顯示給客戶</li>
+<li>保護代理：依照客戶的權限，來控制對真實角色的存取</li>
+<li>智能引用：當代理呼叫真實角色時，代理會做其他的功能，比如計算真實角色被呼叫的次數</li>
+<li>快取代理：將真實角色的運算結果儲存在臨時的共同空間，多個客戶可以取這些共同的結果</li>
+</ul>
+<h4 id="參考文獻"><a href="#參考文獻" class="headerlink" title="參考文獻"></a>參考文獻</h4><ol>
+<li><a target="_blank" rel="noopener" href="https://amzn.to/3LOwYlp">程杰 大話設計模式 第07章　為他人做嫁衣—代理模式</a></li>
+<li><a target="_blank" rel="noopener" href="https://amzn.to/3JLkwQW">秦小波 設計模式之禪 第12章 代理模式</a></li>
+<li><a target="_blank" rel="noopener" href="https://amzn.to/3LRwBqc">Elisabeth Freeman, Eric Freeman, Bert Bates, Kathy Sierra 著、蔡學鏞 譯, 深入淺出設計模式 11 代理人模式</a></li>
+<li><a target="_blank" rel="noopener" href="http://design-patterns.readthedocs.io/zh_CN/latest/structural_patterns/proxy.html">me115 图说设计模式 6. 代理模式</a></li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2018/04/22/design-pattern-decorator/" rel="prev" title="裝飾者模式 Decorator Pattern">
+      <i class="fa fa-chevron-left"></i> 裝飾者模式 Decorator Pattern
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2019/07/06/uva-272-tex-quotes/" rel="next" title="UVa 272 TEX Quotes">
+      UVa 272 TEX Quotes <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E6%A1%88%E4%BE%8B%E9%9C%80%E6%B1%82"><span class="nav-number">1.</span> <span class="nav-text">1. 案例需求</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E7%A8%8B%E5%BC%8F%E8%A8%AD%E8%A8%88"><span class="nav-number">2.</span> <span class="nav-text">2. 程式設計</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-%E4%BB%A3%E7%90%86%E6%A8%A1%E5%BC%8F%E4%BB%8B%E7%B4%B9"><span class="nav-number">3.</span> <span class="nav-text">3. 代理模式介紹</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#3-1-%E4%BB%A3%E7%90%86%E6%A8%A1%E5%BC%8F%E5%AE%9A%E7%BE%A9"><span class="nav-number">3.1.</span> <span class="nav-text">3.1 代理模式定義</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-2-%E4%BB%A3%E7%90%86%E6%A8%A1%E5%BC%8F%E5%84%AA%E7%BC%BA%E9%BB%9E"><span class="nav-number">3.2.</span> <span class="nav-text">3.2 代理模式優缺點</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-3-%E4%BB%A3%E7%90%86%E6%A8%A1%E5%BC%8F%E7%9A%84%E6%87%89%E7%94%A8"><span class="nav-number">3.3.</span> <span class="nav-text">3.3 代理模式的應用</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%83%E8%80%83%E6%96%87%E7%8D%BB"><span class="nav-number">4.</span> <span class="nav-text">參考文獻</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">208</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">49</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

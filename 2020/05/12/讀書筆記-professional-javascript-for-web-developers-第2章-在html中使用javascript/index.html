@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="1.1  Element 最早是Netscape實作, 後來HTML才加入它為規範之一 有8種屬性  1. async: 可選, 代表立即下載該腳本, 但不影響頁面其他的動作(ex: 載入其他的腳本), 只能用在外部腳本.2. charset: 可選, 指定src所指的字元集, 但現在很少使用3. crossorigin: 可選, 設定request的CORS, 預設CORS不使用. 如果是 cr">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[讀書筆記] Professional JavaScript for Web Developers - 第2章 在HTML中使用JavaScript">
+<meta property="og:url" content="http://example.com/2020/05/12/%E8%AE%80%E6%9B%B8%E7%AD%86%E8%A8%98-professional-javascript-for-web-developers-%E7%AC%AC2%E7%AB%A0-%E5%9C%A8html%E4%B8%AD%E4%BD%BF%E7%94%A8javascript/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="1.1  Element 最早是Netscape實作, 後來HTML才加入它為規範之一 有8種屬性  1. async: 可選, 代表立即下載該腳本, 但不影響頁面其他的動作(ex: 載入其他的腳本), 只能用在外部腳本.2. charset: 可選, 指定src所指的字元集, 但現在很少使用3. crossorigin: 可選, 設定request的CORS, 預設CORS不使用. 如果是 cr">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-05-11T23:49:00.000Z">
+<meta property="article:modified_time" content="2023-11-19T07:47:25.821Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://example.com/2020/05/12/%E8%AE%80%E6%9B%B8%E7%AD%86%E8%A8%98-professional-javascript-for-web-developers-%E7%AC%AC2%E7%AB%A0-%E5%9C%A8html%E4%B8%AD%E4%BD%BF%E7%94%A8javascript/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>[讀書筆記] Professional JavaScript for Web Developers - 第2章 在HTML中使用JavaScript | Hexo</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Hexo</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/05/12/%E8%AE%80%E6%9B%B8%E7%AD%86%E8%A8%98-professional-javascript-for-web-developers-%E7%AC%AC2%E7%AB%A0-%E5%9C%A8html%E4%B8%AD%E4%BD%BF%E7%94%A8javascript/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          [讀書筆記] Professional JavaScript for Web Developers - 第2章 在HTML中使用JavaScript
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-05-12 07:49:00" itemprop="dateCreated datePublished" datetime="2020-05-12T07:49:00+08:00">2020-05-12</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-11-19 15:47:25" itemprop="dateModified" datetime="2023-11-19T15:47:25+08:00">2023-11-19</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/JavaScript/" itemprop="url" rel="index"><span itemprop="name">JavaScript</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%AE%80%E6%9B%B8%E7%AD%86%E8%A8%98/" itemprop="url" rel="index"><span itemprop="name">讀書筆記</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="1-1-Element"><a href="#1-1-Element" class="headerlink" title="1.1  Element"></a>1.1 <script> Element</h2><ul>
+<li>最早是Netscape實作, 後來HTML才加入它為規範之一</li>
+<li>有8種屬性</li>
+</ul>
+<p>1. async: 可選, 代表立即下載該腳本, 但不影響頁面其他的動作(ex: 載入其他的腳本), 只能用在外部腳本.<br>2. charset: 可選, 指定src所指的字元集, 但現在很少使用<br>3. crossorigin: 可選, 設定request的CORS, 預設CORS不使用. 如果是 crossorigin="anonymous", 不會帶入credential標記; 如果是 crissirugub="use-credentials", 將設credential標記, request帶著credentials. </p>
+<p>在MDN有一段很詳細的解釋:</p>
+<p><a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/crossorigin">https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/crossorigin</a></p>
+<p>實驗: </p>
+<p>在開一個本機端建立一個html, <script>代一個jQuery的cdn連結:</p>
+<p><strong>anonymous</strong>: CORS requests for this element will have the credentials flag set to 'same-origin'. </p>
+<p>在Chrome DevTool可看見 Request header多帶了 Origin參數</p>
+<p><strong>use-credentials</strong>: CORS requests for this element will have the credentials flag set to 'include'. </p>
+<p>在Chrome DevTool的console會有error : </p>
+<p>Access to script at '<a target="_blank" rel="noopener" href="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js">https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js</a>' from origin '<a target="_blank" rel="noopener" href="https://cdpn.io/">https://cdpn.io</a>' has been blocked by CORS policy: The value of the 'Access-Control-Allow-Origin' header in the response must not be the wildcard '*' when the request's credentials mode is 'include'.  </p>
+<p>也代表Client和Server都要有同Domain.</p>
+<p>4. defer: 可選, 可延遲到頁面被完全解析與載入後再執行此腳本, 只能用在外部腳本.</p>
+<p>5. integrity: 可選, 驗證Subresource Integrity (SRI)(比如 CDN的資源)的簽名和此屬性有無相符. 沒有相符則此script不會執行.</p>
+<p>假如有個CDN腳本連結: <script src="<a href="https://example.com/example-framework.js">https://example.com/example-framework.js</a>"</p>
+<p>        integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"></script></p>
+<p>可知道是用sha384做hash而得到oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K&#x2F;uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC的base64字串, 則瀏覽器會對文檔做同樣sha384 hash且輸出base64, 檢查是否和CDN提供的一樣.</p>
+<p>6. language: 不推薦使用, 指定腳本的語言, 比如”JavaScript”, 但現代瀏覽器不會看此屬性.</p>
+<p>7. src: 可選, 指定要執行程式碼的外部檔案.</p>
+<p>8. type: 可選, 指的是內文類型(也就是MIME類型), 用來取代language屬性. 早期都是”text&#x2F;javascript”. 現代也能用”module”值, 代表是ES6模組, 只能用在import&#x2F;export.</p>
+<ul>
+<li><script>的使用方式有2種: 在頁面嵌入外部js檔案和在<script>裡寫JS程式碼 (Inline)</li>
+<li><script>是從上而下執行</li>
+<li>當<script>內部執行完之前, 頁面其他內容不會載入/顯示</li>
+<li>別任意出現</script>字串, 比如下方sayScript, 將被瀏覽器直譯為結束<script></li>
+</ul>
+<script>  
+function sayScript() {  
+console.log("</script>");  
+<p>}<br></script>    </p>
+<ul>
+<li>所以要改成跳脫符號 來解決 :  console.log(“</script>“);</li>
+<li>若要載入外部JS檔案, 則必須用src屬性.</li>
+<li>XHTML的<script src="..."></script>結尾可簡化 : &lt;script src&#x3D;”example.js &#x2F;&gt;   , 一般HTML頁面不行.</li>
+<li>瀏覽器不會檢查<script src="...">的副檔名.</li>
+<li>在已經有src的<script>裡還加Inline JS語法, 仍只會執行載入外部檔案的功能.</li>
+<li>除了async和defer的屬性, <script>的執行順序都是從上而下依次進行.</li>
+</ul>
+<h3 id="1-1-1-Tag-Placement"><a href="#1-1-1-Tag-Placement" class="headerlink" title="1.1.1 Tag Placement"></a>1.1.1 Tag Placement</h3><ul>
+<li>早期都把<script src="...">放在<head>  .</li>
+<li>但現在JS數量/功能越多, 變成先執行大量JS而頁面body還沒執行, 將會是一段時間都空白.</li>
+<li>現代Web建議把<script>放在</body>結尾之前, 讓頁面先呈現東西.</li>
+</ul>
+<h3 id="1-1-2-Deferred-Scripts"><a href="#1-1-2-Deferred-Scripts" class="headerlink" title="1.1.2 Deferred Scripts"></a>1.1.2 Deferred Scripts</h3><ul>
+<li>HTML 4.01導入defer屬性, 使外部JS檔案可以先下載, 但會在DOM完成後、DOMContentLoaded事件之前的中間時間做執行檔案的程式碼</li>
+<li>使用defer的順序跟後續執行的順序照理一樣, 但並不總是這樣.</li>
+<li>基於HTML5規範, defer用在Inline code不會起作用</li>
+<li>在XHTML裡, 要用defer的寫法為 <script defer="defer"></script></li>
+</ul>
+<h3 id="1-1-3-Asynchronous-Scripts"><a href="#1-1-3-Asynchronous-Scripts" class="headerlink" title="1.1.3 Asynchronous Scripts"></a>1.1.3 Asynchronous Scripts</h3><h2 id=""><a href="#" class="headerlink" title=""></a></h2><ul>
+<li>HTML5定義async屬性, 只能用在外部JS檔案, 功能是不讓頁面等待檔案的下載和執行.</li>
+<li>和defer不同, 執行的順序不保證. 因此多個async的檔案之間不要有相依性.</li>
+<li>async的腳本別在載入時期做DOM的修改</li>
+<li>async腳本一定在頁面load之前執行, 但可能在DOMContentLoaded前或後執行.</li>
+<li>在XHTML裡, 要用async的寫法為 <script async="async"><script></li>
+</ul>
+<h3 id="1-1-4-Dynamic-Script-Loading"><a href="#1-1-4-Dynamic-Script-Loading" class="headerlink" title="1.1.4 Dynamic Script Loading"></a>1.1.4 Dynamic Script Loading</h3><ul>
+<li><script>元素可以透過JS動態建立
+</li>
+<li><p>行為預設和async一樣</p>
+</li>
+<li><p>範例寫法</p>
+</li>
+</ul>
+<p>let script = document.createElement('script');<br>script.src = 'MyCode.js';<br>document.head.appendChild(script);    </p>
+<ul>
+<li>並不是所有瀏覽器都支援async, 可以改成script.async = false;</li>
+</ul>
+<h3 id="1-1-5-Changes-In-XHTML"><a href="#1-1-5-Changes-In-XHTML" class="headerlink" title="1.1.5 Changes In XHTML"></a>1.1.5 Changes In XHTML</h3><ul>
+<li><p>Extensible HyperText Markup Language (XHTML) 是將HTML以XML方式來解析.</p>
+</li>
+<li><p>特殊案例, 比如有一段inline code 執行 if (a < b) , 由於< 是XML的element開頭, 會導致解析錯誤</p>
+</li>
+<li><p>解法1: 將< 或 >替換成HTML符號 &lt;  &gt;</p>
+</li>
+<li><p>解法2: 使用<![CDATA[ ...code .... ]]> </p>
+</li>
+<li><p>但有些瀏覽器仍不支援XHTML, 要再把使用<![CDATA[的功能註解</p>
+</li>
+<li><p>XHTML的MIME是 application/xhtml+xml</p>
+</li>
+</ul>
+<h2 id="1-2-Inline-code-VS-External-File"><a href="#1-2-Inline-code-VS-External-File" class="headerlink" title="1.2 Inline code VS External File"></a>1.2 Inline code VS External File</h2><ul>
+<li>盡可能使用外部檔案, 好處有</li>
+</ul>
+<ol>
+<li><p>可維護性</p>
+</li>
+<li><p>可緩存</p>
+</li>
+<li><p>Future-proof(適應未來): HTML和XHTML都能用外部檔案, 避免有inline的code有的要註解、有的要加特殊語法</p>
+</li>
+</ol>
+<ul>
+<li>支援 SPDY/HTTP2的瀏覽器, 可以對外部檔案做cache, 提供別的頁面重複使用.比如A頁面請求 a.js, b.js, B頁面請求b.js, c.js, 當A頁面載入後會cache a.js, b.js, 而開B頁面時會因為有cache b.js而直接用, 節省請求頻寬.</li>
+</ul>
+<h2 id="1-3-Document-Modes"><a href="#1-3-Document-Modes" class="headerlink" title="1.3 Document Modes"></a>1.3 Document Modes</h2><ul>
+<li>IE 5.5導入文件模式, 是依照doctype的切換來實作.</li>
+<li>有quirks mode和standards mode, quirks mode會讓IE執行IE5的的行為(且包含一些非標準的功能)、standards mode讓IE執行比較標準.</li>
+<li>模式的差異會影響CSS、JS.</li>
+<li>IE後來又推出 almost standards mode (!!??), 主要會影響圖片的呈現.</li>
+<li>如果檔案開頭沒任何doctype, 則瀏覽器預設開啟quirks mode.</li>
+<li>MDN有個連結, 提供很完整的doctype對應的模式  <a target="_blank" rel="noopener" href="https://hsivonen.fi/doctype/">https://hsivonen.fi/doctype/</a> , 而現行瀏覽器最常用的 standards mode <!DOCTYPE html> 是 HTML5.</li>
+</ul>
+<p> </p>
+<h2 id="1-4-Element"><a href="#1-4-Element" class="headerlink" title="1.4  Element"></a>1.4 <noscript> Element</h2><ul>
+<li>當瀏覽器不能使用JS時, 在<noscript>裡的非JS內容會被呈現.</li>
+<li>不能使用的條件</li>
+</ul>
+<ol>
+<li><p>瀏覽器不支援JS</p>
+</li>
+<li><p>瀏覽器支援JS但設定檔將它失效</p>
+</li>
+</ol>
+<ul>
+<li>如果瀏覽器正常能使用JS, 則<noscript>的內容不會呈現</li>
+</ul>
+<h2 id="2-參考資料"><a href="#2-參考資料" class="headerlink" title="2. 參考資料"></a>2. 參考資料</h2><ol>
+<li>Professional JavaScript for Web Developers 4th Edition, Chapter 2 : Javascript In HTML, Matt Frisbie.</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/05/10/%E8%AE%80%E6%9B%B8%E7%AD%86%E8%A8%98-professional-javascript-for-web-developers-%E7%AC%AC1%E7%AB%A0-javascript%E7%B0%A1%E4%BB%8B/" rel="prev" title="[讀書筆記] Professional JavaScript for Web Developers - 第1章 JavaScript簡介">
+      <i class="fa fa-chevron-left"></i> [讀書筆記] Professional JavaScript for Web Developers - 第1章 JavaScript簡介
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/05/23/%E8%AE%80%E6%9B%B8%E7%AD%86%E8%A8%98-professional-javascript-for-web-developers-%E7%AC%AC3%E7%AB%A0-%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/" rel="next" title="[讀書筆記] Professional JavaScript for Web Developers - 第3章 基本概念">
+      [讀書筆記] Professional JavaScript for Web Developers - 第3章 基本概念 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-Element"><span class="nav-number">1.</span> <span class="nav-text">1.1  Element&lt;&#x2F;h2&gt;&lt;ul&gt;
+&lt;li&gt;最早是Netscape實作, 後來HTML才加入它為規範之一&lt;&#x2F;li&gt;
+&lt;li&gt;有8種屬性&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;1. async: 可選, 代表立即下載該腳本, 但不影響頁面其他的動作(ex: 載入其他的腳本), 只能用在外部腳本.&lt;br&gt;2. charset: 可選, 指定src所指的字元集, 但現在很少使用&lt;br&gt;3. crossorigin: 可選, 設定request的CORS, 預設CORS不使用. 如果是 crossorigin&#x3D;&quot;anonymous&quot;, 不會帶入credential標記; 如果是 crissirugub&#x3D;&quot;use-credentials&quot;, 將設credential標記, request帶著credentials. &lt;&#x2F;p&gt;
+&lt;p&gt;在MDN有一段很詳細的解釋:&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;a href&#x3D;&quot;https:&#x2F;&#x2F;developer.mozilla.org&#x2F;en-US&#x2F;docs&#x2F;Web&#x2F;HTML&#x2F;Attributes&#x2F;crossorigin&quot;&gt;https:&#x2F;&#x2F;developer.mozilla.org&#x2F;en-US&#x2F;docs&#x2F;Web&#x2F;HTML&#x2F;Attributes&#x2F;crossorigin&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;實驗: &lt;&#x2F;p&gt;
+&lt;p&gt;在開一個本機端建立一個html, &lt;script&gt;代一個jQuery的cdn連結:&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;anonymous&lt;&#x2F;strong&gt;: CORS requests for this element will have the credentials flag set to &#39;same-origin&#39;. &lt;&#x2F;p&gt;
+&lt;p&gt;在Chrome DevTool可看見 Request header多帶了 Origin參數&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;use-credentials&lt;&#x2F;strong&gt;: CORS requests for this element will have the credentials flag set to &#39;include&#39;. &lt;&#x2F;p&gt;
+&lt;p&gt;在Chrome DevTool的console會有error : &lt;&#x2F;p&gt;
+&lt;p&gt;Access to script at &#39;&lt;a href&#x3D;&quot;https:&#x2F;&#x2F;ajax.googleapis.com&#x2F;ajax&#x2F;libs&#x2F;jquery&#x2F;3.5.1&#x2F;jquery.min.js&quot;&gt;https:&#x2F;&#x2F;ajax.googleapis.com&#x2F;ajax&#x2F;libs&#x2F;jquery&#x2F;3.5.1&#x2F;jquery.min.js&lt;&#x2F;a&gt;&#39; from origin &#39;&lt;a href&#x3D;&quot;https:&#x2F;&#x2F;cdpn.io&#x2F;&quot;&gt;https:&#x2F;&#x2F;cdpn.io&lt;&#x2F;a&gt;&#39; has been blocked by CORS policy: The value of the &#39;Access-Control-Allow-Origin&#39; header in the response must not be the wildcard &#39;*&#39; when the request&#39;s credentials mode is &#39;include&#39;.  &lt;&#x2F;p&gt;
+&lt;p&gt;也代表Client和Server都要有同Domain.&lt;&#x2F;p&gt;
+&lt;p&gt;4. defer: 可選, 可延遲到頁面被完全解析與載入後再執行此腳本, 只能用在外部腳本.&lt;&#x2F;p&gt;
+&lt;p&gt;5. integrity: 可選, 驗證Subresource Integrity (SRI)(比如 CDN的資源)的簽名和此屬性有無相符. 沒有相符則此script不會執行.&lt;&#x2F;p&gt;
+&lt;p&gt;假如有個CDN腳本連結: &lt;script src&#x3D;&quot;&lt;a href&#x3D;&quot;https:&#x2F;&#x2F;example.com&#x2F;example-framework.js&quot;&gt;https:&#x2F;&#x2F;example.com&#x2F;example-framework.js&lt;&#x2F;a&gt;&quot;&lt;&#x2F;p&gt;
+&lt;p&gt;        integrity&#x3D;&quot;sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K&#x2F;uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC&quot;&gt;
+可知道是用sha384做hash而得到oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K&#x2F;uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC的base64字串, 則瀏覽器會對文檔做同樣sha384 hash且輸出base64, 檢查是否和CDN提供的一樣.
+6. language: 不推薦使用, 指定腳本的語言, 比如”JavaScript”, 但現代瀏覽器不會看此屬性.
+7. src: 可選, 指定要執行程式碼的外部檔案.
+8. type: 可選, 指的是內文類型(也就是MIME類型), 用來取代language屬性. 早期都是”text&#x2F;javascript”. 現代也能用”module”值, 代表是ES6模組, 只能用在import&#x2F;export.
+
+的使用方式有2種: 在頁面嵌入外部js檔案和在&lt;script&gt;裡寫JS程式碼 (Inline)&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;script&gt;是從上而下執行&lt;&#x2F;li&gt;
+&lt;li&gt;當&lt;script&gt;內部執行完之前, 頁面其他內容不會載入&#x2F;顯示&lt;&#x2F;li&gt;
+&lt;li&gt;別任意出現字串, 比如下方sayScript, 將被瀏覽器直譯為結束&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;script&gt;  
+function sayScript() {  
+console.log(&quot;&quot;);  
+}    
+
+所以要改成跳脫符號 來解決 :  console.log(““);
+若要載入外部JS檔案, 則必須用src屬性.
+XHTML的結尾可簡化 : &lt;script src&#x3D;”example.js &#x2F;&gt;   , 一般HTML頁面不行.
+瀏覽器不會檢查的副檔名.&lt;&#x2F;li&gt;
+&lt;li&gt;在已經有src的&lt;script&gt;裡還加Inline JS語法, 仍只會執行載入外部檔案的功能.&lt;&#x2F;li&gt;
+&lt;li&gt;除了async和defer的屬性, &lt;script&gt;的執行順序都是從上而下依次進行.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h3 id&#x3D;&quot;1-1-1-Tag-Placement&quot;&gt;&lt;a href&#x3D;&quot;#1-1-1-Tag-Placement&quot; class&#x3D;&quot;headerlink&quot; title&#x3D;&quot;1.1.1 Tag Placement&quot;&gt;&lt;&#x2F;a&gt;1.1.1 Tag Placement&lt;&#x2F;h3&gt;&lt;ul&gt;
+&lt;li&gt;早期都把&lt;script src&#x3D;&quot;...&quot;&gt;放在&lt;head&gt;  .&lt;&#x2F;li&gt;
+&lt;li&gt;但現在JS數量&#x2F;功能越多, 變成先執行大量JS而頁面body還沒執行, 將會是一段時間都空白.&lt;&#x2F;li&gt;
+&lt;li&gt;現代Web建議把&lt;script&gt;放在&lt;&#x2F;body&gt;結尾之前, 讓頁面先呈現東西.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h3 id&#x3D;&quot;1-1-2-Deferred-Scripts&quot;&gt;&lt;a href&#x3D;&quot;#1-1-2-Deferred-Scripts&quot; class&#x3D;&quot;headerlink&quot; title&#x3D;&quot;1.1.2 Deferred Scripts&quot;&gt;&lt;&#x2F;a&gt;1.1.2 Deferred Scripts&lt;&#x2F;h3&gt;&lt;ul&gt;
+&lt;li&gt;HTML 4.01導入defer屬性, 使外部JS檔案可以先下載, 但會在DOM完成後、DOMContentLoaded事件之前的中間時間做執行檔案的程式碼&lt;&#x2F;li&gt;
+&lt;li&gt;使用defer的順序跟後續執行的順序照理一樣, 但並不總是這樣.&lt;&#x2F;li&gt;
+&lt;li&gt;基於HTML5規範, defer用在Inline code不會起作用&lt;&#x2F;li&gt;
+&lt;li&gt;在XHTML裡, 要用defer的寫法為 &lt;script defer&#x3D;&quot;defer&quot;&gt;
+
+1.1.3 Asynchronous Scripts
+HTML5定義async屬性, 只能用在外部JS檔案, 功能是不讓頁面等待檔案的下載和執行.
+和defer不同, 執行的順序不保證. 因此多個async的檔案之間不要有相依性.
+async的腳本別在載入時期做DOM的修改
+async腳本一定在頁面load之前執行, 但可能在DOMContentLoaded前或後執行.
+在XHTML裡, 要用async的寫法為 &lt;script&gt;&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h3 id&#x3D;&quot;1-1-4-Dynamic-Script-Loading&quot;&gt;&lt;a href&#x3D;&quot;#1-1-4-Dynamic-Script-Loading&quot; class&#x3D;&quot;headerlink&quot; title&#x3D;&quot;1.1.4 Dynamic Script Loading&quot;&gt;&lt;&#x2F;a&gt;1.1.4 Dynamic Script Loading&lt;&#x2F;h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;script&gt;元素可以透過JS動態建立
+&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;p&gt;行為預設和async一樣&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;p&gt;範例寫法&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;let script &#x3D; document.createElement(&#39;script&#39;);&lt;br&gt;script.src &#x3D; &#39;MyCode.js&#39;;&lt;br&gt;document.head.appendChild(script);    &lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;並不是所有瀏覽器都支援async, 可以改成script.async &#x3D; false;&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h3 id&#x3D;&quot;1-1-5-Changes-In-XHTML&quot;&gt;&lt;a href&#x3D;&quot;#1-1-5-Changes-In-XHTML&quot; class&#x3D;&quot;headerlink&quot; title&#x3D;&quot;1.1.5 Changes In XHTML&quot;&gt;&lt;&#x2F;a&gt;1.1.5 Changes In XHTML&lt;&#x2F;h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;Extensible HyperText Markup Language (XHTML) 是將HTML以XML方式來解析.&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;p&gt;特殊案例, 比如有一段inline code 執行 if (a &lt; b) , 由於&lt; 是XML的element開頭, 會導致解析錯誤&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;p&gt;解法1: 將&lt; 或 &gt;替換成HTML符號 &lt;  &gt;&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;p&gt;解法2: 使用&lt;![CDATA[ ...code .... ]]&gt; &lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;p&gt;但有些瀏覽器仍不支援XHTML, 要再把使用&lt;![CDATA[的功能註解&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;p&gt;XHTML的MIME是 application&#x2F;xhtml+xml&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h2 id&#x3D;&quot;1-2-Inline-code-VS-External-File&quot;&gt;&lt;a href&#x3D;&quot;#1-2-Inline-code-VS-External-File&quot; class&#x3D;&quot;headerlink&quot; title&#x3D;&quot;1.2 Inline code VS External File&quot;&gt;&lt;&#x2F;a&gt;1.2 Inline code VS External File&lt;&#x2F;h2&gt;&lt;ul&gt;
+&lt;li&gt;盡可能使用外部檔案, 好處有&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;可維護性&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;p&gt;可緩存&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;p&gt;Future-proof(適應未來): HTML和XHTML都能用外部檔案, 避免有inline的code有的要註解、有的要加特殊語法&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;ul&gt;
+&lt;li&gt;支援 SPDY&#x2F;HTTP2的瀏覽器, 可以對外部檔案做cache, 提供別的頁面重複使用.比如A頁面請求 a.js, b.js, B頁面請求b.js, c.js, 當A頁面載入後會cache a.js, b.js, 而開B頁面時會因為有cache b.js而直接用, 節省請求頻寬.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h2 id&#x3D;&quot;1-3-Document-Modes&quot;&gt;&lt;a href&#x3D;&quot;#1-3-Document-Modes&quot; class&#x3D;&quot;headerlink&quot; title&#x3D;&quot;1.3 Document Modes&quot;&gt;&lt;&#x2F;a&gt;1.3 Document Modes&lt;&#x2F;h2&gt;&lt;ul&gt;
+&lt;li&gt;IE 5.5導入文件模式, 是依照doctype的切換來實作.&lt;&#x2F;li&gt;
+&lt;li&gt;有quirks mode和standards mode, quirks mode會讓IE執行IE5的的行為(且包含一些非標準的功能)、standards mode讓IE執行比較標準.&lt;&#x2F;li&gt;
+&lt;li&gt;模式的差異會影響CSS、JS.&lt;&#x2F;li&gt;
+&lt;li&gt;IE後來又推出 almost standards mode (!!??), 主要會影響圖片的呈現.&lt;&#x2F;li&gt;
+&lt;li&gt;如果檔案開頭沒任何doctype, 則瀏覽器預設開啟quirks mode.&lt;&#x2F;li&gt;
+&lt;li&gt;MDN有個連結, 提供很完整的doctype對應的模式  &lt;a href&#x3D;&quot;https:&#x2F;&#x2F;hsivonen.fi&#x2F;doctype&#x2F;&quot;&gt;https:&#x2F;&#x2F;hsivonen.fi&#x2F;doctype&#x2F;&lt;&#x2F;a&gt; , 而現行瀏覽器最常用的 standards mode &lt;!DOCTYPE html&gt; 是 HTML5.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt; &lt;&#x2F;p&gt;
+&lt;h2 id&#x3D;&quot;1-4-Element&quot;&gt;&lt;a href&#x3D;&quot;#1-4-Element&quot; class&#x3D;&quot;headerlink&quot; title&#x3D;&quot;1.4  Element&quot;&gt;&lt;&#x2F;a&gt;1.4 &lt;noscript&gt; Element&lt;&#x2F;h2&gt;&lt;ul&gt;
+&lt;li&gt;當瀏覽器不能使用JS時, 在&lt;noscript&gt;裡的非JS內容會被呈現.&lt;&#x2F;li&gt;
+&lt;li&gt;不能使用的條件&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;瀏覽器不支援JS&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;p&gt;瀏覽器支援JS但設定檔將它失效&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;ul&gt;
+&lt;li&gt;如果瀏覽器正常能使用JS, 則&lt;noscript&gt;的內容不會呈現&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h2 id&#x3D;&quot;2-參考資料&quot;&gt;&lt;a href&#x3D;&quot;#2-參考資料&quot; class&#x3D;&quot;headerlink&quot; title&#x3D;&quot;2. 參考資料&quot;&gt;&lt;&#x2F;a&gt;2. 參考資料&lt;&#x2F;h2&gt;&lt;ol&gt;
+&lt;li&gt;Professional JavaScript for Web Developers 4th Edition, Chapter 2 : Javascript In HTML, Matt Frisbie.&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-3-Asynchronous-Scripts"><span class="nav-number">1.1.</span> <span class="nav-text">1.1.3 Asynchronous Scripts</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-Element"><span class="nav-number">2.</span> <span class="nav-text"></span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">208</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">49</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="簡單工廠模式 Simple Factory Pattern 的設計模式介紹 1. 案例需求本篇以遊戲設計為例。有一種強化系統－附魔，可以將不同的能力嵌在武器上，使角色提升戰鬥能力。　　有三個可附魔的能力，分別是ATK(攻擊力)、HP(血量)與Speed(攻擊速度)。附魔的機制是依照機率給定能力的數值，如下列：  HP：50% 提升 30、30%提升50、20%提升100 Speed：50% 提升">
+<meta property="og:type" content="article">
+<meta property="og:title" content="簡單工廠模式 Simple Factory Pattern">
+<meta property="og:url" content="http://example.com/2018/02/17/design-pattern-simple-factory/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="簡單工廠模式 Simple Factory Pattern 的設計模式介紹 1. 案例需求本篇以遊戲設計為例。有一種強化系統－附魔，可以將不同的能力嵌在武器上，使角色提升戰鬥能力。　　有三個可附魔的能力，分別是ATK(攻擊力)、HP(血量)與Speed(攻擊速度)。附魔的機制是依照機率給定能力的數值，如下列：  HP：50% 提升 30、30%提升50、20%提升100 Speed：50% 提升">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://geekcodeparadise.com/wp-content/uploads/2018/02/SimpleFactory.png">
+<meta property="article:published_time" content="2018-02-16T16:09:00.000Z">
+<meta property="article:modified_time" content="2023-11-19T07:47:25.506Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://geekcodeparadise.com/wp-content/uploads/2018/02/SimpleFactory.png">
+
+<link rel="canonical" href="http://example.com/2018/02/17/design-pattern-simple-factory/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>簡單工廠模式 Simple Factory Pattern | Hexo</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Hexo</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2018/02/17/design-pattern-simple-factory/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          簡單工廠模式 Simple Factory Pattern
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2018-02-17 00:09:00" itemprop="dateCreated datePublished" datetime="2018-02-17T00:09:00+08:00">2018-02-17</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-11-19 15:47:25" itemprop="dateModified" datetime="2023-11-19T15:47:25+08:00">2023-11-19</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Design-Pattern/" itemprop="url" rel="index"><span itemprop="name">Design Pattern</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/OOP/" itemprop="url" rel="index"><span itemprop="name">OOP</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>簡單工廠模式 Simple Factory Pattern 的設計模式介紹</p>
+<h4 id="1-案例需求"><a href="#1-案例需求" class="headerlink" title="1. 案例需求"></a>1. 案例需求</h4><p>本篇以遊戲設計為例。有一種強化系統－附魔，可以將不同的能力嵌在武器上，使角色提升戰鬥能力。<br>　　有三個可附魔的能力，分別是ATK(攻擊力)、HP(血量)與Speed(攻擊速度)。附魔的機制是依照機率給定能力的數值，如下列：</p>
+<ul>
+<li>HP：50% 提升 30、30%提升50、20%提升100</li>
+<li>Speed：50% 提升 1、30%提升2、20%提升3</li>
+<li>ATK：50% 提升 3、30%提升5、20%提升10</li>
+</ul>
+<p>　　介面需輸入武器名稱和欲附魔的能力名稱，使用上述附魔的機制後，顯示該武器附魔的能力與數值。</p>
+<h4 id="2-程式設計"><a href="#2-程式設計" class="headerlink" title="2. 程式設計"></a>2. 程式設計</h4><h5 id="2-1-第一版（錯誤）"><a href="#2-1-第一版（錯誤）" class="headerlink" title="2.1 第一版（錯誤）"></a>2.1 第一版（錯誤）</h5><p>依照前述的需求，可立刻寫出程式碼，如下：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line">Console.WriteLine(<span class="string">&quot;請輸入武器名稱&quot;</span>);</span><br><span class="line"><span class="built_in">string</span> weapon = Console.ReadLine();</span><br><span class="line">Console.WriteLine(<span class="string">&quot;請輸入附魔功能&quot;</span>);</span><br><span class="line"><span class="built_in">string</span> enchant = Console.ReadLine();</span><br><span class="line"><span class="built_in">string</span> result = <span class="built_in">string</span>.Empty;</span><br><span class="line">Random rnd = <span class="keyword">new</span> Random();</span><br><span class="line"><span class="keyword">if</span> (enchant == <span class="string">&quot;ATK&quot;</span>)</span><br><span class="line">&#123;</span><br><span class="line">    result = <span class="string">&quot;武器: &quot;</span> + weapon + <span class="string">&quot;, 攻擊力提升: &quot;</span>;</span><br><span class="line">    <span class="built_in">int</span> rndResult = rnd.Next(<span class="number">0</span>, <span class="number">10</span>);</span><br><span class="line">    <span class="keyword">if</span> (rndResult &lt;= <span class="number">4</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        result += <span class="number">3</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (rndResult &lt;= <span class="number">7</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        result += <span class="number">5</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        result += <span class="number">10</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span> <span class="keyword">if</span>(enchant == <span class="string">&quot;Speed&quot;</span>)</span><br><span class="line">&#123;</span><br><span class="line">    result = <span class="string">&quot;武器: &quot;</span> + weapon + <span class="string">&quot;, 攻擊速度提升: &quot;</span>;</span><br><span class="line">    <span class="built_in">int</span> rndResult = rnd.Next(<span class="number">0</span>, <span class="number">10</span>);</span><br><span class="line">    <span class="keyword">if</span> (rndResult &lt;= <span class="number">4</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        result += <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (rndResult &lt;= <span class="number">7</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        result += <span class="number">2</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        result += <span class="number">3</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span> <span class="keyword">if</span>(enchant == <span class="string">&quot;HP&quot;</span>)</span><br><span class="line">&#123;</span><br><span class="line">    result = <span class="string">&quot;武器: &quot;</span> + weapon + <span class="string">&quot;, 血量提升: &quot;</span>;</span><br><span class="line">    <span class="built_in">int</span> rndResult = rnd.Next(<span class="number">0</span>, <span class="number">10</span>);</span><br><span class="line">    <span class="keyword">if</span> (rndResult &lt;= <span class="number">4</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        result += <span class="number">30</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (rndResult &lt;= <span class="number">7</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        result += <span class="number">50</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        result += <span class="number">100</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">Console.WriteLine(result);</span><br><span class="line">Console.ReadLine();</span><br></pre></td></tr></table></figure>
+
+<p>　　第一版的程式，確實達到需求所要的功能，但有些須改進的地方。使用者介面和附魔機制是可分開的功能邏輯，一個是介面邏輯、另一個是商業邏輯，而第一版的程式都把功能放在介面邏輯。<br>　　分開的話，可以降低耦合度，達到好維護與延展。而降低耦合度的方法，可透過物件導向的封裝、繼承與多型。所以，來撰寫第二版程式碼。</p>
+<h5 id="2-2-第二版（錯誤）"><a href="#2-2-第二版（錯誤）" class="headerlink" title="2.2 第二版（錯誤）"></a>2.2 第二版（錯誤）</h5><p>　　將商業邏輯獨立成一個類別Enchant：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">EnchantBad</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="built_in">string</span> <span class="title">GetResult</span>(<span class="params"><span class="built_in">string</span> weapon, <span class="built_in">string</span> enchant</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">string</span> result = <span class="built_in">string</span>.Empty;</span><br><span class="line">        Random rnd = <span class="keyword">new</span> Random();</span><br><span class="line">        <span class="keyword">if</span> (enchant == <span class="string">&quot;ATK&quot;</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            result = <span class="string">&quot;武器: &quot;</span> + weapon + <span class="string">&quot;, 攻擊力提升: &quot;</span>;</span><br><span class="line">            <span class="built_in">int</span> rndResult = rnd.Next(<span class="number">0</span>, <span class="number">10</span>);</span><br><span class="line">            <span class="keyword">if</span> (rndResult &lt;= <span class="number">4</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                result += <span class="number">3</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span> (rndResult &lt;= <span class="number">7</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                result += <span class="number">5</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">            &#123;</span><br><span class="line">                result += <span class="number">10</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (enchant == <span class="string">&quot;Speed&quot;</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            result = <span class="string">&quot;武器: &quot;</span> + weapon + <span class="string">&quot;, 攻擊速度提升: &quot;</span>;</span><br><span class="line">            <span class="built_in">int</span> rndResult = rnd.Next(<span class="number">0</span>, <span class="number">10</span>);</span><br><span class="line">            <span class="keyword">if</span> (rndResult &lt;= <span class="number">4</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                result += <span class="number">1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span> (rndResult &lt;= <span class="number">7</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                result += <span class="number">2</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">            &#123;</span><br><span class="line">                result += <span class="number">3</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (enchant == <span class="string">&quot;HP&quot;</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            result = <span class="string">&quot;武器: &quot;</span> + weapon + <span class="string">&quot;, 血量提升: &quot;</span>;</span><br><span class="line">            <span class="built_in">int</span> rndResult = rnd.Next(<span class="number">0</span>, <span class="number">10</span>);</span><br><span class="line">            <span class="keyword">if</span> (rndResult &lt;= <span class="number">4</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                result += <span class="number">30</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span> (rndResult &lt;= <span class="number">7</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                result += <span class="number">50</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">            &#123;</span><br><span class="line">                result += <span class="number">100</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　使用者介面：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Console.WriteLine(<span class="string">&quot;請輸入武器名稱&quot;</span>);</span><br><span class="line"><span class="built_in">string</span> weapon = Console.ReadLine();</span><br><span class="line">Console.WriteLine(<span class="string">&quot;請輸入附魔功能&quot;</span>);</span><br><span class="line"><span class="built_in">string</span> enchant = Console.ReadLine();</span><br><span class="line"><span class="built_in">string</span> result = EnchantBad.GetResult(weapon, enchant);</span><br><span class="line">Console.WriteLine(result);</span><br><span class="line">Console.ReadLine();</span><br></pre></td></tr></table></figure>
+
+<p>　　很明顯的，介面和商業邏輯已切割，未來若使用者介面擴充到Windows Form、Web、WPF等平台，都只需要呼叫邏輯類別，很好擴充。<br>　　但是，還是有些缺點。假如未來要新增其他的附魔功能，都必須更改Enchant類別，每次都要重新編譯，甚至不小心改錯原本的功能，更是有DE不完的BUG。<br>　　所以，將每個附魔功能再拆出來，透過繼承與多型可達成。</p>
+<h5 id="2-3-第三版（使用Simple-Factory-Pattern）"><a href="#2-3-第三版（使用Simple-Factory-Pattern）" class="headerlink" title="2.3 第三版（使用Simple Factory Pattern）"></a>2.3 第三版（使用Simple Factory Pattern）</h5><p>　　抽象類別Enchant：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">class</span> <span class="title">Enchant</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="built_in">string</span> weapon = <span class="built_in">string</span>.Empty;</span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">string</span> Weapon</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">get</span> &#123; <span class="keyword">return</span> weapon; &#125;</span><br><span class="line">        <span class="keyword">set</span> &#123; weapon = <span class="keyword">value</span>; &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">virtual</span> <span class="built_in">string</span> <span class="title">GetResult</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">string</span> result = <span class="built_in">string</span>.Empty;</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　子類別EnchantATK、EnchantSpeed和EnchantHP：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">EnchantATK</span> : <span class="title">Enchant</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">override</span> <span class="built_in">string</span> <span class="title">GetResult</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">string</span> result = <span class="string">&quot;武器: &quot;</span> + <span class="keyword">this</span>.Weapon + <span class="string">&quot;, 攻擊力提升: &quot;</span>;</span><br><span class="line">        Random rnd = <span class="keyword">new</span> Random();</span><br><span class="line">        <span class="built_in">int</span> rndResult = rnd.Next(<span class="number">0</span>, <span class="number">10</span>);</span><br><span class="line">        <span class="keyword">if</span>(rndResult &lt;= <span class="number">4</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            result += <span class="number">3</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span>(rndResult &lt;= <span class="number">7</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            result += <span class="number">5</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            result += <span class="number">10</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">EnchantSpeed</span> : <span class="title">Enchant</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">override</span> <span class="built_in">string</span> <span class="title">GetResult</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">string</span> result = <span class="string">&quot;武器: &quot;</span> + <span class="keyword">this</span>.Weapon + <span class="string">&quot;, 攻擊速度提升: &quot;</span>;</span><br><span class="line">        Random rnd = <span class="keyword">new</span> Random();</span><br><span class="line">        <span class="built_in">int</span> rndResult = rnd.Next(<span class="number">0</span>, <span class="number">10</span>);</span><br><span class="line">        <span class="keyword">if</span> (rndResult &lt;= <span class="number">4</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            result += <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (rndResult &lt;= <span class="number">7</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            result += <span class="number">2</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            result += <span class="number">3</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">EnchantHP</span> : <span class="title">Enchant</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">override</span> <span class="built_in">string</span> <span class="title">GetResult</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">string</span> result = <span class="string">&quot;武器: &quot;</span> + <span class="keyword">this</span>.Weapon + <span class="string">&quot;, 血量提升: &quot;</span>;</span><br><span class="line">        Random rnd = <span class="keyword">new</span> Random();</span><br><span class="line">        <span class="built_in">int</span> rndResult = rnd.Next(<span class="number">0</span>, <span class="number">10</span>);</span><br><span class="line">        <span class="keyword">if</span> (rndResult &lt;= <span class="number">4</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            result += <span class="number">30</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (rndResult &lt;= <span class="number">7</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            result += <span class="number">50</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            result += <span class="number">100</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　前述有三者EnchantATK、EnchantSpeed和EnchantHP了，但該何時實例化哪一個類別呢？未來若又新增附魔功能時，又要怎實例化？<br>　　使用簡單工廠模式，用一個單獨的類別來生產所需實例化的物件，並利用多型的特性，回傳父類別物件且呼叫有被實作的父類別方法。<br>　　簡單工廠類別EnchantFactory：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">EnchantFactory</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Enchant <span class="title">createEnchant</span>(<span class="params"><span class="built_in">string</span> enchant</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        Enchant enct = <span class="literal">null</span>;</span><br><span class="line">        <span class="keyword">switch</span> (enchant)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">case</span> <span class="string">&quot;ATK&quot;</span>:</span><br><span class="line">                enct = <span class="keyword">new</span> EnchantATK();</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">case</span> <span class="string">&quot;Speed&quot;</span>:</span><br><span class="line">                enct = <span class="keyword">new</span> EnchantSpeed();</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">case</span> <span class="string">&quot;HP&quot;</span>:</span><br><span class="line">                enct = <span class="keyword">new</span> EnchantHP();</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> enct;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　使用者介面：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Console.WriteLine(<span class="string">&quot;請輸入武器名稱&quot;</span>);</span><br><span class="line"><span class="built_in">string</span> weapon = Console.ReadLine();</span><br><span class="line">Console.WriteLine(<span class="string">&quot;請輸入附魔功能&quot;</span>);</span><br><span class="line"><span class="built_in">string</span> enchantName = Console.ReadLine();</span><br><span class="line">Enchant enchant;</span><br><span class="line">enchant = EnchantFactory.createEnchant(enchantName);</span><br><span class="line">enchant.Weapon = weapon;</span><br><span class="line">Console.WriteLine(enchant.GetResult());</span><br><span class="line">Console.ReadKey();</span><br></pre></td></tr></table></figure>
+
+<p>　　畫出此簡單工廠模式的UML類別圖，如下：</p>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2018/02/SimpleFactory-1.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2018/02/SimpleFactory.png" alt="簡單工廠模式 Simple Factory Pattern 案例 UML Class"></a></p>
+<h4 id="3-心得"><a href="#3-心得" class="headerlink" title="3.心得"></a>3.心得</h4><p>這篇文章主要是參考&lt;&lt;大話設計模式&gt;&gt;裡的第一章”程式碼無錯就是優？—簡單工廠模式” 章節，是第一個學到的Design Pattern。之前學的物件導向三寶：封裝、繼承與多型，在此Pattern都有使用到，有稍微踏進物件導向的世界。之後還很多Pattern等著去學阿～～～</p>
+<h4 id="參考文獻"><a href="#參考文獻" class="headerlink" title="參考文獻"></a>參考文獻</h4><ol>
+<li><a target="_blank" rel="noopener" href="https://amzn.to/3LOwYlp">程杰 大話設計模式 第01章｜程式碼無錯就是優？—簡單工廠模式</a></li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2018/02/11/design-pattern-uml-class-diagram/" rel="prev" title="UML Class Diagram">
+      <i class="fa fa-chevron-left"></i> UML Class Diagram
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2018/02/19/design-pattern-strategy/" rel="next" title="策略模式 Strategy Pattern">
+      策略模式 Strategy Pattern <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E6%A1%88%E4%BE%8B%E9%9C%80%E6%B1%82"><span class="nav-number">1.</span> <span class="nav-text">1. 案例需求</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E7%A8%8B%E5%BC%8F%E8%A8%AD%E8%A8%88"><span class="nav-number">2.</span> <span class="nav-text">2. 程式設計</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#2-1-%E7%AC%AC%E4%B8%80%E7%89%88%EF%BC%88%E9%8C%AF%E8%AA%A4%EF%BC%89"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 第一版（錯誤）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-2-%E7%AC%AC%E4%BA%8C%E7%89%88%EF%BC%88%E9%8C%AF%E8%AA%A4%EF%BC%89"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 第二版（錯誤）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-3-%E7%AC%AC%E4%B8%89%E7%89%88%EF%BC%88%E4%BD%BF%E7%94%A8Simple-Factory-Pattern%EF%BC%89"><span class="nav-number">2.3.</span> <span class="nav-text">2.3 第三版（使用Simple Factory Pattern）</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-%E5%BF%83%E5%BE%97"><span class="nav-number">3.</span> <span class="nav-text">3.心得</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%83%E8%80%83%E6%96%87%E7%8D%BB"><span class="nav-number">4.</span> <span class="nav-text">參考文獻</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">208</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">49</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

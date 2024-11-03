@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="1. 建立共通的Infrastructure1.1 新增InternalServerErrorObjectResult類別在CartApi專案新增資料夾Infrastructure&#x2F;ActionResults，並新增InternalServerErrorObjectResult類別且繼承ObjectResult，此類別是用在統一回傳Status Code 500：     &#96;    us">
+<meta property="og:type" content="article">
+<meta property="og:title" content="一袋.NET要扛幾樓？打造容器化的ASP.NET Core網站！系列文章 - (19) 建立購物車系統 - 2">
+<meta property="og:url" content="http://example.com/2020/10/04/%E4%B8%80%E8%A2%8B-net%E8%A6%81%E6%89%9B%E5%B9%BE%E6%A8%93%EF%BC%9F%E6%89%93%E9%80%A0%E5%AE%B9%E5%99%A8%E5%8C%96%E7%9A%84asp-net-core%E7%B6%B2%E7%AB%99%EF%BC%81%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0-10/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="1. 建立共通的Infrastructure1.1 新增InternalServerErrorObjectResult類別在CartApi專案新增資料夾Infrastructure&#x2F;ActionResults，並新增InternalServerErrorObjectResult類別且繼承ObjectResult，此類別是用在統一回傳Status Code 500：     &#96;    us">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-10-04T15:37:00.000Z">
+<meta property="article:modified_time" content="2023-11-19T07:47:25.911Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://example.com/2020/10/04/%E4%B8%80%E8%A2%8B-net%E8%A6%81%E6%89%9B%E5%B9%BE%E6%A8%93%EF%BC%9F%E6%89%93%E9%80%A0%E5%AE%B9%E5%99%A8%E5%8C%96%E7%9A%84asp-net-core%E7%B6%B2%E7%AB%99%EF%BC%81%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0-10/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>一袋.NET要扛幾樓？打造容器化的ASP.NET Core網站！系列文章 - (19) 建立購物車系統 - 2 | Hexo</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Hexo</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/10/04/%E4%B8%80%E8%A2%8B-net%E8%A6%81%E6%89%9B%E5%B9%BE%E6%A8%93%EF%BC%9F%E6%89%93%E9%80%A0%E5%AE%B9%E5%99%A8%E5%8C%96%E7%9A%84asp-net-core%E7%B6%B2%E7%AB%99%EF%BC%81%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0-10/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          一袋.NET要扛幾樓？打造容器化的ASP.NET Core網站！系列文章 - (19) 建立購物車系統 - 2
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-10-04 23:37:00" itemprop="dateCreated datePublished" datetime="2020-10-04T23:37:00+08:00">2020-10-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-11-19 15:47:25" itemprop="dateModified" datetime="2023-11-19T15:47:25+08:00">2023-11-19</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ASP-NET-Core/" itemprop="url" rel="index"><span itemprop="name">ASP.NET Core</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="1-建立共通的Infrastructure"><a href="#1-建立共通的Infrastructure" class="headerlink" title="1. 建立共通的Infrastructure"></a>1. 建立共通的Infrastructure</h1><h2 id="1-1-新增InternalServerErrorObjectResult類別"><a href="#1-1-新增InternalServerErrorObjectResult類別" class="headerlink" title="1.1 新增InternalServerErrorObjectResult類別"></a>1.1 新增InternalServerErrorObjectResult類別</h2><p>在CartApi專案新增資料夾Infrastructure&#x2F;ActionResults，並新增InternalServerErrorObjectResult類別且繼承ObjectResult，此類別是用在統一回傳Status Code 500：</p>
+<pre><code>    `  
+</code></pre>
+<p>using Microsoft.AspNetCore.Http;<br>using Microsoft.AspNetCore.Mvc;  </p>
+<p>namespace CartApi.Infrastructure.ActionResults<br>{<br>    public class InternalServerErrorObjectResult : ObjectResult<br>    {<br>        public InternalServerErrorObjectResult(object error) : base(error)<br>        {<br>            StatusCode &#x3D; StatusCodes.Status500InternalServerError;<br>        }<br>    }<br>}<br>&#96;  </p>
+<h1 id=""><a href="#" class="headerlink" title=""></a></h1><h2 id="1-2-新增CartDomainException類別"><a href="#1-2-新增CartDomainException類別" class="headerlink" title="1.2 新增CartDomainException類別"></a>1.2 新增CartDomainException類別</h2><p>在CartApi專案新增資料夾Infrastructure&#x2F;Exceptions，並新增CartDomainException類別且繼承Exception，當一些購物車服務有出問題，可以拋此異常：</p>
+<pre><code>  `  
+</code></pre>
+<p>using System;  </p>
+<p>namespace CartApi.Infrastructure.Exceptions<br>{<br>    public class CartDomainException : Exception<br>    {<br>        public CartDomainException()<br>        {<br>        }  </p>
+<pre><code>    public CartDomainException(string message) : base(message)  
+    &#123;  
+
+    &#125;  
+
+    public CartDomainException(string message, Exception innerException) : base(message, innerException)  
+    &#123;  
+
+    &#125;  
+&#125;  
+</code></pre>
+<p>}<br>&#96;  </p>
+<h1 id="-1"><a href="#-1" class="headerlink" title=""></a></h1><h2 id="1-3-新增HttpGlobalExceptionFilter類別"><a href="#1-3-新增HttpGlobalExceptionFilter類別" class="headerlink" title="1.3 新增HttpGlobalExceptionFilter類別"></a>1.3 新增HttpGlobalExceptionFilter類別</h2><p>在CartApi專案新增資料夾Infrastructure&#x2F;Filters，並新增HttpGlobalExceptionFilter類別且實作IExceptionFilter，當Controller內部有功能異常時，依此Filter客製化要回傳的HTTP內容：</p>
+<pre><code>  `  
+</code></pre>
+<p>using CartApi.Infrastructure.ActionResults;<br>using CartApi.Infrastructure.Exceptions;<br>using Microsoft.AspNetCore.Hosting;<br>using Microsoft.AspNetCore.Mvc;<br>using Microsoft.AspNetCore.Mvc.Filters;<br>using Microsoft.Extensions.Hosting;<br>using Microsoft.Extensions.Logging;<br>using System.Net;  </p>
+<p>namespace CartApi.Infrastructure.Filters<br>{<br>    public class HttpGlobalExceptionFilter : IExceptionFilter<br>    {<br>        private readonly IWebHostEnvironment env;<br>        private readonly ILogger<HttpGlobalExceptionFilter> logger;  </p>
+<pre><code>    public HttpGlobalExceptionFilter(IWebHostEnvironment env, ILogger&lt;HttpGlobalExceptionFilter&gt; logger)  
+    &#123;  
+        this.env = env;  
+        this.logger = logger;  
+    &#125;  
+
+    public void OnException(ExceptionContext context)  
+    &#123;  
+        logger.LogError(new EventId(context.Exception.HResult),  
+            context.Exception,  
+            context.Exception.Message);  
+
+        if(context.Exception.GetType() == typeof(CartDomainException))  
+        &#123;  
+            var json = new JsonErrorResponse  
+            &#123;  
+                Messages = new[] &#123; context.Exception.Message &#125;  
+            &#125;;  
+
+            context.Result = new BadRequestObjectResult(json);  
+            context.HttpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;  
+        &#125;  
+        else  
+        &#123;  
+            var json = new JsonErrorResponse  
+            &#123;  
+                Messages = new[] &#123; &quot;An error occured. Try it again&quot; &#125;  
+            &#125;;  
+
+            if (env.IsDevelopment())  
+            &#123;  
+                json.DeveloperMessage = context.Exception;  
+            &#125;  
+
+            context.Result = new InternalServerErrorObjectResult(json);  
+            context.HttpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;  
+        &#125;  
+        context.ExceptionHandled = true;  
+    &#125;  
+
+    private class JsonErrorResponse  
+    &#123;  
+        public string[] Messages &#123; get; set; &#125;  
+        public object DeveloperMessage &#123; get; set; &#125;  
+    &#125;  
+&#125;  
+</code></pre>
+<p>}  </p>
+<p>&#96;  </p>
+<h1 id="2-修改appSettings-json"><a href="#2-修改appSettings-json" class="headerlink" title="2. 修改appSettings.json"></a>2. 修改appSettings.json</h1><p>在appSettings.json，新增Redis的連線資訊，由於本機有安裝過的Redis，於是配置它為6377 port，對應到Docker的配置仍是預設的6379 port：</p>
+<ul>
+<li>“ConnectionString”: “127.0.0.1:6377”,</li>
+</ul>
+<h1 id="3-新增CartSettings類別"><a href="#3-新增CartSettings類別" class="headerlink" title="3. 新增CartSettings類別"></a>3. 新增CartSettings類別</h1><p>在CartApi根目錄新增CartSettings.cs類別，只有一個ConnectionString屬性，是用來讀設定檔：</p>
+<pre><code>  `  
+</code></pre>
+<p>namespace CartApi<br>{<br>    public class CartSettings<br>    {<br>        public string ConnectionString { get; set; }<br>    }<br>}  </p>
+<p>&#96;  </p>
+<p>-—————————————————-</p>
+<p>之後再來寫Controller和註冊Startup的方法</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/10/04/leetcode-217-contains-duplicate/" rel="prev" title="LeetCode 217 Contains Duplicate">
+      <i class="fa fa-chevron-left"></i> LeetCode 217 Contains Duplicate
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/10/05/leetcode-350-intersection-of-two-arrays-ii/" rel="next" title="LeetCode 350 Intersection of Two Arrays II">
+      LeetCode 350 Intersection of Two Arrays II <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E5%BB%BA%E7%AB%8B%E5%85%B1%E9%80%9A%E7%9A%84Infrastructure"><span class="nav-number">1.</span> <span class="nav-text">1. 建立共通的Infrastructure</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-%E6%96%B0%E5%A2%9EInternalServerErrorObjectResult%E9%A1%9E%E5%88%A5"><span class="nav-number">1.1.</span> <span class="nav-text">1.1 新增InternalServerErrorObjectResult類別</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">2.</span> <span class="nav-text"></span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-%E6%96%B0%E5%A2%9ECartDomainException%E9%A1%9E%E5%88%A5"><span class="nav-number">2.1.</span> <span class="nav-text">1.2 新增CartDomainException類別</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#-1"><span class="nav-number">3.</span> <span class="nav-text"></span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-3-%E6%96%B0%E5%A2%9EHttpGlobalExceptionFilter%E9%A1%9E%E5%88%A5"><span class="nav-number">3.1.</span> <span class="nav-text">1.3 新增HttpGlobalExceptionFilter類別</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E4%BF%AE%E6%94%B9appSettings-json"><span class="nav-number">4.</span> <span class="nav-text">2. 修改appSettings.json</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-%E6%96%B0%E5%A2%9ECartSettings%E9%A1%9E%E5%88%A5"><span class="nav-number">5.</span> <span class="nav-text">3. 新增CartSettings類別</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">208</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">49</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

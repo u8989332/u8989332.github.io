@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Threading in C# 前言這陣子換了新工作環境，公司使用不少C# Thread相關的技術，而知名書籍C# in a Nutshell的作者Joseph Albahari，將C# Threading 的技術教學都免費公開，因此會閱讀他的教學文來撰寫讀書筆記，希望在工作專案或Side Project都有幫助到。 作者有一些程式碼並非完整，我會盡量寫出實際可執行的範例，且有些功能Net Cor">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Threading in C# - GETTING STARTED">
+<meta property="og:url" content="http://example.com/2021/12/05/threading-in-csharp-part-1-getting-started/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Threading in C# 前言這陣子換了新工作環境，公司使用不少C# Thread相關的技術，而知名書籍C# in a Nutshell的作者Joseph Albahari，將C# Threading 的技術教學都免費公開，因此會閱讀他的教學文來撰寫讀書筆記，希望在工作專案或Side Project都有幫助到。 作者有一些程式碼並非完整，我會盡量寫出實際可執行的範例，且有些功能Net Cor">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://geekcodeparadise.com/wp-content/uploads/2021/12/NewThread.png">
+<meta property="article:published_time" content="2021-12-05T02:45:00.000Z">
+<meta property="article:modified_time" content="2023-11-19T07:47:25.999Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://geekcodeparadise.com/wp-content/uploads/2021/12/NewThread.png">
+
+<link rel="canonical" href="http://example.com/2021/12/05/threading-in-csharp-part-1-getting-started/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>Threading in C# - GETTING STARTED | Hexo</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Hexo</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/12/05/threading-in-csharp-part-1-getting-started/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Threading in C# - GETTING STARTED
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-12-05 10:45:00" itemprop="dateCreated datePublished" datetime="2021-12-05T10:45:00+08:00">2021-12-05</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-11-19 15:47:25" itemprop="dateModified" datetime="2023-11-19T15:47:25+08:00">2023-11-19</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C#</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Thread/" itemprop="url" rel="index"><span itemprop="name">Thread</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%AE%80%E6%9B%B8%E7%AD%86%E8%A8%98/" itemprop="url" rel="index"><span itemprop="name">讀書筆記</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="Threading-in-C-前言"><a href="#Threading-in-C-前言" class="headerlink" title="Threading in C# 前言"></a>Threading in C# 前言</h3><p>這陣子換了新工作環境，公司使用不少C# Thread相關的技術，而知名書籍C# in a Nutshell的作者Joseph Albahari，將C# Threading 的技術教學都免費公開，因此會閱讀他的教學文來撰寫讀書筆記，希望在工作專案或Side Project都有幫助到。</p>
+<p>作者有一些程式碼並非完整，我會盡量寫出實際可執行的範例，且有些功能Net Core以後不支援，也會加上註明。以下正式開始。</p>
+<h3 id="Introduction-and-Concepts"><a href="#Introduction-and-Concepts" class="headerlink" title="Introduction and Concepts"></a>Introduction and Concepts</h3><ul>
+<li>Thread是獨立的執行路徑, 也能同時和其他Thread工作</li>
+<li>C# Client程式(Console, wpf, winform等), CLR都會起單一的Main thread執行</li>
+</ul>
+<p><img src="https://geekcodeparadise.com/wp-content/uploads/2021/12/NewThread.png" alt="Multi-Threading"></p>
+<p>Multi-Threading in C# (Picture source: <a target="_blank" rel="noopener" href="http://www.albahari.com/threading/">Threading in C#<br>Joseph Albahari</a>)</p>
+<ul>
+<li>被賦予工作的Thread, 只要那工作(function)完成, 該Thread也就結束,也無法重新工作</li>
+<li>每個Thread會分配到記憶體獨立的Stack區塊, 所以function的變數能有地方儲存</li>
+<li>Thread如果參考到同一物件, 該物件的資料會共享. 如果用static的資料也一樣是共享</li>
+<li>但資料共享容易造成_<strong>Thread-Safe</strong>_的問題, 要特別處理, 像下面範例, 因為兩個取到done的值都是false, 所以都會執行</li>
+</ul>
+<p>using System;<br>using System.Threading;</p>
+<p>class ThreadTestWithSharedData<br>{<br>    private bool done &#x3D; false;<br>    static void Main()<br>    {<br>        ThreadTestWithSharedData test &#x3D; new ThreadTestWithSharedData();<br>        Thread t &#x3D; new Thread(test.GoMaybeNotSafe);<br>        t.Start();<br>        test.GoMaybeNotSafe();<br>        Console.Read();<br>    }</p>
+<pre><code>public void Go()
+&#123;
+    if(!done)&#123;
+        done = true;
+        Console.WriteLine(&quot;done&quot;);
+    &#125;
+&#125;
+
+public void GoMaybeNotSafe()
+&#123;
+    if(!done)&#123;
+        Console.WriteLine(&quot;done&quot;);
+        done = true;
+    &#125;
+&#125;
+</code></pre>
+<p>}</p>
+<ul>
+<li>使用Exclusive lock, 只允許一個thread運算</li>
+<li>當Thread被Blocked, 不會消耗CPU資源</li>
+</ul>
+<h4 id="Join-and-Sleep"><a href="#Join-and-Sleep" class="headerlink" title="Join and Sleep"></a>Join and Sleep</h4><ul>
+<li>使用Join可等待Thread完成</li>
+<li>使用Sleep讓當前Thread暫停指定的時間</li>
+<li>不管是Join或Sleep, 都是_<strong>Blocked</strong>_</li>
+<li>Thread.Sleep(0) 將目前Thread的運算時間放其, 將CPU時間交給別的Thread, 等同功能是 Thread.Yield()</li>
+<li>用Sleep(0)或Yield, 可以用來找thread safety的問題, 假如把Yield填入程式任何地方且出現問題, 代表這程式碼有Bug</li>
+</ul>
+<h4 id="How-Threading-Works"><a href="#How-Threading-Works" class="headerlink" title="How Threading Works"></a>How Threading Works</h4><ul>
+<li>在CLR裡有個Thread Scheduler, 代表作業系統, 由它Thread的執行時間</li>
+<li>單一處理器的系統, 切的time slice時間比switch context的時間還長</li>
+<li>多處理器的系統, 切的time slice有concurrency, 可以同時執行多個thread</li>
+<li>Thread如果被preempted(搶占), 代表它是被interrupted, 比如time-slicing</li>
+</ul>
+<h4 id="Threads-vs-Processes"><a href="#Threads-vs-Processes" class="headerlink" title="Threads vs Processes"></a>Threads vs Processes</h4><ul>
+<li>多個Thread可以執行在1個Process</li>
+<li>Process之間是互相隔離</li>
+<li>Thread之間互相分享Heap記憶體的資料</li>
+</ul>
+<h4 id="Threading’s-Uses-and-Misuses-誤用"><a href="#Threading’s-Uses-and-Misuses-誤用" class="headerlink" title="Threading’s Uses and Misuses(誤用)"></a>Threading’s Uses and Misuses(誤用)</h4><ul>
+<li>Maintaining a responsive user interface: 其他的Worker Thread可背後執行消耗的任務, 而Main(UI) Thread與User操作互動</li>
+<li>Making efficient use of an otherwise blocked CPU:</li>
+<li>Parallel programming: 在多核心&#x2F;多處理器的環境, 多個執行緒能平行分擔工作</li>
+<li>Speculative(投機性) execution: 有些任務可以用多個演算法同時運算, 最終結果取最快運算完的.</li>
+<li>Allowing requests to be processed simultaneously: .NET的Server功能(WCF、ASP.NET等) 收到Request, 會自動建立多執行緒來處理. Client也是可同樣的作法.</li>
+<li>強調多執行緒之間共用資料時, 都會有Bug的產生. 建議把多執行緒的邏輯能封裝在獨立的library, 也比較好測試</li>
+<li>有些功能用太多執行緒不見得更快, 比如Disk IO, 只要幾個thread讀取 比 10幾個thread還快</li>
+</ul>
+<h3 id="Creating-and-Starting-Threads"><a href="#Creating-and-Starting-Threads" class="headerlink" title="Creating and Starting Threads"></a>Creating and Starting Threads</h3><ul>
+<li>Thread建立時會帶入委託TheadStart, 但可以省略直接帶functionc或匿名function</li>
+</ul>
+<h4 id="Passing-Data-to-a-Thread"><a href="#Passing-Data-to-a-Thread" class="headerlink" title="Passing Data to a Thread"></a>Passing Data to a Thread</h4><ul>
+<li>可以在Thread.Start(someArgs)代入該function的參數</li>
+<li>也可以用ParameterizedThreadStart, 但是function的參數必須用object, 再另外轉型</li>
+</ul>
+<p><strong>Lambda expressions and captured variables:</strong> 傳參數要注意共用性的問題, 下面的輸出可能是0223557799, 而不是0~9各出現一次, 原因是有時多個Thread對i會存取到一樣的</p>
+<p>for (int i &#x3D; 0; i &lt; 10; i++)<br>  new Thread (() &#x3D;&gt; Console.Write (i)).Start();</p>
+<p>解決Captured variable的方法是指定變數:</p>
+<p>for (int i &#x3D; 0; i &lt; 10; i++)<br>{<br>  int temp &#x3D; i;<br>  new Thread (() &#x3D;&gt; Console.Write (temp)).Start();<br>}</p>
+<h4 id="Naming-Threads"><a href="#Naming-Threads" class="headerlink" title="Naming Threads"></a>Naming Threads</h4><ul>
+<li>可以指定Thread的名字, 比較容易做Debug</li>
+<li>用<a target="_blank" rel="noopener" href="http://thread.currentthread.name/">Thread.CurrentThread.Name</a> &#x3D; XXXX 指定名字</li>
+</ul>
+<h4 id="Foreground-and-Background-Threads"><a href="#Foreground-and-Background-Threads" class="headerlink" title="Foreground and Background Threads"></a>Foreground and Background Threads</h4><ul>
+<li>Thread預設建立是Foreground, 代表它執行完才會讓App結束</li>
+<li>指定Thread.IsBackground &#x3D; true, App終止時並不會理會Background的thread而強制終止</li>
+<li>如果在程式要結束且有finally的background thread, 這thread也會被忽略掉, 解決方法有2</li>
+</ul>
+<ol>
+<li>用Join</li>
+<li>如果是Pooled thread, 可用event wait handler</li>
+</ol>
+<ul>
+<li>如果有程式被任務管理員中止, 所有程式內的thread都會像background的直接中止</li>
+</ul>
+<h4 id="Thread-Priority"><a href="#Thread-Priority" class="headerlink" title="Thread Priority"></a>Thread Priority</h4><ul>
+<li>Priority決定thread的執行時間長度</li>
+<li>小心使用Priority, 否則可能造成對其他thread取資源的starvation</li>
+<li>如果Process的Priority很低, 即使調高Thread的Priority也是會被限制資源</li>
+<li>Process有個RealTime的Priority, 這會幾乎搶佔所有作業系統的資源, 小心使用, 一般用High就好</li>
+<li>如果要做RealTime的應用程式且包含使用者介面, 通常會拆開來, 使用者介面一個程式、後端運算是另一個程式, 彼此溝通用Remoting(WCF, Web Api之類)或memory-mapped files (C# in a Nutshell 有提到!! 沒用過~~)</li>
+</ul>
+<h4 id="Exception-Handling"><a href="#Exception-Handling" class="headerlink" title="Exception Handling"></a>Exception Handling</h4><ul>
+<li>建立Thread的try&#x2F;catch&#x2F;finally的scope, 無法捕捉到thread拋出的exception, 以下範例會直接拋出Exception, 而程式直接中止, 不會進到catch</li>
+</ul>
+<p>using System;<br>using System.Threading;</p>
+<p>class ThreadThrowException<br>{<br>    static void Main(string[] args){<br>        try{<br>            Thread t &#x3D; new Thread(Go);<br>            t.Start();<br>        }<br>        catch(Exception ex){<br>            Console.WriteLine(“Hi i am here” + ex.Message);<br>        }</p>
+<pre><code>    Console.Read();
+&#125;
+
+static void Go()
+&#123;
+    throw new Exception(&quot;Null&quot;);
+&#125;
+</code></pre>
+<p>}</p>
+<ul>
+<li>將try&#x2F;catch寫在被Thread執行的function</li>
+</ul>
+<p>using System;<br>using System.Threading;</p>
+<p>class ThreadThrowException2<br>{<br>    static void Main(string[] args){<br>        Thread t &#x3D; new Thread(Go);<br>        t.Start();</p>
+<pre><code>    Console.Read();
+&#125;
+
+static void Go()
+&#123;
+    try&#123;
+        throw new Exception(&quot;Null&quot;);
+    &#125;
+    catch(Exception ex)&#123;
+        Console.WriteLine(&quot;Hi i am here&quot; + ex.Message);
+    &#125;
+    
+&#125;
+</code></pre>
+<p>}</p>
+<ul>
+<li>Global的異常事件處理(WPF和Winform的Application.DispatcherUnhandledException和 Application.ThreadException), 只有Main UI thread拋出的異常才會處理, 其他Worker thread的異常要自己處理</li>
+<li>AppDomain.CurrentDomain.UnhandledException會被任何異常觸發, 但無法阻止後續程式的中止, 以下範例兩個exception都會被UnhandledException捕捉, 但程式仍直接中止</li>
+</ul>
+<p>using System;<br>using System.Threading;</p>
+<p>class ThreadThrowExceptionWithAppDomainHandler<br>{<br>    static void Main(string[] args){<br>        AppDomain currentDomain &#x3D; AppDomain.CurrentDomain;<br>        currentDomain.UnhandledException +&#x3D; new UnhandledExceptionEventHandler(MyHandler);<br>        try{<br>            Thread t &#x3D; new Thread(Go);<br>            t.Start();<br>        }<br>        catch(Exception ex){<br>            Console.WriteLine(“Hi i am here” + ex.Message);<br>        }</p>
+<pre><code>    throw new Exception(&quot;TEST&quot;);
+
+    Console.Read();
+&#125;
+
+static void Go()
+&#123;
+    throw new Exception(&quot;Null&quot;);
+&#125;
+
+static void MyHandler(object s, UnhandledExceptionEventArgs args)
+&#123;
+    Exception e = (Exception) args.ExceptionObject;
+    Console.WriteLine(&quot;runtime terminating: &#123;0&#125; &quot;, args.IsTerminating);
+&#125;
+</code></pre>
+<p>}</p>
+<h3 id="Threading-Pool"><a href="#Threading-Pool" class="headerlink" title="Threading Pool"></a>Threading Pool</h3><ul>
+<li>使用Threading Pool的4種方式</li>
+</ul>
+<ol>
+<li>Task Parallel Library</li>
+<li>ThreadPool.QueueUserWorkItem</li>
+<li>asynchronous delegates (BeginXXXXX…)</li>
+<li>BackgroundWorker</li>
+</ol>
+<ul>
+<li>以下是間接會用到Threading pool:</li>
+</ul>
+<ol>
+<li>WCF, Remoting, ASP.NET, ASMX Web service等的應用程式Server</li>
+<li>System.Timers.Timer和System.Threading.Timer</li>
+<li>Net有用Async結尾的函式, 比如WebClient(使用event-based asynchronous pattern)和BeginXXXX開頭的函式(asynchronous programming model pattern)</li>
+<li>PLINQ</li>
+</ol>
+<ul>
+<li>使用Threading Pool的注意事項</li>
+</ul>
+<ol>
+<li>不能對Thread pool設定Name</li>
+<li>thread pool都是background thread</li>
+<li>block thread pool可能會造成一些潛在問題, 有一些優化的手法(比如ThreadPool.SetMinThreads)</li>
+</ol>
+<ul>
+<li>Thread pool設過priority後, 任務執行完回收到pool會賦歸成normal priority</li>
+<li>可以用Thread.CurrentThread.IsThreadPoolThread 查看目前Thread是不是從pool來的</li>
+</ul>
+<h4 id="Entering-the-Thread-Pool-via-TPL"><a href="#Entering-the-Thread-Pool-via-TPL" class="headerlink" title="Entering the Thread Pool via TPL"></a>Entering the Thread Pool via TPL</h4><ul>
+<li>新的Task類別使用Thread pool更簡單</li>
+<li>非泛型的Task類別取代ThreadPool.QueueUserWorkItem</li>
+<li>泛型的Task<TResult>類別取代asynchronous delegate (BeginXXXXX…)</li>
+<li>非泛型的Task類別用Task.Factory.StartNew</li>
+<li>會回傳一個Task物件, 可以用Wait()等待, 而Task指定的函式發生Exception時, 會捕捉到</li>
+<li>如果不對Task物件做Wait, 而中間發生的Exception會造成程式中止 ( 這個用Console程式無法成功, 主程式沒被中止)</li>
+<li>Task<TResult>的結果可用.Result取得該Task回傳的結果</li>
+<li>在Task<TResult>取Result有Exception時, 會包裝在AggregateException, 沒處理的話會讓程式中止</li>
+</ul>
+<h4 id="Entering-the-Thread-Pool-Without-TPL"><a href="#Entering-the-Thread-Pool-Without-TPL" class="headerlink" title="Entering the Thread Pool Without TPL"></a>Entering the Thread Pool Without TPL</h4><ul>
+<li>ThreadPool.QueueUserWorkItem 和 asynchronous delegates都是不使用TPL而用Thread pool的方法, 差異在於asynchronous delegates可從thread回傳資料、回傳exception給caller</li>
+</ul>
+<p><em><strong>QueueUserWorkItem</strong></em></p>
+<ul>
+<li>像是new Thread一樣, 代入void的function, 也能代入參數, 都包裝在object</li>
+<li>如果function有未處理的exception, 將造成程式中止</li>
+</ul>
+<p>using System;<br>using System.Threading;</p>
+<p>class QueueUserWorkItem<br>{<br>    static void Main(string[] args){</p>
+<pre><code>    ThreadPool.QueueUserWorkItem(Go);
+    ThreadPool.QueueUserWorkItem(Go, 12345);
+    Console.Read();
+&#125;
+
+static void Go(object data)
+&#123;
+    Console.WriteLine(&quot;Hello &quot; + data);
+&#125;
+</code></pre>
+<p>}</p>
+<p><em><strong>Asynchronous delegates</strong></em></p>
+<ul>
+<li>能夠回傳值, 基於IAsyncResult</li>
+<li>Asynchronous delegate和asynchronous methods不一樣, 有些函式庫也是用BeginXXX&#x2F;EndXXX開頭</li>
+<li>使用Asynchronous delegates的流程:</li>
+</ul>
+<ol>
+<li>建立要被委託的函式, 必需指定成Func類別</li>
+<li>用Func的BeginInvoke呼叫該函式, 會回傳IAsyncResult</li>
+<li>用Func的EndInvoke代入IAsyncResult變數, 將取得結果</li>
+</ol>
+<p>using System;<br>using System.Threading;</p>
+<p>class AsynchronousDelegate<br>{<br>    static void Main(string[] args){<br>        Func&lt;string, int, string&gt; task &#x3D; Go;<br>        IAsyncResult cookie &#x3D; task.BeginInvoke(“test”, 123, null, null);<br>        string result &#x3D; task.EndInvoke(cookie);<br>        Console.WriteLine(“Result is “ + result);<br>        Console.Read();<br>    }</p>
+<pre><code>static string Go(string name, int n)
+&#123;
+    return name + &quot; and &quot; + n.ToString();
+&#125;
+</code></pre>
+<p>}</p>
+<ul>
+<li>EndInvoke會做3件事:</li>
+</ul>
+<ol>
+<li>如果事情還未完成, 會等它完成</li>
+<li>接收回傳值</li>
+<li>將Exception拋回至Caller</li>
+</ol>
+<ul>
+<li>技術上來講, 如果函式沒有要回傳值, 可以不呼叫EndInvoke, 但內部造成的Exception要小心. 所以建議都呼叫EndInvoke</li>
+<li>另一種用法是把處理運算結果寫在另一個委託函式, 該函式接收IAsyncResult的參數. 而不是在Caller呼叫 EndInvoke</li>
+</ul>
+<p>using System;<br>using System.Threading;</p>
+<p>class AsynchronousDelegate2<br>{<br>    static void Main(string[] args){<br>        Func&lt;string, int, string&gt; task &#x3D; Go;<br>        task.BeginInvoke(“test”, 123, Done, task);<br>        Console.Read();<br>    }</p>
+<pre><code>static void Done(IAsyncResult cookie)
+&#123;
+    var target = (Func&amp;lt;string, int, string&gt;) cookie.AsyncState;
+    string result = target.EndInvoke(cookie);
+    Console.WriteLine(&quot;Result is &quot; + result);
+&#125;
+
+static string Go(string name, int n)
+&#123;
+    return name + &quot; and &quot; + n.ToString();
+&#125;
+</code></pre>
+<p>}</p>
+<h4 id="Optimizing-the-Thread-Pool"><a href="#Optimizing-the-Thread-Pool" class="headerlink" title="Optimizing the Thread Pool"></a>Optimizing the Thread Pool</h4><ul>
+<li>ThreadPool.SetMaxThreads可以設置Thread pool最多的Thread數量</li>
+<li>每個環境有預設的上限</li>
+</ul>
+<ol>
+<li>Framework 4.0 &amp; 32-bit 可設1023個</li>
+<li>Framework 4.0 &amp; 64-bit 可設32768個</li>
+<li>Framework 3.5 可設每個核心250個</li>
+<li>Framework 2.0 可設每個核心25個</li>
+</ol>
+<ul>
+<li>ThreadPool.SetMinThreads能設置最小的Thread數量, 預設是每個core會有1個</li>
+<li>SetMinThreads能優化的狀況是, 因為建立Thread會有延遲, 但如果SetMinThreads指定X個, 這X個Thread不要有延遲.</li>
+</ul>
+<h2 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h2><ol>
+<li><a target="_blank" rel="noopener" href="https://amzn.to/3lQcLky">C# 9.0 in a Nutshell: The Definitive Reference, Joseph Albahari (Amazon)</a></li>
+</ol>
+<p><a target="_blank" rel="noopener" href="https://geekcodeparadise.com/threading-in-csharp-series-book-summary/">Threading in C# 系列的讀書筆記</a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/10/24/refactoring-chapter-3-bad-smells-in-code-book-summary/" rel="prev" title="Bad Smells in Code">
+      <i class="fa fa-chevron-left"></i> Bad Smells in Code
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/12/05/threading-in-csharp-part-2-basic-synchronization/" rel="next" title="Threading in C# - BASIC SYNCHRONIZATION">
+      Threading in C# - BASIC SYNCHRONIZATION <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Threading-in-C-%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">Threading in C# 前言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Introduction-and-Concepts"><span class="nav-number">2.</span> <span class="nav-text">Introduction and Concepts</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Join-and-Sleep"><span class="nav-number">2.1.</span> <span class="nav-text">Join and Sleep</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#How-Threading-Works"><span class="nav-number">2.2.</span> <span class="nav-text">How Threading Works</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Threads-vs-Processes"><span class="nav-number">2.3.</span> <span class="nav-text">Threads vs Processes</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Threading%E2%80%99s-Uses-and-Misuses-%E8%AA%A4%E7%94%A8"><span class="nav-number">2.4.</span> <span class="nav-text">Threading’s Uses and Misuses(誤用)</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Creating-and-Starting-Threads"><span class="nav-number">3.</span> <span class="nav-text">Creating and Starting Threads</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Passing-Data-to-a-Thread"><span class="nav-number">3.1.</span> <span class="nav-text">Passing Data to a Thread</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Naming-Threads"><span class="nav-number">3.2.</span> <span class="nav-text">Naming Threads</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Foreground-and-Background-Threads"><span class="nav-number">3.3.</span> <span class="nav-text">Foreground and Background Threads</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Thread-Priority"><span class="nav-number">3.4.</span> <span class="nav-text">Thread Priority</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Exception-Handling"><span class="nav-number">3.5.</span> <span class="nav-text">Exception Handling</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Threading-Pool"><span class="nav-number">4.</span> <span class="nav-text">Threading Pool</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Entering-the-Thread-Pool-via-TPL"><span class="nav-number">4.1.</span> <span class="nav-text">Entering the Thread Pool via TPL</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Entering-the-Thread-Pool-Without-TPL"><span class="nav-number">4.2.</span> <span class="nav-text">Entering the Thread Pool Without TPL</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Optimizing-the-Thread-Pool"><span class="nav-number">4.3.</span> <span class="nav-text">Optimizing the Thread Pool</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%83%E8%80%83%E8%B3%87%E6%96%99"><span class="nav-number"></span> <span class="nav-text">參考資料</span></a></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">208</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">49</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

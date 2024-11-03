@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Threading in C# - PART 2: BASIC SYNCHRONIZATION這篇文章為閱讀 Threading in C# 系列的Part 2筆記. Threading - Synchronization Essentials 同步的結構分4種:   Simple blocking methods: 像是Sleep, Join, Task.Wait等 Locking constr">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Threading in C# - BASIC SYNCHRONIZATION">
+<meta property="og:url" content="http://example.com/2021/12/05/threading-in-csharp-part-2-basic-synchronization/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Threading in C# - PART 2: BASIC SYNCHRONIZATION這篇文章為閱讀 Threading in C# 系列的Part 2筆記. Threading - Synchronization Essentials 同步的結構分4種:   Simple blocking methods: 像是Sleep, Join, Task.Wait等 Locking constr">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://geekcodeparadise.com/wp-content/uploads/2022/01/image-11.png">
+<meta property="og:image" content="https://geekcodeparadise.com/wp-content/uploads/2022/01/image-12.png">
+<meta property="article:published_time" content="2021-12-05T06:04:00.000Z">
+<meta property="article:modified_time" content="2023-11-19T07:47:25.993Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://geekcodeparadise.com/wp-content/uploads/2022/01/image-11.png">
+
+<link rel="canonical" href="http://example.com/2021/12/05/threading-in-csharp-part-2-basic-synchronization/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>Threading in C# - BASIC SYNCHRONIZATION | Hexo</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Hexo</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/12/05/threading-in-csharp-part-2-basic-synchronization/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Threading in C# - BASIC SYNCHRONIZATION
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-12-05 14:04:00" itemprop="dateCreated datePublished" datetime="2021-12-05T14:04:00+08:00">2021-12-05</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-11-19 15:47:25" itemprop="dateModified" datetime="2023-11-19T15:47:25+08:00">2023-11-19</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C#</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Thread/" itemprop="url" rel="index"><span itemprop="name">Thread</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%AE%80%E6%9B%B8%E7%AD%86%E8%A8%98/" itemprop="url" rel="index"><span itemprop="name">讀書筆記</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="Threading-in-C-PART-2-BASIC-SYNCHRONIZATION"><a href="#Threading-in-C-PART-2-BASIC-SYNCHRONIZATION" class="headerlink" title="Threading in C# - PART 2: BASIC SYNCHRONIZATION"></a>Threading in C# - PART 2: BASIC SYNCHRONIZATION</h3><p>這篇文章為閱讀 Threading in C# 系列的Part 2筆記.</p>
+<h3 id="Threading-Synchronization-Essentials"><a href="#Threading-Synchronization-Essentials" class="headerlink" title="Threading - Synchronization Essentials"></a>Threading - Synchronization Essentials</h3><ul>
+<li>同步的結構分4種:</li>
+</ul>
+<ol>
+<li>Simple blocking methods: 像是Sleep, Join, Task.Wait等</li>
+<li>Locking constructs: 限制數個Thread做後續操作, Excluseive locking只有一個thread, 比如lock(Monitor.Enter, Monitor.Exit), Mutex 和 SpinLock. 而Nonexclusive locking像是Semaphore, SemaphoreSlim 和 reader&#x2F;writer locks</li>
+<li>Signaling constructs: Thread可以暫停, 直到收到通知才恢復, 這可避免沒效率的輪詢. 比如用 event wait handler, Monitor的Wait&#x2F;Pulse, CountdownEvent和Barrier</li>
+<li>Nonblocking synchronization constructs: Thread.MemoryBarrier, Thread.VolatileRead, Thread.VolatileWrite, volatile關鍵字 和 Interlocked類別</li>
+</ol>
+<h4 id="Blocking"><a href="#Blocking" class="headerlink" title="Blocking"></a>Blocking</h4><ul>
+<li>等待、Sleep等會讓thread暫停, 把time slice還給CPU.</li>
+<li>可用ThreadState檢查是否Blocked</li>
+</ul>
+<p>bool blocked &#x3D; (someThread.ThreadState &amp; ThreadState.WaitSleepJoin) !&#x3D; 0</p>
+<ul>
+<li>當Thread發生block 或 unblock, 都會造成 Context Switch</li>
+<li>unblock的觸發條件:</li>
+</ul>
+<ol>
+<li>blocking條件已滿足</li>
+<li>operation timing out(有指定timeout的時候)</li>
+<li>被interrupt</li>
+<li>被aborted</li>
+</ol>
+<h4 id="Blocking-Versus-Spinning"><a href="#Blocking-Versus-Spinning" class="headerlink" title="Blocking Versus Spinning"></a>Blocking Versus Spinning</h4><ul>
+<li>用loop一直查詢某條件, 造成CPU消耗很大的運算資源</li>
+<li>一種比較好一點的寫法是, 在loop內加個Thread.Sleep</li>
+<li>如果要用Spinning的寫法, 一種是保證該條件很快就滿足的運算, 另外一種是用SpinLock&#x2F;SpinWait</li>
+</ul>
+<h4 id="ThreadState"><a href="#ThreadState" class="headerlink" title="ThreadState"></a>ThreadState</h4><p><a target="_blank" rel="noopener" href="https://geekcodeparadise.com/wp-content/uploads/2022/01/image-11.png"><img src="https://geekcodeparadise.com/wp-content/uploads/2022/01/image-11.png"></a></p>
+<ul>
+<li>ThreadState可以檢查Thread的狀態</li>
+</ul>
+<h3 id="Locking"><a href="#Locking" class="headerlink" title="Locking"></a>Locking</h3><ul>
+<li>區分 thread-safe和thread-unsafe的程式碼, 通常是有static變數, 如果有多個thread存取時會不會錯誤</li>
+<li>最簡單的方式是用lock關鍵字做同步化, 綁住某個同步化物件, 只允許一個thread操作, 其他的thread變成blocked狀態, 且依照queue的順序來排隊</li>
+</ul>
+<h4 id="A-Comparison-of-Locking-Constructs"><a href="#A-Comparison-of-Locking-Constructs" class="headerlink" title="A Comparison of Locking Constructs"></a>A Comparison of Locking Constructs</h4><ul>
+<li>下表的overhead是指對一個thread做block和unblock的時間</li>
+</ul>
+<p>Construct</p>
+<p>Purpose</p>
+<p>Cross-Process ?</p>
+<p>Overhead</p>
+<p>lock (Monitor.Enter &#x2F; Monitor.Exit)</p>
+<p>確保只有一個Thread能存取資源或一段code</p>
+<p> </p>
+<p>20 ns</p>
+<p>Mutext</p>
+<p>同lock</p>
+<p>Yes</p>
+<p>1000 ns</p>
+<p>SemaphoreSlim</p>
+<p>確保指定數量的thread能存取資源或一段code</p>
+<p> </p>
+<p>200 ns</p>
+<p>Semaphore</p>
+<p>同Semaphore</p>
+<p>Yes</p>
+<p>1000 ns</p>
+<p>ReaderWriterLockSlim</p>
+<p>允許多個reader能與一個writer共存</p>
+<p> </p>
+<p>40 ns</p>
+<p>ReaderWriterLock</p>
+<p>同ReaderWriterLockSlim</p>
+<p> </p>
+<p>100 ns</p>
+<h4 id="Monitor-Enter-and-Monitor-Exit"><a href="#Monitor-Enter-and-Monitor-Exit" class="headerlink" title="Monitor.Enter and Monitor.Exit"></a>Monitor.Enter and Monitor.Exit</h4><ul>
+<li>lock &#x3D; Monitor.Enter + Monitor.Exit + try&#x2F;finally</li>
+</ul>
+<p>try<br>{<br>    DoSomething();<br>}<br>finally<br>{<br>    Monitor.Exit(_locker);<br>}</p>
+<ul>
+<li>上面寫法會有bug, 如果在Enter和try之間發生exception (比如thread被Abort或記憶體溢出), 則永遠不釋放該locker</li>
+<li>更好的寫法是在try內用Enter, 且代入bool的變數, 用來判斷是否lock成功, 成功的話可以呼叫Exit</li>
+</ul>
+<p>bool lockTaken &#x3D; false;<br>try<br>{<br>Monitor.Enter(_locker, ref lockTaken)<br>}<br>finally<br>{<br>if(lockTaken)<br>{<br>Monitor.Exit(_locker);<br>}<br>}</p>
+<ul>
+<li>還有個TryEnter, 可以代入timeout, 如果回傳true代表lock成功, 如果回傳false代表lock過程超時</li>
+</ul>
+<h4 id="Choosing-the-Synchronization-Object"><a href="#Choosing-the-Synchronization-Object" class="headerlink" title="Choosing the Synchronization Object"></a>Choosing the Synchronization Object</h4><ul>
+<li>必須是reference type的物件</li>
+<li>一般是private的物件, 做邏輯封裝</li>
+<li>精準的lock會用專門的locker物件</li>
+<li>lock(this)或lock(typeof(SomeClass)), 很難預防死結和過多的blocking</li>
+</ul>
+<h4 id="When-to-Lock"><a href="#When-to-Lock" class="headerlink" title="When to Lock"></a>When to Lock</h4><ul>
+<li>基本的規則是, lock在存取可寫的共享物件</li>
+<li>Thread safe與unsafe的寫法</li>
+</ul>
+<p>class ThreadUnsafe<br>{<br>static int _x;<br>static void Increment() { ++_x; }<br>static void Assign() { _x &#x3D; 123; }<br>}</p>
+<p>class ThreadSafe<br>{<br>static readonly object _locker &#x3D; new object();<br>static int _x;<br>static void Increment() { lock(_locker) { ++_x; }}<br>static void Assign() { lock(_locker) { _x &#x3D; 123; }}<br>}</p>
+<ul>
+<li>non-blocking的同步化, 後續有memory-barriers和Interlocked可用</li>
+</ul>
+<h4 id="Locking-and-Atomicity"><a href="#Locking-and-Atomicity" class="headerlink" title="Locking and Atomicity"></a>Locking and Atomicity</h4><ul>
+<li>有一組變數, 寫跟讀總是在同一個lock, 則稱它們是Atomic</li>
+<li>比如下面x與y的除法範例</li>
+</ul>
+<p>lock (_locker)<br>{<br>if(x!&#x3D;0)<br>y &#x2F;&#x3D; x;<br>}</p>
+<ul>
+<li>有時會有破壞atomicity的bug, 比如有呼叫其他函式造成exception, 使某些變數沒完整計算完</li>
+<li>建議其他函式先運算完再把它的值帶入到lock, 或者try的catch&#x2F;finally做rollback</li>
+</ul>
+<h4 id="Nested-Locking"><a href="#Nested-Locking" class="headerlink" title="Nested Locking"></a>Nested Locking</h4><ul>
+<li>lock可以巢狀包裝</li>
+<li>適用於lock的內容, 有call其他的函式, 這些函式實作再加上lock</li>
+</ul>
+<h4 id="Deadlocks"><a href="#Deadlocks" class="headerlink" title="Deadlocks"></a>Deadlocks</h4><ul>
+<li>當兩個thread都掌握對方的資源且等待對方釋放, 沒任何進展就是死結</li>
+<li>基本的死結案例:</li>
+</ul>
+<p>using System;<br>using System.Threading;</p>
+<p>class TestDeadlocks<br>{<br>    static void Main(string[] args){<br>        object locker1 &#x3D; new object();<br>        object locker2 &#x3D; new object();<br>        new Thread(() &#x3D;&gt; {<br>            lock(locker1){<br>                Thread.Sleep(1000);<br>                Console.WriteLine(“Ready to lock 2”);<br>                lock(locker2);<br>            }<br>        }).Start();<br>        lock(locker2){<br>            Thread.Sleep(1000);<br>            Console.WriteLine(“Ready to lock 1”);<br>            lock(locker1);<br>        }</p>
+<pre><code>    Console.WriteLine(&quot;Hi&quot;);
+    Console.Read();
+&#125;
+</code></pre>
+<p>}</p>
+<ul>
+<li>更複雜的死結是,Thread 1 lock 而呼叫A class的X方法, X方法呼叫B class的Y 方法, 另外Thread 2 lock而呼叫B class的Y方法, Y方法呼叫A class的X方法.</li>
+<li>考慮lock是否要用在別的class的函式</li>
+<li>之後的declarative, data parallelism, immutable types 和 nonblock synchronization能減少lock的需求</li>
+<li>另一些常見的死結發生在WPF的Dispatcher.Invoke或Winform的Control.Invoke, 解法是用BeginInvoke</li>
+</ul>
+<h4 id="Performance"><a href="#Performance" class="headerlink" title="Performance"></a>Performance</h4><ul>
+<li>基本上lock的速度很快</li>
+<li>如果有很短暫的lock, 可以改用SpinLock, 減少Context Switch</li>
+<li>Lock得太久, 會減少共時性的效能; Lock也是造成Deadlock的風險</li>
+</ul>
+<h4 id="Mutex"><a href="#Mutex" class="headerlink" title="Mutex"></a>Mutex</h4><ul>
+<li>跨Process的lock, 大約比lock慢50倍</li>
+<li>使用WaitOne做lock, ReleaseMutex unlock, 而用close或dispose也是release</li>
+<li>Mutex認出同樣的lock是用Name</li>
+<li>如果是執行在Terminal Services環境, 一般的Mutex無法跨terminal server session, 要在Name加上Global 前綴字</li>
+</ul>
+<p>using System;<br>using System.Threading;</p>
+<p>class OneAtATimePlease<br>{<br>    static void Main(string[] args){<br>        using(var mutex &#x3D; new Mutex(false, “test oreilly”))<br>        {<br>            if(!mutex.WaitOne(TimeSpan.FromSeconds(3), false)){<br>                Console.WriteLine(“ another is running”);<br>                Console.Read();<br>                return;<br>            }<br>            RunProgram();<br>        }<br>    }</p>
+<pre><code>static void RunProgram()
+&#123;
+    Console.WriteLine(&quot;To exit&quot;);
+    Console.Read();
+&#125;
+</code></pre>
+<p>}</p>
+<h4 id="Semaphore"><a href="#Semaphore" class="headerlink" title="Semaphore"></a>Semaphore</h4><ul>
+<li>Semaphore允許多個Thread在同一區段執行, 超過此容量的thread會block等待</li>
+<li>把Semaphore的容量設為1, 就和lock與mutex一樣, 但Semaphore的Release是任何thread都能呼叫</li>
+<li>SemaphoreSlim有更低延遲, 且能帶cancellation token, 用在parallel programming</li>
+<li>如果Semaphore有給名字, 也是能跨Process</li>
+<li>下面範例是最多3個Thread進入</li>
+</ul>
+<p>using System;<br>using System.Threading;</p>
+<p>class SemaphoreClub<br>{<br>    static SemaphoreSlim _sem &#x3D; new SemaphoreSlim(3);<br>    static void Main(string[] args){<br>        for(int i &#x3D; 0 ; i &lt; 5; ++i){<br>            new Thread(Enter).Start(i);<br>        }<br>        Console.Read();<br>    }</p>
+<pre><code>static void Enter(object id)
+&#123;
+    Console.WriteLine(id + &quot; wants to enter&quot;);
+    \_sem.Wait();
+    Console.WriteLine(id + &quot; is in!&quot;);
+    Thread.Sleep(500 \* (int) id);
+    Console.WriteLine(id + &quot; is leaving&quot;);
+    \_sem.Release();
+&#125;
+</code></pre>
+<p>}</p>
+<h3 id="Thread-Safety"><a href="#Thread-Safety" class="headerlink" title="Thread Safety"></a>Thread Safety</h3><ul>
+<li>一般的type很少是Thread-safe, 原因有如下:</li>
+</ul>
+<ol>
+<li>開發時要維護該type所有Thread-safe欄位</li>
+<li>Thread-safety有效能上的花費, 即使沒有多執行緒也必要花費</li>
+<li>使用Thread-safe的type不一定能讓執行程式thread-safe</li>
+</ol>
+<ul>
+<li>基本的用法是用exclusive lock去鎖定特定的程式碼而達到thread-safe</li>
+<li>另外是減少共享資料, 達到無狀態的功能, 比如ASP.NET Web的Request, 大都是獨自處理</li>
+<li>最後是用automatic locking regime的方式, 對class或property加上ContextBoundObject和Synchronization屬性, 就能自動有鎖的功能. 但缺點是會產生另一種方式的死結、併發性差、意外重入等問題. 盡量用exlusive lock.</li>
+</ul>
+<h4 id="Thread-Safety-and-NET-Framework-Types"><a href="#Thread-Safety-and-NET-Framework-Types" class="headerlink" title="Thread Safety and .NET Framework Types"></a>Thread Safety and .NET Framework Types</h4><ul>
+<li>Enumeration是thread-unsafe的行為, 所以共同資料要enumeration時, 先宣告一個local變數, 再用lock的方式copy (ToList, ToArray等)到local變數</li>
+<li>Enumeration的另一種解法是reader&#x2F;writer lock</li>
+</ul>
+<p>class ThreadSafe<br>{<br>static List<string> _list &#x3D; new List<string>();<br>static void Main()<br>{<br>new Thread(AddItem).Start();<br>new Thread(AddItem).Start();<br>}</p>
+<p>static void AddItem()<br>{<br>lock (_list) _list.Add(“Item “ + _list.Count());<br>string[] items;<br>lock (_list) items &#x3D; _list.ToArray();<br>foreach(string s in items) Console.WriteLine(s);<br>}<br>}</p>
+<p><em><strong>Locking around thread-safe objects</strong></em></p>
+<ul>
+<li>如果物件本身是thread-safe, 但是對它的有些操作仍是要lock, 比如if的敘述, 沒有lock的狀況下, 多執行緒的情況會存取到同樣的值而做後續if block的操作(且可能會改值).</li>
+</ul>
+<p><em><strong>Static members</strong></em></p>
+<ul>
+<li>.net framework設計static member是thread-safe, 而實例的member不是. 比如取DateTime.Now, 就不需要去用lock來取</li>
+<li>static function不是thread-safe, 要確認功能對資料的共享性</li>
+</ul>
+<p><em><strong>Read-only thread safety</strong></em></p>
+<ul>
+<li>能在文件註明該collection是只讀訪問的thread-safe, 並要求使用者在只讀的方法做寫入</li>
+<li>實作ToArray等, 本身會有thread-unsafe的issue</li>
+<li>如果文件缺少說明, 要注意是否某些方法是read-only. 比如Random.Next(), 內部實作有更新private seed, 因此要用lock取值或者分開的Random物件</li>
+</ul>
+<h4 id="Thread-Safety-in-Application-Servers"><a href="#Thread-Safety-in-Application-Servers" class="headerlink" title="Thread Safety in Application Servers"></a>Thread Safety in Application Servers</h4><ul>
+<li>通常像ASP.NET,WCF都是獨立thread處理request, 但有時需要共享資料, 像catch, 更新和取資料都要lock, 會減少效能</li>
+</ul>
+<h4 id="Rich-Client-Applications-and-Thread-Affinity"><a href="#Rich-Client-Applications-and-Thread-Affinity" class="headerlink" title="Rich Client Applications and Thread Affinity"></a>Rich Client Applications and Thread Affinity</h4><ul>
+<li>在WPF或Winform, UI的元件有Affinity特性, 代表哪個thread建立元件, 那元件只能被那thread存取.</li>
+<li>所以別的thread需要marshal原本thread來控制元件, 比如Winform的Invoke或BeginInvoke, WPF的Invoke或BeginInvoke</li>
+<li>Invoke是同步方法, 會block目前thread; BeginInvoke是非同步方法, 立即回傳caller而marshal的request會進到queue(和keyboard, mouse的事件使用同樣的message queue)</li>
+</ul>
+<p><strong><em>Worker threads versus UI threads</em></strong></p>
+<ul>
+<li>Rich client有兩大thread: UI Thread和Worker Thread</li>
+<li>UI Thread專門建立UI元件, Worker thread一般用來執行long-running job</li>
+<li>Rich client都會有一個UI Thread且是Main thread, 再由它生成work thread, 可直接生成或者用BackgroundWorker</li>
+<li>Single Document Interface (SDI), 像是Word, 會有多個UI Thread</li>
+</ul>
+<h4 id="Immutable-Objects"><a href="#Immutable-Objects" class="headerlink" title="Immutable Objects"></a>Immutable Objects</h4><ul>
+<li>物件能封裝成裡面的狀態不能被內部與外部改變, 稱為immutable object. 決定它內部值是在Constructor且值是Read-only. 可減少lock的執行時間.</li>
+<li>下面範例是建立一個immutable object, 只有assign新物件才會需要lock, 取值不需要</li>
+</ul>
+<p>class ProgressStatus<br>{<br>public readonly int PercentComplete;<br>public readonly string StatusMessage;<br>public ProgressStatus(int percentComplete, string statusMessage)<br>{<br>PercentComplete &#x3D; percentComplete;<br>StatusMessage &#x3D; statusMessage;<br>}<br>}</p>
+<p>class Program<br>{<br>readonly object _statusLocker &#x3D; new object();<br>ProgressStatus _status;<br>void SomeFunction()<br>{<br>_status &#x3D; new ProgressStatus(50, “Working on it”);<br>ProgressStatus statusCopy;<br>lock(_statusLocker) statusCopy &#x3D; _status;<br>int pc &#x3D; statusCopy.PercentComplete;<br>string msg &#x3D; statusCopy.StatusMessage;<br>}<br>}</p>
+<ul>
+<li>在int pc &#x3D; … 的最後2行, 有隱含用Memory barrier包裝</li>
+<li>後續不使用lock, 還會有顯示Memory barrier, Interlocked.CompareExchange, spin-waits等功能可用</li>
+</ul>
+<h3 id="Threading-Signaling-with-Event-Wait-Handles"><a href="#Threading-Signaling-with-Event-Wait-Handles" class="headerlink" title="Threading - Signaling with Event Wait Handles"></a>Threading - Signaling with Event Wait Handles</h3><ul>
+<li>Signaling是指thread會一直等待, 直到收到從別的Thread發的通知</li>
+<li>和一般C#的event不相關</li>
+<li>3種類型: AutoResetEvent, ManualResetEvent, CountdownEvent</li>
+</ul>
+<h4 id="A-Comparison-of-Signaling-Constructs"><a href="#A-Comparison-of-Signaling-Constructs" class="headerlink" title="A Comparison of Signaling Constructs"></a>A Comparison of Signaling Constructs</h4><ul>
+<li>下表的overhead是指對一個signal和wait的時間</li>
+</ul>
+<p>Construct</p>
+<p>Purpose</p>
+<p>Cross-Process ?</p>
+<p>Overhead</p>
+<p>AutoResetEvent</p>
+<p>允許一個thread當收到singal時,執行一次unblock</p>
+<p>Yes</p>
+<p>1000 ns</p>
+<p>ManualResetEvent</p>
+<p>允許一個thread當收到singal時,執行無限期的unblock (直到它重置)</p>
+<p>Yes</p>
+<p>1000 ns</p>
+<p>ManualResetEventSlim (Net Framework 4)</p>
+<p>同ManualResetEvent</p>
+<p> </p>
+<p>40 ns</p>
+<p>CountdownEvent (Net Framework 4)</p>
+<p>允許一個thread當收到預定數量的singal時,執行unblock</p>
+<p> </p>
+<p>40 ns</p>
+<p>Barrier (Net Framework 4)</p>
+<p>實作Thread執行屏障</p>
+<p> </p>
+<p>80 ns</p>
+<p>Wait and Pulse</p>
+<p>允許一個thread block直到某條件達成</p>
+<p> </p>
+<p>120 ns for a Pulse</p>
+<h4 id="AutoResetEvent"><a href="#AutoResetEvent" class="headerlink" title="AutoResetEvent"></a>AutoResetEvent</h4><ul>
+<li>它像是一個票閘, 插入一張票只讓一個人過</li>
+<li>Thread 在門閘時呼叫WaitOne來wait&#x2F;block, 而呼叫Set插入票</li>
+<li>如果有多個thread在門閘呼叫WaitOne, 變成queue排隊</li>
+<li>Ticket可以來自任何thread, 代表任何unblock的thread可存取該AutoResetEvent物件並呼叫Set</li>
+<li>在constructor代入true的話, 代表直接呼叫Set</li>
+<li>用EventWaitHandle可達到相同的功能 (EventWaitHandle是AutoResetEvent的父類別)</li>
+</ul>
+<p>var auto &#x3D; new AutoResetEvent (false);</p>
+<p>&#x2F;&#x2F; 等同寫法</p>
+<p>var auto2 &#x3D; new EventWaitHandle(false, EventResetMode.AutoReset);</p>
+<ul>
+<li>使用的範例如下:</li>
+</ul>
+<p>using System;<br>using System.Threading;</p>
+<p>class TestAutoResetEvent<br>{<br>    static EventWaitHandle _waitHandle &#x3D; new AutoResetEvent(false);<br>    static void Main(string[] args){</p>
+<pre><code>    new Thread(() =&amp;gt; &#123;
+        Console.WriteLine(&quot;Wait...&quot;);
+        \_waitHandle.WaitOne();
+        Console.WriteLine(&quot;awake&quot;);
+    &#125;).Start();
+    Thread.Sleep(1000);
+    \_waitHandle.Set();
+    Console.Read();
+&#125;
+</code></pre>
+<p>}</p>
+<ul>
+<li>範例對應的時序表</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://geekcodeparadise.com/wp-content/uploads/2022/01/image-12.png"><img src="https://geekcodeparadise.com/wp-content/uploads/2022/01/image-12.png"></a></p>
+<p><em><strong>Producer&#x2F;consumer queue</strong></em></p>
+<ul>
+<li>一個queue用來放進要執行的任務, 而其他thread在背景從這queue挑任務來做</li>
+<li>用這種queue能有效管理要執行的thread數量, 比如IO密集型任務可只安排一個thread, 其他需要10個</li>
+<li>CLR的Thread pool也是一種Producer&#x2F;consumer queue</li>
+<li>queue插入的資料會有對應的任務, 比如填入檔案名稱, 而對應的任務是加密該檔案</li>
+<li>以下用AutoResetEvent實作範例</li>
+</ul>
+<p>using System;<br>using System.Collections.Generic;<br>using System.Threading;</p>
+<p>namespace ProducerConsumerTest<br>{<br>    class Program<br>    {<br>        static void Main(string[] args)<br>        {<br>            using (ProducerConsumerQueue q &#x3D; new ProducerConsumerQueue())<br>            {<br>                q.EnqueueTask(“Hello”);<br>                for(int i &#x3D; 0; i &lt; 20; ++i)<br>                {<br>                    q.EnqueueTask(“Say “ + i);<br>                }<br>                q.EnqueueTask(“Good bye”);<br>            }<br>        }<br>    }</p>
+<pre><code>public class ProducerConsumerQueue : IDisposable
+&#123;
+    EventWaitHandle \_wh = new AutoResetEvent(false);
+    Thread \_worker;
+    readonly object \_locker = new object();
+    Queue&amp;lt;string&amp;gt; \_tasks = new Queue&amp;lt;string&amp;gt;();
+    public ProducerConsumerQueue()
+    &#123;
+        \_worker = new Thread(Work);
+        \_worker.Start();
+    &#125;
+
+    public void EnqueueTask(string task)
+    &#123;
+        lock (\_locker)
+        &#123;
+            \_tasks.Enqueue(task);
+        &#125;
+        \_wh.Set();
+    &#125;
+
+    public void Dispose()
+    &#123;
+        EnqueueTask(null); // signal the consumer to exit
+        \_worker.Join(); // wait for the consumer&#39;s thread to finish
+        \_wh.Close(); // release any OS Resources
+    &#125;
+
+    private void Work()
+    &#123;
+        while (true)
+        &#123;
+            string task = null;
+            lock(\_locker)
+            &#123;
+                if(\_tasks.Count &amp;gt; 0)
+                &#123;
+                    task = \_tasks.Dequeue();
+                    if(task == null)
+                    &#123;
+                        return;
+                    &#125;
+                &#125;
+            &#125;
+            if(task != null)
+            &#123;
+                Console.WriteLine(&quot;Performing task : &quot; + task);
+                Thread.Sleep(1000); // simulate work...
+            &#125;
+            else
+            &#123;
+                \_wh.WaitOne(); // no more tasks , wait for a signal
+            &#125;
+        &#125;
+    &#125;
+&#125;
+</code></pre>
+<p>}</p>
+<ol>
+<li>用lock去鎖定queue, 達到thread-safe</li>
+<li>在enqueue之後, 呼叫Set, 通知在while(true)有wait的thread可以往下做</li>
+<li>如果caller插入null的資料, 直接結束</li>
+<li>queue如果是空的, 會呼叫WaitOne等待signal</li>
+<li>在Dispose的實作, 呼叫Enqueue(null), 讓Work方法讀到null而return結束, 否則Thread的Join永遠不結束; 對EventWaitHandle呼叫Close, 可以釋放內部有用到的資源</li>
+</ol>
+<ul>
+<li>.Net Framework 4 有BlockingCollection, 實作Producer&#x2F;Consumer queue</li>
+<li>上述用AutoResetEvent的Producer&#x2F;Consumer queue是個好的範例, 未來加上cancellation或bounded queue, 都可以此為起點</li>
+</ul>
+<h4 id="ManualResetEvent"><a href="#ManualResetEvent" class="headerlink" title="ManualResetEvent"></a>ManualResetEvent</h4><ul>
+<li>和AutoResetEvent相比, ManualResetEvent是一般的閘門, 呼叫Set時, 讓所有等待(有呼叫過WaitOne)的Thread全都能進入</li>
+<li>呼叫Reset能把閘門關上</li>
+<li>呼叫WaitOne就會Block</li>
+<li>等同的寫法</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">var manual1 = new ManualResetEvent(false);</span><br><span class="line">var manual2 = new EventWaitHandle(false, EventResetModel.ManualReset);</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>另一個是ManualResetEventSlim能執行更快且支援CancellationToken, 但不能跨Process</li>
+<li>ManualResetEvent是讓一個Thread允許多個Thread unblock, CountdownEvent則相反</li>
+</ul>
+<h4 id="CountdownEvent"><a href="#CountdownEvent" class="headerlink" title="CountdownEvent"></a>CountdownEvent</h4><ul>
+<li>用CountdownEvent可以等多個Thread執行後再往後執行</li>
+<li>在.NET Framework 4之前, 可以用Wait and Pulse來實作CountdownEvent</li>
+<li>建構CountdownEvent指定要的數量, 呼叫Wait則block該thread, 而呼叫Signal會降低count, 直到count為0, 該thread將unblock</li>
+<li>以下範例是等待3個Thread執行後, 才繼續執行</li>
+</ul>
+<p>using System;<br>using System.Threading;</p>
+<p>public class Program<br>{<br>static CountdownEvent _countDown &#x3D; new CountdownEvent(3);<br>public static void Main()<br>{<br>new Thread(SaySomething).Start(“Thread 1”);<br>new Thread(SaySomething).Start(“Thread 2”);<br>new Thread(SaySomething).Start(“Thread 3”);<br>_countDown.Wait();<br>Console.WriteLine(“All threads have finished”);<br>}<br>static void SaySomething(object msg)<br>{<br>Thread.Sleep(3000);<br>Console.WriteLine(msg);<br>_countDown.Signal();<br>}<br>}</p>
+<ul>
+<li>Count可以用AddCount來加更多需等待的數量, 但如果已經達到count &#x3D; 0而又呼叫AddCount, 將拋出exception</li>
+<li>建議可用TryAddCount, 回傳false代表count已經是0</li>
+<li>呼叫Reset將Count回到初始值</li>
+</ul>
+<h4 id="Creating-a-Cross-Process-EventWaitHandle"><a href="#Creating-a-Cross-Process-EventWaitHandle" class="headerlink" title="Creating a Cross-Process EventWaitHandle"></a>Creating a Cross-Process EventWaitHandle</h4><ul>
+<li>EventWaitHandle可以指定名字, 讓多個Process根據同一個名字而共同參考</li>
+<li>基本用法:</li>
+</ul>
+<p>EventWaitHandle wh &#x3D; new EventWaitHandle(false, EventResetMode.AutoReset, “MyCompany.MyApp.Name”);</p>
+<h4 id="Wait-Handles-and-the-Thread-Pool"><a href="#Wait-Handles-and-the-Thread-Pool" class="headerlink" title="Wait Handles and the Thread Pool"></a>Wait Handles and the Thread Pool</h4><ul>
+<li>使用ThreadPool.RegisterWaitForSingleObject, 可以不綁特定的Thread來執行, 將要委託的任務交給Thread pool執行</li>
+</ul>
+<p>using System;<br>using System.Threading;</p>
+<p>namespace TestWaitHandleThreadPool<br>{<br>    class Program<br>    {<br>        static ManualResetEvent _starter &#x3D; new ManualResetEvent(false);<br>        static void Main(string[] args)<br>        {<br>            RegisteredWaitHandle reg &#x3D; ThreadPool.RegisterWaitForSingleObject(_starter, Go, “Some Data”, -1, true);<br>            Thread.Sleep(5000);<br>            _starter.Set();<br>            Console.ReadLine();<br>            reg.Unregister(_starter);<br>        }</p>
+<pre><code>    static void Go(object data, bool timeOut)
+    &#123;
+        Console.WriteLine(&quot;Start work : &quot; + data);
+    &#125;
+&#125;
+</code></pre>
+<p>}</p>
+<ul>
+<li>參數-1代表不用timeout, 如果有timeout的話, 會檢測傳送的物件（範例是Some Data字串）的狀態; 參數true代表該Thread pool收到signal後, 不再重設要Wait.</li>
+<li>假如原本用WaiOne的方式處理, Server收到100個任務就得new 100個Thread, 變成綁定太多且大量Block. 改寫的方法如下, 讓後續的委託工作都給‘hread Pool處理</li>
+</ul>
+<p>void AppServerMethod()<br>{<br>_wh.WaitOne();<br>&#x2F;&#x2F; … continue execution<br>}</p>
+<p>&#x2F;&#x2F; 變成</p>
+<p>void AppServerMethod()<br>{<br> RegisteredWaitHandle reg &#x3D; ThreadPool.RegisterWaitForSingleObject(_starter, Resume, null, -1, true);<br> &#x2F;&#x2F; …<br>}</p>
+<p>static void Resume(object data, bool timeOut)<br>{<br>&#x2F;&#x2F; … continue execution<br>}</p>
+<h4 id="WaitAny-WaitAll-and-SignalAndWait"><a href="#WaitAny-WaitAll-and-SignalAndWait" class="headerlink" title="WaitAny, WaitAll, and SignalAndWait"></a>WaitAny, WaitAll, and SignalAndWait</h4><ul>
+<li>WaitHandle提供static method, 包含WaitNay, WaitAll, SignalAndWait, 可以對有繼承WaitHandle的物件使用較複雜的Signal&#x2F;Wait的功能</li>
+<li>WaitAny: 等待任一個Thread收到Signal</li>
+<li>WaitAll: 等待所有Thread都收到Signal</li>
+<li>SignalAndWait: 對第一個參數的thread發出signal, 對第二個參數的thread做等待</li>
+</ul>
+<p><em><strong>Alternatives to WaitAll and SignalAndWait</strong></em></p>
+<ul>
+<li>WaitAll和SignalAndWait不能在單一執行緒的環境執行.</li>
+<li>SignalAndWait的替代方案是Barrier類別, 而WaitAll的替代方案是Parallel class的Invoke方法</li>
+</ul>
+<h3 id="Synchronization-Contexts-NET-Core已不存在）"><a href="#Synchronization-Contexts-NET-Core已不存在）" class="headerlink" title="Synchronization Contexts (.NET Core已不存在）"></a>Synchronization Contexts (.NET Core已不存在）</h3><ul>
+<li>繼承ContextBoundObject且加上Synchronization屬性, CLR在這物件會自動使用lock</li>
+<li>如下範例, 每個Demo函式會排隊執行</li>
+</ul>
+<p>using System;<br>using System.Runtime.Remoting.Contexts;<br>using System.Threading;</p>
+<p>namespace TestAutoLock<br>{<br>    class Program<br>    {<br>        static void Main(string[] args)<br>        {<br>            AutoLock safeInstance &#x3D; new AutoLock();<br>            new Thread(safeInstance.Demo).Start();<br>            new Thread(safeInstance.Demo).Start();<br>            safeInstance.Demo();<br>        }<br>    }</p>
+<pre><code>\[Synchronization\]
+public class AutoLock : ContextBoundObject
+&#123;
+    public void Demo()
+    &#123;
+        Console.Write(&quot;Thread id : &quot; + Thread.CurrentThread.ManagedThreadId);
+        Console.Write(&quot; Start.....&quot;);
+        Thread.Sleep(1000);
+        Console.WriteLine(&quot;End&quot;);
+    &#125;
+&#125;
+</code></pre>
+<p>}</p>
+<ul>
+<li>自動lock不包含static的成員和沒有繼承ContextBoundObject的物件(比如Form)</li>
+<li>想像是CLR將原始Class套上一層ContextBoundObject Proxy, 能呼叫原始Class的成員, 再為它的方法都加上同步化的功能</li>
+<li>如果前面的AutoLock是個Collection, 則使用它的物件也必須是ContextBoundObject, 否則存取它的item需要手動加上lock</li>
+<li>Synchronization Context預設會延伸從同一層Scope的Context, 也就是lock包含的深度一直向下</li>
+<li>在Synchronization的attribute可以改變預設的行為, 有這些選項:</li>
+</ul>
+<ol>
+<li>NOT_SUPPORTED: 就跟沒加上Synchronization的屬性一樣</li>
+<li>SUPPORTED: 如果來自別的synchronized 物件做初始化, 則延伸它的context, 否則保持unsynchronized</li>
+<li>REQUIRED (預設): 如果來自別的synchronized 物件做初始化, 則延伸它的context, 否則建立新的Context</li>
+<li>REQUIRES_NEW: 總是建立新增Synchronization context</li>
+</ol>
+<ul>
+<li>以下範例是會產生Deadlock的Synchronization:</li>
+</ul>
+<p>using System;<br>using System.Runtime.Remoting.Contexts;<br>using System.Threading;</p>
+<p>namespace TestAutoLockDeadlock<br>{<br>    [Synchronization]<br>    public class Deadlock : ContextBoundObject<br>    {<br>        public Deadlock Other;</p>
+<pre><code>    public void Demo()
+    &#123;
+        Console.WriteLine(Thread.CurrentThread.ManagedThreadId);
+        Thread.Sleep(1000);
+        Console.WriteLine(&quot;Call other&quot;);
+        Other.Hello();
+    &#125;
+
+    void Hello()
+    &#123;
+        Console.WriteLine(&quot;hello&quot;);
+    &#125;
+&#125;
+class Program
+&#123;
+    private static void Main(string\[\] args)
+    &#123;
+        Deadlock dead1 = new Deadlock();
+        Deadlock dead2 = new Deadlock();
+        dead1.Other = dead2;
+        dead2.Other = dead1;
+        new Thread(dead1.Demo).Start();
+        dead2.Demo();
+        Console.Read();
+    &#125;
+&#125;
+</code></pre>
+<p>}</p>
+<ol>
+<li>兩個Deadlock物件都是在Program建立, Program本身是unsynchronized, 所以Deadlock物件建立各自的Synchronization Context, 也有各自的lock</li>
+<li>呼叫對方的Hello方法後, 即發生Deadlock</li>
+</ol>
+<h4 id="Reentrancy"><a href="#Reentrancy" class="headerlink" title="Reentrancy"></a>Reentrancy</h4><ul>
+<li>Reentrant的定義是, 如果有段程式碼被中斷, 執行緒去執行別的程式, 之後再回來執行這段程式而沒造成影響</li>
+<li>通常Thread-safe和reentrant視為同等</li>
+<li>如果[Synchronization(true)]這樣使用, 代表需要reentry, 當執行離開此程式碼時, 會把lock釋放, 可避免deadlock. 副作用是在這釋放期間, 任何thread可以進入該物件的context(比如呼叫它的方法)</li>
+<li>[Synchronization(true)]是類別層級, 所以在非該context的呼叫都會當class層面的木馬(?)</li>
+<li>如果沒有reentrancy, 則在一些場合比較難工作, 比如在一個synchronized class實作多執行緒, 將邏輯委託給其他worker thread, 則worker thread彼此間要溝通沒有reentrancy的話, 將會受阻.</li>
+<li>同步自動鎖造成deadlock, reentrancy, 刪除併發等問題, 在一些應用場合沒有手動lock來的好用</li>
+</ul>
+<h2 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h2><ol>
+<li><a target="_blank" rel="noopener" href="https://amzn.to/3lQcLky">C# 9.0 in a Nutshell: The Definitive Reference, Joseph Albahari (Amazon)</a></li>
+</ol>
+<p><a target="_blank" rel="noopener" href="https://geekcodeparadise.com/threading-in-csharp-series-book-summary/">Threading in C# 系列的讀書筆記</a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/12/05/threading-in-csharp-part-1-getting-started/" rel="prev" title="Threading in C# - GETTING STARTED">
+      <i class="fa fa-chevron-left"></i> Threading in C# - GETTING STARTED
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/12/05/threading-in-csharp-part-3-using-threads/" rel="next" title="Threading in C# - USING THREADS">
+      Threading in C# - USING THREADS <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Threading-in-C-PART-2-BASIC-SYNCHRONIZATION"><span class="nav-number">1.</span> <span class="nav-text">Threading in C# - PART 2: BASIC SYNCHRONIZATION</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Threading-Synchronization-Essentials"><span class="nav-number">2.</span> <span class="nav-text">Threading - Synchronization Essentials</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Blocking"><span class="nav-number">2.1.</span> <span class="nav-text">Blocking</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Blocking-Versus-Spinning"><span class="nav-number">2.2.</span> <span class="nav-text">Blocking Versus Spinning</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ThreadState"><span class="nav-number">2.3.</span> <span class="nav-text">ThreadState</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Locking"><span class="nav-number">3.</span> <span class="nav-text">Locking</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#A-Comparison-of-Locking-Constructs"><span class="nav-number">3.1.</span> <span class="nav-text">A Comparison of Locking Constructs</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Monitor-Enter-and-Monitor-Exit"><span class="nav-number">3.2.</span> <span class="nav-text">Monitor.Enter and Monitor.Exit</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Choosing-the-Synchronization-Object"><span class="nav-number">3.3.</span> <span class="nav-text">Choosing the Synchronization Object</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#When-to-Lock"><span class="nav-number">3.4.</span> <span class="nav-text">When to Lock</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Locking-and-Atomicity"><span class="nav-number">3.5.</span> <span class="nav-text">Locking and Atomicity</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Nested-Locking"><span class="nav-number">3.6.</span> <span class="nav-text">Nested Locking</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Deadlocks"><span class="nav-number">3.7.</span> <span class="nav-text">Deadlocks</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Performance"><span class="nav-number">3.8.</span> <span class="nav-text">Performance</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Mutex"><span class="nav-number">3.9.</span> <span class="nav-text">Mutex</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Semaphore"><span class="nav-number">3.10.</span> <span class="nav-text">Semaphore</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Thread-Safety"><span class="nav-number">4.</span> <span class="nav-text">Thread Safety</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Thread-Safety-and-NET-Framework-Types"><span class="nav-number">4.1.</span> <span class="nav-text">Thread Safety and .NET Framework Types</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Thread-Safety-in-Application-Servers"><span class="nav-number">4.2.</span> <span class="nav-text">Thread Safety in Application Servers</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Rich-Client-Applications-and-Thread-Affinity"><span class="nav-number">4.3.</span> <span class="nav-text">Rich Client Applications and Thread Affinity</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Immutable-Objects"><span class="nav-number">4.4.</span> <span class="nav-text">Immutable Objects</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Threading-Signaling-with-Event-Wait-Handles"><span class="nav-number">5.</span> <span class="nav-text">Threading - Signaling with Event Wait Handles</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#A-Comparison-of-Signaling-Constructs"><span class="nav-number">5.1.</span> <span class="nav-text">A Comparison of Signaling Constructs</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#AutoResetEvent"><span class="nav-number">5.2.</span> <span class="nav-text">AutoResetEvent</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ManualResetEvent"><span class="nav-number">5.3.</span> <span class="nav-text">ManualResetEvent</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#CountdownEvent"><span class="nav-number">5.4.</span> <span class="nav-text">CountdownEvent</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Creating-a-Cross-Process-EventWaitHandle"><span class="nav-number">5.5.</span> <span class="nav-text">Creating a Cross-Process EventWaitHandle</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Wait-Handles-and-the-Thread-Pool"><span class="nav-number">5.6.</span> <span class="nav-text">Wait Handles and the Thread Pool</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#WaitAny-WaitAll-and-SignalAndWait"><span class="nav-number">5.7.</span> <span class="nav-text">WaitAny, WaitAll, and SignalAndWait</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Synchronization-Contexts-NET-Core%E5%B7%B2%E4%B8%8D%E5%AD%98%E5%9C%A8%EF%BC%89"><span class="nav-number">6.</span> <span class="nav-text">Synchronization Contexts (.NET Core已不存在）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Reentrancy"><span class="nav-number">6.1.</span> <span class="nav-text">Reentrancy</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%83%E8%80%83%E8%B3%87%E6%96%99"><span class="nav-number"></span> <span class="nav-text">參考資料</span></a></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">208</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">49</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="1. What is Transaction ScriptAccording to [PoEAA], this definition is “A Transaction Script organizes all this logic primarily as a single procedure, making calls directly to the database or through a">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Transaction Script Pattern">
+<meta property="og:url" content="http://example.com/2021/05/23/poeaa-domain-logic-pattern-transaction-script/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="1. What is Transaction ScriptAccording to [PoEAA], this definition is “A Transaction Script organizes all this logic primarily as a single procedure, making calls directly to the database or through a">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://geekcodeparadise.com/wp-content/uploads/2021/05/classes-1.png">
+<meta property="og:image" content="http://geekcodeparadise.com/wp-content/uploads/2021/05/products_data-1.png">
+<meta property="og:image" content="http://geekcodeparadise.com/wp-content/uploads/2021/05/Untitled-4.png">
+<meta property="og:image" content="http://geekcodeparadise.com/wp-content/uploads/2021/05/Untitled2B1.png">
+<meta property="og:image" content="http://geekcodeparadise.com/wp-content/uploads/2021/05/Untitled2B2.png">
+<meta property="article:published_time" content="2021-05-23T04:55:00.000Z">
+<meta property="article:modified_time" content="2023-11-19T07:47:25.945Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://geekcodeparadise.com/wp-content/uploads/2021/05/classes-1.png">
+
+<link rel="canonical" href="http://example.com/2021/05/23/poeaa-domain-logic-pattern-transaction-script/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>Transaction Script Pattern | Hexo</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Hexo</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/05/23/poeaa-domain-logic-pattern-transaction-script/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Transaction Script Pattern
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-05-23 12:55:00" itemprop="dateCreated datePublished" datetime="2021-05-23T12:55:00+08:00">2021-05-23</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-11-19 15:47:25" itemprop="dateModified" datetime="2023-11-19T15:47:25+08:00">2023-11-19</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Design-Pattern/" itemprop="url" rel="index"><span itemprop="name">Design Pattern</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Architecture/" itemprop="url" rel="index"><span itemprop="name">Architecture</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/PoEAA/" itemprop="url" rel="index"><span itemprop="name">PoEAA</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="1-What-is-Transaction-Script"><a href="#1-What-is-Transaction-Script" class="headerlink" title="1. What is Transaction Script"></a>1. What is Transaction Script</h3><p>According to [PoEAA], this definition is “A <strong>Transaction Script</strong> organizes all this logic primarily as a single procedure, making calls directly to the database or through a thin database wrapper.”</p>
+<p>For example, when I buy a book on a ecommerce shop, the system executes a series of action, including receiving a book id and customer session, getting a book detail and customer detail from the database, and inserting an order into the database. These actions are organized in a transaction script.</p>
+<p>Usually, a database transaction maps to a transaction script. So it is easily to implement data isolation.</p>
+<h3 id="2-Pattern-Practice-The-Revenue-Recognition-Problem"><a href="#2-Pattern-Practice-The-Revenue-Recognition-Problem" class="headerlink" title="2. Pattern Practice: The Revenue Recognition Problem"></a>2. Pattern Practice: The Revenue Recognition Problem</h3><h4 id="2-1-Problem-Description"><a href="#2-1-Problem-Description" class="headerlink" title="2.1 Problem Description"></a>2.1 Problem Description</h4><p>In [PoEAA], the author wrote a simple case with this transaction script pattern. Assume a company that sells three kinds of software products: word processors, databases, and spreadsheets.</p>
+<p>There are some revenue rules when you sign a contract with these products:</p>
+<ol>
+<li>For word processor, you can book all the revenue</li>
+<li>For spreadsheet, you can book one-third today, one-third in sixty days, and one-third in ninety days</li>
+<li>For database, you can book one-third today, one-third in thirty days, and one-third in sixty days</li>
+</ol>
+<p>Design 3 tables to record these data as Figure 1 shows.</p>
+<p><img src="http://geekcodeparadise.com/wp-content/uploads/2021/05/classes-1.png" alt="Revenue Recognition Problem database design"></p>
+<h4 id="2-2-Implementation-by-C-and-SQLite"><a href="#2-2-Implementation-by-C-and-SQLite" class="headerlink" title="2.2 Implementation by C# and SQLite"></a>2.2 Implementation by C# and SQLite</h4><p>This pattern is implemented by C# and database SQLite. SQLite is a very lightweight database to image our ideas.</p>
+<p>Implementation is base on the section <strong>Chapter 9 Domain Logic Pattern - Transaction Script of PoEAA</strong>. </p>
+<h5 id="2-2-1-Initialize-table-and-data"><a href="#2-2-1-Initialize-table-and-data" class="headerlink" title="2.2.1 Initialize table and data"></a>2.2.1 Initialize table and data</h5><p>When program starts running, it creates a SQLite file and the above 3 tables. The Create Table SQL:</p>
+<p>CREATE TABLE Products (Id int primary key, Name TEXT, Type TEXT);<br>CREATE TABLE Contracts (Id int primary key, Product int, Revenue decimal, DateSigned date);<br>CREATE TABLE RevenueRecognitions (Contract int, Amount decimal, RecognizedOn date, PRIMARY KEY(Contract, RecognizedOn));</p>
+<p>Insert 3 kinds of products as Figure 2 shows:</p>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2021/05/products_data-2.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2021/05/products_data-1.png" alt="Insert 3 products of Revenue Recognition Problem in Transaction Script "></a></p>
+<p>Figure 2: Insert 3 products</p>
+<p>Every product maps to a contract as Figure 3 shows:</p>
+<p><img src="http://geekcodeparadise.com/wp-content/uploads/2021/05/Untitled-4.png" alt="Insert 3 contracts of Revenue Recognition Problem in Transaction Script "></p>
+<p>Figure 3: Insert 3 contracts</p>
+<h5 id="2-2-2-Table-Data-Gateway"><a href="#2-2-2-Table-Data-Gateway" class="headerlink" title="2.2.2 Table Data Gateway"></a>2.2.2 Table Data Gateway</h5><p>A <strong>table data gateway</strong> wraps the SQL queries. And this case is simple so the author creates only one Gateway class rather than one for each table.</p>
+<p>The Gateway class has 3 functions to complete the above problem:</p>
+<p>using CodeParadise.Money;<br>using System;<br>using System.Data;<br>using System.Data.SQLite;</p>
+<p>namespace PoEAA_TransactionScript<br>{<br>    public class Gateway<br>    {<br>        private const string FindRecognitionsStatement &#x3D;<br>            @”<br>                SELECT Amount FROM RevenueRecognitions<br>                WHERE Contract &#x3D; $contractId AND RecognizedOn &lt;&#x3D; $beforeDate<br>            “;</p>
+<pre><code>    private const string FindContractStatement =
+        @&quot;
+            SELECT \* FROM Contracts c, Products p 
+            WHERE c.Id = $contractId AND c.product = p.Id
+        &quot;;
+
+    private const string InsertRecognitionsStatement =
+        @&quot;
+            INSERT INTO RevenueRecognitions VALUES ($contractId, $amount, $recognizedOn)
+        &quot;;
+
+    public DataTable FindRecognitionsFor(int contractId, DateTime beforeDate)
+    &#123;
+        var result = new DataTable();
+        using var connection = DbManager.CreateConnection();
+        connection.Open();
+        var command = connection.CreateCommand();
+        command.CommandText = FindRecognitionsStatement;
+        command.Parameters.AddWithValue(&quot;$contractId&quot;, contractId);
+        command.Parameters.AddWithValue(&quot;$beforeDate&quot;, beforeDate);
+
+        using(var sqlDataAdapter = new SQLiteDataAdapter(command))
+        &#123;
+             sqlDataAdapter.Fill(result);
+        &#125;
+       
+        return result;
+    &#125;
+
+    public DataTable FindContract(int contractId)
+    &#123;
+        var result = new DataTable();
+        using var connection = DbManager.CreateConnection();
+        connection.Open();
+        var command = connection.CreateCommand();
+        command.CommandText = FindContractStatement;
+        command.Parameters.AddWithValue(&quot;$contractId&quot;, contractId);
+
+        using(var sqlDataAdapter = new SQLiteDataAdapter(command))
+        &#123;
+             sqlDataAdapter.Fill(result);
+        &#125;
+       
+        return result;
+    &#125;
+
+    public void InsertRecognitions(int contractId, Money amount, DateTime recognizedOn)
+    &#123;
+        using var connection = DbManager.CreateConnection();
+        connection.Open();
+        var command = connection.CreateCommand();
+        command.CommandText = InsertRecognitionsStatement;
+        command.Parameters.AddWithValue(&quot;$contractId&quot;, contractId);
+        command.Parameters.AddWithValue(&quot;$amount&quot;, amount.Amount);
+        command.Parameters.AddWithValue(&quot;$recognizedOn&quot;, recognizedOn);
+        command.ExecuteNonQuery();
+    &#125;
+&#125;
+</code></pre>
+<p>}</p>
+<p><strong>Money</strong> class is the implementation of the <strong>Money Pattern</strong> described in PoEAA. I created the project in this <a target="_blank" rel="noopener" href="https://github.com/u8989332/CodeParadise.Money">Github Repository</a> and published it to <a target="_blank" rel="noopener" href="https://www.nuget.org/packages/CodeParadise.Money/">Nuget</a>. This class in this case is responsible for returning the money.</p>
+<h5 id="2-2-3-Service"><a href="#2-2-3-Service" class="headerlink" title="2.2.3 Service"></a>2.2.3 Service</h5><p><strong>Service</strong> is responsible for business logic. So every service is thought as a transaction script.</p>
+<p>The <strong>RecognitionService</strong> class has 2 functions:</p>
+<p>using CodeParadise.Money;<br>using System;</p>
+<p>namespace PoEAA_TransactionScript<br>{<br>    class RecognitionService<br>    {<br>        public Money RecognizedRevenue(int contractNumber, DateTime beforeDate)<br>        {<br>            Money result &#x3D; Money.Dollars(0m);<br>            Gateway db &#x3D; new Gateway();<br>            var dt &#x3D; db.FindRecognitionsFor(contractNumber, beforeDate);<br>            for (int i &#x3D; 0; i &lt; dt.Rows.Count; ++i)<br>            {<br>                var amount &#x3D; (decimal) dt.Rows[i][“Amount”];<br>                result +&#x3D; Money.Dollars(amount);<br>            }</p>
+<pre><code>        return result;
+    &#125;
+
+    public void CalculateRevenueRecognitions(int contractId)
+    &#123;
+        Gateway db = new Gateway();
+        var contracts = db.FindContract(contractId);
+        Money totalRevenue = Money.Dollars((decimal) contracts.Rows\[0\]\[&quot;Revenue&quot;\]);
+        DateTime recognitionDate = (DateTime) contracts.Rows\[0\]\[&quot;DateSigned&quot;\];
+        string type = contracts.Rows\[0\]\[&quot;Type&quot;\].ToString();
+
+        if(type == &quot;S&quot;)
+        &#123;
+            Money\[\] allocation = totalRevenue.Allocate(3);
+            db.InsertRecognitions(contractId, allocation\[0\], recognitionDate);
+            db.InsertRecognitions(contractId, allocation\[1\], recognitionDate.AddDays(60));
+            db.InsertRecognitions(contractId, allocation\[2\], recognitionDate.AddDays(90));
+        &#125;
+        else if(type == &quot;W&quot;)
+        &#123;
+            db.InsertRecognitions(contractId, totalRevenue, recognitionDate);
+        &#125;
+        else if(type == &quot;D&quot;)
+        &#123;
+            Money\[\] allocation = totalRevenue.Allocate(3);
+            db.InsertRecognitions(contractId, allocation\[0\], recognitionDate);
+            db.InsertRecognitions(contractId, allocation\[1\], recognitionDate.AddDays(30));
+            db.InsertRecognitions(contractId, allocation\[2\], recognitionDate.AddDays(60));
+        &#125;
+    &#125;
+&#125;
+</code></pre>
+<p>}</p>
+<p><strong>CalculateRevenueRecognitions</strong> function is calculating the revenue recognitions on an existing contract. <strong>RecognizedRevenue</strong> function sum the amounts based on the contract id and the recognized date. These services functions are based on the result sets from <strong>Gateway</strong> class and implement their business logics.</p>
+<h5 id="2-2-4-Demo"><a href="#2-2-4-Demo" class="headerlink" title="2.2.4 Demo"></a>2.2.4 Demo</h5><p>Create a console program and create a <strong>RecognitionService</strong> to calculate the revenue recognitions for the 3 products.</p>
+<p>As the following code:</p>
+<p>RecognitionService service &#x3D; new RecognitionService();</p>
+<p>&#x2F;&#x2F; database product<br>service.CalculateRevenueRecognitions(1);<br>var databaseRevenue &#x3D; service.RecognizedRevenue(1, new System.DateTime(2020, 1, 25));<br>Console.WriteLine($”database revenue before 2020-01-25 &#x3D; {databaseRevenue.Amount}”);</p>
+<p>&#x2F;&#x2F; spreadsheet product<br>service.CalculateRevenueRecognitions(2);<br>var spreadsheetRevenue &#x3D; service.RecognizedRevenue(2, new System.DateTime(2020, 6, 1));<br>Console.WriteLine($”spreadsheet revenue before 2020-06-01 &#x3D; {spreadsheetRevenue.Amount}”);</p>
+<p> &#x2F;&#x2F; word processor product<br>service.CalculateRevenueRecognitions(3);<br>var wordProcessorRevenue &#x3D; service.RecognizedRevenue(3, new System.DateTime(2020, 9, 30));<br>Console.WriteLine($”word processor revenue before 2020-09-30 &#x3D; {wordProcessorRevenue.Amount}”);</p>
+<p>The console shows:</p>
+<p><img src="http://geekcodeparadise.com/wp-content/uploads/2021/05/Untitled2B1.png" alt="Transaction Script result"></p>
+<p>Let’s look at the table <strong>RevenueRecognitions of</strong> the the database, and it’s records are inserted by <strong>CalculateRevenueRecognitions</strong> function.</p>
+<p><a target="_blank" rel="noopener" href="https://www.blogger.com/#"><img src="http://geekcodeparadise.com/wp-content/uploads/2021/05/Untitled2B2.png" alt="Calculated revenue recognitions for 3 contracts in Transaction Script "></a></p>
+<p>Figure 5: Calculated revenue recognitions for 3 contracts</p>
+<h3 id=""><a href="#" class="headerlink" title=""></a></h3><p>3. Conclusions for Transaction Script</p>
+<p>Everybody can write “Transaction Scripts”. Yes, it’s just a script. If the business logic is very simple, just use this pattern. For complex applications, Transaction Script is not maintainable. Even one service function that contains hundreds of &#x2F; thousands of code lines is the nightmare for developers.</p>
+<p>The above sample code is uploaded to this <a target="_blank" rel="noopener" href="https://github.com/u8989332/PoEAA_TransactionScript">Github Repository</a>.</p>
+<p>For next article I will write <strong>Domain Model</strong> pattern. It’s more complex but maintainable for complex applications. Modern .NET solution with Entity Framework is based on <strong>Domain Model.</strong> Some developers have silently used this pattern but I want to dive in this classic concept.</p>
+<p>Although I have developed .NET software for some years and almost read the documents with MSDN, the classic concepts of patterns&#x2F;architecture are organized by Martin Fowler. PoEAA is a masterpiece that every programmer should read. Despite of 20 years past, it is still valuable for modern software.</p>
+<h3 id="4-References"><a href="#4-References" class="headerlink" title="4. References"></a>4. References</h3><p><a target="_blank" rel="noopener" href="https://amzn.to/40CuWZT">Patterns of Enterprise Application Architecture Book(Amazon)</a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/01/12/wpf-instagram-clone-layout/" rel="prev" title="[WPF] Instagram Clone Layout">
+      <i class="fa fa-chevron-left"></i> [WPF] Instagram Clone Layout
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/05/29/poeaa-domain-logic-pattern-domain-model/" rel="next" title="Domain Model Pattern">
+      Domain Model Pattern <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-What-is-Transaction-Script"><span class="nav-number">1.</span> <span class="nav-text">1. What is Transaction Script</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-Pattern-Practice-The-Revenue-Recognition-Problem"><span class="nav-number">2.</span> <span class="nav-text">2. Pattern Practice: The Revenue Recognition Problem</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-Problem-Description"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 Problem Description</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-Implementation-by-C-and-SQLite"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 Implementation by C# and SQLite</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#2-2-1-Initialize-table-and-data"><span class="nav-number">2.2.1.</span> <span class="nav-text">2.2.1 Initialize table and data</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-2-2-Table-Data-Gateway"><span class="nav-number">2.2.2.</span> <span class="nav-text">2.2.2 Table Data Gateway</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-2-3-Service"><span class="nav-number">2.2.3.</span> <span class="nav-text">2.2.3 Service</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-2-4-Demo"><span class="nav-number">2.2.4.</span> <span class="nav-text">2.2.4 Demo</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-number">3.</span> <span class="nav-text"></span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-References"><span class="nav-number">4.</span> <span class="nav-text">4. References</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">208</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">49</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

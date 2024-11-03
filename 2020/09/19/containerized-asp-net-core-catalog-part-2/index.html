@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="1. 新增繼承DbContext的類別　在CatalogApi專案新增資料夾Data，新增CatalogContext類別，並繼承DbContext，要與DB存取資料都是以此物件。 　　前述的CatalogType和CatalogItem兩個Entity加入至CatalogContext的DbSet，才能對這兩個做CRUD的功能。 　　在這使用Fluent API，可以宣告資料庫的表格規範，包含欄">
+<meta property="og:type" content="article">
+<meta property="og:title" content="一袋.NET要扛幾樓？打造容器化的ASP.NET Core網站！系列文章 - (4) 建立商品服務的Api - 2">
+<meta property="og:url" content="http://example.com/2020/09/19/containerized-asp-net-core-catalog-part-2/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="1. 新增繼承DbContext的類別　在CatalogApi專案新增資料夾Data，新增CatalogContext類別，並繼承DbContext，要與DB存取資料都是以此物件。 　　前述的CatalogType和CatalogItem兩個Entity加入至CatalogContext的DbSet，才能對這兩個做CRUD的功能。 　　在這使用Fluent API，可以宣告資料庫的表格規範，包含欄">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://geekcodeparadise.com/wp-content/uploads/2020/09/login2Bssms2Bto2Bdocker2Bsql2Bserver.png">
+<meta property="og:image" content="http://geekcodeparadise.com/wp-content/uploads/2020/09/add2Bmigrations.png">
+<meta property="og:image" content="http://geekcodeparadise.com/wp-content/uploads/2020/09/update2Bdatabase.png">
+<meta property="og:image" content="http://geekcodeparadise.com/wp-content/uploads/2020/09/seed2Bresult.png">
+<meta property="article:published_time" content="2020-09-19T14:51:00.000Z">
+<meta property="article:modified_time" content="2023-11-19T07:47:25.770Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://geekcodeparadise.com/wp-content/uploads/2020/09/login2Bssms2Bto2Bdocker2Bsql2Bserver.png">
+
+<link rel="canonical" href="http://example.com/2020/09/19/containerized-asp-net-core-catalog-part-2/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>一袋.NET要扛幾樓？打造容器化的ASP.NET Core網站！系列文章 - (4) 建立商品服務的Api - 2 | Hexo</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Hexo</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/09/19/containerized-asp-net-core-catalog-part-2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          一袋.NET要扛幾樓？打造容器化的ASP.NET Core網站！系列文章 - (4) 建立商品服務的Api - 2
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-09-19 22:51:00" itemprop="dateCreated datePublished" datetime="2020-09-19T22:51:00+08:00">2020-09-19</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-11-19 15:47:25" itemprop="dateModified" datetime="2023-11-19T15:47:25+08:00">2023-11-19</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ASP-NET-Core/" itemprop="url" rel="index"><span itemprop="name">ASP.NET Core</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Docker/" itemprop="url" rel="index"><span itemprop="name">Docker</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h4 id="1-新增繼承DbContext的類別"><a href="#1-新增繼承DbContext的類別" class="headerlink" title="1. 新增繼承DbContext的類別"></a>1. 新增繼承DbContext的類別</h4><p>　在CatalogApi專案新增資料夾Data，新增CatalogContext類別，並繼承DbContext，要與DB存取資料都是以此物件。</p>
+<p>　　前述的CatalogType和CatalogItem兩個Entity加入至CatalogContext的DbSet，才能對這兩個做CRUD的功能。 　　在這使用Fluent API，可以宣告資料庫的表格規範，包含欄位的限制、Relation的設計等。</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">using</span> CatalogApi.Domain;</span><br><span class="line"><span class="keyword">using</span> Microsoft.EntityFrameworkCore;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">CatalogApi.Data</span></span><br><span class="line">&#123;</span><br><span class="line"> <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">CatalogContext</span> : <span class="title">DbContext</span></span><br><span class="line"> &#123;</span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="title">CatalogContext</span>(<span class="params">DbContextOptions options</span>) : <span class="title">base</span>(<span class="params">options</span>)</span></span><br><span class="line"> &#123;</span><br><span class="line"></span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">protected</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">OnModelCreating</span>(<span class="params">ModelBuilder builder</span>)</span></span><br><span class="line"> &#123;</span><br><span class="line"> builder.Entity&lt;CatalogType&gt;(x =&gt;</span><br><span class="line"> &#123;</span><br><span class="line"> x.ToTable(<span class="string">&quot;CatalogType&quot;</span>);</span><br><span class="line"> x.Property(c =&gt; c.Type)</span><br><span class="line"> .IsRequired()</span><br><span class="line"> .HasMaxLength(<span class="number">100</span>);</span><br><span class="line"> &#125;);</span><br><span class="line"></span><br><span class="line"> builder.Entity&lt;CatalogItem&gt;(x =&gt;</span><br><span class="line"> &#123;</span><br><span class="line"> x.ToTable(<span class="string">&quot;Catalog&quot;</span>);</span><br><span class="line"> x.Property(c =&gt; c.Name)</span><br><span class="line"> .IsRequired()</span><br><span class="line"> .HasMaxLength(<span class="number">50</span>);</span><br><span class="line"> x.Property(c =&gt; c.Price)</span><br><span class="line"> .IsRequired();</span><br><span class="line"> x.HasOne(c =&gt; c.CatalogType)</span><br><span class="line"> .WithMany()</span><br><span class="line"> .HasForeignKey(c =&gt; c.CatalogTypeId);</span><br><span class="line"> &#125;);</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"> <span class="keyword">public</span> DbSet&lt;CatalogType&gt; CatalogTypes &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line"> <span class="keyword">public</span> DbSet&lt;CatalogItem&gt; CatalogItems &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h4 id="2-新建Docker-Compose文件，並啟用Sql-Server"><a href="#2-新建Docker-Compose文件，並啟用Sql-Server" class="headerlink" title="2. 新建Docker Compose文件，並啟用Sql Server"></a>2. 新建Docker Compose文件，並啟用Sql Server</h4><p>　　在方案的根目錄，建立docker-compose.yml，並加入至方案。yml的內容如下，其中有幾個參數：</p>
+<ul>
+<li>networks：將資料庫規範在backend的網路區域，後續其他系統會歸類在其他區域</li>
+<li>image：從Docker Hub要安裝的SQL Server Image，預設用目前最新的</li>
+<li>ports：本機端的Port 1445映射Docker container的1433 port，由於本機已經裝過SQL Server，所以要用另外的Port 1445</li>
+<li>container_name：建立本專案SQL Server的container名稱</li>
+<li>environment：啟用SQL Server必須給定的參數有ACCEPT_EULA和SA_PASSWORD，前者參數必須指定Y，否則不給用；後者是SQL Server預設管理者SA的密碼</li>
+</ul>
+<figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">version: <span class="string">&quot;3.4&quot;</span></span><br><span class="line"></span><br><span class="line">networks:</span><br><span class="line"> backend:</span><br><span class="line"> </span><br><span class="line">services:</span><br><span class="line"> mssqlserver:</span><br><span class="line"> image: <span class="string">&quot;microsoft/mssql-server-linux:latest&quot;</span></span><br><span class="line"> ports:</span><br><span class="line"> - <span class="string">&quot;1445:1433&quot;</span></span><br><span class="line"></span><br><span class="line"> container_name: rpgmssqlcontainer</span><br><span class="line"> environment:</span><br><span class="line"> - ACCEPT_EULA=Y</span><br><span class="line"> - SA_PASSWORD=JustTest!</span><br><span class="line"> networks:</span><br><span class="line"> - backend</span><br></pre></td></tr></table></figure>
+
+<p>　　在docker-compose.yml啟用cmd，並執行</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"> </span><br><span class="line">docker-compose up</span><br></pre></td></tr></table></figure>
+
+<p>Docker將建立一個SQL Server的Container，此時開啟SSMS，登入的伺服器名稱為 localhost,1445 (要有逗號並串接port)，如圖1，代表Docker Container的SQL Server可使用。</p>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2020/09/login2Bssms2Bto2Bdocker2Bsql2Bserver-1.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2020/09/login2Bssms2Bto2Bdocker2Bsql2Bserver.png"></a></p>
+<p>圖1</p>
+<h4 id="3-設定appsettings-json的連線字串"><a href="#3-設定appsettings-json的連線字串" class="headerlink" title="3. 設定appsettings.json的連線字串"></a>3. 設定appsettings.json的連線字串</h4><p>　　在appsettings.json增加4個屬性</p>
+<p>“DatabaseServer”: “localhost,1445”,</p>
+<p>“DatabaseName”: “CatalogDb”,<br>“DatabaseUser”: “sa”,</p>
+<p>“DatabasePassword”: “JustTest!”</p>
+<p>將連線字串的主要參數拆解，可以區分用VS和Dokcer的測試參數。</p>
+<h4 id="4-設定Startup-cs"><a href="#4-設定Startup-cs" class="headerlink" title="4. 設定Startup.cs"></a>4. 設定Startup.cs</h4><p>　　在public void ConfigureServices(IServiceCollection services)，添加註冊Sql Server的連線資訊和DbContext的Services：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">ConfigureServices</span>(<span class="params">IServiceCollection services</span>)</span></span><br><span class="line"> &#123;</span><br><span class="line"> <span class="comment">// other code...</span></span><br><span class="line"> </span><br><span class="line"> <span class="built_in">string</span> server = Configuration[<span class="string">&quot;DatabaseServer&quot;</span>];</span><br><span class="line"> <span class="built_in">string</span> database = Configuration[<span class="string">&quot;DatabaseName&quot;</span>];</span><br><span class="line"> <span class="built_in">string</span> user = Configuration[<span class="string">&quot;DatabaseUser&quot;</span>];</span><br><span class="line"> <span class="built_in">string</span> password = Configuration[<span class="string">&quot;DatabasePassword&quot;</span>];</span><br><span class="line"> <span class="built_in">string</span> connectionString = <span class="built_in">string</span>.Format(<span class="string">&quot;Server=&#123;0&#125;;Database=&#123;1&#125;;User=&#123;2&#125;;Password=&#123;3&#125;;&quot;</span>, server, database, user, password);</span><br><span class="line"></span><br><span class="line"> services.AddDbContext(options =&gt; options.UseSqlServer(connectionString));</span><br><span class="line"> </span><br><span class="line"> <span class="comment">// other code...</span></span><br><span class="line"> &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h4 id="5-建立資料庫遷移"><a href="#5-建立資料庫遷移" class="headerlink" title="5. 建立資料庫遷移"></a>5. 建立資料庫遷移</h4><p>　　開啟cmd，將路徑切換到CatalogApi.csproj的目錄。假如尚未安裝dotnet ef的工具，在cmd執行</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dotnet tool install --global dotnet-ef --version 3.1.7</span><br></pre></td></tr></table></figure>
+
+<p>　　接著輸入第一次遷移的指令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dotnet ef migrations add Initialize</span><br></pre></td></tr></table></figure>
+
+<p>　　在專案內將產生Migrations的資料夾和遷移相關的.cs檔，如圖2。</p>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2020/09/add2Bmigrations-1.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2020/09/add2Bmigrations.png"></a></p>
+<p>圖2</p>
+<p>　　輸入此遷移的更新資料庫指令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dotnet ef database update</span><br></pre></td></tr></table></figure>
+
+<p>　　成功的話，用SSMS檢查，可看見資料庫CatalogDb和2個表格Catalog和CatalogType，如圖3。</p>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2020/09/update2Bdatabase-1.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2020/09/update2Bdatabase.png"></a></p>
+<p>圖3</p>
+<h4 id="6-建立預設資料Seed"><a href="#6-建立預設資料Seed" class="headerlink" title="6. 建立預設資料Seed"></a>6. 建立預設資料Seed</h4><p>　　商品的類型與列表，在系統剛啟動時會先檢查資料庫是否有資料，如果沒有的話，建立一個Seed程式(或者是SQL腳本)，將預設的資料寫進資料庫。 　　首先在Data資料夾建立CatalogSeed.cs，建立一個非同步的SeedAsync函式，先檢查CatalogItem和CatalogType是否有任何值，沒有的話則寫入預設的資料。</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> CatalogApi.Domain;</span><br><span class="line"><span class="keyword">using</span> System.Collections.Generic;</span><br><span class="line"><span class="keyword">using</span> System.Linq;</span><br><span class="line"><span class="keyword">using</span> System.Threading.Tasks;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">CatalogApi.Data</span> &#123;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">CatalogSeed</span> &#123;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">async</span> Task <span class="title">SeedAsync</span>(<span class="params">CatalogContext context</span>)</span> &#123;</span><br><span class="line"><span class="keyword">if</span> (!context.CatalogTypes.Any()) &#123;</span><br><span class="line">context.CatalogTypes.AddRange(GetDefaultCatalogTypes());</span><br><span class="line"><span class="keyword">await</span> context.SaveChangesAsync();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (!context.CatalogItems.Any()) &#123;</span><br><span class="line">context.CatalogItems.AddRange(GetDefaultItems());</span><br><span class="line"><span class="keyword">await</span> context.SaveChangesAsync();</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="title">IEnumerable</span> &lt; CatalogType &gt; <span class="title">GetDefaultCatalogTypes</span>()</span> &#123;</span><br><span class="line"><span class="keyword">return</span> <span class="keyword">new</span> List &lt; CatalogType &gt; () &#123;</span><br><span class="line"><span class="keyword">new</span> CatalogType() &#123;</span><br><span class="line">Type = <span class="string">&quot;Head&quot;</span></span><br><span class="line">&#125;,</span><br><span class="line"><span class="keyword">new</span> CatalogType() &#123;</span><br><span class="line">Type = <span class="string">&quot;Chest&quot;</span></span><br><span class="line">&#125;,</span><br><span class="line"><span class="keyword">new</span> CatalogType() &#123;</span><br><span class="line">Type = <span class="string">&quot;Hands&quot;</span></span><br><span class="line">&#125;,</span><br><span class="line"><span class="keyword">new</span> CatalogType() &#123;</span><br><span class="line">Type = <span class="string">&quot;Legs&quot;</span></span><br><span class="line">&#125;,</span><br><span class="line"><span class="keyword">new</span> CatalogType() &#123;</span><br><span class="line">Type = <span class="string">&quot;Feet&quot;</span></span><br><span class="line">&#125;</span><br><span class="line">&#125;;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="title">IEnumerable</span> &lt; CatalogItem &gt; <span class="title">GetDefaultItems</span>()</span> &#123;</span><br><span class="line"><span class="keyword">return</span> <span class="keyword">new</span> List &lt; CatalogItem &gt; () &#123;</span><br><span class="line"><span class="keyword">new</span> CatalogItem() &#123;</span><br><span class="line">CatalogTypeId = <span class="number">1</span>,</span><br><span class="line">Description = <span class="string">&quot;Normal Helmet&quot;</span>,</span><br><span class="line">Name = <span class="string">&quot;Normal Helmet&quot;</span>,</span><br><span class="line">Price = <span class="number">10</span> M,</span><br><span class="line">PictureFileName = <span class="string">&quot;1.png&quot;</span></span><br><span class="line">&#125;,</span><br><span class="line"><span class="keyword">new</span> CatalogItem() &#123;</span><br><span class="line">CatalogTypeId = <span class="number">1</span>,</span><br><span class="line">Description = <span class="string">&quot;Great Helmet&quot;</span>,</span><br><span class="line">Name = <span class="string">&quot;Great Helmet&quot;</span>,</span><br><span class="line">Price = <span class="number">50</span> M,</span><br><span class="line">PictureFileName = <span class="string">&quot;2.png&quot;</span></span><br><span class="line">&#125;,</span><br><span class="line"><span class="keyword">new</span> CatalogItem() &#123;</span><br><span class="line">CatalogTypeId = <span class="number">2</span>,</span><br><span class="line">Description = <span class="string">&quot;Normal Armor&quot;</span>,</span><br><span class="line">Name = <span class="string">&quot;Normal Armor&quot;</span>,</span><br><span class="line">Price = <span class="number">15</span> M,</span><br><span class="line">PictureFileName = <span class="string">&quot;3.png&quot;</span></span><br><span class="line">&#125;,</span><br><span class="line"><span class="keyword">new</span> CatalogItem() &#123;</span><br><span class="line">CatalogTypeId = <span class="number">2</span>,</span><br><span class="line">Description = <span class="string">&quot;Great Armor&quot;</span>,</span><br><span class="line">Name = <span class="string">&quot;Great Armor&quot;</span>,</span><br><span class="line">Price = <span class="number">42</span> M,</span><br><span class="line">PictureFileName = <span class="string">&quot;4.png&quot;</span></span><br><span class="line">&#125;,</span><br><span class="line"><span class="keyword">new</span> CatalogItem() &#123;</span><br><span class="line">CatalogTypeId = <span class="number">4</span>,</span><br><span class="line">Description = <span class="string">&quot;Normal Robe&quot;</span>,</span><br><span class="line">Name = <span class="string">&quot;Normal Robe&quot;</span>,</span><br><span class="line">Price = <span class="number">12</span> M,</span><br><span class="line">PictureFileName = <span class="string">&quot;5.png&quot;</span></span><br><span class="line">&#125;,</span><br><span class="line"><span class="keyword">new</span> CatalogItem() &#123;</span><br><span class="line">CatalogTypeId = <span class="number">4</span>,</span><br><span class="line">Description = <span class="string">&quot;Great Robe&quot;</span>,</span><br><span class="line">Name = <span class="string">&quot;Great Robe&quot;</span>,</span><br><span class="line">Price = <span class="number">44</span> M,</span><br><span class="line">PictureFileName = <span class="string">&quot;6.png&quot;</span></span><br><span class="line">&#125;,</span><br><span class="line"><span class="keyword">new</span> CatalogItem() &#123;</span><br><span class="line">CatalogTypeId = <span class="number">3</span>,</span><br><span class="line">Description = <span class="string">&quot;Normal Gloves&quot;</span>,</span><br><span class="line">Name = <span class="string">&quot;Normal Gloves&quot;</span>,</span><br><span class="line">Price = <span class="number">5</span> M,</span><br><span class="line">PictureFileName = <span class="string">&quot;7.png&quot;</span></span><br><span class="line">&#125;,</span><br><span class="line"><span class="keyword">new</span> CatalogItem() &#123;</span><br><span class="line">CatalogTypeId = <span class="number">3</span>,</span><br><span class="line">Description = <span class="string">&quot;Great Gloves&quot;</span>,</span><br><span class="line">Name = <span class="string">&quot;Great Gloves&quot;</span>,</span><br><span class="line">Price = <span class="number">69</span> M,</span><br><span class="line">PictureFileName = <span class="string">&quot;8.png&quot;</span></span><br><span class="line">&#125;,</span><br><span class="line"><span class="keyword">new</span> CatalogItem() &#123;</span><br><span class="line">CatalogTypeId = <span class="number">5</span>,</span><br><span class="line">Description = <span class="string">&quot;Normal Boots&quot;</span>,</span><br><span class="line">Name = <span class="string">&quot;Normal Boots&quot;</span>,</span><br><span class="line">Price = <span class="number">13</span> M,</span><br><span class="line">PictureFileName = <span class="string">&quot;9.png&quot;</span></span><br><span class="line">&#125;,</span><br><span class="line"><span class="keyword">new</span> CatalogItem() &#123;</span><br><span class="line">CatalogTypeId = <span class="number">5</span>,</span><br><span class="line">Description = <span class="string">&quot;Great Boots&quot;</span>,</span><br><span class="line">Name = <span class="string">&quot;Great Boots&quot;</span>,</span><br><span class="line">Price = <span class="number">55</span> M,</span><br><span class="line">PictureFileName = <span class="string">&quot;10.png&quot;</span></span><br><span class="line">&#125;</span><br><span class="line">&#125;;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　接著在Program.cs，使用GetRequiredService取的CatalogContext，並呼叫CatalogSeed做寫資料的功能：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> CatalogApi.Data;</span><br><span class="line"><span class="keyword">using</span> Microsoft.AspNetCore.Hosting;</span><br><span class="line"><span class="keyword">using</span> Microsoft.Extensions.DependencyInjection;</span><br><span class="line"><span class="keyword">using</span> Microsoft.Extensions.Hosting;</span><br><span class="line"><span class="keyword">using</span> Microsoft.Extensions.Logging;</span><br><span class="line"><span class="keyword">using</span> System;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">CatalogApi</span> &#123;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Program</span> &#123;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"><span class="built_in">string</span>[] args</span>)</span> &#123;</span><br><span class="line"><span class="keyword">var</span> host = CreateHostBuilder(args).Build();</span><br><span class="line"><span class="keyword">using</span>(<span class="keyword">var</span> scope = host.Services.CreateScope()) &#123;</span><br><span class="line"><span class="keyword">var</span> services = scope.ServiceProvider;</span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line"><span class="keyword">var</span> context = services.GetRequiredService &lt; CatalogContext &gt; ();</span><br><span class="line">CatalogSeed.SeedAsync(context).Wait();</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">catch</span>(Exception ex) &#123;</span><br><span class="line"><span class="keyword">var</span> logger = services.GetRequiredService &lt; ILogger &lt; Program &gt;&gt; ();</span><br><span class="line">logger.LogError(ex, <span class="string">&quot;An error occured while seeding the database&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">host.Run();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> IHostBuilder <span class="title">CreateHostBuilder</span>(<span class="params"><span class="built_in">string</span>[] args</span>)</span> = &gt;Host.CreateDefaultBuilder(args).ConfigureWebHostDefaults(webBuilder = &gt;&#123;</span><br><span class="line">webBuilder.UseStartup &lt; Startup &gt; ();</span><br><span class="line">&#125;);</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　在VS啟用Debug，讓程式執行，再用SSMS確認有寫入預設資料，如圖4。</p>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2020/09/seed2Bresult-1.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2020/09/seed2Bresult.png"></a></p>
+<p>圖4</p>
+<p>-————————————————————-</p>
+<p>下一篇將撰寫ApiController對商品的CRUD功能設計。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/09/18/containerized-asp-net-core-catalog-part-1/" rel="prev" title="一袋.NET要扛幾樓？打造 容器化 的 ASP.NET  Core網站！系列文章 - (3) 建立商品服務的Api - 1">
+      <i class="fa fa-chevron-left"></i> 一袋.NET要扛幾樓？打造 容器化 的 ASP.NET  Core網站！系列文章 - (3) 建立商品服務的Api - 1
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/09/19/leetcode-113-path-sum-ii/" rel="next" title="LeetCode 113 Path Sum II">
+      LeetCode 113 Path Sum II <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E6%96%B0%E5%A2%9E%E7%B9%BC%E6%89%BFDbContext%E7%9A%84%E9%A1%9E%E5%88%A5"><span class="nav-number">1.</span> <span class="nav-text">1. 新增繼承DbContext的類別</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E6%96%B0%E5%BB%BADocker-Compose%E6%96%87%E4%BB%B6%EF%BC%8C%E4%B8%A6%E5%95%9F%E7%94%A8Sql-Server"><span class="nav-number">2.</span> <span class="nav-text">2. 新建Docker Compose文件，並啟用Sql Server</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-%E8%A8%AD%E5%AE%9Aappsettings-json%E7%9A%84%E9%80%A3%E7%B7%9A%E5%AD%97%E4%B8%B2"><span class="nav-number">3.</span> <span class="nav-text">3. 設定appsettings.json的連線字串</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-%E8%A8%AD%E5%AE%9AStartup-cs"><span class="nav-number">4.</span> <span class="nav-text">4. 設定Startup.cs</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-%E5%BB%BA%E7%AB%8B%E8%B3%87%E6%96%99%E5%BA%AB%E9%81%B7%E7%A7%BB"><span class="nav-number">5.</span> <span class="nav-text">5. 建立資料庫遷移</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-%E5%BB%BA%E7%AB%8B%E9%A0%90%E8%A8%AD%E8%B3%87%E6%96%99Seed"><span class="nav-number">6.</span> <span class="nav-text">6. 建立預設資料Seed</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">208</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">49</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

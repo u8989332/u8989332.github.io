@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="UVa 1598 Exchange 解題報告 平台：UVa Online Judge 題號：1598 - Exchange 題目連結：https:&#x2F;&#x2F;onlinejudge.org&#x2F;index.php?option&#x3D;com_onlinejudge&amp;Itemid&#x3D;8&amp;page&#x3D;show_problem&amp;category&#x3D;0&amp;problem">
+<meta property="og:type" content="article">
+<meta property="og:title" content="UVa 1598 Exchange">
+<meta property="og:url" content="http://example.com/2020/04/03/uva-1598-exchange/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="UVa 1598 Exchange 解題報告 平台：UVa Online Judge 題號：1598 - Exchange 題目連結：https:&#x2F;&#x2F;onlinejudge.org&#x2F;index.php?option&#x3D;com_onlinejudge&amp;Itemid&#x3D;8&amp;page&#x3D;show_problem&amp;category&#x3D;0&amp;problem">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://geekcodeparadise.com/wp-content/uploads/2020/04/1-2.png">
+<meta property="og:image" content="http://geekcodeparadise.com/wp-content/uploads/2020/04/2-2.png">
+<meta property="og:image" content="http://geekcodeparadise.com/wp-content/uploads/2020/04/3-1.png">
+<meta property="og:image" content="http://geekcodeparadise.com/wp-content/uploads/2020/04/4-1.png">
+<meta property="og:image" content="http://geekcodeparadise.com/wp-content/uploads/2020/04/5-1.png">
+<meta property="og:image" content="http://geekcodeparadise.com/wp-content/uploads/2020/04/6-1.png">
+<meta property="og:image" content="http://geekcodeparadise.com/wp-content/uploads/2020/04/7-1.png">
+<meta property="og:image" content="http://geekcodeparadise.com/wp-content/uploads/2020/04/8-1.png">
+<meta property="og:image" content="http://geekcodeparadise.com/wp-content/uploads/2020/04/9-1.png">
+<meta property="og:image" content="http://geekcodeparadise.com/wp-content/uploads/2020/04/10-1.png">
+<meta property="og:image" content="http://geekcodeparadise.com/wp-content/uploads/2020/04/11-1.png">
+<meta property="og:image" content="http://geekcodeparadise.com/wp-content/uploads/2020/04/12-1.png">
+<meta property="og:image" content="http://geekcodeparadise.com/wp-content/uploads/2020/04/25E5259C259613.png">
+<meta property="og:image" content="http://geekcodeparadise.com/wp-content/uploads/2020/04/14.png">
+<meta property="og:image" content="http://geekcodeparadise.com/wp-content/uploads/2020/04/15.png">
+<meta property="og:image" content="http://geekcodeparadise.com/wp-content/uploads/2020/04/16.png">
+<meta property="article:published_time" content="2020-04-03T07:37:00.000Z">
+<meta property="article:modified_time" content="2023-11-19T07:47:25.709Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://geekcodeparadise.com/wp-content/uploads/2020/04/1-2.png">
+
+<link rel="canonical" href="http://example.com/2020/04/03/uva-1598-exchange/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>UVa 1598 Exchange | Hexo</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Hexo</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/04/03/uva-1598-exchange/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          UVa 1598 Exchange
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-04-03 15:37:00" itemprop="dateCreated datePublished" datetime="2020-04-03T15:37:00+08:00">2020-04-03</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-11-19 15:47:25" itemprop="dateModified" datetime="2023-11-19T15:47:25+08:00">2023-11-19</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C#</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ACM/" itemprop="url" rel="index"><span itemprop="name">ACM</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Level-Medium/" itemprop="url" rel="index"><span itemprop="name">Level-Medium</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%A8%8B%E5%BC%8F%E8%A7%A3%E9%A1%8C/" itemprop="url" rel="index"><span itemprop="name">程式解題</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ProgramSolving/" itemprop="url" rel="index"><span itemprop="name">ProgramSolving</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/UVa/" itemprop="url" rel="index"><span itemprop="name">UVa</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>UVa 1598 Exchange 解題報告</p>
+<h4 id="平台："><a href="#平台：" class="headerlink" title="平台："></a>平台：</h4><p>UVa Online Judge</p>
+<h4 id="題號："><a href="#題號：" class="headerlink" title="題號："></a>題號：</h4><p>1598 - Exchange</p>
+<h4 id="題目連結："><a href="#題目連結：" class="headerlink" title="題目連結："></a>題目連結：</h4><p><a target="_blank" rel="noopener" href="https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&category=0&problem=4473">https://onlinejudge.org/index.php?option=com_onlinejudge&amp;Itemid&#x3D;8&amp;page&#x3D;show_problem&amp;category&#x3D;0&amp;problem&#x3D;4473</a></p>
+<h4 id="題目說明："><a href="#題目說明：" class="headerlink" title="題目說明："></a>題目說明：</h4><p>一個商品競標的平台，會有買方與賣方的出價。買方會有購買商品的數量和價格、賣方也會有販賣商品的數量和價格。<br>一開始會有N筆指令，其中有3種指令</p>
+<ol>
+<li>SELL 販賣的數量 販賣的價格</li>
+<li>BUY 購買的數量 購買的價格</li>
+<li>CANCEL 第Y筆的競標取消</li>
+</ol>
+<p>前2個指令BUY和SELL執行後，若有任一家的買方的價格大於或等於任一家賣方的價格，此時發生交易。交易的順序是依照輸入的報價順序，若前面的買／賣方商品已買／售完，則再換下一位買／賣方，直到任一家買方的價格小於任一家賣方的價格。<br>　　進行交易時都輸出</p>
+<p>TRADE 交易的數量 交易的價格</p>
+<p>交易的價格是依照觸發交易的反方價格，比如是買方的指令觸發交易，則交易價格是用賣方的最低價格。 如果目前指令為CANCEL，則第Y筆的競標指令要移除。</p>
+<p>　　不管有無任何交易，每個指令結束後都要輸出</p>
+<p>QUOTE 買方最高價格的總數量 買方最高價格 - 賣方最低價格的總數量 賣方最低價格</p>
+<p>如果當前沒有任何買方在競標，則買方最高價格的總數量和買方最高價格都輸出0；如果當前沒有任何賣方在競標，則賣方最高價格的總數量和賣方最高價格分別輸出0 和 99999</p>
+<h4 id="範例輸入："><a href="#範例輸入：" class="headerlink" title="範例輸入："></a>範例輸入：</h4><p>11<br>BUY 100 35<br>CANCEL 1<br>BUY 100 34<br>SELL 150 36<br>SELL 300 37<br>SELL 100 36<br>BUY 100 38<br>CANCEL 4<br>CANCEL 7<br>BUY 200 32<br>SELL 500 30</p>
+<h4 id="範例輸出："><a href="#範例輸出：" class="headerlink" title="範例輸出："></a>範例輸出：</h4><p>QUOTE 100 35 - 0 99999<br>QUOTE 0 0 - 0 99999<br>QUOTE 100 34 - 0 99999<br>QUOTE 100 34 - 150 36<br>QUOTE 100 34 - 150 36<br>QUOTE 100 34 - 250 36<br>TRADE 100 36<br>QUOTE 100 34 - 150 36<br>QUOTE 100 34 - 100 36<br>QUOTE 100 34 - 100 36<br>QUOTE 100 34 - 100 36<br>TRADE 100 34<br>TRADE 200 32<br>QUOTE 0 0 - 200 30</p>
+<h4 id="解題方法："><a href="#解題方法：" class="headerlink" title="解題方法："></a>解題方法：</h4><p>這模擬題使用5個資料結構。</p>
+<ol>
+<li>priority_queue&lt;int, vector<int>, less<int>&gt; buy_price : 用Priority Queue紀錄買方的最高價格</li>
+<li>priority_queue&lt;int, vector<int>, greater<int>&gt; sell_price : 用Priority Queue紀錄賣方的最低價格</li>
+<li>map&lt;int, vector<Exchange>&gt; buy_price_map_size : 買方每種價格的數量列表</li>
+<li>map&lt;int, vector<Exchange>&gt; sell_price_map_size : 賣方每種價格的數量列表</li>
+<li>BuySell buySell[10005] : 紀錄指令是否為買&#x2F;賣方和價格</li>
+</ol>
+<p>struct Exchange<br>{<br>int index;<br>int s;<br>};<br>Exchange的index是指令的順序、s是數量  </p>
+<p>struct BuySell<br>{<br>bool isBuy;<br>int price;<br>};<br>isBuy為是否為買&#x2F;賣方、price是這買&#x2F;賣方的價格  </p>
+<p>用圖說明範例測資的運作流程. 圖1為尚未有任何指令的狀態。  </p>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2020/04/1-3.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2020/04/1-2.png" alt="UVa 1598 Exchange 圖1"></a></p>
+<p>圖1</p>
+<p>接著指令BUY 100 35，代表買方出購買數量100且價錢35，將buy_price新增35、buy_price_map_size新增價錢35對應數量100，輸出目前的競標狀態，如圖2。</p>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2020/04/2-3.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2020/04/2-2.png" alt="UVa 1598 Exchange 圖2"></a></p>
+<p>圖2</p>
+<p>接著指令CANCEL 1，取消剛那一筆BUY 100 35的競標指令，buy_price與buy_price_map_size會被清空，輸出目前的競標狀態，如圖3。</p>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2020/04/3-2.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2020/04/3-1.png" alt="UVa 1598 Exchange 圖3"></a></p>
+<p>圖3</p>
+<p>接著指令BUY 100 34，代表買方出購買數量100且價錢34，將buy_price新增34、buy_price_map_size新增價錢34對應數量100，輸出目前的競標狀態，如圖4。</p>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2020/04/4-2.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2020/04/4-1.png" alt="UVa 1598 Exchange 圖4"></a></p>
+<p>圖4</p>
+<p>接著指令SELL 150 36，代表賣方出販售數量150且價錢36，將sell_price新增36、sell_price_map_size新增價錢36對應數量150，輸出目前的競標狀態，如圖5。</p>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2020/04/5-1.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2020/04/5-1.png" alt="UVa 1598 Exchange 圖5"></a></p>
+<p>圖5</p>
+<p>接著指令SELL 300 37，代表賣方出販售數量300且價錢37，將sell_price新增37、sell_price_map_size新增價錢37對應數量300，輸出目前的競標狀態，如圖6。</p>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2020/04/6-1.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2020/04/6-1.png" alt="UVa 1598 Exchange 圖6"></a></p>
+<p>圖6</p>
+<p>接著指令SELL 100 36，代表賣方出販售數量100且價錢36，將sell_price已經存在36的價格所以不變，而sell_price_map_size新增價錢36對應數量100，輸出目前的競標狀態，其中賣家價錢36對應的總數量為150 + 100 &#x3D; 250，如圖7。  </p>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2020/04/7-1.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2020/04/7-1.png" alt="UVa 1598 圖7"></a></p>
+<p>圖7</p>
+<p>接著指令BUY 100 38，代表買方出購買數量100且價錢38，將buy_price新增38、buy_price_map_size新增價錢38對應數量100。<br>此時buy_price的Top 大於 sell_price的Top，進行交易，賣方index &#x3D; 3的那筆先賣給買方index &#x3D; 6，index 3將剩下數量50，而買方價錢38已都買到，移除該筆買方競標價格。<br>先輸出交易價格36元(是買方觸發交易，所以是賣方的價格)和數量100，再輸出目前的競標狀態，如圖8與圖9。</p>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2020/04/8-1.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2020/04/8-1.png" alt="UVa 1598 圖8"></a></p>
+<p>圖8</p>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2020/04/9-1.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2020/04/9-1.png" alt="UVa 1598 圖9"></a></p>
+<p>圖9</p>
+<p>接著指令CANCEL 4，取消那一筆SELL 150 36的競標指令，sell_price_map_size會移除index &#x3D; 3的item，而sell_price仍保持不變，輸出目前的競標狀態，如圖10與圖11。</p>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2020/04/10-1.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2020/04/10-1.png" alt="UVa 1598 圖10"></a></p>
+<p>圖10</p>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2020/04/11-1.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2020/04/11-1.png" alt="UVa 1598 圖11"></a></p>
+<p>圖11</p>
+<p>接著指令CANCEL 7，取消那一筆BUY 100 38的競標指令，但buy_price已不存在這筆價錢，所以沒任何異動，輸出目前的競標狀態，如圖12。</p>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2020/04/12-1.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2020/04/12-1.png" alt="圖12"></a></p>
+<p>圖12</p>
+<p>接著指令BUY 200 32，代表買方出購買數量200且價錢32，將buy_price新增32、buy_price_map_size新增價錢32對應數量200，輸出目前的競標狀態，如圖13。</p>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2020/04/25E5259C259613.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2020/04/25E5259C259613.png" alt="圖13"></a></p>
+<p>圖13</p>
+<p>接著指令SELL 500 30，代表賣方出販售數量500且價錢30，將sell_price新增30、sell_price_map_size新增價錢30對應數量500。 此時buy_price的Top 大於 sell_price的Top，進行交易，賣方index &#x3D; 10的那筆先賣給買方index &#x3D; 2，index 10將剩下數量400，而買方價錢34已都買到，移除該筆買方競標價格。 輸出交易價格34元(是賣方觸發交易，所以是買方的價格)和數量100。  buy_price的Top 仍大於 sell_price的Top，進行交易，賣方index &#x3D; 10的那筆先賣給買方index &#x3D; 9，index 10將剩下數量200，而買方價錢32已都買到，移除該筆買方競標價格。</p>
+<p>輸出交易價格32元(仍是賣方觸發交易，所以是買方的價格)和數量200，再輸出目前的競標狀態，如圖14至圖16。</p>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2020/04/14.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2020/04/14.png" alt="圖14"></a></p>
+<p>圖14</p>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2020/04/15.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2020/04/15.png" alt="圖15"></a></p>
+<p>圖15</p>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2020/04/16.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2020/04/16.png" alt="圖16"></a></p>
+<p>圖16</p>
+<p>難度為Medium</p>
+<h4 id="GITHUB位置："><a href="#GITHUB位置：" class="headerlink" title="GITHUB位置："></a>GITHUB位置：</h4><p><a target="_blank" rel="noopener" href="https://github.com/u8989332/ProblemSolving/blob/master/UVaOnlineJudge/1500-1599/1598.cpp">https://github.com/u8989332/ProblemSolving/blob/master/UVaOnlineJudge/1500-1599/1598.cpp</a></p>
+<h4 id="UVa-1598-Exchange"><a href="#UVa-1598-Exchange" class="headerlink" title="UVa 1598 Exchange"></a>UVa 1598 Exchange</h4>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/03/24/uva-822-queue-and-a/" rel="prev" title="UVa 822 Queue and A">
+      <i class="fa fa-chevron-left"></i> UVa 822 Queue and A
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/04/18/algorithms-dynamic-programming-0-1-knapsack-problem/" rel="next" title="Dynamic Programming - 0/1 Knapsack Problem">
+      Dynamic Programming - 0/1 Knapsack Problem <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B9%B3%E5%8F%B0%EF%BC%9A"><span class="nav-number">1.</span> <span class="nav-text">平台：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%A1%8C%E8%99%9F%EF%BC%9A"><span class="nav-number">2.</span> <span class="nav-text">題號：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%A1%8C%E7%9B%AE%E9%80%A3%E7%B5%90%EF%BC%9A"><span class="nav-number">3.</span> <span class="nav-text">題目連結：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%A1%8C%E7%9B%AE%E8%AA%AA%E6%98%8E%EF%BC%9A"><span class="nav-number">4.</span> <span class="nav-text">題目說明：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AF%84%E4%BE%8B%E8%BC%B8%E5%85%A5%EF%BC%9A"><span class="nav-number">5.</span> <span class="nav-text">範例輸入：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AF%84%E4%BE%8B%E8%BC%B8%E5%87%BA%EF%BC%9A"><span class="nav-number">6.</span> <span class="nav-text">範例輸出：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%A7%A3%E9%A1%8C%E6%96%B9%E6%B3%95%EF%BC%9A"><span class="nav-number">7.</span> <span class="nav-text">解題方法：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#GITHUB%E4%BD%8D%E7%BD%AE%EF%BC%9A"><span class="nav-number">8.</span> <span class="nav-text">GITHUB位置：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#UVa-1598-Exchange"><span class="nav-number">9.</span> <span class="nav-text">UVa 1598 Exchange</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">208</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">49</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

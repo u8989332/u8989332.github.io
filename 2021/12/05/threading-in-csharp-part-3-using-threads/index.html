@@ -1,0 +1,1164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Threading in C# - PART 3: USING THREADS這篇文章為閱讀 Threading in C# 系列的Part 3筆記.  Multi-Threading in C# (Picture source: Threading in C#Joseph Albahari) Threading Pattern - The Event-Based Asynchronous Pat">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Threading in C# - USING THREADS">
+<meta property="og:url" content="http://example.com/2021/12/05/threading-in-csharp-part-3-using-threads/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Threading in C# - PART 3: USING THREADS這篇文章為閱讀 Threading in C# 系列的Part 3筆記.  Multi-Threading in C# (Picture source: Threading in C#Joseph Albahari) Threading Pattern - The Event-Based Asynchronous Pat">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://geekcodeparadise.com/wp-content/uploads/2021/12/NewThread.png">
+<meta property="article:published_time" content="2021-12-05T07:45:00.000Z">
+<meta property="article:modified_time" content="2023-11-19T07:47:25.985Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://geekcodeparadise.com/wp-content/uploads/2021/12/NewThread.png">
+
+<link rel="canonical" href="http://example.com/2021/12/05/threading-in-csharp-part-3-using-threads/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>Threading in C# - USING THREADS | Hexo</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Hexo</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/12/05/threading-in-csharp-part-3-using-threads/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Threading in C# - USING THREADS
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-12-05 15:45:00" itemprop="dateCreated datePublished" datetime="2021-12-05T15:45:00+08:00">2021-12-05</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-11-19 15:47:25" itemprop="dateModified" datetime="2023-11-19T15:47:25+08:00">2023-11-19</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C#</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Thread/" itemprop="url" rel="index"><span itemprop="name">Thread</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%AE%80%E6%9B%B8%E7%AD%86%E8%A8%98/" itemprop="url" rel="index"><span itemprop="name">讀書筆記</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="Threading-in-C-PART-3-USING-THREADS"><a href="#Threading-in-C-PART-3-USING-THREADS" class="headerlink" title="Threading in C# - PART 3: USING THREADS"></a>Threading in C# - PART 3: USING THREADS</h3><p>這篇文章為閱讀 Threading in C# 系列的Part 3筆記.</p>
+<p><img src="https://geekcodeparadise.com/wp-content/uploads/2021/12/NewThread.png" alt="Multi-Threading"></p>
+<p>Multi-Threading in C# (Picture source: <a target="_blank" rel="noopener" href="http://www.albahari.com/threading/">Threading in C#<br>Joseph Albahari</a>)</p>
+<h3 id="Threading-Pattern-The-Event-Based-Asynchronous-Pattern"><a href="#Threading-Pattern-The-Event-Based-Asynchronous-Pattern" class="headerlink" title="Threading Pattern - The Event-Based Asynchronous Pattern"></a>Threading Pattern - The Event-Based Asynchronous Pattern</h3><ul>
+<li>EAP可啟用多執行緒且不需要Consumer主動或管理thread, 有以下特徵</li>
+</ul>
+<ol>
+<li>合作式取消模型</li>
+<li>當Worker thread完成工作, 可安全更新WFP&#x2F;Winform的UI元件</li>
+<li>在完成的事件傳遞Exception</li>
+</ol>
+<ul>
+<li>EAP只是個Pattern, 實作上最常見的有BackgroundWorker, WebClient等</li>
+<li>這些Class包含有*Async的方法, 通常就是EAP. 呼叫*Async的方法, 將任務交給其他thread執行, 而任務完成後, 會觸發Completed事件</li>
+<li>*Completed事件的參數包含這些:</li>
+</ul>
+<ol>
+<li>有個flag標示該任務是否有被取消</li>
+<li>有exception拋出時, 包裝在Error物件</li>
+<li>call function代入的userToken</li>
+</ol>
+<ul>
+<li>使用EAP的設計, 如果有遵循APM的規則, 可以節省Thread</li>
+<li>之後的Task實作和EAP很相似, 讓EAP的魅力大減</li>
+</ul>
+<h3 id="BackgroundWorker"><a href="#BackgroundWorker" class="headerlink" title="BackgroundWorker"></a>BackgroundWorker</h3><ul>
+<li>BackgroundWorker是在System.ComponentModel, 符合EAP設計, 並有以下特徵:</li>
+</ul>
+<ol>
+<li>合作的取消模型</li>
+<li>當Worker完成, 可以安全更新WPF&#x2F;Winform的Control</li>
+<li>把Exception傳遞到完成事件</li>
+<li>有個進度回報的protocol</li>
+<li>實作IComponent, 在Design time(Ex: Visual Studio Designer)可以被託管</li>
+</ol>
+<h4 id="Using-BackgroundWorker"><a href="#Using-BackgroundWorker" class="headerlink" title="Using BackgroundWorker"></a>Using BackgroundWorker</h4><ul>
+<li>建立BackgroundWorker的最小步驟: 建立BackgroundWorker並處理DoWork事件, 再呼叫RunWorkerAsync函式, 此函式也能代入參數. 在DoWork委託的函式, 從DoWorkEventArgs取出Argument, 代表有代入的參數.</li>
+<li>以下是基本的範例</li>
+</ul>
+<p>using System;<br>using System.ComponentModel;</p>
+<p>namespace BackgroundWorkerTest<br>{<br>    class Program<br>    {<br>        static BackgroundWorker _bw &#x3D; new BackgroundWorker();<br>        static void Main(string[] args)<br>        {<br>            _bw.DoWork +&#x3D; MyDoWork;<br>            _bw.RunWorkerAsync(123456);<br>            Console.ReadLine();<br>        }</p>
+<pre><code>    private static void MyDoWork(object sender, DoWorkEventArgs e)
+    &#123;
+        Console.WriteLine(e.Argument);
+    &#125;
+&#125;
+</code></pre>
+<p>}</p>
+<ul>
+<li>BackgroundWorker有個RunWorkerCompleted事件, 當DoWork的事件完成將會觸發, 而在RunWorkerCompleted裡查詢有DoWork拋出的Exception、也能對UI Control做更新</li>
+<li>如果要增加progress reporting, 要以下步驟:</li>
+</ul>
+<ol>
+<li>設置WorkerReportsProgress屬性為true</li>
+<li>定期在DoWork的委託事件呼叫ReportProgress, 代入目前完成的進度值, 也可選代入user-state</li>
+<li>新增ProgressChanged事件處理, 查詢前面代入的進度值, 用ProgressPercentage參數查</li>
+<li>在ProgressChanged也能更新UI Control</li>
+</ol>
+<ul>
+<li>如果要增加Cancellation的功能:</li>
+</ul>
+<ol>
+<li>設置WorkerSupportsCancellation屬性為true</li>
+<li>定期在DoWork的委託事件內檢查CancellationPending這個boolean值, 如果它是true, 則可以設置DoWorkEventArgs的Cancel為true並做return. 如果DoWork的工作太困難而不能繼續執行, 也可以不理會CancellationPending的狀態而直接設Cancel為true</li>
+<li>呼叫CancelAsync來請求取消任務</li>
+</ol>
+<ul>
+<li>以下是progress reporting和cancellation的範例, 每經過1秒會回報累加的進度(每次增加20). 如果在5秒內按下任何鍵, 會送出cancel請求並停止DoWork. 否則超過5秒後, 在DoWorkEventArgs的Result可以設值, 並在RunWorkerCompleted的RunWorkerCompletedEventArgs的Result取值.</li>
+</ul>
+<p>using System;<br>using System.ComponentModel;<br>using System.Threading;</p>
+<p>namespace BackgroundWorkerProgressCancel<br>{<br>    class Program<br>    {<br>        static BackgroundWorker _bw;<br>        static void Main(string[] args)<br>        {<br>            _bw &#x3D; new BackgroundWorker<br>            {<br>                WorkerReportsProgress &#x3D; true,<br>                WorkerSupportsCancellation &#x3D; true<br>            };<br>            _bw.DoWork +&#x3D; bw_DoWork;<br>            _bw.ProgressChanged +&#x3D; bw_ProgressChanged;<br>            _bw.RunWorkerCompleted +&#x3D; bw_RunWorkerCompleted;</p>
+<pre><code>        \_bw.RunWorkerAsync(&quot;Run worker now&quot;);
+
+        Console.WriteLine(&quot;Press Enter in the next 5 seconds to cancel&quot;);
+        Console.ReadLine();
+        if (\_bw.IsBusy)
+        &#123;
+            \_bw.CancelAsync();
+        &#125;
+
+        Console.ReadLine();
+    &#125;
+
+    private static void bw\_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+    &#123;
+        if (e.Cancelled)
+        &#123;
+            Console.WriteLine(&quot;You canceled&quot;);
+        &#125;
+        else if(e.Error != null)
+        &#123;
+            Console.WriteLine(&quot;Worker exception: &quot; + e.Error.ToString());
+        &#125;
+        else
+        &#123;
+            Console.WriteLine(&quot;Completed: &quot; + e.Result);
+        &#125;
+    &#125;
+
+    private static void bw\_ProgressChanged(object sender, ProgressChangedEventArgs e)
+    &#123;
+        Console.WriteLine(&quot;Reached &quot; + e.ProgressPercentage + &quot;%&quot;);
+    &#125;
+
+    private static void bw\_DoWork(object sender, DoWorkEventArgs e)
+    &#123;
+        for(int i = 0; i &lt;= 100; i+= 20)
+        &#123;
+            if (\_bw.CancellationPending)
+            &#123;
+                e.Cancel = true;
+                return;
+            &#125;
+
+            \_bw.ReportProgress(i);
+            Thread.Sleep(1000);
+        &#125;
+
+        e.Result = 123456;
+    &#125;
+&#125;
+</code></pre>
+<p>}</p>
+<h4 id="Subclassing-BackgroundWorker"><a href="#Subclassing-BackgroundWorker" class="headerlink" title="Subclassing BackgroundWorker"></a>Subclassing BackgroundWorker</h4><ul>
+<li>可以繼承BackgroundWorker來實作EAP</li>
+<li>以下範例是整合前面BackgroundWorker的範例, 再搭配原作者未完整的繼承案例, 功能是每一秒會累加財務的金額和信用點數, 增加的值是建構物件時給的參數. 經過5秒後把累加的結果放在Dictionary</li>
+</ul>
+<p>using System;<br>using System.Collections.Generic;<br>using System.ComponentModel;<br>using System.Threading;</p>
+<p>namespace BackgroundWorkerSubClass<br>{<br>    class Program<br>    {<br>        static FinancialWorker _bw;<br>        static void Main(string[] args)<br>        {<br>            _bw &#x3D; new Client().GetFinancialTotalsBackground(10, 50);<br>            _bw.ProgressChanged +&#x3D; bw_ProgressChanged;<br>            _bw.RunWorkerCompleted +&#x3D; bw_RunWorkerCompleted;</p>
+<pre><code>        \_bw.RunWorkerAsync(&quot;Hello to worker&quot;);
+        Console.WriteLine(&quot;Press Enter in the next 5 seconds to cancel&quot;);
+        Console.ReadLine();
+        if (\_bw.IsBusy) \_bw.CancelAsync();
+        Console.ReadLine();
+    &#125;
+
+    static void bw\_RunWorkerCompleted(object sender,
+                                 RunWorkerCompletedEventArgs e)
+    &#123;
+        if (e.Cancelled)
+            Console.WriteLine(&quot;You canceled!&quot;);
+        else if (e.Error != null)
+            Console.WriteLine(&quot;Worker exception: &quot; + e.Error.ToString());
+        else
+        &#123;
+            Dictionary&lt;string, int&gt; result = e.Result as Dictionary&lt;string, int&gt;;
+            Console.WriteLine(&quot;Complete: &quot;);      // from DoWork
+            foreach (var item in result)
+            &#123;
+                Console.WriteLine($&quot;Key &#123;item.Key&#125; Value &#123;item.Value&#125;&quot;);
+            &#125;
+        &#125;
+
+    &#125;
+
+    static void bw\_ProgressChanged(object sender,
+                                    ProgressChangedEventArgs e)
+    &#123;
+        Console.WriteLine(&quot;Reached &quot; + e.ProgressPercentage + &quot;%&quot;);
+    &#125;
+&#125;
+
+public class Client
+&#123;
+    public FinancialWorker GetFinancialTotalsBackground(int moneyIncreaseBase, int creditPointIncreaseBase)
+    &#123;
+        return new FinancialWorker(moneyIncreaseBase, creditPointIncreaseBase);
+    &#125;
+&#125;
+
+public class FinancialWorker : BackgroundWorker
+&#123;
+    public Dictionary&lt;string, int&gt; Result;   // You can add typed fields.
+    public readonly int MoneyIncreaseBase, CreditPointIncreaseBase;
+
+    public FinancialWorker()
+    &#123;
+        WorkerReportsProgress = true;
+        WorkerSupportsCancellation = true;
+    &#125;
+
+    public FinancialWorker(int moneyIncreaseBase, int creditPointIncreaseBase) : this()
+    &#123;
+        this.MoneyIncreaseBase = moneyIncreaseBase;
+        this.CreditPointIncreaseBase = creditPointIncreaseBase;
+    &#125;
+
+    protected override void OnDoWork(DoWorkEventArgs e)
+    &#123;
+        Result = new Dictionary&lt;string, int&gt;();
+        Result.Add(&quot;Money&quot;, 0);
+        Result.Add(&quot;CreditPoint&quot;, 0);
+
+        int percentCompleteCalc = 0;
+        while (percentCompleteCalc &lt;= 80)
+        &#123;
+            if (CancellationPending)
+            &#123;
+                e.Cancel = true;
+                return;
+            &#125;
+            ReportProgress(percentCompleteCalc, &quot;Monet &amp; Credit Point is increasing!&quot;);
+            percentCompleteCalc += 20;
+            Result\[&quot;Money&quot;\] += MoneyIncreaseBase;
+            Result\[&quot;CreditPoint&quot;\] += CreditPointIncreaseBase;
+            Thread.Sleep(1000);
+        &#125;
+        ReportProgress(100, &quot;Done!&quot;);
+        e.Result = Result;
+    &#125;
+&#125;
+</code></pre>
+<p>}</p>
+<ul>
+<li>這種繼承寫法, 可以讓Caller不用指定DoWork委託, 在呼叫RunWorkerAsync時執行有override的OnDoWork.</li>
+<li>主要是把progress report, cancellation和comleted(可以更新UI之類、取運算結果)要負責的功能給caller指定, 而DoWork的邏輯交給該BackgroundWorker子類別負責.</li>
+</ul>
+<h3 id="Threading-的-停止-Interrupt-and-Abort"><a href="#Threading-的-停止-Interrupt-and-Abort" class="headerlink" title="Threading 的[停止]: Interrupt and Abort"></a>Threading 的[停止]: Interrupt and Abort</h3><ul>
+<li>Interrupt和Abort能停止Blocked的thread</li>
+<li>Abort也能停止非block的thread, 比如一直在無限迴圈執行的thread, 所以Abort會在特定場合使用, 但Interrupt很少用到</li>
+</ul>
+<h4 id="Interrupt"><a href="#Interrupt" class="headerlink" title="Interrupt"></a>Interrupt</h4><ul>
+<li>Interrupt能強制使blocked thread釋放, 並拋出ThreadInterruptedException.</li>
+<li>除非沒有handle ThreadInterruptedException(Catch抓到它), 否則該thread在interrupt後不會結束.</li>
+</ul>
+<p>using System;<br>using System.Threading;</p>
+<p>namespace InterruptBasic<br>{<br>    class Program<br>    {<br>        static void Main(string[] args)<br>        {<br>            Thread t &#x3D; new Thread(() &#x3D;&gt;<br>            {<br>                try<br>                {<br>                    Thread.Sleep(Timeout.Infinite);<br>                }<br>                catch (ThreadInterruptedException)<br>                {<br>                    Console.WriteLine(“Forcibly”);<br>                }<br>                Console.WriteLine(“Woken!”);<br>            });</p>
+<pre><code>        t.Start();
+        t.Interrupt();
+    &#125;
+&#125;
+</code></pre>
+<p>}</p>
+<ul>
+<li>如果對一個non-blocked的thread使用interrupt, 它仍會持續進行, 直到它blocked, 就會拋出ThreadInterruptedException. 以下範例呈現此功能, Main thread對worker thread做interrupt, 而worker執行完一個稍微久的迴圈再做Blocked(Sleep)就會拋exception</li>
+</ul>
+<p>using System;<br>using System.Threading;</p>
+<p>namespace ThreadInterruptNonblocking<br>{<br>    class Program<br>    {<br>        static void Main(string[] args)<br>        {<br>            Thread t &#x3D; new Thread(() &#x3D;&gt;<br>            {<br>                try<br>                {<br>                    long count &#x3D; 0;<br>                    while (count &lt; 1000000000)<br>                    {<br>                        count++;<br>                    }<br>                    Console.WriteLine(“Sleep”);<br>                    Thread.Sleep(1000);<br>                    Console.WriteLine(“I am done”);<br>                }<br>                catch(ThreadInterruptedException ex)<br>                {<br>                    Console.WriteLine(“Catch interrupt!”);<br>                }<br>            });</p>
+<pre><code>        t.Start();
+        Console.WriteLine(&quot;Call interrupt&quot;);
+        t.Interrupt();
+
+        Console.ReadLine();
+    &#125;
+&#125;
+</code></pre>
+<p>} </p>
+<ul>
+<li>先確認thread的狀態再呼叫interrupt, 可以避免此問題, 但這方法不是thread-safe, 因為if 和 interrupt 會有機率發生搶占</li>
+</ul>
+<p>if ((worker.ThreadState &amp; ThreadState.WaitSleepJoin) &gt; 0)<br>  worker.Interrupt();</p>
+<ul>
+<li>只要有thread在lock或synchronized的時候發生blocked, 則有對它interrupt的指令蜂擁而上. 如果該thread沒有處理好發生interrupt後的後續(比如在finally要釋放資源), 將導致資源不正確釋放、物件狀態未知化.</li>
+<li>因此, interrupt是不必要的, 要強制對blocked thread做釋放, 安全的方式是用cancellation token. 如果是要unblock thread, Abort相較是比較有用的.</li>
+</ul>
+<h4 id="Abort-Net-Core不支援"><a href="#Abort-Net-Core不支援" class="headerlink" title="Abort (Net Core不支援)"></a>Abort (Net Core不支援)</h4><ul>
+<li>Abort也是強制釋放blocked thread, 且會拋出ThreadAbortException. 但是在catch結尾會再重拋一次該exception</li>
+<li>如果有在catch呼叫Thread.ResetAbort, 就不會發生重拋</li>
+<li>在呼叫Abort後的時間內, 該thread的ThreadState是AbortRequested</li>
+<li>尚未handle的ThreadAbortException 並不會造成程式shutdown</li>
+<li>Abort和Interrupt的最大差異在於被呼叫的non-blocked thread會發生什麼事. Interrupt會等到該thread block才運作, 而Abort會立即拋出exceptio(unmanaged code除外)</li>
+<li>Managed code不是abort-safe, 比如有個FileStream在建構讀檔的過程被Abort, 而unmanaged的file handler沒被中止, 導致檔案一直open, 直到該程式的AppDomain結束才會釋放.</li>
+<li>有2個案例是可以安全做Abort:</li>
+</ul>
+<ol>
+<li>在abort該thread後, 連它的AppDomain也要中止. 比如Unit testing</li>
+<li>對自身Thread做Abort, 比如ASP.NET的Redirect機制是這樣做</li>
+</ol>
+<ul>
+<li>作者的LINQPad工具, 當取消某個查詢時, 對它的thread abort. abort結束後, 會拆解並重新建立新的application domain, 避免發生潛在受汙染狀態</li>
+</ul>
+<h3 id="Safe-Cancellation"><a href="#Safe-Cancellation" class="headerlink" title="Safe Cancellation"></a>Safe Cancellation</h3><ul>
+<li>Abort在大部分的情境, 是個很危險的功能</li>
+<li>建議替代的方式是實作cooperative pattern, 也就是worker會定期檢查某個flag, 如果該flag被設立, 則自己做abort(比如BackgroundWorker)</li>
+<li>Caller對該flag設置, Worker會定期檢查到.</li>
+<li>這種pattern的缺點是worker的method必須顯式支援cancellation</li>
+<li>這種是少數安全的cancellation pattern</li>
+<li>以下是自定義封裝的cancellation flag class:</li>
+</ul>
+<p>using System;<br>using System.Threading;</p>
+<p>namespace CancellationCustom<br>{<br>    class Program<br>    {<br>        static void Main(string[] args)<br>        {<br>            var canceler &#x3D; new RulyCanceler();<br>            new Thread(()&#x3D;&gt;{<br>                try{<br>                    Work(canceler);<br>                }<br>                catch(OperationCanceledException){<br>                    Console.WriteLine(“Canceled”);<br>                }<br>            }).Start();</p>
+<pre><code>        Thread.Sleep(1000);
+        canceler.Cancel();
+    &#125;
+
+    private static void Work(RulyCanceler canceler)
+    &#123;
+        while(true)
+        &#123;
+            canceler.ThrowIfCancellationRequested();
+            try
+            &#123;
+                // other method
+                OtherMethod(canceler);
+            &#125;
+            finally
+            &#123;
+                // any required cleanup
+            &#125;
+        &#125;
+    &#125;
+
+    private static void OtherMethod(RulyCanceler canceler)
+    &#123;
+        // do stuff...
+        for(int i = 0 ; i &lt; 1000000;++i)
+        &#123;
+        &#125;
+        Console.WriteLine(&quot;I am doing work&quot;);
+
+
+        canceler.ThrowIfCancellationRequested();
+    &#125;
+&#125;
+
+class RulyCanceler
+&#123;
+    object \_cancelLocker = new object();
+    bool \_cancelRequest;
+    public bool IsCancellationRequested
+    &#123;
+        get
+        &#123;
+            lock(\_cancelLocker)
+            &#123;
+                return \_cancelRequest;
+            &#125;
+        &#125;
+    &#125;
+
+    public void Cancel()
+    &#123;
+        lock(\_cancelLocker)
+        &#123;
+            \_cancelRequest = true;
+        &#125;
+    &#125;
+
+    public void ThrowIfCancellationRequested()
+    &#123;
+        if(IsCancellationRequested)
+        &#123;
+            throw new OperationCanceledException();
+        &#125;
+    &#125;
+&#125;
+</code></pre>
+<p>}</p>
+<ul>
+<li>上述寫法是安全的cancellation pattern, 但是Work method本身不需要RulyCanceler物件, 因此NET Framework提供Cancellation Token, 讓設置</li>
+</ul>
+<h4 id="Cancellation-Tokens"><a href="#Cancellation-Tokens" class="headerlink" title="Cancellation Tokens"></a>Cancellation Tokens</h4><ul>
+<li>Net Framework 4.0提供cooperative cancellation pattern的CancellationTokenSource和CancellationToken, 使用方式為:</li>
+</ul>
+<ol>
+<li>CancellationTokenSource提供Cancel方法</li>
+<li>CancellationToken有IsCancellationRequested屬性和ThrowIfCancellationRequested方法</li>
+</ol>
+<ul>
+<li>這個類別是更前面範例更複雜, 拆出2個類別作分開的功能(Cancel和檢查flag)</li>
+<li>使用CancellationTokenSource範例如下:</li>
+</ul>
+<p>using System;<br>using System.Threading;</p>
+<p>namespace CancellationTokenCustom<br>{<br>    class Program<br>    {<br>        static void Main(string[] args)<br>        {<br>            var cancelSource &#x3D; new CancellationTokenSource();<br>            new Thread(() &#x3D;&gt; {<br>                try<br>                {<br>                    Work(cancelSource.Token);<br>                }<br>                catch (OperationCanceledException)<br>                {<br>                    Console.WriteLine(“Canceled”);<br>                }<br>            }).Start();</p>
+<pre><code>        Thread.Sleep(1000);
+        cancelSource.Cancel();
+        Console.ReadLine();
+    &#125;
+
+    private static void Work(CancellationToken cancelToken)
+    &#123;
+        while (true)
+        &#123;
+            cancelToken.ThrowIfCancellationRequested();
+            try
+            &#123;
+                // other method
+                OtherMethod(cancelToken);
+            &#125;
+            finally
+            &#123;
+                // any required cleanup
+            &#125;
+        &#125;
+    &#125;
+
+    private static void OtherMethod(CancellationToken cancelToken)
+    &#123;
+        // do stuff...
+        for (int i = 0; i &lt; 1000000; ++i)
+        &#123;
+        &#125;
+        Console.WriteLine(&quot;I am doing work&quot;);
+
+
+        cancelToken.ThrowIfCancellationRequested();
+    &#125;
+
+&#125;
+</code></pre>
+<p>}</p>
+<ul>
+<li>主要流程為</li>
+</ul>
+<ol>
+<li>先建立CancellationTokenSource物件</li>
+<li>將CancellationTokenSource的CancellationToken代入可支援取消的函式</li>
+<li>在支援取消的函式, 不斷用CancellationToken物件檢查IsCancellationRequested或者透過ThrowIfCancellationRequested來中止程式</li>
+<li>對CancellationTokenSource物件呼叫Cancel方法</li>
+</ol>
+<ul>
+<li>CancellationToken是struct, 意味這如果有隱式copy給其他的token, 則都是參考同一個CancellationTokenSource</li>
+<li>CancellationToken的WaitHandle屬性會回傳取消的訊號, 而Register方法可以註冊一個委託事件, 當cancel被呼叫時可以觸發該委託.</li>
+<li>Cancellation tokens在Net Framework常用的類別如下:</li>
+</ul>
+<ol>
+<li>ManualResetEventSlim and SemaphoreSlim</li>
+<li>CountdownEvent</li>
+<li>Barrier</li>
+<li>BlockingCollection</li>
+<li>PLINQ and Task Parallel Library</li>
+</ol>
+<ul>
+<li>這些類別通常有Wait的函式, 如果有呼叫Wait後再用CancellationToken做cancel, 將取消那Wait的功能. 比起Interrupt更清楚、安全.</li>
+</ul>
+<h3 id="Lazy-Initialization"><a href="#Lazy-Initialization" class="headerlink" title="Lazy Initialization"></a>Lazy Initialization</h3><ul>
+<li>類別的Field, 有些在Construct需要花費較多的資源, 比如下方的程式:</li>
+</ul>
+<p>class Foo<br>{<br>public readonly Expensive Expensive &#x3D; new Expensive();<br>}</p>
+<p>class Expensive<br>{<br>&#x2F;&#x2F; suppose this is expensive to construct<br>}</p>
+<ul>
+<li>可以改成一開始是null, 直到存取時才做初始化, 也就是lazily initialize, 比如下方程式:</li>
+</ul>
+<p>class Foo<br>{<br>Expensive _expensive;<br>public Expensive Expensive<br>{<br>get<br>{<br>if(_expensive &#x3D;&#x3D; null)<br>{<br>_expensive &#x3D; new Expensive();<br>}</p>
+<p>return _expensive;<br>}<br>}<br>}</p>
+<p>class Expensive<br>{<br>&#x2F;&#x2F; suppose this is expensive to construct<br>}</p>
+<ul>
+<li>但是在多執行緒的狀況下, 取Expensive property可能會有重複做new Expensive()的機率, 並非thread-safe. 要達到Thread-safe, 可以加上lock:</li>
+</ul>
+<p>class Foo<br>{<br>Expensive _expensive;<br>readonly object _expensiveLock &#x3D; new object();<br>public Expensive Expensive<br>{<br>get<br>{<br>lock(_expensiveLock)<br>{<br>if(_expensive &#x3D;&#x3D; null)<br>{<br>_expensive &#x3D; new Expensive();<br>}</p>
+<p>return _expensive;<br>}<br>}<br>}<br>}</p>
+<p>class Expensive<br>{<br>&#x2F;&#x2F; suppose this is expensive to construct<br>}</p>
+<h4 id="Lazy"><a href="#Lazy" class="headerlink" title="Lazy"></a>Lazy<T></h4><ul>
+<li>.NET Framework 4.0提供Lazy<T>的類別, 能做lazy initialization的功能. Constructor有1個參數isThreadSafe, 設為true時, 代表能支援thread-safe, 若為false, 只能用在single-thread的情境.</li>
+<li>Lazy在支援thread-safe的實作, 採用Double-checked locking, 更有效率檢查初始化</li>
+<li>改成用Lazy且是factory的寫法:</li>
+</ul>
+<p>class Foo<br>{<br>Lazy<Expensive> _expensive &#x3D; new Lazy<Expensive>(() &#x3D;&gt; new Expensive(), true);<br>readonly object _expensiveLock &#x3D; new object();<br>public Expensive Expensive<br>{<br>get<br>{<br>return _expensive.Value;<br>}<br>}<br>}</p>
+<h4 id="LazyInitializer"><a href="#LazyInitializer" class="headerlink" title="LazyInitializer"></a>LazyInitializer</h4><ul>
+<li>LazyInitializer是static類別, 和Lazy<T>差異在</li>
+</ul>
+<ol>
+<li>它的static method可以直接對想做lazy initialization的field, 可以效能優化</li>
+<li>有提供其他的初始化模式, 會有多個執行緒競爭</li>
+</ol>
+<ul>
+<li>以下是LazyInitializer使用EnsureInitialized的初始化field的範例:</li>
+</ul>
+<p>class Foo<br>{<br>Expensive _expensive;<br>public Expensive Expensive<br>{<br>get<br>{<br>LazyInitializer.EnsureInitialized(ref _expensive, () &#x3D;&gt; new Expensive());<br>return _expensive;<br>}<br>}<br>}</p>
+<ul>
+<li>可以傳另一個參數做thread race的初始化, 最終只會有1個thread取得1個物件. 這種作法好處是比起Double-checked locking還要快, 因為它不需要lock.</li>
+<li>但thread race的初始化很少會用到, 且它有一些缺點:</li>
+</ul>
+<ol>
+<li>如果有多個thread競爭, 數量比CPU core還多, 會比較慢</li>
+<li>潛在得浪費CPU資源做重複的初始化</li>
+<li>初始化的邏輯必須是thread-safe, 比如前述Expensive的Constructor, 有static變數要寫入的話, 就可能是thread-unsafe</li>
+<li>initializer對物件的初始化需要dispose時, 而沒有額外的邏輯就無法對浪費的物件做dispose</li>
+</ol>
+<ul>
+<li>double-checked locking的參考寫法:</li>
+</ul>
+<p>volatile Expensive _expensive;<br>public Expensive Expensive<br>{<br>  get<br>  {<br>    if (_expensive &#x3D;&#x3D; null)             &#x2F;&#x2F; First check (outside lock)<br>      lock (_expenseLock)<br>        if (_expensive &#x3D;&#x3D; null)         &#x2F;&#x2F; Second check (inside lock)<br>          _expensive &#x3D; new Expensive();<br>    return _expensive;<br>  }<br>}</p>
+<ul>
+<li>race-to-initialize的參考寫法:</li>
+</ul>
+<p>volatile Expensive _expensive;<br>public Expensive Expensive<br>{<br>  get<br>  {<br>    if (_expensive &#x3D;&#x3D; null)<br>    {<br>      var instance &#x3D; new Expensive();<br>      Interlocked.CompareExchange (ref _expensive, instance, null);<br>    }<br>    return _expensive;<br>  }<br>}</p>
+<h3 id="Thread-Local-Storage"><a href="#Thread-Local-Storage" class="headerlink" title="Thread-Local Storage"></a>Thread-Local Storage</h3><ul>
+<li>Thread擁有自己獨立的資料, 別的Thread無法存取</li>
+<li>有3種thread-local storage的實作</li>
+</ul>
+<h4 id="ThreadStatic"><a href="#ThreadStatic" class="headerlink" title="[ThreadStatic]"></a>[ThreadStatic]</h4><ul>
+<li>對1個static的field加上ThreadStatic屬性, 因此每個thread存取該變數都是獨立的</li>
+<li>缺點是不能用在instance的變數, 且它只有在第1個thread存取它時才初始化值一次, 因此其他thread一開始都拿到預設值.</li>
+<li>以下範例是另外建2個thread對ThreadStatic變數_x各自修改值並輸出. Static constructor在程式剛啟動以Main Thread執行, 因此初始化的值5只有給Main Thread, 而t1和t2的_x值是0. 在Sleep 2秒後, Main thread的_x值仍是 5 .</li>
+</ul>
+<p>using System;<br>using System.Threading;<br>namespace ThreadStaticTest<br>{<br>    class Program<br>    {<br>        [ThreadStatic] static int _x;<br>        static Program()<br>        {<br>            _x &#x3D; 5;<br>        }<br>        static void Main(string[] args)<br>        {<br>            Thread t1 &#x3D; new Thread(() &#x3D;&gt; {<br>                Console.WriteLine(“t1 before: “ + _x);<br>                _x &#x3D; 666;<br>                Console.WriteLine(“t1 after: “ + _x);<br>            });</p>
+<pre><code>        Thread t2 = new Thread(() =&gt; &#123;
+            Console.WriteLine(&quot;t2 before: &quot; + \_x);
+            \_x = 777;
+            Console.WriteLine(&quot;t2 after: &quot; + \_x);
+        &#125;);
+
+        t1.Start();
+        t2.Start();
+        Thread.Sleep(2000);
+        Console.WriteLine(\_x);
+        Console.ReadLine();
+    &#125;
+&#125;
+</code></pre>
+<p>}</p>
+<h4 id="ThreadLocal"><a href="#ThreadLocal" class="headerlink" title="ThreadLocal"></a>ThreadLocal<T></h4><ul>
+<li>在Net Framework 4.0推出, 能對static 和 instance的field指定預設值</li>
+<li>用ThreadLocal建立的值, 要存取時使用它的Value property</li>
+<li>ThreadLocal有使用Lazy存取, 因此每個Thread再存取時會做Lazy的計算</li>
+<li>如下面範例, 每個Thread的_x初始值都是3</li>
+</ul>
+<p>using System;<br>using System.Threading;</p>
+<p>namespace ThreadLocalTest<br>{<br>    class Program<br>    {<br>        static ThreadLocal<int> _x &#x3D; new ThreadLocal<int> (() &#x3D;&gt; 3);<br>        static void Main(string[] args)<br>        {<br>            Console.WriteLine(“Hello World!”);</p>
+<pre><code>        Thread t1 = new Thread(() =&gt; &#123;
+            Console.WriteLine(&quot;t1 before: &quot; + \_x);
+            \_x.Value = 666;
+            Console.WriteLine(&quot;t1 after: &quot; + \_x);
+        &#125;);
+
+        Thread t2 = new Thread(() =&gt; &#123;
+            Console.WriteLine(&quot;t2 before: &quot; + \_x);
+            \_x.Value = 777;
+            Console.WriteLine(&quot;t2 after: &quot; + \_x);
+        &#125;);
+
+        t1.Start();
+        t2.Start();
+        Thread.Sleep(2000);
+        Console.WriteLine(\_x);
+        Console.ReadLine();
+    &#125;
+&#125;
+</code></pre>
+<p>}</p>
+<ul>
+<li>如果是建立instance field, 用Random作為範例, Random類別是thread-unsafe, 因此在multi-thread的環境使用lock之外, 可以用ThreadLocal建立屬於各thread的獨立物件, 如下範例:</li>
+</ul>
+<p>var localRandom &#x3D; new ThreadLocal<Random>(() &#x3D;&gt; new Random());<br>Console.WriteLine (localRandom.Value.Next());</p>
+<ul>
+<li>前面Random本身有小缺陷, 如果multi-thread在相差10ms之間都對Random取值, 可能會取到相同的值, 因此可以改良帶入一些隨機參數做初始化:</li>
+</ul>
+<p>var localRandom &#x3D; new ThreadLocal<Random><br> ( () &#x3D;&gt; new Random (Guid.NewGuid().GetHashCode()) );</p>
+<h4 id="GetData-and-SetData"><a href="#GetData-and-SetData" class="headerlink" title="GetData and SetData"></a>GetData and SetData</h4><ul>
+<li>把資料存在LocalDataStoreSlot, 而這slot可以設定名稱或者不命名</li>
+<li>由Thread的GetNamedDataSlot方法設定有名稱的slot, 而AllocateDataSlot方法取得不命名的slot</li>
+<li>Thread的FreeNamedDataSlot方法會釋放有特定名稱的slot與所有thread的關聯, 但原本的slot物件仍可以存取該資料</li>
+<li>以下範例是建立名稱為Name的slot和不命名的slot, 分別是存字串MyName和整數值MyNum. Main Thread和另外建立的t1 t2 thread, 對MyName與MyNum都是獨立的值. 最後在呼叫FreeNamedDataSlot之前, 從Name取slot的值仍是”Main name”, 但呼叫FreeNamedDataSlot後, 從Name取slot的值變成null.</li>
+</ul>
+<p>using System;<br>using System.Threading;</p>
+<p>namespace TestLocalDataStoreSlot<br>{<br>    class Program<br>    {<br>        static LocalDataStoreSlot _nameSlot &#x3D; Thread.GetNamedDataSlot(“Name”);<br>        static LocalDataStoreSlot _numSlot &#x3D; Thread.AllocateDataSlot();</p>
+<pre><code>    static string MyName
+    &#123;
+        get
+        &#123;
+            object data = Thread.GetData(\_nameSlot);
+            return data == null ? string.Empty : (string)data;
+        &#125;
+
+        set
+        &#123;
+            Thread.SetData(\_nameSlot, value);
+        &#125;
+    &#125;
+
+    static int MyNum
+    &#123;
+        get
+        &#123;
+            object data = Thread.GetData(\_numSlot);
+            return data == null ? -1 : (int)data;
+        &#125;
+
+        set
+        &#123;
+            Thread.SetData(\_numSlot, value);
+        &#125;
+    &#125;
+
+    static void Main(string\[\] args)
+    &#123;
+        Thread t1 = new Thread(() =&gt;
+        &#123;
+            Console.WriteLine(&quot;t1 before name: &quot; + MyName);
+            MyName = &quot;T1!&quot;;
+            Console.WriteLine(&quot;t1 after name: &quot; + MyName);
+
+            Console.WriteLine(&quot;t1 before num: &quot; + MyNum);
+            MyNum = 555;
+            Console.WriteLine(&quot;t1 after num: &quot; + MyNum);
+        &#125;);
+
+        Thread t2 = new Thread(() =&gt;
+        &#123;
+            Console.WriteLine(&quot;t2 before name: &quot; + MyName);
+            MyName = &quot;T2?&quot;;
+            Console.WriteLine(&quot;t2 after name: &quot; + MyName);
+
+            Console.WriteLine(&quot;t2 before num: &quot; + MyNum);
+            MyNum = 777;
+            Console.WriteLine(&quot;t2 after num: &quot; + MyNum);
+        &#125;);
+
+        t1.Start();
+        t2.Start();
+
+        Console.WriteLine(&quot;Main before name: &quot; + MyName);
+        MyName = &quot;Main name&quot;;
+        Console.WriteLine(&quot;Main after name: &quot; + MyName);
+
+
+
+        Console.WriteLine(&quot;Main before num: &quot; + MyNum);
+        MyNum = 12345678;
+        Console.WriteLine(&quot;Main after num: &quot; + MyNum);
+
+        Console.ReadLine();
+
+        string s1 = Thread.GetData(Thread.GetNamedDataSlot(&quot;Name&quot;)) as string;
+        Console.WriteLine(&quot;Main before clear: &quot; + s1);
+
+        Thread.FreeNamedDataSlot(&quot;Name&quot;);
+
+        string s2 = Thread.GetData(Thread.GetNamedDataSlot(&quot;Name&quot;)) as string;
+        Console.WriteLine(&quot;Main after clear: &quot; + s2);
+
+        Console.ReadLine();
+    &#125;
+&#125;
+</code></pre>
+<p>}</p>
+<h3 id="Timers"><a href="#Timers" class="headerlink" title="Timers"></a>Timers</h3><ul>
+<li>Timer可提供某些工作做週期性的執行</li>
+<li>在不用Timer的寫法如下, 缺點是會綁住Thread的資源, 且DoSomeAction的任務將逐漸延遲執行</li>
+</ul>
+<p>new Thread (delegate() {<br>                         while (enabled)<br>                         {<br>                           DoSomeAction();<br>                           Thread.Sleep (TimeSpan.FromHours (24));<br>                         }<br>                       }).Start();</p>
+<ul>
+<li>Net提供4種Timer, 其中2種是一般性的multi-thread timer:</li>
+</ul>
+<ol>
+<li>System.Threading.Timer</li>
+<li>System.Timers.Timer</li>
+</ol>
+<ul>
+<li>Single-thread timer:</li>
+</ul>
+<ol>
+<li>System.Windows.Forms.Timer (Windows Form timer)</li>
+<li>System.Windows.Threading.DispatcherTimer (WPF timer)</li>
+</ol>
+<ul>
+<li>multi-thread timer能更精準、彈性, 而single-thread timer是安全、方便的執行簡單任務, 比如更新Wiform &#x2F; WPF 的元件</li>
+</ul>
+<h4 id="Multithreaded-Timers"><a href="#Multithreaded-Timers" class="headerlink" title="Multithreaded Timers"></a>Multithreaded Timers</h4><ul>
+<li>System.Threading.Timer是最簡單的multi-thread timer</li>
+<li>可以呼叫Change方法來改變執行的時間</li>
+<li>以下範例是建立Timer, 等5秒後才開始做任務, 每個任務間隔1秒.</li>
+</ul>
+<p>using System;<br>using System.Threading;</p>
+<p>namespace ThreadingTImer<br>{<br>    class Program<br>    {<br>        static void Main(string[] args)<br>        {<br>            Timer tmr &#x3D; new Timer(Tick, “tick…”, 5000, 1000);<br>            Console.ReadLine();<br>            tmr.Dispose();<br>        }</p>
+<pre><code>    static void Tick(object data)
+    &#123;
+        Console.WriteLine(data);
+    &#125;
+&#125;
+</code></pre>
+<p>}</p>
+<ul>
+<li>另一個System.Timers的Timer, 是基於System.Threading.Timer的包裝, 主要增加的功能有:</li>
+</ul>
+<ol>
+<li>實作Component, 可用在Visual Studio’s designer</li>
+<li>不使用Change, 改成Interval property</li>
+<li>不使用直接的委託, 而是Elapsedevent</li>
+<li>用Enabled來啟用或停止timer</li>
+<li>如果對Enabled感到疑惑, 改用Start和Stop方法</li>
+<li>AutoReset代表著重複執行的事件</li>
+<li>SynchronizingObject property可以呼叫Invoke和BeginInvoke方法, 可以安全呼叫WPF &#x2F; Winform的元件</li>
+</ol>
+<ul>
+<li>以下是System.Timers.Timer的範例, 每0.5秒執行任務, 透過Start和Stop啟用和停止timer.</li>
+</ul>
+<p>using System;<br>using System.Timers;</p>
+<p>namespace TimersTimer<br>{<br>    class Program<br>    {<br>        static void Main(string[] args)<br>        {<br>            Timer tmr &#x3D; new Timer();<br>            tmr.Interval &#x3D; 500;<br>            tmr.Elapsed +&#x3D; tmr_Elapsed;<br>            tmr.Start();<br>            Console.ReadLine();<br>            tmr.Stop();<br>            Console.ReadLine();<br>            tmr.Start();<br>            Console.ReadLine();<br>            tmr.Dispose();<br>        }</p>
+<pre><code>    private static void tmr\_Elapsed(object sender, ElapsedEventArgs e)
+    &#123;
+        Console.WriteLine(&quot;Tick&quot;);
+    &#125;
+&#125;
+</code></pre>
+<p>}</p>
+<ul>
+<li>Multi-thread timer是從thread pool的少量thread來支援timer, 也代表每次執行的委託任務, 都可能由不同的thread來執行.</li>
+<li>Elapsed事件幾乎是很準時的執行, 不管前一段時間的任務執行完畢與否, 因此委託給它的任務必須是thread-safe</li>
+<li>Multi-thread timer的精準度是基於作業系統 誤差約10~20ms, 如果要更精準, 需要使用native interop來呼叫Windows multimedia timer, 誤差可降至1ms. 這interop定義在winmm.dll. 使用winmm.dll的一般流程:</li>
+</ul>
+<ol>
+<li>呼叫timeBeginPeriod, 通知作業系統需要高精度的timing</li>
+<li>呼叫timeSetEvent啟用timer</li>
+<li>任務完成後, 呼叫timeKillEvent停止timer</li>
+<li>呼叫timeEndPeriod, 通知作業系統不再需要高精度的timing</li>
+</ol>
+<ul>
+<li>搜尋 [dllimport winmm.dll timesetevent] 能找到winmm.dll的範例</li>
+</ul>
+<h4 id="Single-Threaded-Timers"><a href="#Single-Threaded-Timers" class="headerlink" title="Single-Threaded Timers"></a>Single-Threaded Timers</h4><ul>
+<li>Single-thread timer是用來在WPF或Winform, 如果拿到別的應用程式, 則那個timer將不會觸發</li>
+<li>Winform &#x2F; WPF的timer並不是基於thread pool, 而是用User interface model的message pumping技術. 也就是Timer觸發的任務都會是同一個thread, 而那thread是一開始建立timer的thread.</li>
+<li>使用single-thread timer的好處:</li>
+</ul>
+<ol>
+<li>忘記thread-safe的問題</li>
+<li>Timer執行的任務(Tick), 必須前一個任務完成才會觸發下一個</li>
+<li>不需要呼叫元件的Invoke, 能直接在Tick委託任務執行更新UI元件的功能</li>
+</ol>
+<ul>
+<li>因為single-thread的限制, 帶來的缺點是:</li>
+</ul>
+<ol>
+<li>除非Tick任務執行地很快, 否則UI將會沒辦法反應</li>
+</ol>
+<ul>
+<li>WPF &#x2F; Winform的timer只適合簡單的任務, 否則需要採用multi-thread timer.</li>
+<li>Single-thread的timer的精準度和multi-thread timer差不多, 會有幾十ms的差異. 而會因為UI的request或其他timer的事件而造成更不準確.</li>
+</ul>
+<h3 id="Threading-in-C-參考資料"><a href="#Threading-in-C-參考資料" class="headerlink" title="Threading in C# 參考資料"></a>Threading in C# 參考資料</h3><ol>
+<li><a target="_blank" rel="noopener" href="https://amzn.to/3lQcLky">C# 9.0 in a Nutshell: The Definitive Reference, Joseph Albahari (Amazon)</a></li>
+</ol>
+<p><a target="_blank" rel="noopener" href="https://geekcodeparadise.com/threading-in-csharp-series-book-summary/">Threading in C# 系列的讀書筆記</a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/12/05/threading-in-csharp-part-2-basic-synchronization/" rel="prev" title="Threading in C# - BASIC SYNCHRONIZATION">
+      <i class="fa fa-chevron-left"></i> Threading in C# - BASIC SYNCHRONIZATION
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/12/26/professional-javascript-for-web-developers-chapter-5-basic-reference-types/" rel="next" title="JavaScript Basic Reference Type">
+      JavaScript Basic Reference Type <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Threading-in-C-PART-3-USING-THREADS"><span class="nav-number">1.</span> <span class="nav-text">Threading in C# - PART 3: USING THREADS</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Threading-Pattern-The-Event-Based-Asynchronous-Pattern"><span class="nav-number">2.</span> <span class="nav-text">Threading Pattern - The Event-Based Asynchronous Pattern</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#BackgroundWorker"><span class="nav-number">3.</span> <span class="nav-text">BackgroundWorker</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Using-BackgroundWorker"><span class="nav-number">3.1.</span> <span class="nav-text">Using BackgroundWorker</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Subclassing-BackgroundWorker"><span class="nav-number">3.2.</span> <span class="nav-text">Subclassing BackgroundWorker</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Threading-%E7%9A%84-%E5%81%9C%E6%AD%A2-Interrupt-and-Abort"><span class="nav-number">4.</span> <span class="nav-text">Threading 的[停止]: Interrupt and Abort</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Interrupt"><span class="nav-number">4.1.</span> <span class="nav-text">Interrupt</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Abort-Net-Core%E4%B8%8D%E6%94%AF%E6%8F%B4"><span class="nav-number">4.2.</span> <span class="nav-text">Abort (Net Core不支援)</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Safe-Cancellation"><span class="nav-number">5.</span> <span class="nav-text">Safe Cancellation</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Cancellation-Tokens"><span class="nav-number">5.1.</span> <span class="nav-text">Cancellation Tokens</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Lazy-Initialization"><span class="nav-number">6.</span> <span class="nav-text">Lazy Initialization</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Lazy"><span class="nav-number">6.1.</span> <span class="nav-text">Lazy</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#LazyInitializer"><span class="nav-number">6.2.</span> <span class="nav-text">LazyInitializer</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Thread-Local-Storage"><span class="nav-number">7.</span> <span class="nav-text">Thread-Local Storage</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#ThreadStatic"><span class="nav-number">7.1.</span> <span class="nav-text">[ThreadStatic]</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ThreadLocal"><span class="nav-number">7.2.</span> <span class="nav-text">ThreadLocal</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#GetData-and-SetData"><span class="nav-number">7.3.</span> <span class="nav-text">GetData and SetData</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Timers"><span class="nav-number">8.</span> <span class="nav-text">Timers</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Multithreaded-Timers"><span class="nav-number">8.1.</span> <span class="nav-text">Multithreaded Timers</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Single-Threaded-Timers"><span class="nav-number">8.2.</span> <span class="nav-text">Single-Threaded Timers</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Threading-in-C-%E5%8F%83%E8%80%83%E8%B3%87%E6%96%99"><span class="nav-number">9.</span> <span class="nav-text">Threading in C# 參考資料</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">208</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">49</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

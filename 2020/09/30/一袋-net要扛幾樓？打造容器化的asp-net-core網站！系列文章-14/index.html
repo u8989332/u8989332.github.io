@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="1. 修改WebMvc的Startup.cs在專案WebMvc的Startup.cs，加上OIDC認證機制，並針對Cookie的Samesite改成Lax。 1using Microsoft.AspNetCore.Authentication.Cookies;using Microsoft.AspNetCore.Authentication.OpenIdConnect;using Microsof">
+<meta property="og:type" content="article">
+<meta property="og:title" content="一袋.NET要扛幾樓？打造容器化的ASP.NET Core網站！系列文章 - (15) 建立會員系統 - 4">
+<meta property="og:url" content="http://example.com/2020/09/30/%E4%B8%80%E8%A2%8B-net%E8%A6%81%E6%89%9B%E5%B9%BE%E6%A8%93%EF%BC%9F%E6%89%93%E9%80%A0%E5%AE%B9%E5%99%A8%E5%8C%96%E7%9A%84asp-net-core%E7%B6%B2%E7%AB%99%EF%BC%81%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0-14/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="1. 修改WebMvc的Startup.cs在專案WebMvc的Startup.cs，加上OIDC認證機制，並針對Cookie的Samesite改成Lax。 1using Microsoft.AspNetCore.Authentication.Cookies;using Microsoft.AspNetCore.Authentication.OpenIdConnect;using Microsof">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://geekcodeparadise.com/wp-content/uploads/2020/09/webmvc2Blogin2Babout2Btoken.png">
+<meta property="article:published_time" content="2020-09-30T15:55:00.000Z">
+<meta property="article:modified_time" content="2023-11-19T07:47:25.825Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://geekcodeparadise.com/wp-content/uploads/2020/09/webmvc2Blogin2Babout2Btoken.png">
+
+<link rel="canonical" href="http://example.com/2020/09/30/%E4%B8%80%E8%A2%8B-net%E8%A6%81%E6%89%9B%E5%B9%BE%E6%A8%93%EF%BC%9F%E6%89%93%E9%80%A0%E5%AE%B9%E5%99%A8%E5%8C%96%E7%9A%84asp-net-core%E7%B6%B2%E7%AB%99%EF%BC%81%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0-14/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>一袋.NET要扛幾樓？打造容器化的ASP.NET Core網站！系列文章 - (15) 建立會員系統 - 4 | Hexo</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Hexo</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/09/30/%E4%B8%80%E8%A2%8B-net%E8%A6%81%E6%89%9B%E5%B9%BE%E6%A8%93%EF%BC%9F%E6%89%93%E9%80%A0%E5%AE%B9%E5%99%A8%E5%8C%96%E7%9A%84asp-net-core%E7%B6%B2%E7%AB%99%EF%BC%81%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0-14/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          一袋.NET要扛幾樓？打造容器化的ASP.NET Core網站！系列文章 - (15) 建立會員系統 - 4
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-09-30 23:55:00" itemprop="dateCreated datePublished" datetime="2020-09-30T23:55:00+08:00">2020-09-30</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-11-19 15:47:25" itemprop="dateModified" datetime="2023-11-19T15:47:25+08:00">2023-11-19</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ASP-NET-Core/" itemprop="url" rel="index"><span itemprop="name">ASP.NET Core</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="1-修改WebMvc的Startup-cs"><a href="#1-修改WebMvc的Startup-cs" class="headerlink" title="1. 修改WebMvc的Startup.cs"></a>1. 修改WebMvc的Startup.cs</h1><p>在專案WebMvc的Startup.cs，加上OIDC認證機制，並針對Cookie的Samesite改成Lax。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">using Microsoft.AspNetCore.Authentication.Cookies;using Microsoft.AspNetCore.Authentication.OpenIdConnect;using Microsoft.AspNetCore.Builder;using Microsoft.AspNetCore.Hosting;using Microsoft.AspNetCore.Http;using Microsoft.Extensions.Configuration;using Microsoft.Extensions.DependencyInjection;using Microsoft.Extensions.Hosting;using System.IdentityModel.Tokens.Jwt;using System.Net.Http;using WebMvc.Infrastructure;using WebMvc.Services;namespace WebMvc&#123;    public class Startup    &#123;        public Startup(IConfiguration configuration)        &#123;            Configuration = configuration;        &#125;        public IConfiguration Configuration &#123; get; &#125;        // This method gets called by the runtime. Use this method to add services to the container.        public void ConfigureServices(IServiceCollection services)        &#123;            services.Configure&lt;AppSettings&gt;(Configuration);            services.AddSingleton&lt;IHttpClient, CustomHttpClient&gt;();            services.AddTransient&lt;ICatalogService, CatalogService&gt;();            services.AddControllersWithViews();            JwtSecurityTokenHandler.DefaultMapInboundClaims = false;            var identityUrl = Configuration.GetValue&lt;string&gt;(&quot;IdentityUrl&quot;);            var callBackUrl = Configuration.GetValue&lt;string&gt;(&quot;CallBackUrl&quot;);            services.AddAuthentication(options =&gt;            &#123;                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;                options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;            &#125;)            .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme)            .AddOpenIdConnect(OpenIdConnectDefaults.AuthenticationScheme, options =&gt;            &#123;                options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;                options.Authority = identityUrl;                options.SignedOutRedirectUri = callBackUrl;                options.ClientId = &quot;mvc&quot;;                options.ClientSecret = &quot;secret&quot;;                options.ResponseType = &quot;code id_token&quot;;                options.SaveTokens = true;                options.GetClaimsFromUserInfoEndpoint = true;                options.RequireHttpsMetadata = false;                options.Scope.Add(&quot;openid&quot;);                options.Scope.Add(&quot;profile&quot;);                options.Scope.Add(&quot;offline_access&quot;);                options.NonceCookie.SameSite = SameSiteMode.Lax;                options.CorrelationCookie.SameSite = SameSiteMode.Lax;                options.BackchannelHttpHandler = new HttpClientHandler()                &#123;                    ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator                &#125;;            &#125;);        &#125;        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)        &#123;            if (env.IsDevelopment())            &#123;                app.UseDeveloperExceptionPage();            &#125;            else            &#123;                app.UseExceptionHandler(&quot;/Home/Error&quot;);            &#125;            app.UseStaticFiles();            app.UseRouting();            app.UseAuthentication();            app.UseAuthorization();            app.UseEndpoints(endpoints =&gt;            &#123;                endpoints.MapControllerRoute(                    name: &quot;default&quot;,                    pattern: &quot;&#123;controller=Catalog&#125;/&#123;action=Index&#125;/&#123;id?&#125;&quot;);            &#125;);        &#125;    &#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="2-修改WebMvc的appSettings-json"><a href="#2-修改WebMvc的appSettings-json" class="headerlink" title="2. 修改WebMvc的appSettings.json"></a>2. 修改WebMvc的appSettings.json</h1><p>增加要連OIDC驗證伺服器的URL和自己oidc callback的URL:</p>
+<p>  “IdentityUrl”: “<a target="_blank" rel="noopener" href="https://localhost:44399/">https://localhost:44399</a>“,</p>
+<p>  “CallBackUrl”: “<a target="_blank" rel="noopener" href="http://localhost:13914/">http://localhost:13914/</a>“,</p>
+<h1 id=""><a href="#" class="headerlink" title=""></a></h1><h1 id="3-修改AuthApi的appSettings-json"><a href="#3-修改AuthApi的appSettings-json" class="headerlink" title="3. 修改AuthApi的appSettings.json"></a>3. 修改AuthApi的appSettings.json</h1><p>增加WebMvc的URL, 授權才能認得這個伺服器:</p>
+<p>  “MvcClient”: “<a target="_blank" rel="noopener" href="http://localhost:4708/">http://localhost:4708</a>“,</p>
+<h1 id="4-新增測試的頁面"><a href="#4-新增測試的頁面" class="headerlink" title="4. 新增測試的頁面"></a>4. 新增測試的頁面</h1><p>在WebMvc的Views&#x2F;Catalog新增About.cshtml, 並在CatalogController新增一個About Action，只回傳這個About.cshtml。這頁面只顯示Claim和Token的資訊，而這只是測試用，請勿真的線上顯示…..</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">namespace WebMvc.Controllers&#123;    public class CatalogController : Controller    &#123;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/// other code ...</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[Authorize]        public IActionResult About()        &#123;            return View();        &#125;    &#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@using Microsoft.AspNetCore.Authentication&lt;h2&gt;Access Token&lt;/h2&gt;&lt;dl&gt;    @foreach (var claim in User.Claims)    &#123;        &lt;dt&gt;@claim.Type&lt;/dt&gt;        &lt;dd&gt;@claim.Value&lt;/dd&gt;    &#125;    &lt;dt&gt;access token&lt;/dt&gt;    &lt;dd&gt;@await ViewContext.HttpContext.GetTokenAsync(&quot;access_token&quot;)&lt;/dd&gt;    &lt;dt&gt;refresh token&lt;/dt&gt;    &lt;dd&gt;@await ViewContext.HttpContext.GetTokenAsync(&quot;refresh_token&quot;)&lt;/dd&gt;&lt;/dl&gt;</span><br></pre></td></tr></table></figure>
+
+<h1 id="-1"><a href="#-1" class="headerlink" title=""></a></h1><h1 id="5-修改AuthApi的Startup-cs"><a href="#5-修改AuthApi的Startup-cs" class="headerlink" title="5. 修改AuthApi的Startup.cs"></a>5. 修改AuthApi的Startup.cs</h1><p>　　由於Cookie的Samesite的機制，需再調整為Lax</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public void Configure(IApplicationBuilder app, IWebHostEnvironment env)        &#123;            if (env.IsDevelopment())            &#123;                app.UseDeveloperExceptionPage();                app.UseDatabaseErrorPage();            &#125;            else            &#123;                app.UseExceptionHandler(&quot;/Home/Error&quot;);                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.                app.UseHsts();            &#125;            app.UseHttpsRedirection();            app.UseStaticFiles();            app.UseCookiePolicy(new CookiePolicyOptions()            &#123;                MinimumSameSitePolicy = SameSiteMode.Lax            &#125;);            app.UseRouting();            app.UseIdentityServer();            app.UseAuthentication();            app.UseAuthorization();            app.UseEndpoints(endpoints =&gt;            &#123;                endpoints.MapControllerRoute(                    name: &quot;default&quot;,                    pattern: &quot;&#123;controller=Home&#125;/&#123;action=Index&#125;/&#123;id?&#125;&quot;);                endpoints.MapRazorPages();            &#125;);        &#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="-2"><a href="#-2" class="headerlink" title=""></a></h1><h1 id="-3"><a href="#-3" class="headerlink" title=""></a></h1><h1 id="6-Debug執行程式"><a href="#6-Debug執行程式" class="headerlink" title="6. Debug執行程式"></a>6. Debug執行程式</h1><p>使用VS執行AuthApi + WebMvc + CatalogApi，在WebMvc的網站進入Catalog&#x2F;About，會先跳轉到AuthApi登入，成功的話會返回WebMvc的Catalog&#x2F;About，並顯示Claim和Token，如圖1</p>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2020/09/webmvc2Blogin2Babout2Btoken-1.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2020/09/webmvc2Blogin2Babout2Btoken.png"></a></p>
+<p>圖1</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/09/30/leetcode-238-product-of-array-except-self/" rel="prev" title="LeetCode 238 Product of Array Except Self">
+      <i class="fa fa-chevron-left"></i> LeetCode 238 Product of Array Except Self
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/10/01/leetcode-26-remove-duplicates-from-sorted-array/" rel="next" title="LeetCode 26 Remove Duplicates from Sorted Array">
+      LeetCode 26 Remove Duplicates from Sorted Array <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E4%BF%AE%E6%94%B9WebMvc%E7%9A%84Startup-cs"><span class="nav-number">1.</span> <span class="nav-text">1. 修改WebMvc的Startup.cs</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E4%BF%AE%E6%94%B9WebMvc%E7%9A%84appSettings-json"><span class="nav-number">2.</span> <span class="nav-text">2. 修改WebMvc的appSettings.json</span></a></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">3.</span> <span class="nav-text"></span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-%E4%BF%AE%E6%94%B9AuthApi%E7%9A%84appSettings-json"><span class="nav-number">4.</span> <span class="nav-text">3. 修改AuthApi的appSettings.json</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-%E6%96%B0%E5%A2%9E%E6%B8%AC%E8%A9%A6%E7%9A%84%E9%A0%81%E9%9D%A2"><span class="nav-number">5.</span> <span class="nav-text">4. 新增測試的頁面</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#-1"><span class="nav-number">6.</span> <span class="nav-text"></span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-%E4%BF%AE%E6%94%B9AuthApi%E7%9A%84Startup-cs"><span class="nav-number">7.</span> <span class="nav-text">5. 修改AuthApi的Startup.cs</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#-2"><span class="nav-number">8.</span> <span class="nav-text"></span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#-3"><span class="nav-number">9.</span> <span class="nav-text"></span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#6-Debug%E5%9F%B7%E8%A1%8C%E7%A8%8B%E5%BC%8F"><span class="nav-number">10.</span> <span class="nav-text">6. Debug執行程式</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">208</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">49</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

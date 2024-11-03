@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="What are bad smells in code?This article references the chapter 3 of Refactoring: Improving the Design of Existing Code (2nd Edition). Author had highlighted many “popular” bad smells in code. These c">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Bad Smells in Code">
+<meta property="og:url" content="http://example.com/2021/10/24/refactoring-chapter-3-bad-smells-in-code-book-summary/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="What are bad smells in code?This article references the chapter 3 of Refactoring: Improving the Design of Existing Code (2nd Edition). Author had highlighted many “popular” bad smells in code. These c">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://geekcodeparadise.com/wp-content/uploads/2021/10/stink-4265849_960_720.png">
+<meta property="article:published_time" content="2021-10-23T16:15:00.000Z">
+<meta property="article:modified_time" content="2023-11-19T07:47:25.982Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://geekcodeparadise.com/wp-content/uploads/2021/10/stink-4265849_960_720.png">
+
+<link rel="canonical" href="http://example.com/2021/10/24/refactoring-chapter-3-bad-smells-in-code-book-summary/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>Bad Smells in Code | Hexo</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Hexo</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/10/24/refactoring-chapter-3-bad-smells-in-code-book-summary/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Bad Smells in Code
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-10-24 00:15:00" itemprop="dateCreated datePublished" datetime="2021-10-24T00:15:00+08:00">2021-10-24</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-11-19 15:47:25" itemprop="dateModified" datetime="2023-11-19T15:47:25+08:00">2023-11-19</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Refactoring/" itemprop="url" rel="index"><span itemprop="name">Refactoring</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="What-are-bad-smells-in-code"><a href="#What-are-bad-smells-in-code" class="headerlink" title="What are bad smells in code?"></a>What are bad smells in code?</h2><p>This article references the chapter 3 of <a target="_blank" rel="noopener" href="https://amzn.to/3LUmBwI">Refactoring: Improving the Design of Existing Code (2nd Edition)</a>. Author had highlighted many “popular” bad smells in code. These code smells can be identified by some characteristics. Let’s browse these code smells!</p>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2021/10/stink-4265849_960_720.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2021/10/stink-4265849_960_720.png" alt="Bad Smells"></a></p>
+<p>Bad Smell (Photo source: <a target="_blank" rel="noopener" href="https://pixabay.com/vectors/stink-smell-silhouette-nose-4265849/">https://pixabay.com/vectors/stink-smell-silhouette-nose-4265849/</a> )</p>
+<h4 id="1-Mysterious-Name"><a href="#1-Mysterious-Name" class="headerlink" title="1: Mysterious Name"></a>1: Mysterious Name</h4><ul>
+<li>Naming is one of the two hard things in programming</li>
+<li>Guessing the naming meaning is a wasteful thing</li>
+<li>Some skills refactor this problem, for example, <em>Change Function Declaration</em>, <em>Rename Variable</em>  and <em>Rename Field</em></li>
+</ul>
+<h4 id="2-Duplicated-Code"><a href="#2-Duplicated-Code" class="headerlink" title="2: Duplicated Code"></a>2: Duplicated Code</h4><ul>
+<li>If there are similar code appearing in different place, we must seriously check what the difference is. If we want to modify the duplicated code, all similar codes must be modified.</li>
+<li>Some skills refactor this problem, for example,  <em>Extract Function</em>,  <em>Slide Statements</em> and  <em>Pull Up Method</em></li>
+</ul>
+<h4 id="3-Long-Function"><a href="#3-Long-Function" class="headerlink" title="3: Long Function"></a>3: Long Function</h4><ul>
+<li>Small functions are good at explanation, sharing and choosing</li>
+<li>Modern IDEs have convenient shortcuts to jump to any function</li>
+<li>The principle: If there is something should be commented to describe, we need to take it written in a function. Function naming is able to tell us what the way of the function is.</li>
+<li>Some skills refactor this problem, for example,  <em>Extract Function</em>,  _Replace Temp with Query, Introduce Parameter Object, Preserve Whole object, _ <em>Replace function with Command, Decompose Conditional, Replace Conditional with Polymorphism</em> and  <em>Split Loop</em></li>
+</ul>
+<h4 id="4-Long-Parameter-List"><a href="#4-Long-Parameter-List" class="headerlink" title="4: Long Parameter List"></a>4: Long Parameter List</h4><ul>
+<li>Long parameter list confuses developers…</li>
+<li>Some skills refactor this problem, for example,  <em>Replace Temp with Query, Preserve Whole Object, Introduce Parameter Object, Remove Flag Argument</em> and <em>Combine Functions into Class</em></li>
+</ul>
+<h4 id="5-Global-Data"><a href="#5-Global-Data" class="headerlink" title="5: Global Data"></a>5: Global Data</h4><ul>
+<li>It’s the one of the unpleasant code smells</li>
+<li>Every code can access it so debugging is very hard</li>
+<li>Some skills refactor this problem, for example, <em>Encapsulate Variable</em></li>
+</ul>
+<h4 id="6-Mutable-Data"><a href="#6-Mutable-Data" class="headerlink" title="6: Mutable Data"></a>6: Mutable Data</h4><ul>
+<li>If some data is modified and the other date somewhere is unexpected, the system fails</li>
+<li>Immutable data restricts the update of the data and reduces the previous risks</li>
+<li>Some skills refactor this problem, for example,  <em>Encapsulate Variable, Split Variable, Slide Statements, Extract Function, Separate Query from Modifier, Remove Setting Method,</em> <em>Replace Derived Variable with Query, Combine Functions into Class, Combine Functions into Transform</em> and <em>Change Reference to Value</em></li>
+</ul>
+<h4 id="7-Divergent-Change"><a href="#7-Divergent-Change" class="headerlink" title="7: Divergent Change"></a>7: Divergent Change</h4><ul>
+<li>If some module’s modification can not focused on on point, the divergent change happens</li>
+<li>For example, for a class, if a new data source is added, we must modify 3 functions; another new data source is added, we must modify 4 functions. This is the divergent change.</li>
+<li>Only focus on one context to avoid divergent change. It looks like SoC (Separation of Concern)</li>
+<li>Some skills refactor this problem, for example,  <em>Split Phase, Move Function</em> <em>, Extract Function</em> and  <em>Extract Class</em></li>
+</ul>
+<h4 id="8-Shotgun-Surgery"><a href="#8-Shotgun-Surgery" class="headerlink" title="8: Shotgun Surgery"></a>8: Shotgun Surgery</h4><ul>
+<li>I very like this naming…. It’s impressive!</li>
+<li>If something changes, we must modify many different classes</li>
+<li>Some skills refactor this problem, for example, _ Move Function_ <em>, Move Field, Combine Functions into Class, Combine Functions into Transform, Split Phase, Inline Function</em> and  <em>Inline Class</em></li>
+</ul>
+<h4 id="9-Feature-Envy"><a href="#9-Feature-Envy" class="headerlink" title="9: Feature Envy"></a>9: Feature Envy</h4><ul>
+<li>Some function frequently interacts with other module’s function or data, it’s feature envy.</li>
+<li>There are some skills refactor this problem, for example, _ Move Function_ and  <em>Extract Function</em></li>
+<li>Some patterns break this rule, like Strategy, Visitor and Kent Beck’s Self Delegation. They are used to solve divergent change.</li>
+</ul>
+<h4 id="10-Data-Clumps"><a href="#10-Data-Clumps" class="headerlink" title="10: Data Clumps"></a>10: Data Clumps</h4><ul>
+<li>For example, 2 classes have the same fields or many functions have the same parameter</li>
+<li>Some skills refactor this problem, for example, <em>Extract Class, Introduce Parameter Object</em> and  <em>Preserve Whole Object</em></li>
+<li>Advanced action is to find feature envy and solve it</li>
+</ul>
+<h4 id="11-Primitive-Obsession"><a href="#11-Primitive-Obsession" class="headerlink" title="11: Primitive Obsession"></a>11: Primitive Obsession</h4><ul>
+<li>Some types are not organized as classes, like money, coordinates, or ranges. Only use basic data type (int, float, string…) to represent them.</li>
+<li>For example, phone number is not only a string, it should be encapsulated as a class and provides a display logic for GUI.</li>
+<li>Only using a string to represent a type is called “stringly typed”</li>
+<li>Some skills refactor this problem, for example, _ Replace Primitive with Object_ <em>, Replace Type Code with Subclasses, Replace Conditional with Polymorphism, Extract Class</em> and  <em>Introduce Parameter Object</em></li>
+</ul>
+<h4 id="12-Repeated-Switches"><a href="#12-Repeated-Switches" class="headerlink" title="12: Repeated Switches"></a>12: Repeated Switches</h4><ul>
+<li>Somewhere code uses the same switch logic, including either switch&#x2F;case statements or if&#x2F;else statements. If we want to add a new clause, we must find all switches and update them.</li>
+<li>Some skills refactor this problem, for example, <em>Replace Conditional with Polymorphism</em></li>
+</ul>
+<h4 id="13-Loops"><a href="#13-Loops" class="headerlink" title="13: Loops"></a>13: Loops</h4><ul>
+<li>Omg….The author think of “Loop” as old-school thing….</li>
+<li>Some skills refactor this problem, for example, <em>Replace Loop with Pipeline</em></li>
+<li>Pipeline like map&#x2F;filter can help us understand what elements are processed</li>
+</ul>
+<h4 id="14-Lazy-Elements"><a href="#14-Lazy-Elements" class="headerlink" title="14. Lazy Elements"></a>14. Lazy Elements</h4><ul>
+<li>Some functions or classes are unnecessarily wrapped. For example, a class is just a function.</li>
+<li>Some skills refactor this problem, for example, <em>Inline Function, Inline Class</em> and  <em>Collapse Hierarchy</em></li>
+</ul>
+<h4 id="15-Speculative-Generality"><a href="#15-Speculative-Generality" class="headerlink" title="15. Speculative Generality"></a>15. Speculative Generality</h4><ul>
+<li>Some logic is designed only for specific machinery instead of all machinery, then this logic is speculative generality.</li>
+<li>Some skills refactor this problem, for example, <em>Collapse Hierarchy, Inline Function, Inline Class, Change Function Declaration</em> and  <em>Remove Dead Code</em></li>
+</ul>
+<h4 id="16-Temporary-Field"><a href="#16-Temporary-Field" class="headerlink" title="16. Temporary Field"></a>16. Temporary Field</h4><ul>
+<li>A field of a class is only used in some situations. Other developers look at this field and guess what scope is.</li>
+<li>Some skills refactor this problem, for example, <em>Extract Class, Move Function</em> and <em>Introduce Special Case</em></li>
+</ul>
+<h4 id="17-Message-Chains"><a href="#17-Message-Chains" class="headerlink" title="17. Message Chains"></a>17. Message Chains</h4><ul>
+<li>A client calls one object A, then object A calls object B, then object B calls object C, and so on. If the relationship of the called objects changes, the client should correspondingly modify.</li>
+<li>Some skills refactor this problem, for example, <em>Hide Delegate, Extract Function and Move Function</em></li>
+</ul>
+<h4 id="18-Middle-Man"><a href="#18-Middle-Man" class="headerlink" title="18. Middle Man"></a>18. Middle Man</h4><ul>
+<li>If the half functions of a class are delegated to other classes, these delegations are overused.</li>
+<li>Some skills refactor this problem, for example, <em>Remove Middle Man, Inline Function, Replace Superclass with Delegate</em> and <em>Replace Subclass with Delegate.</em></li>
+</ul>
+<h4 id="19-Insider-Trading"><a href="#19-Insider-Trading" class="headerlink" title="19. Insider Trading"></a>19. Insider Trading</h4><ul>
+<li>A large amount of data exchange occurs between modules.</li>
+<li>Some skills refactor this problem, for example, <em>Move Function, Move Field, Hide Delegate, Replace Subclass with Delegate</em> and <em>Replace Superclass with Delegate</em></li>
+</ul>
+<h4 id="20-Large-Class"><a href="#20-Large-Class" class="headerlink" title="20. Large Class"></a>20. Large Class</h4><ul>
+<li>A class has many abilities so that it many fields. Repeated code follows up.</li>
+<li>Some skills refactor this problem, for example, <em>Extract Class, Extract Superclass</em> and <em>Replace Type Code with Subclass</em></li>
+</ul>
+<h4 id="21-Alternative-Classes-with-Different-Interfaces"><a href="#21-Alternative-Classes-with-Different-Interfaces" class="headerlink" title="21. Alternative Classes with Different Interfaces"></a>21. Alternative Classes with Different Interfaces</h4><ul>
+<li>A class is replaced with other class when they have the same interface</li>
+<li>Some skills refactor this problem, for example, <em>Change Function Declaration, Move Function</em> and <em>Extract Superclass</em></li>
+</ul>
+<h4 id="22-Data-Class"><a href="#22-Data-Class" class="headerlink" title="22. Data Class"></a>22. Data Class</h4><ul>
+<li>A data class only puts get&#x2F;set fields without behavior. Some client’s behavior should be put in this data class.</li>
+<li>Some skills refactor this problem, for example, <em>Encapsulate Record, Remove Setting Method, Move Function, Extract Function</em> and <em>Split Phase</em></li>
+</ul>
+<h4 id="23-Refused-Bequest"><a href="#23-Refused-Bequest" class="headerlink" title="23. Refused Bequest"></a>23. Refused Bequest</h4><ul>
+<li>A subclass has inherited superclass’s functions and data. If this subclass doesn’t want them, it only chooses some from them.</li>
+<li>Some skills refactor this problem, for example, <em>Push Down Method, Push Down Field, Replace Subclass with Delegate</em> and <em>Replace Superclass with Delegate</em></li>
+</ul>
+<h4 id="24-Comments"><a href="#24-Comments" class="headerlink" title="24. Comments"></a>24. Comments</h4><ul>
+<li>Some comments explain what the terrible code work for. If this code is refactored, the comments are redundant.</li>
+<li>Some skills refactor this problem, for example, <em>Extract Function, Change Function Declaration</em> and <em>Introduce Assertion</em></li>
+</ul>
+<p>The tip at book’s page 84 describes:</p>
+<blockquote>
+<p>When you feel the need to write a comment, first try to refactor the code so that any comment becomes superfluous.</p>
+</blockquote>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>[Refactoring: Improving the Design of Existing Code (2nd Edition)](Improving the Design of Existing Code (2nd Edition))</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/10/17/refactoring-chapter-2-principles-in-refactoring-book-summary/" rel="prev" title="Principles in Refactoring">
+      <i class="fa fa-chevron-left"></i> Principles in Refactoring
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/12/05/threading-in-csharp-part-1-getting-started/" rel="next" title="Threading in C# - GETTING STARTED">
+      Threading in C# - GETTING STARTED <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#What-are-bad-smells-in-code"><span class="nav-number">1.</span> <span class="nav-text">What are bad smells in code?</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-Mysterious-Name"><span class="nav-number">1.0.1.</span> <span class="nav-text">1: Mysterious Name</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-Duplicated-Code"><span class="nav-number">1.0.2.</span> <span class="nav-text">2: Duplicated Code</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-Long-Function"><span class="nav-number">1.0.3.</span> <span class="nav-text">3: Long Function</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-Long-Parameter-List"><span class="nav-number">1.0.4.</span> <span class="nav-text">4: Long Parameter List</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-Global-Data"><span class="nav-number">1.0.5.</span> <span class="nav-text">5: Global Data</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-Mutable-Data"><span class="nav-number">1.0.6.</span> <span class="nav-text">6: Mutable Data</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-Divergent-Change"><span class="nav-number">1.0.7.</span> <span class="nav-text">7: Divergent Change</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#8-Shotgun-Surgery"><span class="nav-number">1.0.8.</span> <span class="nav-text">8: Shotgun Surgery</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#9-Feature-Envy"><span class="nav-number">1.0.9.</span> <span class="nav-text">9: Feature Envy</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#10-Data-Clumps"><span class="nav-number">1.0.10.</span> <span class="nav-text">10: Data Clumps</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#11-Primitive-Obsession"><span class="nav-number">1.0.11.</span> <span class="nav-text">11: Primitive Obsession</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#12-Repeated-Switches"><span class="nav-number">1.0.12.</span> <span class="nav-text">12: Repeated Switches</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#13-Loops"><span class="nav-number">1.0.13.</span> <span class="nav-text">13: Loops</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#14-Lazy-Elements"><span class="nav-number">1.0.14.</span> <span class="nav-text">14. Lazy Elements</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#15-Speculative-Generality"><span class="nav-number">1.0.15.</span> <span class="nav-text">15. Speculative Generality</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#16-Temporary-Field"><span class="nav-number">1.0.16.</span> <span class="nav-text">16. Temporary Field</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#17-Message-Chains"><span class="nav-number">1.0.17.</span> <span class="nav-text">17. Message Chains</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#18-Middle-Man"><span class="nav-number">1.0.18.</span> <span class="nav-text">18. Middle Man</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#19-Insider-Trading"><span class="nav-number">1.0.19.</span> <span class="nav-text">19. Insider Trading</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#20-Large-Class"><span class="nav-number">1.0.20.</span> <span class="nav-text">20. Large Class</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#21-Alternative-Classes-with-Different-Interfaces"><span class="nav-number">1.0.21.</span> <span class="nav-text">21. Alternative Classes with Different Interfaces</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#22-Data-Class"><span class="nav-number">1.0.22.</span> <span class="nav-text">22. Data Class</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#23-Refused-Bequest"><span class="nav-number">1.0.23.</span> <span class="nav-text">23. Refused Bequest</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#24-Comments"><span class="nav-number">1.0.24.</span> <span class="nav-text">24. Comments</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reference"><span class="nav-number">2.</span> <span class="nav-text">Reference</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">208</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">49</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

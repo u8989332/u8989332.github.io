@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="1. What is Table Data GatewayAccording to [PoEAA], Table Data Gateway definition is “An object that acts as a Gateway to a database table. One instance handles all the rows in the table.”  Figure 1. T">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Table Data Gateway Pattern">
+<meta property="og:url" content="http://example.com/2021/06/20/poeaa-data-source-architectural-pattern-table-data-gateway/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="1. What is Table Data GatewayAccording to [PoEAA], Table Data Gateway definition is “An object that acts as a Gateway to a database table. One instance handles all the rows in the table.”  Figure 1. T">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://www.martinfowler.com/eaaCatalog/dbgateTable.gif">
+<meta property="og:image" content="https://geekcodeparadise.com/wp-content/uploads/2021/11/TableDataGateway.png">
+<meta property="og:image" content="http://geekcodeparadise.com/wp-content/uploads/2021/06/image-3.png">
+<meta property="og:image" content="https://geekcodeparadise.com/wp-content/uploads/2021/11/result.png">
+<meta property="article:published_time" content="2021-06-20T07:22:00.000Z">
+<meta property="article:modified_time" content="2023-11-19T07:47:25.937Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://www.martinfowler.com/eaaCatalog/dbgateTable.gif">
+
+<link rel="canonical" href="http://example.com/2021/06/20/poeaa-data-source-architectural-pattern-table-data-gateway/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>Table Data Gateway Pattern | Hexo</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Hexo</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/06/20/poeaa-data-source-architectural-pattern-table-data-gateway/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Table Data Gateway Pattern
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-06-20 15:22:00" itemprop="dateCreated datePublished" datetime="2021-06-20T15:22:00+08:00">2021-06-20</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-11-19 15:47:25" itemprop="dateModified" datetime="2023-11-19T15:47:25+08:00">2023-11-19</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Design-Pattern/" itemprop="url" rel="index"><span itemprop="name">Design Pattern</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Architecture/" itemprop="url" rel="index"><span itemprop="name">Architecture</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/PoEAA/" itemprop="url" rel="index"><span itemprop="name">PoEAA</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="1-What-is-Table-Data-Gateway"><a href="#1-What-is-Table-Data-Gateway" class="headerlink" title="1. What is Table Data Gateway"></a>1. What is Table Data Gateway</h3><p>According to [PoEAA], Table Data Gateway definition is “An object that acts as a Gateway to a database table. One instance handles all the rows in the table.”</p>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2021/06/image-2.png"><img src="https://www.martinfowler.com/eaaCatalog/dbgateTable.gif" alt="Table Data Gateway"></a></p>
+<p>Figure 1. Table Data Gateway (From <a target="_blank" rel="noopener" href="https://www.martinfowler.com/eaaCatalog/tableDataGateway.html">PoEAA Page</a>)</p>
+<h4 id="1-1-How-it-works"><a href="#1-1-How-it-works" class="headerlink" title="1.1 How it works"></a>1.1 How it works</h4><p>Every function provided by a gateway maps a SQL query to the database. The functions are usually finding&#x2F;updating&#x2F;deleting.     </p>
+<h4 id="1-2-When-to-use-it"><a href="#1-2-When-to-use-it" class="headerlink" title="1.2 When to use it"></a>1.2 When to use it</h4><ol>
+<li>It does not usually work with Domain Model pattern. Domain Model pattern fits Data Mapper pattern.</li>
+<li>Table Module pattern very fits this pattern.</li>
+<li>It fits Transaction Script pattern.</li>
+<li>It hides the table schema and provides functions that are implemented by SQL Queries or Stored Procedures.</li>
+</ol>
+<h3 id="2-Pattern-Practice-The-Person-Management"><a href="#2-Pattern-Practice-The-Person-Management" class="headerlink" title="2. Pattern Practice: The Person Management"></a>2. Pattern Practice: The Person Management</h3><p>As Figure 1 shows, there is a person table that has a primary key id and 3 attributes (lastName, firstName and numberOfDependents).</p>
+<h4 id="2-1-Implementation-by-C-SQLite"><a href="#2-1-Implementation-by-C-SQLite" class="headerlink" title="2.1 Implementation by C# &amp; SQLite"></a>2.1 Implementation by C# &amp; SQLite</h4><p>This pattern is implemented by C# based on the content of <strong>Chapter 10 Data Source Architectural Patterns - Table Data Gateway</strong> of PoEAA. The database is SQLite.</p>
+<p>By Martin’s implementation, it contains ADO.NET Reader version and ADO.NET DataSet version. The following sections show both versions.</p>
+<h4 id="2-2-ADO-NET-Reader-Version"><a href="#2-2-ADO-NET-Reader-Version" class="headerlink" title="2.2 ADO.NET Reader Version"></a>2.2 ADO.NET Reader Version</h4><h5 id="2-2-1-PersonGateway"><a href="#2-2-1-PersonGateway" class="headerlink" title="2.2.1 PersonGateway"></a>2.2.1 PersonGateway</h5><p>This gateway creates Find&#x2F;Insert&#x2F;Update&#x2F;Delete basic functions to manipulate person table.  </p>
+<p>class PersonGateway<br>{<br>public IDataReader FindAll()<br>{<br>string sql &#x3D; “select * from person”;<br>var conn &#x3D; DbManager.CreateConnection();<br>conn.Open();<br>return new SQLiteCommand(sql, conn).ExecuteReader();<br>}</p>
+<p>public IDataReader FindWithLastName(string lastName)<br>{<br>string sql &#x3D; “select * from person where lastname &#x3D; $lastname”;<br>var conn &#x3D; DbManager.CreateConnection();<br>conn.Open();<br>IDbCommand comm &#x3D; new SQLiteCommand(sql, conn);<br>comm.Parameters.Add(new SQLiteParameter(“$lastname”, lastName));</p>
+<p>return comm.ExecuteReader();<br>}</p>
+<p>public IDataReader FindWhere(string whereClause)<br>{<br>string sql &#x3D; $”select * from person where {whereClause}”;<br>var conn &#x3D; DbManager.CreateConnection();<br>conn.Open();<br>return new SQLiteCommand(sql, conn).ExecuteReader();<br>}</p>
+<p>public object[] FindRow(long key)<br>{<br>string sql &#x3D; “select * from person where id &#x3D; $id”;<br>using var conn &#x3D; DbManager.CreateConnection();<br>conn.Open();<br>using IDbCommand comm &#x3D; new SQLiteCommand(sql, conn);<br>comm.Parameters.Add(new SQLiteParameter(“$id”, key));<br>using IDataReader reader &#x3D; comm.ExecuteReader();<br>reader.Read();<br>object[] result &#x3D; new object[reader.FieldCount];<br>reader.GetValues(result);<br>return result;<br>}</p>
+<p>public void Update(long key, string lastName, string firstName, int numberOfDependents)<br>{<br>string sql &#x3D;<br>@”Update person SET lastname &#x3D; $lastname, firstname &#x3D; $firstname, numberOfDependents &#x3D; $numberOfDependents<br>WHERE id &#x3D; $id”;<br>using var conn &#x3D; DbManager.CreateConnection();<br>conn.Open();<br>using IDbCommand comm &#x3D; new SQLiteCommand(sql, conn);<br>comm.Parameters.Add(new SQLiteParameter(“$lastname”, lastName));<br>comm.Parameters.Add(new SQLiteParameter(“$firstname”, firstName));<br>comm.Parameters.Add(new SQLiteParameter(“$numberOfDependents”, numberOfDependents));<br>comm.Parameters.Add(new SQLiteParameter(“$id”, key));<br>comm.ExecuteNonQuery();<br>}</p>
+<p>public long Insert(string lastName, string firstName, int numberOfDependents)<br>{<br>string sql &#x3D;<br>@”INSERT INTO person VALUES ($id, $lastname, $firstname, $numberOfDependents)”;<br>long key &#x3D; GetNextId();<br>using var conn &#x3D; DbManager.CreateConnection();<br>conn.Open();<br>using IDbCommand comm &#x3D; new SQLiteCommand(sql, conn);<br>comm.Parameters.Add(new SQLiteParameter(“$id”, key));<br>comm.Parameters.Add(new SQLiteParameter(“$lastname”, lastName));<br>comm.Parameters.Add(new SQLiteParameter(“$firstname”, firstName));<br>comm.Parameters.Add(new SQLiteParameter(“$numberOfDependents”, numberOfDependents));<br>comm.ExecuteNonQuery();<br>return key;<br>}</p>
+<p>public void Delete(long key)<br>{<br>string sql &#x3D; “DELETE FROM person WHERE id &#x3D; $id”;<br>using var conn &#x3D; DbManager.CreateConnection();<br>conn.Open();<br>IDbCommand comm &#x3D; new SQLiteCommand(sql, conn);<br>comm.Parameters.Add(new SQLiteParameter(“$id”, key));<br>comm.ExecuteNonQuery();<br>}</p>
+<p>private long GetNextId()<br>{<br>string sql &#x3D; “SELECT max(id) as curId from person”;<br>using var conn &#x3D; DbManager.CreateConnection();<br>conn.Open();<br>using IDbCommand comm &#x3D; new SQLiteCommand(sql, conn);<br>using IDataReader reader &#x3D; comm.ExecuteReader();<br>bool hasResult &#x3D; reader.Read();<br>if (hasResult)<br>{<br>return ((long)reader[“curId”] + 1);<br>}<br>else<br>{<br>return 1;<br>}<br>}<br>}</p>
+<h4 id="2-3-ADO-NET-DataSet-Version"><a href="#2-3-ADO-NET-DataSet-Version" class="headerlink" title="2.3 ADO.NET DataSet Version"></a>2.3 ADO.NET DataSet Version</h4><p>Use a DataSetHolder class to hold a DataSet and a DataAdapter for a DataGateway. This definition is for generality as the following Figure 2 shows.  </p>
+<p><img src="https://geekcodeparadise.com/wp-content/uploads/2021/11/TableDataGateway.png" alt="Table Data Gateway data-set-oriented class diagram"></p>
+<p>Figure 2. Class diagram of data-set-oriented gateway and the supporting data holder</p>
+<h5 id="2-3-1-DataSetHolder-class"><a href="#2-3-1-DataSetHolder-class" class="headerlink" title="2.3.1 DataSetHolder class"></a>2.3.1 DataSetHolder class</h5><p>This class holds a DataSet and a dictionary. The dictionary’s key is the table name, its value mapped to a DataAdapter instance.</p>
+<p>class DataSetHolder<br>{<br>public DataSet Data &#x3D; new DataSet();<br>private readonly Dictionary&lt;string, SQLiteDataAdapter&gt; _dataAdapters &#x3D; new Dictionary&lt;string, SQLiteDataAdapter&gt;();</p>
+<p>public void FillData(string query, string tableName)<br>{<br>if (_dataAdapters.ContainsKey(tableName))<br>{<br>throw new MultipleLoadException();<br>}</p>
+<p>var conn &#x3D; DbManager.CreateConnection();<br>conn.Open();<br>SQLiteDataAdapter da &#x3D; new SQLiteDataAdapter(query, conn);<br>SQLiteCommandBuilder builder &#x3D; new SQLiteCommandBuilder(da);<br>da.Fill(Data, tableName);<br>_dataAdapters.Add(tableName, da);<br>}</p>
+<p>public void Update()<br>{<br>foreach (string table in _dataAdapters.Keys)<br>{<br>(_dataAdapters[table]).Update(Data, table);<br>}<br>}</p>
+<p>public DataTable this[string tableName] &#x3D;&gt; Data.Tables[tableName];<br>}</p>
+<h5 id="2-3-2-DataGateway-PersonGateway"><a href="#2-3-2-DataGateway-PersonGateway" class="headerlink" title="2.3.2 DataGateway &amp; PersonGateway"></a>2.3.2 DataGateway &amp; PersonGateway</h5><p>DataGateway is the base class and provides the common functions to child classes. DataGateway exposes a DataSet and a DataTable to clients. The child PersonGateway implements the table name “person” and creates a new Insert function to add person record.</p>
+<p>abstract class DataGateway<br>{<br>public abstract string TableName { get; }<br>public DataSetHolder Holder;</p>
+<p>public DataSet Data &#x3D;&gt; Holder.Data;</p>
+<p>public abstract DataTable Table { get; }</p>
+<p>protected DataGateway()<br>{<br>Holder &#x3D; new DataSetHolder();<br>}</p>
+<p>protected DataGateway(DataSetHolder holder)<br>{<br>this.Holder &#x3D; holder;<br>}</p>
+<p>public void LoadAll()<br>{<br>string commandString &#x3D; $”select * from {TableName}”;<br>Holder.FillData(commandString, TableName);<br>}</p>
+<p>public void LoadWhere(string whereClause)<br>{<br>string commandString &#x3D; $”select * from {TableName} where {whereClause}”;<br>Holder.FillData(commandString, TableName);<br>}<br>}</p>
+<p>class PersonGateway : DataGateway<br>{<br>public override string TableName &#x3D;&gt; “person”;</p>
+<p>public override DataTable Table &#x3D;&gt; Data.Tables[TableName];</p>
+<p>public PersonGateway() : base()<br>{</p>
+<p>}</p>
+<p>public PersonGateway(DataSetHolder holder) : base(holder)<br>{</p>
+<p>}</p>
+<p>public DataRow this[long key]<br>{<br>get<br>{<br>string filter &#x3D; $”id &#x3D; {key}”;<br>return Table.Select(filter)[0];<br>}<br>}</p>
+<p>public long Insert(string lastName, string firstName, int numberOfDependents)<br>{<br>long key &#x3D; GetNextId();<br>DataRow newRow &#x3D; Table.NewRow();<br>newRow[“id”] &#x3D; key;<br>newRow[“lastname”] &#x3D; lastName;<br>newRow[“firstname”] &#x3D; firstName;<br>newRow[“numberOfDependents”] &#x3D; numberOfDependents;<br>Table.Rows.Add(newRow);</p>
+<p>return key;<br>}</p>
+<p>private long GetNextId()<br>{<br>var result &#x3D; Table.Compute(“max([id])”, string.Empty);<br>if (result !&#x3D; System.DBNull.Value)<br>{<br>return ((int)result + 1);<br>}<br>else<br>{<br>return 1;<br>}<br>}<br>}</p>
+<h4 id="2-4-Demo"><a href="#2-4-Demo" class="headerlink" title="2.4 Demo"></a>2.4 Demo</h4><p>Create a console program and create 3 Persons in SQLite, the person records:</p>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2021/06/image-3.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2021/06/image-3.png" alt="Table Data Gateway Person Records"></a></p>
+<p>Figure 3. Person Records</p>
+<p>The program first executes Reader version functions and second executes DataSet version functions.</p>
+<p>As the following code:</p>
+<p>class Program<br>{<br>static void Main(string[] args)<br>{<br>RunReaderVersionExample();<br>RunDataTableVersionExample();<br>}</p>
+<p>private static void RunDataTableVersionExample()<br>{<br>InitializeData();</p>
+<p>Console.WriteLine(“Start RunDataTableVersionExample”);<br>Console.WriteLine(“Function: Get all persons”);<br>var gateway &#x3D; new DataTableVersion.PersonGateway();<br>gateway.LoadAll();<br>var allPersons &#x3D; gateway.Table.Rows;<br>PrintPersonsRowData(allPersons);</p>
+<p>Console.WriteLine(“Function: Get person by id &#x3D; 2”);<br>var onePerson &#x3D; gateway[2];<br>PrintPersonRowData(onePerson);</p>
+<p>Console.WriteLine(“Function: Update person by id &#x3D; 2”);<br>onePerson[“lastname”] &#x3D; “Jackson”;<br>onePerson[“firstname”] &#x3D; “Michael”;<br>onePerson[“numberOfDependents”] &#x3D; 100;<br>gateway.Holder.Update();<br>Console.WriteLine(“Function: Get person by id &#x3D; 2”);<br>var updatedPerson &#x3D; gateway[2];<br>PrintPersonRowData(updatedPerson);</p>
+<p>Console.WriteLine(“Function: Insert a person”);<br>gateway.Insert(“Skinner”, “Neil”, 3);<br>gateway.Holder.Update();<br>Console.WriteLine(“Function: Get all persons”);<br>allPersons &#x3D; gateway.Table.Rows;<br>PrintPersonsRowData(allPersons);</p>
+<p>Console.WriteLine(“Function: Get persons by numberOfDependents &gt; 10”);<br>gateway &#x3D; new DataTableVersion.PersonGateway();<br>gateway.LoadWhere(“numberOfDependents &gt; 10”);<br>var findPersons &#x3D; gateway.Table.Rows;<br>PrintPersonsRowData(findPersons);</p>
+<p>Console.WriteLine(“Function: Delete person by id &#x3D; 1”);<br>gateway &#x3D; new DataTableVersion.PersonGateway();<br>gateway.LoadAll();<br>var deletedRow &#x3D; gateway[1];<br>deletedRow.Delete();<br>gateway.Holder.Update();</p>
+<p>Console.WriteLine(“Function: Get all persons”);<br>allPersons &#x3D; gateway.Table.Rows;<br>PrintPersonsRowData(allPersons);</p>
+<p>Console.WriteLine(“End RunDataTableVersionExample”);<br>}</p>
+<p>private static void RunReaderVersionExample()<br>{<br>InitializeData();</p>
+<p>Console.WriteLine(“Start RunReaderVersionExample”);<br>Console.WriteLine(“Function: Get all persons”);<br>var gateway &#x3D; new ReaderVersion.PersonGateway();<br>var allPersons &#x3D; gateway.FindAll();<br>PrintPersonsRowData(allPersons);<br>allPersons.Close();</p>
+<p>Console.WriteLine(“Function: Get person by id &#x3D; 2”);<br>var onePerson &#x3D; gateway.FindRow(2);<br>PrintPersonRowData(onePerson);</p>
+<p>Console.WriteLine(“Function: Update person by id &#x3D; 2”);<br>gateway.Update(2, “Jackson”, “Michael”, 100);<br>Console.WriteLine(“Function: Get person by id &#x3D; 2”);<br>var updatedPerson &#x3D; gateway.FindRow(2);<br>PrintPersonRowData(updatedPerson);</p>
+<p>Console.WriteLine(“Function: Insert a person”);<br>gateway.Insert(“Skinner”, “Neil”, 3);</p>
+<p>Console.WriteLine(“Function: Get all persons”);<br>allPersons &#x3D; gateway.FindAll();<br>PrintPersonsRowData(allPersons);<br>allPersons.Close();</p>
+<p>Console.WriteLine(“Function: Get persons by numberOfDependents &gt; 10”);<br>var findPersons &#x3D; gateway.FindWhere(“numberOfDependents &gt; 10”);<br>PrintPersonsRowData(findPersons);<br>findPersons.Close();</p>
+<p>Console.WriteLine(“Function: Delete person by id &#x3D; 1”);<br>gateway.Delete(1);</p>
+<p>Console.WriteLine(“Function: Get all persons”);<br>allPersons &#x3D; gateway.FindAll();<br>PrintPersonsRowData(allPersons);<br>allPersons.Close();</p>
+<p>Console.WriteLine(“End RunReaderVersionExample”);<br>}</p>
+<p>private static void PrintPersonRowData(object[] columns)<br>{<br>Console.WriteLine($”id: {columns[0]}, lastname: {columns[1]}, firstname: {columns[2]}, numberOfDependents: {columns[3]}”);<br>}</p>
+<p>private static void PrintPersonRowData(DataRow columns)<br>{<br>Console.WriteLine($”id: {columns[0]}, lastname: {columns[1]}, firstname: {columns[2]}, numberOfDependents: {columns[3]}”);<br>}</p>
+<p>private static void PrintPersonsRowData(DataRowCollection dataRows)<br>{<br>foreach (DataRow row in dataRows)<br>{<br>Console.WriteLine($”id: {row[“id”]}, lastname: {row[“lastname”]}, firstname: {row[“firstname”]}, numberOfDependents: {row[“numberOfDependents”]}”);<br>}<br>}</p>
+<p>private static void PrintPersonsRowData(IDataReader reader)<br>{<br>while (reader.Read())<br>{<br>Console.WriteLine($”id: {reader[“id”]}, lastname: {reader[“lastname”]}, firstname: {reader[“firstname”]}, numberOfDependents: {reader[“numberOfDependents”]}”);<br>}<br>}</p>
+<p>private static void InitializeData()<br>{<br>using (var connection &#x3D; DbManager.CreateConnection())<br>{<br>connection.Open();</p>
+<p>using (var command &#x3D; connection.CreateCommand())<br>{<br>command.CommandText &#x3D;<br>@”<br>DROP TABLE IF EXISTS person;<br>“;<br>command.ExecuteNonQuery();</p>
+<p>command.CommandText &#x3D;<br>@”<br>CREATE TABLE person (Id int primary key, lastname TEXT, firstname TEXT, numberOfDependents int);<br>“;<br>command.ExecuteNonQuery();</p>
+<p>command.CommandText &#x3D;<br>@”</p>
+<p>INSERT INTO person<br>VALUES (1, ‘Sean’, ‘Reid’, 5);</p>
+<p>INSERT INTO person<br>VALUES (2, ‘Madeleine’, ‘Lyman’, 13);</p>
+<p>INSERT INTO person<br>VALUES (3, ‘Oliver’, ‘Wright’, 66);<br>“;<br>command.ExecuteNonQuery();<br>}</p>
+<p>}<br>}<br>}</p>
+<p>The console shows:</p>
+<p><img src="https://geekcodeparadise.com/wp-content/uploads/2021/11/result.png" alt="Table Data Gateway result"></p>
+<h3 id="3-Conclusions-for-Table-Data-Gateway"><a href="#3-Conclusions-for-Table-Data-Gateway" class="headerlink" title="3. Conclusions for Table Data Gateway"></a>3. Conclusions for Table Data Gateway</h3><p>“Table Data Gateway” is a simpler data source architectural pattern. We can create a gateway to map a table(or a view&#x2F;a store procedure) even map to whole tables. If the application is not complex, this pattern is a good choice.</p>
+<p>The above sample code is uploaded to this <a target="_blank" rel="noopener" href="https://github.com/u8989332/PoEAA_TableDataGateway">Github Repository</a>.</p>
+<p>For next article I will write <strong>Row Data Gateway</strong> pattern according to <strong>Chapter 10 Data Source Architectural Pattern - Table Data Gateway</strong> of PoEAA.</p>
+<h3 id="4-References"><a href="#4-References" class="headerlink" title="4. References"></a>4. References</h3><p><a target="_blank" rel="noopener" href="https://amzn.to/40CuWZT">Patterns of Enterprise Application Architecture Book(Amazon)</a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/06/16/poeaa-domain-logic-pattern-service-layer/" rel="prev" title="Service Layer Pattern">
+      <i class="fa fa-chevron-left"></i> Service Layer Pattern
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/06/23/poeaa-data-source-architectural-pattern-row-data-gateway/" rel="next" title="Row Data Gateway Pattern">
+      Row Data Gateway Pattern <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-What-is-Table-Data-Gateway"><span class="nav-number">1.</span> <span class="nav-text">1. What is Table Data Gateway</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1-How-it-works"><span class="nav-number">1.1.</span> <span class="nav-text">1.1 How it works</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-When-to-use-it"><span class="nav-number">1.2.</span> <span class="nav-text">1.2 When to use it</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-Pattern-Practice-The-Person-Management"><span class="nav-number">2.</span> <span class="nav-text">2. Pattern Practice: The Person Management</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-Implementation-by-C-SQLite"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 Implementation by C# &amp; SQLite</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-ADO-NET-Reader-Version"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 ADO.NET Reader Version</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#2-2-1-PersonGateway"><span class="nav-number">2.2.1.</span> <span class="nav-text">2.2.1 PersonGateway</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-ADO-NET-DataSet-Version"><span class="nav-number">2.3.</span> <span class="nav-text">2.3 ADO.NET DataSet Version</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#2-3-1-DataSetHolder-class"><span class="nav-number">2.3.1.</span> <span class="nav-text">2.3.1 DataSetHolder class</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-3-2-DataGateway-PersonGateway"><span class="nav-number">2.3.2.</span> <span class="nav-text">2.3.2 DataGateway &amp; PersonGateway</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-4-Demo"><span class="nav-number">2.4.</span> <span class="nav-text">2.4 Demo</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-Conclusions-for-Table-Data-Gateway"><span class="nav-number">3.</span> <span class="nav-text">3. Conclusions for Table Data Gateway</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-References"><span class="nav-number">4.</span> <span class="nav-text">4. References</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">208</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">49</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

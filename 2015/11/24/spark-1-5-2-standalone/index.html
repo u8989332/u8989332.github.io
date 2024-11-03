@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="安裝 Spark 1.5.2 Standalone 1.Spark簡介 Spark是由美國UC Berkeley AMPLab所開發的專案，是一種能執行分散式運算的系統。Spark的運算速度比Hadoop的MapReduce還要快，其原因在於Spark與Hadoop系統的主要差異有：   運算幾乎都在memory完成，減少硬碟的I&#x2F;O  使用DAG排程，減少job的loading  這樣">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spark 1.5.2 Standalone 安裝">
+<meta property="og:url" content="http://example.com/2015/11/24/spark-1-5-2-standalone/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="安裝 Spark 1.5.2 Standalone 1.Spark簡介 Spark是由美國UC Berkeley AMPLab所開發的專案，是一種能執行分散式運算的系統。Spark的運算速度比Hadoop的MapReduce還要快，其原因在於Spark與Hadoop系統的主要差異有：   運算幾乎都在memory完成，減少硬碟的I&#x2F;O  使用DAG排程，減少job的loading  這樣">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://geekcodeparadise.com/wp-content/uploads/2015/11/spark-logo-trademark.png">
+<meta property="og:image" content="http://geekcodeparadise.com/wp-content/uploads/2015/11/spark-stack.png">
+<meta property="og:image" content="http://geekcodeparadise.com/wp-content/uploads/2015/11/web2Bstatus.png">
+<meta property="og:image" content="http://geekcodeparadise.com/wp-content/uploads/2015/11/spark2Bshell2Bscala.png">
+<meta property="og:image" content="http://geekcodeparadise.com/wp-content/uploads/2015/11/spark2Bshell2Bscala2Bweb.png">
+<meta property="og:image" content="http://geekcodeparadise.com/wp-content/uploads/2015/11/pi.png">
+<meta property="article:published_time" content="2015-11-23T16:12:00.000Z">
+<meta property="article:modified_time" content="2023-11-19T07:47:25.415Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://geekcodeparadise.com/wp-content/uploads/2015/11/spark-logo-trademark.png">
+
+<link rel="canonical" href="http://example.com/2015/11/24/spark-1-5-2-standalone/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>Spark 1.5.2 Standalone 安裝 | Hexo</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Hexo</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2015/11/24/spark-1-5-2-standalone/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Spark 1.5.2 Standalone 安裝
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2015-11-24 00:12:00" itemprop="dateCreated datePublished" datetime="2015-11-24T00:12:00+08:00">2015-11-24</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-11-19 15:47:25" itemprop="dateModified" datetime="2023-11-19T15:47:25+08:00">2023-11-19</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Hadoop/" itemprop="url" rel="index"><span itemprop="name">Hadoop</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Spark/" itemprop="url" rel="index"><span itemprop="name">Spark</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>安裝 Spark 1.5.2 Standalone</p>
+<h4 id="1-Spark簡介"><a href="#1-Spark簡介" class="headerlink" title="1.Spark簡介"></a>1.Spark簡介</h4><p><img src="http://geekcodeparadise.com/wp-content/uploads/2015/11/spark-logo-trademark.png" alt="Spark"></p>
+<p>Spark是由美國UC Berkeley AMPLab所開發的專案，是一種能執行分散式運算的系統。Spark的運算速度比Hadoop的MapReduce還要快，其原因在於Spark與Hadoop系統的主要差異有：</p>
+<ol>
+<li> 運算幾乎都在memory完成，減少硬碟的I&#x2F;O</li>
+<li> 使用DAG排程，減少job的loading</li>
+</ol>
+<p>這樣的優異表現在這兩年多內迅速的成長，甚至許多國際大企業支持這項Open Source的開發。它的架構如下：</p>
+<p><img src="http://geekcodeparadise.com/wp-content/uploads/2015/11/spark-stack.png" alt="Spark 框架"></p>
+<p>  　　Spark的子架構有</p>
+<ol>
+<li>Spark SQL：可對資料用SQL語言作查詢</li>
+<li>Spark Streaming：資料能以串流的方式處理</li>
+<li>MLib：能用Machine Learning的技術對資料作處理</li>
+<li>GraphX：將資料轉為圖論作處理</li>
+</ol>
+<p>　　未來會對每一種系統作介紹與使用方式。</p>
+<h4 id="2-安裝Spark"><a href="#2-安裝Spark" class="headerlink" title="2.安裝Spark"></a>2.安裝Spark</h4><p>　　Spark的分散式模式有Standalone、Yarn與Mesos。Standalone模式是Spark只使用自己的分散式機制與各台機器連結，也可使用Zookeeper增加Master選舉機制；Yarn與Mesos模式是使用這兩者的資源管理執行job。一般作測試會使用Standalone，若要在正式的Production運算會使用Yarn或Mesos。目前最新的Spark版本為1.5.2，本篇以這版本的Standalone模式作安裝介紹。<br>　　在下載Spark之前，先確定cluster有安裝JAVA7以上的版本與SSH無密碼連線，相關安裝設置可參考安裝Hadoop集群這篇：<a target="_blank" rel="noopener" href="https://geekcodeparadise.com/2015/09/hadoop-2-7-1-cluster/">[Hadoop] 安裝Hadoop 2.7.1 Cluster在VirtualBox</a>　<br>　　首先用wget下載1.5.2版的Spark：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo wget http://apache.stu.edu.tw/spark/spark-1.5.2/spark-1.5.2-bin-hadoop2.6.tgz</span><br><span class="line">tar -zxf spark-1.5.2-bin-hadoop2.6.tgz</span><br></pre></td></tr></table></figure>
+
+<p>　　進到spark-1.5.2-bin-hadoop2.6&#x2F;conf底下，將spark-env.sh.template複製成spark-env.sh：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cp</span> spark-env.sh.template spark-env.sh</span><br></pre></td></tr></table></figure>
+
+<p>　　在這內容最下方增加這幾筆參數：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">vim spark-env.sh</span><br><span class="line"></span><br><span class="line"><span class="built_in">export</span> SPARK_MASTER_IP=hadoop01 <span class="comment">#Spark Master的IP</span></span><br><span class="line"><span class="built_in">export</span> SPARK_MASTER_PORT=7077 <span class="comment">#Spark Master的port</span></span><br><span class="line"><span class="built_in">export</span> SPARK_MASTER_WEBUI_PORT=8090 <span class="comment">#Spark WebUI的port，官方預設是8080，我的機器有其他應用佔用了，所以改用8090</span></span><br></pre></td></tr></table></figure>
+
+<p>　　接著複製slaves.template成slaves：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cp</span> slaves.template slaves</span><br></pre></td></tr></table></figure>
+
+<p>　　在最下方增加每台機器的hostname：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">vim slaves</span><br><span class="line"></span><br><span class="line">hadoop01</span><br><span class="line">hadoop02</span><br><span class="line">hadoop03</span><br><span class="line">hadoop04</span><br><span class="line">hadoop05</span><br></pre></td></tr></table></figure>
+
+<p>　　將Spark資料夾作權限更改：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">chmod</span> -R 777 /home/test/spark-1.5.2-bin-hadoop2.6</span><br></pre></td></tr></table></figure>
+
+<p>　　複製給其他台機器：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">scp -r /home/test/spark-1.5.2-bin-hadoop2.6 <span class="built_in">test</span>@hadoop02:/home/test/</span><br><span class="line">scp -r /home/test/spark-1.5.2-bin-hadoop2.6 <span class="built_in">test</span>@hadoop03:/home/test/</span><br><span class="line">scp -r /home/test/spark-1.5.2-bin-hadoop2.6 <span class="built_in">test</span>@hadoop04:/home/test/</span><br><span class="line">scp -r /home/test/spark-1.5.2-bin-hadoop2.6 <span class="built_in">test</span>@hadoop05:/home/test/</span><br></pre></td></tr></table></figure>
+
+<p>　　在hadoop01啟動Spark：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/home/test/spark-1.5.2-bin-hadoop2.6/sbin/start-all.sh</span><br></pre></td></tr></table></figure>
+
+<p>　　Spark這樣子就啟動完成了，用Web port:8090檢查狀態：</p>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2015/11/web2Bstatus-1.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2015/11/web2Bstatus.png" alt="Spark 1.5.2 Standalone shell 網頁"></a></p>
+<p>　　可以看見有5個Workers，每台配置1GB的RAM運行。進入Spark shell檢查是否能連到cluster上：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">/home/test/spark-1.5.2-bin-hadoop2.6/bin/spark-shell --master spark://hadoop01:7077</span><br><span class="line"><span class="comment">#後面參數--master代表指定要啟用shell的機器位置，cluster的Master是hadoop01，而port預設是用7077</span></span><br><span class="line"><span class="comment">#特別要注意的是ip不能打實際的ip（192.168.56.101），Spark抓不到....</span></span><br></pre></td></tr></table></figure>
+
+<p>　　會出現scala&gt;的command，代表可以用scala程式語言作Spark的運算：</p>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2015/11/spark2Bshell2Bscala-1.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2015/11/spark2Bshell2Bscala.png" alt="Spark 1.5.2 Standalone shell"></a></p>
+<p>　　在出現scala command之前有一些error，是顯示Spark抓不到HDFS的位置，因為目前沒開Hadoop，這error不會影響使用Spark。在Web上也可看見有spark shell的application。</p>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2015/11/spark2Bshell2Bscala2Bweb-1.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2015/11/spark2Bshell2Bscala2Bweb.png" alt="Spark 1.5.2 Standalone 網頁"></a></p>
+<p>　　退出scala command，使用Spark的範例計算圓周率PI。在spark-1.5.2-bin-hadoop2.6的目錄下有examples目錄，裡面有一些簡單用Spark運算的程式碼，最常使用計算PI來作測試。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">/home/test/spark-1.5.2-bin-hadoop2.6/bin/spark-submit --master spark://hadoop01:7077 examples/src/main/python/pi.py 10</span><br><span class="line"><span class="comment">#最後兩個參數為要執行的計算PI程式碼與計算PI的迭代次數</span></span><br></pre></td></tr></table></figure>
+
+<p>　　計算的輸出顯示在一堆INFO當中：</p>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2015/11/pi-1.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2015/11/pi.png" alt="Spark 1.5.2 Standalone 輸出"></a></p>
+<h4 id="3-結論"><a href="#3-結論" class="headerlink" title="3.結論"></a>3.結論</h4><p>　　Spark相較Hadoop確實快了許多，在job的啟動及計算有明顯的差異，之後會作個計算的速度比較。</p>
+<h4 id="參考文獻"><a href="#參考文獻" class="headerlink" title="參考文獻"></a>參考文獻</h4><p><a target="_blank" rel="noopener" href="http://spark.apache.org/docs/latest/index.html">Spark官方網站</a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2015/11/05/pig-0-15-0/" rel="prev" title="Pig 0.15.0 安裝">
+      <i class="fa fa-chevron-left"></i> Pig 0.15.0 安裝
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2016/04/23/programming-contest-learning-process/" rel="next" title="程式解題 學習過程">
+      程式解題 學習過程 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-Spark%E7%B0%A1%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">1.Spark簡介</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E5%AE%89%E8%A3%9DSpark"><span class="nav-number">2.</span> <span class="nav-text">2.安裝Spark</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-%E7%B5%90%E8%AB%96"><span class="nav-number">3.</span> <span class="nav-text">3.結論</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%83%E8%80%83%E6%96%87%E7%8D%BB"><span class="nav-number">4.</span> <span class="nav-text">參考文獻</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">208</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">49</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

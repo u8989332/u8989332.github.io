@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="1.1 JavaScript簡史 European Computer Manufacturers Association (ECMA)專門制定JS ECMA-262為ECMAScript (發音 ek-ma-script) ISO將ECMAScript採納為ISO&#x2F;IEC-16262, 瀏覽器開發商以此為標準實作JS的功能  1.2 JavaScript實作 JS包含三大元素   核心">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[讀書筆記] Professional JavaScript for Web Developers - 第1章 JavaScript簡介">
+<meta property="og:url" content="http://example.com/2020/05/10/%E8%AE%80%E6%9B%B8%E7%AD%86%E8%A8%98-professional-javascript-for-web-developers-%E7%AC%AC1%E7%AB%A0-javascript%E7%B0%A1%E4%BB%8B/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="1.1 JavaScript簡史 European Computer Manufacturers Association (ECMA)專門制定JS ECMA-262為ECMAScript (發音 ek-ma-script) ISO將ECMAScript採納為ISO&#x2F;IEC-16262, 瀏覽器開發商以此為標準實作JS的功能  1.2 JavaScript實作 JS包含三大元素   核心">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-05-10T15:50:00.000Z">
+<meta property="article:modified_time" content="2023-11-19T07:47:25.823Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://example.com/2020/05/10/%E8%AE%80%E6%9B%B8%E7%AD%86%E8%A8%98-professional-javascript-for-web-developers-%E7%AC%AC1%E7%AB%A0-javascript%E7%B0%A1%E4%BB%8B/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>[讀書筆記] Professional JavaScript for Web Developers - 第1章 JavaScript簡介 | Hexo</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Hexo</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/05/10/%E8%AE%80%E6%9B%B8%E7%AD%86%E8%A8%98-professional-javascript-for-web-developers-%E7%AC%AC1%E7%AB%A0-javascript%E7%B0%A1%E4%BB%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          [讀書筆記] Professional JavaScript for Web Developers - 第1章 JavaScript簡介
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-05-10 23:50:00" itemprop="dateCreated datePublished" datetime="2020-05-10T23:50:00+08:00">2020-05-10</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-11-19 15:47:25" itemprop="dateModified" datetime="2023-11-19T15:47:25+08:00">2023-11-19</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/JavaScript/" itemprop="url" rel="index"><span itemprop="name">JavaScript</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%AE%80%E6%9B%B8%E7%AD%86%E8%A8%98/" itemprop="url" rel="index"><span itemprop="name">讀書筆記</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="1-1-JavaScript簡史"><a href="#1-1-JavaScript簡史" class="headerlink" title="1.1 JavaScript簡史"></a>1.1 JavaScript簡史</h2><ul>
+<li>European Computer Manufacturers Association (ECMA)專門制定JS</li>
+<li>ECMA-262為ECMAScript (發音 ek-ma-script)</li>
+<li>ISO將ECMAScript採納為ISO&#x2F;IEC-16262, 瀏覽器開發商以此為標準實作JS的功能</li>
+</ul>
+<h2 id="1-2-JavaScript實作"><a href="#1-2-JavaScript實作" class="headerlink" title="1.2 JavaScript實作"></a>1.2 JavaScript實作</h2><ul>
+<li>JS包含三大元素</li>
+</ul>
+<ol>
+<li>核心 (ECMAScript)</li>
+<li>Document Object Model (DOM)</li>
+<li>Browser Object Model (BOM)</li>
+</ol>
+<ul>
+<li>ECMAScript本身和瀏覽器無直接關係</li>
+<li>瀏覽器只是Host environment, 可以執行ECMAScript的平台, 可以和DOM交互作用</li>
+<li>其他Host environment包含Node.js、過時的Adobe Flash</li>
+<li>ECMAScript定7大種功能</li>
+</ul>
+<ol>
+<li>Syntax</li>
+<li>Types</li>
+<li>Statements</li>
+<li>Keywords</li>
+<li>Reversed words</li>
+<li>Operators</li>
+<li>Global objects</li>
+</ol>
+<h3 id="1-2-1-ECMAScript"><a href="#1-2-1-ECMAScript" class="headerlink" title="1.2.1 ECMAScript"></a>1.2.1 ECMAScript</h3><h4 id="1-2-1-1-ECMAScript的版本"><a href="#1-2-1-1-ECMAScript的版本" class="headerlink" title="1.2.1.1 ECMAScript的版本"></a>1.2.1.1 ECMAScript的版本</h4><ul>
+<li>ECMAScript 3.1: 2009發布的第5版修改(ES5), 包含JSON解析與序列化、method的繼承等</li>
+<li>ECMAScript 6: 2015第6版修改, 也稱為ES6、ES2015</li>
+<li>ECMAScript 7: 2016第7版修改, 也稱為ES7、ES2016</li>
+<li>ECMAScript 8: 2017第8版修改, 也稱為ES8、ES2017</li>
+</ul>
+<h4 id="1-2-1-2-ECMAScript的兼容性"><a href="#1-2-1-2-ECMAScript的兼容性" class="headerlink" title="1.2.1.2 ECMAScript的兼容性"></a>1.2.1.2 ECMAScript的兼容性</h4><ul>
+<li>必須支援ECMAScript規範的types, values, objects, properties, functions, program syntax, program semantics</li>
+<li>必須支援 Unicode字元集</li>
+<li>可擴展額外的types, values, objects, properties, function</li>
+<li>支援沒在ECMAScript定義的正規表達式語法</li>
+</ul>
+<h4 id="1-2-1-3-瀏覽器對ECMAScript的支援"><a href="#1-2-1-3-瀏覽器對ECMAScript的支援" class="headerlink" title="1.2.1.3 瀏覽器對ECMAScript的支援"></a>1.2.1.3 瀏覽器對ECMAScript的支援</h4><ul>
+<li><p>IE 8不完整支援ES3 (才ES3!?), IE 9也不完整支援ES5 (!?), 直到IE 10以後版本才完整支援ES5, IE真是前端工程師的惡夢</p>
+</li>
+<li><p>Edge 12+有支援ES6</p>
+</li>
+<li><p>其他瀏覽器只要有更新, 別太擔心ES的版本啦~</p>
+</li>
+</ul>
+<p> </p>
+<h3 id="1-2-2-Document-Object-Model"><a href="#1-2-2-Document-Object-Model" class="headerlink" title="1.2.2 Document Object Model"></a>1.2.2 Document Object Model</h3><ul>
+<li>對於XML&#x2F;HTML文件的API</li>
+<li>每一層節點都可以剖析成樹狀圖</li>
+<li>W3C規劃DOM的功能</li>
+<li>最早DOM1核心是以XML做Mapping, 後來延伸HTML的DOM</li>
+<li>不只是JS才有DOM, 其他程式語言也有實作</li>
+<li>DOM2新增多個功能的Interfaces</li>
+</ul>
+<ol>
+<li><p>DOM View:文件變化(比如CSS套用)前&#x2F;後的對照</p>
+</li>
+<li><p>DOM Events: 事件處理</p>
+</li>
+<li><p>DOM Style: 應用CSS</p>
+</li>
+<li><p>DOM Traversal and Range: 操作文件樹</p>
+</li>
+</ol>
+<ul>
+<li><p>DOM3新增 文件的新增、載入(DOM Load &amp; Save)、文件的驗證 (DOM Validation)</p>
+</li>
+<li><p>其他的DOM標準像是支援SVG、MathML數學標記、SMIL(Synchronized Multimedia Integration Language)</p>
+</li>
+<li><p>DOM1~3也是有區分瀏覽器版本的支援(!!??)</p>
+</li>
+</ul>
+<h3 id="1-2-3-Browser-Object-Model"><a href="#1-2-3-Browser-Object-Model" class="headerlink" title="1.2.3 Browser Object Model"></a>1.2.3 Browser Object Model</h3><ul>
+<li><p>BOM可以操作瀏覽器顯示頁面內文以外的東西</p>
+</li>
+<li><p>最早的BOM沒有規範</p>
+</li>
+<li><p>HTML5發布, 才將BOM寫入規範</p>
+</li>
+<li><p>常見擴展的功能</p>
+</li>
+</ul>
+<ol>
+<li><p>彈出新視窗</p>
+</li>
+<li><p>移動、縮放、關閉</p>
+</li>
+<li><p>瀏覽器詳細資訊的navigator物件</p>
+</li>
+<li><p>瀏覽器載入頁面的詳細資訊location物件</p>
+</li>
+<li><p>使用者視窗解析度screen物件</p>
+</li>
+<li><p>對cookie的支援</p>
+</li>
+<li><p>XMLHttpRequest和IE獨特的ActiveXObject物件</p>
+</li>
+</ol>
+<h2 id="1-3-JavaScript版本"><a href="#1-3-JavaScript版本" class="headerlink" title="1.3 JavaScript版本"></a>1.3 JavaScript版本</h2><ul>
+<li><p>只有Mozilla (前身Netscape)才有沿用JS的版本, 但也只有到1.8.5</p>
+</li>
+<li><p>歷史版本簡介: <a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Archive/Web/JavaScript/New_in_JavaScript">https://developer.mozilla.org/en-US/docs/Archive/Web/JavaScript/New_in_JavaScript</a></p>
+</li>
+<li><p>現在大宗瀏覽器都以ECMAScript版本為主</p>
+</li>
+</ul>
+<h2 id="2-與書本內容無關的個人心得"><a href="#2-與書本內容無關的個人心得" class="headerlink" title="2. 與書本內容無關的個人心得"></a>2. 與書本內容無關的個人心得</h2><p>      這陣子在考慮軟體開發的職涯，雖然寫了5年ASP.NET，但對於[JavaScript]仍不是熟悉，可能是太依賴jQuery或SPA框架而導致原生JS知識較生疏，於是勉勵自己要把JS的經典書讀完加做筆記，希望之後開發Web系統更加完善。</p>
+<h2 id="3-參考資料"><a href="#3-參考資料" class="headerlink" title="3. 參考資料"></a>3. 參考資料</h2><ol>
+<li>Professional JavaScript for Web Developers 4th Edition, Chapter 1 : What Is Javascript? , Matt Frisbie.</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/05/01/poj-3624-charm-bracelet/" rel="prev" title="POJ 3624 Charm Bracelet">
+      <i class="fa fa-chevron-left"></i> POJ 3624 Charm Bracelet
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/05/12/%E8%AE%80%E6%9B%B8%E7%AD%86%E8%A8%98-professional-javascript-for-web-developers-%E7%AC%AC2%E7%AB%A0-%E5%9C%A8html%E4%B8%AD%E4%BD%BF%E7%94%A8javascript/" rel="next" title="[讀書筆記] Professional JavaScript for Web Developers - 第2章 在HTML中使用JavaScript">
+      [讀書筆記] Professional JavaScript for Web Developers - 第2章 在HTML中使用JavaScript <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-JavaScript%E7%B0%A1%E5%8F%B2"><span class="nav-number">1.</span> <span class="nav-text">1.1 JavaScript簡史</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-JavaScript%E5%AF%A6%E4%BD%9C"><span class="nav-number">2.</span> <span class="nav-text">1.2 JavaScript實作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-1-ECMAScript"><span class="nav-number">2.1.</span> <span class="nav-text">1.2.1 ECMAScript</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-1-1-ECMAScript%E7%9A%84%E7%89%88%E6%9C%AC"><span class="nav-number">2.1.1.</span> <span class="nav-text">1.2.1.1 ECMAScript的版本</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-1-2-ECMAScript%E7%9A%84%E5%85%BC%E5%AE%B9%E6%80%A7"><span class="nav-number">2.1.2.</span> <span class="nav-text">1.2.1.2 ECMAScript的兼容性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-1-3-%E7%80%8F%E8%A6%BD%E5%99%A8%E5%B0%8DECMAScript%E7%9A%84%E6%94%AF%E6%8F%B4"><span class="nav-number">2.1.3.</span> <span class="nav-text">1.2.1.3 瀏覽器對ECMAScript的支援</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-2-Document-Object-Model"><span class="nav-number">2.2.</span> <span class="nav-text">1.2.2 Document Object Model</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-3-Browser-Object-Model"><span class="nav-number">2.3.</span> <span class="nav-text">1.2.3 Browser Object Model</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-3-JavaScript%E7%89%88%E6%9C%AC"><span class="nav-number">3.</span> <span class="nav-text">1.3 JavaScript版本</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E8%88%87%E6%9B%B8%E6%9C%AC%E5%85%A7%E5%AE%B9%E7%84%A1%E9%97%9C%E7%9A%84%E5%80%8B%E4%BA%BA%E5%BF%83%E5%BE%97"><span class="nav-number">4.</span> <span class="nav-text">2. 與書本內容無關的個人心得</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E5%8F%83%E8%80%83%E8%B3%87%E6%96%99"><span class="nav-number">5.</span> <span class="nav-text">3. 參考資料</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">208</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">49</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

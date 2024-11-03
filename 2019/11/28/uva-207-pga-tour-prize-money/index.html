@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="UVa 207 PGA Tour Prize Money 解題報告 平台：UVa Online Judge 題號：207 - PGA Tour Prize Money 題目連結：https:&#x2F;&#x2F;onlinejudge.org&#x2F;index.php?option&#x3D;com_onlinejudge&amp;Itemid&#x3D;8&amp;page&#x3D;show_problem&amp;probl">
+<meta property="og:type" content="article">
+<meta property="og:title" content="UVa 207 PGA Tour Prize Money">
+<meta property="og:url" content="http://example.com/2019/11/28/uva-207-pga-tour-prize-money/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="UVa 207 PGA Tour Prize Money 解題報告 平台：UVa Online Judge 題號：207 - PGA Tour Prize Money 題目連結：https:&#x2F;&#x2F;onlinejudge.org&#x2F;index.php?option&#x3D;com_onlinejudge&amp;Itemid&#x3D;8&amp;page&#x3D;show_problem&amp;probl">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2019-11-28T14:20:00.000Z">
+<meta property="article:modified_time" content="2023-11-19T07:47:25.643Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://example.com/2019/11/28/uva-207-pga-tour-prize-money/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>UVa 207 PGA Tour Prize Money | Hexo</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Hexo</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2019/11/28/uva-207-pga-tour-prize-money/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          UVa 207 PGA Tour Prize Money
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-11-28 22:20:00" itemprop="dateCreated datePublished" datetime="2019-11-28T22:20:00+08:00">2019-11-28</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-11-19 15:47:25" itemprop="dateModified" datetime="2023-11-19T15:47:25+08:00">2023-11-19</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C#</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ACM/" itemprop="url" rel="index"><span itemprop="name">ACM</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Level-Medium/" itemprop="url" rel="index"><span itemprop="name">Level-Medium</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%A8%8B%E5%BC%8F%E8%A7%A3%E9%A1%8C/" itemprop="url" rel="index"><span itemprop="name">程式解題</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ProgramSolving/" itemprop="url" rel="index"><span itemprop="name">ProgramSolving</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/UVa/" itemprop="url" rel="index"><span itemprop="name">UVa</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>UVa 207 PGA Tour Prize Money 解題報告</p>
+<h4 id="平台："><a href="#平台：" class="headerlink" title="平台："></a>平台：</h4><p>UVa Online Judge</p>
+<h4 id="題號："><a href="#題號：" class="headerlink" title="題號："></a>題號：</h4><p>207 - PGA Tour Prize Money</p>
+<h4 id="題目連結："><a href="#題目連結：" class="headerlink" title="題目連結："></a>題目連結：</h4><p><a target="_blank" rel="noopener" href="https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=143">https://onlinejudge.org/index.php?option=com_onlinejudge&amp;Itemid&#x3D;8&amp;page&#x3D;show_problem&amp;problem&#x3D;143</a></p>
+<h4 id="題目說明："><a href="#題目說明：" class="headerlink" title="題目說明："></a>題目說明：</h4><p>這題細節超多，完整題目還是請看原文，這邊做些整理。</p>
+<p>計算高爾夫球的獎金計算，總獎金會有1筆，並有70種分配的比例。有n位選手，每位選手有獨自的名字和4種回合的分數。如果是業餘選手，名字最後字元是米字號 * 。4種回合的分數，如果中間第N回合失去資格，值以DQ呈現。<br>　　比賽有分2階段晉級，第1階段需要第1回合和第2回合的都要有分數，取分數最小的前70名才能晉級第2階段。如果第1階段的最後1位分數有多位同分，則這多位都一起晉級。<br>　　第2階段比的是全部4回合都有分數，並依照總分由小到大排名。從總分小的開始，依照前述的獎金比例順序 乘以 總獎金 取得對應的獎金。<br>如果有多個同分的選手，則獎金比例採用平均，比如第2和第3位選手同分，則這2位選手都得到 (Percent-2nd + Percent-3rd) * 總獎金 &#x2F; 2。<br>　　職業選手和業餘選手都要顯示排名，如果職業選手有同分的狀況，排名後面要加個T字。<br>業餘選手不能得到獎金，只顯示排名。<br>　　如果有第3或第4回合DQ的選手，則要輸出在最後面且不會有獎金。</p>
+<p>由於UVa提供的範例不是完整的，以下範例輸入&#x2F;輸出是採用uDebug的。</p>
+<h4 id="範例輸入："><a href="#範例輸入：" class="headerlink" title="範例輸入："></a>範例輸入：</h4><p>1  </p>
+<p>686211.33<br>2.2000<br>1.0000<br>1.0000<br>1.9000<br>1.5000<br>1.2000<br>1.2000<br>0.9000<br>1.1000<br>2.4000<br>1.3000<br>2.0000<br>1.8000<br>1.6000<br>1.5000<br>1.9000<br>1.1000<br>0.8000<br>0.9000<br>0.9000<br>1.8000<br>2.0000<br>1.0000<br>1.0000<br>0.9000<br>2.2000<br>1.3000<br>1.1000<br>1.5000<br>1.3000<br>1.4000<br>1.5000<br>1.0000<br>1.1000<br>1.5000<br>1.3000<br>1.0000<br>1.8000<br>1.2000<br>1.4000<br>1.6000<br>1.7000<br>1.8000<br>1.5000<br>1.1000<br>1.4000<br>1.3000<br>1.5000<br>1.1000<br>1.0000<br>1.7000<br>1.8000<br>1.3000<br>1.3000<br>1.1000<br>1.1000<br>0.9000<br>1.7000<br>1.7000<br>1.7000<br>1.4000<br>1.4000<br>1.5000<br>1.6000<br>1.5000<br>1.9000<br>1.2000<br>2.1000<br>1.5000<br>2.1000<br>60<br>P 1 76 81 95 52<br>P 2 43 32 83 48<br>P 3 65 86 88 31<br>P 4* 45 31 84 49<br>P 5 12 42 DQ<br>P 6 DQ<br>P 7* 85 27 15 68<br>P 8 56 50 DQ<br>P 9 48 DQ<br>P 10 95 65 20 DQ<br>P 11* DQ<br>P 12 DQ<br>P 13 25 65 DQ<br>P 14 DQ<br>P 15 30 74 59 70<br>P 16 77 28 60 95<br>P 17 15 60 32 32<br>P 18 22 DQ<br>P 19* 70 29 16 77<br>P 20 16 65 22 86<br>P 21 91 74 81 36<br>P 22 48 DQ<br>P 23 92 22 72 76<br>P 24 82 38 26 59<br>P 25 12 21 45 42<br>P 26 80 DQ<br>P 27* 94 DQ<br>P 28 93 69 46 11<br>P 29 79 49 20 86<br>P 30 83 51 13 51<br>P 31* DQ<br>P 32 69 43 22 92<br>P 33 29 74 56 65<br>P 34 10 80 DQ<br>P 35* 76 84 78 84<br>P 36* 28 85 87 15<br>P 37* DQ<br>P 38 26 DQ<br>P 39 87 DQ<br>P 40* 12 11 91 74<br>P 41 59 92 26 50<br>P 42 17 11 45 39<br>P 43 26 65 69 46<br>P 44* 84 61 85 96<br>P 45* 36 63 86 31<br>P 46 10 97 42 35<br>P 47 35 85 22 78<br>P 48 22 88 61 36<br>P 49 75 39 64 56<br>P 50* 72 79 46 57<br>P 51 69 58 DQ<br>P 52 68 97 29 91<br>P 53* 31 97 99 78<br>P 54 57 40 90 97<br>P 55 17 17 22 DQ<br>P 56 30 90 76 30<br>P 57 81 42 88 10<br>P 58 52 26 24 68<br>P 59 42 94 66 46<br>P 60 19 90 44 67</p>
+<h4 id="範例輸出："><a href="#範例輸出：" class="headerlink" title="範例輸出："></a>範例輸出：</h4><p>Player Name Place RD1 RD2 RD3 RD4 TOTAL Money Won<br>-———————————————————————-<br>P 42 1 17 11 45 39 112 $ 15096.65<br>P 25 2 12 21 45 42 120 $ 6862.11<br>P 17 3 15 60 32 32 139 $ 6862.11<br>P 58 4 52 26 24 68 170 $ 13038.02<br>P 46 5 10 97 42 35 184 $ 10293.17<br>P 40* 6 12 11 91 74 188<br>P 20 7 16 65 22 86 189 $ 8234.54<br>P 19* 8 70 29 16 77 192<br>P 7* 9 85 27 15 68 195<br>P 30 10 83 51 13 51 198 $ 8234.54<br>P 24 11 82 38 26 59 205 $ 6175.90<br>P 2 12T 43 32 83 48 206 $ 12008.70<br>P 43 12T 26 65 69 46 206 $ 12008.70<br>P 48 14 22 88 61 36 207 $ 8920.75<br>P 4* 15 45 31 84 49 209<br>P 36* 16 28 85 87 15 215<br>P 45* 17 36 63 86 31 216<br>P 28 18 93 69 46 11 219 $ 13724.23<br>P 47 19T 35 85 22 78 220 $ 11665.59<br>P 60 19T 19 90 44 67 220 $ 11665.59<br>P 57 21 81 42 88 10 221 $ 10293.17<br>P 33 22 29 74 56 65 224 $ 13038.02<br>P 32 23T 69 43 22 92 226 $ 6519.01<br>P 56 23T 30 90 76 30 226 $ 6519.01<br>P 41 25 59 92 26 50 227 $ 6175.90<br>P 15 26 30 74 59 70 233 $ 6175.90<br>P 29 27T 79 49 20 86 234 $ 13038.02<br>P 49 27T 75 39 64 56 234 $ 13038.02<br>P 59 29 42 94 66 46 248 $ 6862.11<br>P 50* 30 72 79 46 57 254<br>P 16 31 77 28 60 95 260 $ 6862.11<br>P 23 32 92 22 72 76 262 $ 6175.90<br>P 3 33 65 86 88 31 270 $ 15096.65<br>P 21 34 91 74 81 36 282 $ 8920.75<br>P 54 35 57 40 90 97 284 $ 7548.32<br>P 52 36 68 97 29 91 285 $ 10293.17<br>P 1 37 76 81 95 52 304 $ 8920.75<br>P 53* 38 31 97 99 78 305<br>P 35* 39 76 84 78 84 322<br>P 44* 40 84 61 85 96 326<br>P 55 17 17 22 DQ<br>P 10 95 65 20 DQ<br>P 5 12 42 DQ<br>P 13 25 65 DQ<br>P 34 10 80 DQ<br>P 8 56 50 DQ<br>P 51 69 58 DQ</p>
+<h4 id="解題方法："><a href="#解題方法：" class="headerlink" title="解題方法："></a>解題方法：</h4><p>原本我的寫法一直WA，後來放棄而參考<a target="_blank" rel="noopener" href="https://wcr1996.com/2015/03/21/uva-207-pga-tour-prize-money/">這位高手</a>的寫法，才得知錯在有一種極端的測資，除了第1名分數最小，其他有超過69名的選手同分，我的獎金算法就錯了．．． 由於太過細節要處理</p>
+<p>難度為Medium</p>
+<h4 id="GITHUB位置："><a href="#GITHUB位置：" class="headerlink" title="GITHUB位置："></a>GITHUB位置：</h4><p><a target="_blank" rel="noopener" href="https://github.com/u8989332/ProblemSolving/blob/master/UVaOnlineJudge/200-299/207.cpp">https://github.com/u8989332/ProblemSolving/blob/master/UVaOnlineJu</a><a target="_blank" rel="noopener" href="https://github.com/u8989332/ProblemSolving/blob/master/UVaOnlineJudge/200-299/207.cpp">d</a><a target="_blank" rel="noopener" href="https://github.com/u8989332/ProblemSolving/blob/master/UVaOnlineJudge/200-299/207.cpp">ge&#x2F;200-299&#x2F;207.cpp</a></p>
+<p>UVa 207 PGA Tour Prize Money</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2019/11/21/uva-1592-database/" rel="prev" title="UVa 1592 Database">
+      <i class="fa fa-chevron-left"></i> UVa 1592 Database
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2019/12/03/uva-814-the-letter-carriers-rounds/" rel="next" title="UVa 814 The Letter Carrier's Rounds">
+      UVa 814 The Letter Carrier's Rounds <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B9%B3%E5%8F%B0%EF%BC%9A"><span class="nav-number">1.</span> <span class="nav-text">平台：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%A1%8C%E8%99%9F%EF%BC%9A"><span class="nav-number">2.</span> <span class="nav-text">題號：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%A1%8C%E7%9B%AE%E9%80%A3%E7%B5%90%EF%BC%9A"><span class="nav-number">3.</span> <span class="nav-text">題目連結：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%A1%8C%E7%9B%AE%E8%AA%AA%E6%98%8E%EF%BC%9A"><span class="nav-number">4.</span> <span class="nav-text">題目說明：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AF%84%E4%BE%8B%E8%BC%B8%E5%85%A5%EF%BC%9A"><span class="nav-number">5.</span> <span class="nav-text">範例輸入：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AF%84%E4%BE%8B%E8%BC%B8%E5%87%BA%EF%BC%9A"><span class="nav-number">6.</span> <span class="nav-text">範例輸出：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%A7%A3%E9%A1%8C%E6%96%B9%E6%B3%95%EF%BC%9A"><span class="nav-number">7.</span> <span class="nav-text">解題方法：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#GITHUB%E4%BD%8D%E7%BD%AE%EF%BC%9A"><span class="nav-number">8.</span> <span class="nav-text">GITHUB位置：</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">208</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">49</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

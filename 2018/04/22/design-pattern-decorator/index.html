@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="裝飾者模式 Decorator Pattern 的設計模式介紹 1. 案例需求 圖片來源：https:&#x2F;&#x2F;www.rentcafe.com&#x2F;blog&#x2F;cities&#x2F;renting-a-house&#x2F; 　　在外地求學、工作時，大部分需要找租屋來住，每種租屋提供的設施、環境都不同，有的靠近捷運、有電視、有冰箱、有洗衣機等。假如有房東要介紹自己的租屋內容，那程式如何設計呢？ 2. 程式設計(錯誤) 　　建">
+<meta property="og:type" content="article">
+<meta property="og:title" content="裝飾者模式 Decorator Pattern">
+<meta property="og:url" content="http://example.com/2018/04/22/design-pattern-decorator/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="裝飾者模式 Decorator Pattern 的設計模式介紹 1. 案例需求 圖片來源：https:&#x2F;&#x2F;www.rentcafe.com&#x2F;blog&#x2F;cities&#x2F;renting-a-house&#x2F; 　　在外地求學、工作時，大部分需要找租屋來住，每種租屋提供的設施、環境都不同，有的靠近捷運、有電視、有冰箱、有洗衣機等。假如有房東要介紹自己的租屋內容，那程式如何設計呢？ 2. 程式設計(錯誤) 　　建">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://geekcodeparadise.com/wp-content/uploads/2018/04/Fotolia_30691356_Subscription_XL.jpg">
+<meta property="og:image" content="http://geekcodeparadise.com/wp-content/uploads/2018/04/DecoratorFactory_ERROR.png">
+<meta property="og:image" content="http://geekcodeparadise.com/wp-content/uploads/2018/04/program_error.png">
+<meta property="og:image" content="http://geekcodeparadise.com/wp-content/uploads/2018/04/DecoratorFactory_OK.png">
+<meta property="og:image" content="http://geekcodeparadise.com/wp-content/uploads/2018/04/Program_ok.png">
+<meta property="og:image" content="http://geekcodeparadise.com/wp-content/uploads/2018/04/general_DF.png">
+<meta property="article:published_time" content="2018-04-22T05:42:00.000Z">
+<meta property="article:modified_time" content="2023-11-19T07:47:25.480Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://geekcodeparadise.com/wp-content/uploads/2018/04/Fotolia_30691356_Subscription_XL.jpg">
+
+<link rel="canonical" href="http://example.com/2018/04/22/design-pattern-decorator/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>裝飾者模式 Decorator Pattern | Hexo</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Hexo</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2018/04/22/design-pattern-decorator/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          裝飾者模式 Decorator Pattern
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2018-04-22 13:42:00" itemprop="dateCreated datePublished" datetime="2018-04-22T13:42:00+08:00">2018-04-22</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-11-19 15:47:25" itemprop="dateModified" datetime="2023-11-19T15:47:25+08:00">2023-11-19</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Design-Pattern/" itemprop="url" rel="index"><span itemprop="name">Design Pattern</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/OOP/" itemprop="url" rel="index"><span itemprop="name">OOP</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>裝飾者模式 Decorator Pattern 的設計模式介紹</p>
+<h4 id="1-案例需求"><a href="#1-案例需求" class="headerlink" title="1. 案例需求"></a>1. 案例需求</h4><p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2018/04/Fotolia_30691356_Subscription_XL-1.jpg"><img src="http://geekcodeparadise.com/wp-content/uploads/2018/04/Fotolia_30691356_Subscription_XL.jpg" alt="裝飾者模式 Decorator Pattern 案例"></a></p>
+<p>圖片來源：<a target="_blank" rel="noopener" href="https://www.rentcafe.com/blog/cities/renting-a-house/">https://www.rentcafe.com/blog/cities/renting-a-house/</a></p>
+<p>　　在外地求學、工作時，大部分需要找租屋來住，每種租屋提供的設施、環境都不同，有的靠近捷運、有電視、有冰箱、有洗衣機等。假如有房東要介紹自己的租屋內容，那程式如何設計呢？</p>
+<h4 id="2-程式設計"><a href="#2-程式設計" class="headerlink" title="2. 程式設計"></a>2. 程式設計</h4><p>(錯誤)</p>
+<p>　　建立一個建築物(Building)抽象類別，有一個描述(Show)的方法，另外有公寓和透天屋需透過繼承它並實作Show方法，如下UML類別圖：</p>
+<p>　　在Building裡定義三個bool值，可設定該租屋是否有這些環境設施，並</p>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2018/04/DecoratorFactory_ERROR-1.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2018/04/DecoratorFactory_ERROR.png"></a></p>
+<p>在Show方法依據這些值做環境設施描述，程式碼：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">class</span> <span class="title">Building</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="built_in">bool</span> refrigerator;</span><br><span class="line">    <span class="keyword">private</span> <span class="built_in">bool</span> washingMachine;</span><br><span class="line">    <span class="keyword">private</span> <span class="built_in">bool</span> closeToMRT;</span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">bool</span> Refrigerator</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">get</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> refrigerator;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">set</span></span><br><span class="line">        &#123;</span><br><span class="line">            refrigerator = <span class="keyword">value</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">bool</span> WashingMachine</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">get</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> washingMachine;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">set</span></span><br><span class="line">        &#123;</span><br><span class="line">            washingMachine = <span class="keyword">value</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">bool</span> CloseToMRT</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">get</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> closeToMRT;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">set</span></span><br><span class="line">        &#123;</span><br><span class="line">            closeToMRT = <span class="keyword">value</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">Show</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (Refrigerator)</span><br><span class="line">        &#123;</span><br><span class="line">            Console.Write(<span class="string">&quot;有冰箱 &quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (WashingMachine)</span><br><span class="line">        &#123;</span><br><span class="line">            Console.Write(<span class="string">&quot;有洗衣機 &quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (CloseToMRT)</span><br><span class="line">        &#123;</span><br><span class="line">            Console.Write(<span class="string">&quot;靠近捷運 &quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　Apartment和Townhouse具體類別：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Apartment</span> : <span class="title">Building</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">Show</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">base</span>.Show();</span><br><span class="line">        Console.WriteLine(<span class="string">&quot;的公寓&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Townhouse</span> : <span class="title">Building</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">Show</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">base</span>.Show();</span><br><span class="line">        Console.WriteLine(<span class="string">&quot;的透天屋&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　模擬租屋宣傳的場景程式和輸出結果：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Program</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"><span class="built_in">string</span>[] args</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        Console.WriteLine(<span class="string">&quot;第1間租屋是&quot;</span>);</span><br><span class="line">        Building b1 = <span class="keyword">new</span> Apartment();</span><br><span class="line">        b1.CloseToMRT = <span class="literal">true</span>;</span><br><span class="line">        b1.Refrigerator = <span class="literal">false</span>;</span><br><span class="line">        b1.WashingMachine = <span class="literal">true</span>;</span><br><span class="line">        b1.Show();</span><br><span class="line">        Console.WriteLine(<span class="string">&quot;第2間租屋是&quot;</span>);</span><br><span class="line">        Building b2 = <span class="keyword">new</span> Townhouse();</span><br><span class="line">        b2.CloseToMRT = <span class="literal">false</span>;</span><br><span class="line">        b2.Refrigerator = <span class="literal">true</span>;</span><br><span class="line">        b2.WashingMachine = <span class="literal">true</span>;</span><br><span class="line">        b2.Show();</span><br><span class="line">        Console.Read();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2018/04/program_error-1.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2018/04/program_error.png" alt="第一個案例結果"></a></p>
+<p>程式很完美的宣傳租屋環境，但是，如果要環境設施不只上述三點呢？有電視、有網路、有桌子、有沙發．．．多了這麼多條件，是不是需要改底層Building抽象類別？這樣會違反<a target="_blank" rel="noopener" href="https://geekcodeparadise.com/2018/03/design-pattern-the-open-closed-principle/">開閉原則</a>！</p>
+<p>(正確)</p>
+<p>　　為了解決上述問題，新增一個裝飾者(Decorator)抽象類別，將租屋的環境設施個別繼承這類別。其UML類別圖如下：</p>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2018/04/DecoratorFactory_OK-1.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2018/04/DecoratorFactory_OK.png" alt="裝飾者模式 Decorator Pattern 案例UML Class"></a></p>
+<p>　　Building抽象類別：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">class</span> <span class="title">Building</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">Show</span>()</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　Apartment和Townhouse具體類別：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Townhouse</span> : <span class="title">Building</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">Show</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        Console.WriteLine(<span class="string">&quot;的透天屋&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Apartment</span> : <span class="title">Building</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">Show</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        Console.WriteLine(<span class="string">&quot;的公寓&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　Decorator抽象類別，該類別繼承Building，且用組合的方式將Building作為自己的屬性。實做Show方法是呼叫組合的Building物件的Show：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">class</span> <span class="title">Decorator</span> : <span class="title">Building</span></span><br><span class="line">&#123;</span><br><span class="line">    Building building;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Decorator</span>(<span class="params">Building building</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">this</span>.building = building;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">Show</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span>(<span class="keyword">this</span>.building != <span class="literal">null</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">this</span>.building.Show();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>WashingMachine、Refrigerator和CloseToMRT繼承Decorator，實做自己的Show方法，且要呼叫父類別(Decorator)的Show：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">WashingMachine</span> : <span class="title">Decorator</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">WashingMachine</span>(<span class="params">Building building</span>) : <span class="title">base</span>(<span class="params">building</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">Show</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        Console.Write(<span class="string">&quot;有洗衣機 &quot;</span>);</span><br><span class="line">        <span class="keyword">base</span>.Show();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">CloseToMRT</span> : <span class="title">Decorator</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">CloseToMRT</span>(<span class="params">Building building</span>) : <span class="title">base</span>(<span class="params">building</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">Show</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        Console.Write(<span class="string">&quot;靠近捷運 &quot;</span>);</span><br><span class="line">        <span class="keyword">base</span>.Show();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Refrigerator</span> : <span class="title">Decorator</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Refrigerator</span>(<span class="params">Building building</span>) : <span class="title">base</span>(<span class="params">building</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">Show</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        Console.Write(<span class="string">&quot;有冰箱 &quot;</span>);</span><br><span class="line">        <span class="keyword">base</span>.Show();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>模擬使用裝飾者模式的租屋宣傳的場景程式和輸出結果：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Program</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"><span class="built_in">string</span>[] args</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        Console.WriteLine(<span class="string">&quot;第1間租屋是&quot;</span>);</span><br><span class="line">        Building b1 = <span class="keyword">new</span> Apartment();</span><br><span class="line">        b1 = <span class="keyword">new</span> CloseToMRT(b1);</span><br><span class="line">        b1 = <span class="keyword">new</span> WashingMachine(b1);</span><br><span class="line">        b1.Show();</span><br><span class="line">        Console.WriteLine(<span class="string">&quot;第2間租屋是&quot;</span>);</span><br><span class="line">        Building b2 = <span class="keyword">new</span> Townhouse();</span><br><span class="line">        b2 = <span class="keyword">new</span> Refrigerator(b2);</span><br><span class="line">        b2 = <span class="keyword">new</span> WashingMachine(b2);</span><br><span class="line">        b2.Show();</span><br><span class="line">        Console.Read();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2018/04/Program_ok-1.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2018/04/Program_ok.png" alt="裝飾者模式 Decorator Pattern 第二個案例結果"></a></p>
+<h4 id="3-裝飾者模式介紹"><a href="#3-裝飾者模式介紹" class="headerlink" title="3. 裝飾者模式介紹"></a>3. 裝飾者模式介紹</h4><h5 id="3-1-裝飾者模式定義"><a href="#3-1-裝飾者模式定義" class="headerlink" title="3.1 裝飾者模式定義"></a>3.1 裝飾者模式定義</h5><p>根據書上的介紹，裝飾者模式的定義：Attach additional responsibilities to an object dynamically keeping the same interface.Decorators provide a flexible alternative to subclassing for extending functionality。意思是動態地給一個物件新增一些額外的責任，以增加功能來說，裝飾者比衍生子類別還要靈活。</p>
+<p>　　裝飾者模式的通用UML類別圖：</p>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2018/04/general_DF-1.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2018/04/general_DF.png" alt="裝飾者模式 Decorator Pattern UML Class"></a></p>
+<p>　　而裝飾者模式包含四大角色：</p>
+<p>　　Component：是一個抽象類別或介面，定義我們最核心的物件，能被動態地新增職責。依照前述例子，是Building類別。</p>
+<p>　　ConcreteComponent：繼承Component，能動態地新增職責，也是實際被裝飾的對象。依照前述例子，是Apartment和Townhouse類別。</p>
+<p>　　Decorator：裝飾抽象類別，用來擴展Component類別的功能，且對於Component來說，不須知道Decorator的存在。</p>
+<p>　　ConcreateDecorator：繼承Decorator，具體的裝飾物件，可以新增Component的職責，甚至可以有其他的屬性和方法。依照前述例子，是Refrigerator、WashingMachine和CloseToMRT三個類別，且未來要新增其他環境設施，都繼承Decorator來實做，再裝飾到Building。</p>
+<h5 id="3-2-裝飾者模式優缺點"><a href="#3-2-裝飾者模式優缺點" class="headerlink" title="3.2 裝飾者模式優缺點"></a>3.2 裝飾者模式優缺點</h5><p>優點</p>
+<ul>
+<li>裝飾類和被裝飾類互相獨立，不會有耦合</li>
+<li>不管裝飾了多少層，最後回傳的物件仍是Component類別，符合里氏替換原則</li>
+<li>動態地擴展具體類別的功能</li>
+</ul>
+<p>　　缺點</p>
+<ul>
+<li>裝飾得過多會使物件複雜，要一層層剝開檢查是否有錯誤。</li>
+</ul>
+<h5 id="3-3-裝飾者模式使用情境"><a href="#3-3-裝飾者模式使用情境" class="headerlink" title="3.3 裝飾者模式使用情境"></a>3.3 裝飾者模式使用情境</h5><ul>
+<li>需要擴展／新增一個類別的功能，且這些功能又能撤換掉</li>
+</ul>
+<h4 id="參考文獻"><a href="#參考文獻" class="headerlink" title="參考文獻"></a>參考文獻</h4><ol>
+<li><a target="_blank" rel="noopener" href="https://amzn.to/3LOwYlp">程杰 大話設計模式 第06章｜穿什麼有這麼重要？—裝飾模式</a></li>
+<li><a target="_blank" rel="noopener" href="https://amzn.to/3JLkwQW">秦小波 設計模式之禪 第17章 裝飾模式</a></li>
+<li><a target="_blank" rel="noopener" href="https://amzn.to/3LRwBqc">Elisabeth Freeman, Eric Freeman, Bert Bates, Kathy Sierra 著、蔡學鏞 譯, 深入淺出設計模式 3 裝飾者模式</a></li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2018/04/16/design-pattern-law-of-demeter/" rel="prev" title="迪米特法則 Law of Demeter">
+      <i class="fa fa-chevron-left"></i> 迪米特法則 Law of Demeter
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2018/04/30/design-pattern-proxy/" rel="next" title="代理模式 Proxy Pattern">
+      代理模式 Proxy Pattern <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E6%A1%88%E4%BE%8B%E9%9C%80%E6%B1%82"><span class="nav-number">1.</span> <span class="nav-text">1. 案例需求</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E7%A8%8B%E5%BC%8F%E8%A8%AD%E8%A8%88"><span class="nav-number">2.</span> <span class="nav-text">2. 程式設計</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-%E8%A3%9D%E9%A3%BE%E8%80%85%E6%A8%A1%E5%BC%8F%E4%BB%8B%E7%B4%B9"><span class="nav-number">3.</span> <span class="nav-text">3. 裝飾者模式介紹</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#3-1-%E8%A3%9D%E9%A3%BE%E8%80%85%E6%A8%A1%E5%BC%8F%E5%AE%9A%E7%BE%A9"><span class="nav-number">3.1.</span> <span class="nav-text">3.1 裝飾者模式定義</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-2-%E8%A3%9D%E9%A3%BE%E8%80%85%E6%A8%A1%E5%BC%8F%E5%84%AA%E7%BC%BA%E9%BB%9E"><span class="nav-number">3.2.</span> <span class="nav-text">3.2 裝飾者模式優缺點</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-3-%E8%A3%9D%E9%A3%BE%E8%80%85%E6%A8%A1%E5%BC%8F%E4%BD%BF%E7%94%A8%E6%83%85%E5%A2%83"><span class="nav-number">3.3.</span> <span class="nav-text">3.3 裝飾者模式使用情境</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%83%E8%80%83%E6%96%87%E7%8D%BB"><span class="nav-number">4.</span> <span class="nav-text">參考文獻</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">208</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">49</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

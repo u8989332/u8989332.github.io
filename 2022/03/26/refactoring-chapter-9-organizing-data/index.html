@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="This article references the chapter 9 “ Organizing Data “ of Refactoring: Improving the Design of Existing Code (2nd Edition). Author had highlighted many important refactorings in this chapter. I use">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Organizing Data">
+<meta property="og:url" content="http://example.com/2022/03/26/refactoring-chapter-9-organizing-data/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="This article references the chapter 9 “ Organizing Data “ of Refactoring: Improving the Design of Existing Code (2nd Edition). Author had highlighted many important refactorings in this chapter. I use">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://geekcodeparadise.com/wp-content/uploads/2022/03/cabinet-3283536_960_720.jpg">
+<meta property="article:published_time" content="2022-03-26T07:54:47.000Z">
+<meta property="article:modified_time" content="2023-11-19T07:47:26.026Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://geekcodeparadise.com/wp-content/uploads/2022/03/cabinet-3283536_960_720.jpg">
+
+<link rel="canonical" href="http://example.com/2022/03/26/refactoring-chapter-9-organizing-data/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>Organizing Data | Hexo</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Hexo</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/26/refactoring-chapter-9-organizing-data/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Organizing Data
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-03-26 15:54:47" itemprop="dateCreated datePublished" datetime="2022-03-26T15:54:47+08:00">2022-03-26</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-11-19 15:47:26" itemprop="dateModified" datetime="2023-11-19T15:47:26+08:00">2023-11-19</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C#</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Refactoring/" itemprop="url" rel="index"><span itemprop="name">Refactoring</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>This article references the chapter 9 “ Organizing Data “ of <a target="_blank" rel="noopener" href="https://amzn.to/3LUmBwI">Refactoring: Improving the Design of Existing Code (2nd Edition)</a>. Author had highlighted many important refactorings in this chapter.</p>
+<p>I use .NET C# to practice with these refactorings and upload to Github.</p>
+<p><img src="https://geekcodeparadise.com/wp-content/uploads/2022/03/cabinet-3283536_960_720.jpg" alt="organizing data"></p>
+<p>(Photo from Pixabay: <a target="_blank" rel="noopener" href="https://pixabay.com/photos/cabinet-drawer-wood-catalogue-3283536/">https://pixabay.com/photos/cabinet-drawer-wood-catalogue-3283536/</a><a target="_blank" rel="noopener" href="https://pixabay.com/illustrations/moving-boxes-mover-moving-truck-3671446/">)</a></p>
+<hr>
+<h4 id="Split-Variable"><a href="#Split-Variable" class="headerlink" title="Split Variable"></a>Split Variable</h4><h5 id="Tips"><a href="#Tips" class="headerlink" title="Tips"></a>Tips</h5><ul>
+<li>Loop variable and collecting variable are special. They are assigned value many times.</li>
+<li>Other variable is responsible for one thing. It should be assigned value one time.</li>
+<li>If some variable is assigned many times, we should split it into different variables.</li>
+</ul>
+<h5 id="Examples"><a href="#Examples" class="headerlink" title="Examples:"></a>Examples:</h5><ul>
+<li>A simple example</li>
+<li>Assigning to an Input Parameter</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://github.com/u8989332/martin-fowler-refactoring-2nd/tree/master/Ch9.Organizing%20Data/Split%20Variable">Github</a></p>
+<hr>
+<h4 id="Rename-Field"><a href="#Rename-Field" class="headerlink" title="Rename Field"></a>Rename Field</h4><h5 id="Tips-1"><a href="#Tips-1" class="headerlink" title="Tips"></a>Tips</h5><ul>
+<li>A field with good naming makes the developer clever about what the code does.</li>
+<li>Field and accessors (getter&#x2F;setter) namings are important.</li>
+<li>If a record is still not encapsulated, use <strong>Encapsulate Record</strong>.</li>
+</ul>
+<h5 id="Examples-1"><a href="#Examples-1" class="headerlink" title="Examples:"></a>Examples:</h5><ul>
+<li>A simple example</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://github.com/u8989332/martin-fowler-refactoring-2nd/tree/master/Ch9.Organizing%20Data/Rename%20Field">Github</a></p>
+<hr>
+<h4 id="Replace-Derived-Variable-with-Query"><a href="#Replace-Derived-Variable-with-Query" class="headerlink" title="Replace Derived Variable with Query"></a>Replace Derived Variable with Query</h4><h5 id="Tips-2"><a href="#Tips-2" class="headerlink" title="Tips"></a>Tips</h5><ul>
+<li>We should minimize the scope of mutable data at much as possible.</li>
+<li>Use this skill to avoid “We update the source data but we forget to update the derived variable”</li>
+</ul>
+<h5 id="Examples-2"><a href="#Examples-2" class="headerlink" title="Examples:"></a>Examples:</h5><ul>
+<li>A simple example</li>
+<li>More Than One Source</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://github.com/u8989332/martin-fowler-refactoring-2nd/tree/master/Ch9.Organizing%20Data/Replace%20Derived%20Variable%20with%20Query">Github</a></p>
+<hr>
+<h4 id="Change-Reference-to-Value"><a href="#Change-Reference-to-Value" class="headerlink" title="Change Reference to Value"></a>Change Reference to Value</h4><h5 id="Tips-3"><a href="#Tips-3" class="headerlink" title="Tips"></a>Tips</h5><ul>
+<li>A <a target="_blank" rel="noopener" href="https://martinfowler.com/bliki/ValueObject.html">value object</a> is immutable. We can transfer this object into other logic without caring about modifying the object’s data.</li>
+<li>If an object can be shared between many objects and they can see its modification, it should be a reference object.</li>
+<li>Value object usually implements <strong>equals</strong> function.</li>
+</ul>
+<h5 id="Examples-3"><a href="#Examples-3" class="headerlink" title="Examples:"></a>Examples:</h5><ul>
+<li>A simple example</li>
+<li>More Than One Source</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://github.com/u8989332/martin-fowler-refactoring-2nd/tree/master/Ch9.Organizing%20Data/Change%20Reference%20to%20Value">Github</a></p>
+<hr>
+<h4 id="Change-Reference-to-Value-1"><a href="#Change-Reference-to-Value-1" class="headerlink" title="Change Reference to Value"></a>Change Reference to Value</h4><h5 id="Tips-4"><a href="#Tips-4" class="headerlink" title="Tips"></a>Tips</h5><ul>
+<li>If a shared Value Object data needs update, we need to find all data copies and update them. Change it to Reference Object and the object’s update reflects on all clients.</li>
+<li>Build a <a target="_blank" rel="noopener" href="https://martinfowler.com/eaaCatalog/repository.html">Repository</a> to manage the reference object. All clients find the reference objects by the repository.</li>
+</ul>
+<h5 id="Examples-4"><a href="#Examples-4" class="headerlink" title="Examples:"></a>Examples:</h5><ul>
+<li>A simple example</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://github.com/u8989332/martin-fowler-refactoring-2nd/tree/master/Ch9.Organizing%20Data/Change%20Value%20to%20Reference">Github</a></p>
+<hr>
+<h4 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h4><p>This chapter introduces me how to organize data. In ASP.NET MVC development, I have used Service&#x2F;Repository pattern to manage my data source. And I used the LINQ to perform <strong>Replace Derived Variable with Query</strong>. I have grown up to write better code when I study this refactoring chapter. If you want to learn detailed motivation and mechanics, study the chapter 9 “ Organizing Data “ of <a target="_blank" rel="noopener" href="https://amzn.to/3LUmBwI">Refactoring: Improving the Design of Existing Code (2nd Edition)</a>. and it improves our programmer’s ability.</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/03/10/refactoring-chapter-8-moving-features/" rel="prev" title="Moving Features">
+      <i class="fa fa-chevron-left"></i> Moving Features
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/04/09/refactoring-chapter-10-simplifying-conditional-logic/" rel="next" title="Simplifying Conditional Logic">
+      Simplifying Conditional Logic <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#Split-Variable"><span class="nav-number">1.</span> <span class="nav-text">Split Variable</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Tips"><span class="nav-number">1.1.</span> <span class="nav-text">Tips</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Examples"><span class="nav-number">1.2.</span> <span class="nav-text">Examples:</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Rename-Field"><span class="nav-number">2.</span> <span class="nav-text">Rename Field</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Tips-1"><span class="nav-number">2.1.</span> <span class="nav-text">Tips</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Examples-1"><span class="nav-number">2.2.</span> <span class="nav-text">Examples:</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Replace-Derived-Variable-with-Query"><span class="nav-number">3.</span> <span class="nav-text">Replace Derived Variable with Query</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Tips-2"><span class="nav-number">3.1.</span> <span class="nav-text">Tips</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Examples-2"><span class="nav-number">3.2.</span> <span class="nav-text">Examples:</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Change-Reference-to-Value"><span class="nav-number">4.</span> <span class="nav-text">Change Reference to Value</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Tips-3"><span class="nav-number">4.1.</span> <span class="nav-text">Tips</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Examples-3"><span class="nav-number">4.2.</span> <span class="nav-text">Examples:</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Change-Reference-to-Value-1"><span class="nav-number">5.</span> <span class="nav-text">Change Reference to Value</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Tips-4"><span class="nav-number">5.1.</span> <span class="nav-text">Tips</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Examples-4"><span class="nav-number">5.2.</span> <span class="nav-text">Examples:</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Conclusion"><span class="nav-number">6.</span> <span class="nav-text">Conclusion</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">208</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">49</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

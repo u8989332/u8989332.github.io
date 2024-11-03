@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="1. What is Data MapperAccording to [PoEAA], this definition is “A layer of Mappers that moves data between objects and a database while keeping them independent of each other and the mapper itself.”">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Data Mapper Pattern">
+<meta property="og:url" content="http://example.com/2021/07/08/poeaa-data-source-architectural-pattern-data-mapper/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="1. What is Data MapperAccording to [PoEAA], this definition is “A layer of Mappers that moves data between objects and a database while keeping them independent of each other and the mapper itself.”">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://geekcodeparadise.com/wp-content/uploads/2021/07/image-3.png">
+<meta property="og:image" content="http://geekcodeparadise.com/wp-content/uploads/2021/07/ReadData-1.png">
+<meta property="og:image" content="http://geekcodeparadise.com/wp-content/uploads/2021/07/Update-1.png">
+<meta property="og:image" content="http://geekcodeparadise.com/wp-content/uploads/2021/07/Architecture-1.png">
+<meta property="og:image" content="http://geekcodeparadise.com/wp-content/uploads/2021/07/image-4.png">
+<meta property="article:published_time" content="2021-07-07T16:02:00.000Z">
+<meta property="article:modified_time" content="2023-11-19T07:47:25.930Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://geekcodeparadise.com/wp-content/uploads/2021/07/image-3.png">
+
+<link rel="canonical" href="http://example.com/2021/07/08/poeaa-data-source-architectural-pattern-data-mapper/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>Data Mapper Pattern | Hexo</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Hexo</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/07/08/poeaa-data-source-architectural-pattern-data-mapper/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Data Mapper Pattern
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-07-08 00:02:00" itemprop="dateCreated datePublished" datetime="2021-07-08T00:02:00+08:00">2021-07-08</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-11-19 15:47:25" itemprop="dateModified" datetime="2023-11-19T15:47:25+08:00">2023-11-19</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Design-Pattern/" itemprop="url" rel="index"><span itemprop="name">Design Pattern</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Architecture/" itemprop="url" rel="index"><span itemprop="name">Architecture</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/PoEAA/" itemprop="url" rel="index"><span itemprop="name">PoEAA</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="1-What-is-Data-Mapper"><a href="#1-What-is-Data-Mapper" class="headerlink" title="1. What is Data Mapper"></a>1. What is Data Mapper</h3><p>According to [PoEAA], this definition is “A layer of Mappers that moves data between objects and a database while keeping them independent of each other and the mapper itself.”</p>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2021/07/image-5.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2021/07/image-3.png"></a></p>
+<p>Figure 1. Data Mapper (From <a target="_blank" rel="noopener" href="https://martinfowler.com/eaaCatalog/index.html">PoEAA Page</a>)</p>
+<h4 id="1-1-How-it-works"><a href="#1-1-How-it-works" class="headerlink" title="1.1 How it works"></a>1.1 How it works</h4><p><strong>Separating Domain from Data Source is the main ability.</strong> Figure 2 shows that a client uses a person mapper’s Find function to get a person instance from database. This mapper uses an <strong>Identity Map</strong> to check if the person instance is loaded or not. If it’s not loaded, then loads it to the map.   Figure 3 shows that a client uses mapper’s Update function and mapper reads the data from person instance to write data into database.  </p>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2021/07/ReadData-2.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2021/07/ReadData-1.png" alt="Retrieving data from database data mapper"></a></p>
+<p>Figure 2. Retrieving data from database</p>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2021/07/Update-2.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2021/07/Update-1.png" alt="Updating Data data mapper"></a></p>
+<p>Figure 3. Updating Data</p>
+<p>For finding function, there are 3 topics to discuss:</p>
+<h5 id="1-1-1-Handling-Finders"><a href="#1-1-1-Handling-Finders" class="headerlink" title="1.1.1 Handling Finders"></a>1.1.1 Handling Finders</h5><p>Usually presentation layer uses mapper’s finding function to load objects from database. But sometimes domain layer needs to use mapper’s finding function. This situation can be avoided by using Lazy Load pattern.   Separating finding interfaces to domain namespace(package) for mapper’s implementation is a decoupling method.</p>
+<h5 id="1-1-2-Mapping-Data-to-Domain-Fields"><a href="#1-1-2-Mapping-Data-to-Domain-Fields" class="headerlink" title="1.1.2 Mapping Data to Domain Fields"></a>1.1.2 Mapping Data to Domain Fields</h5><p>Mapper creating a rich constructor to create a domain object is a recommend method. Avoid directly setting fields&#x2F;properties of domain object. If two objects are referenced each other when mapper creates them by rich constructor, using Lazy Load is a method to solve it.  </p>
+<h5 id="1-1-3-Metadata-Based-Mappings"><a href="#1-1-3-Metadata-Based-Mappings" class="headerlink" title="1.1.3 Metadata-Based Mappings"></a>1.1.3 Metadata-Based Mappings</h5><p>Metadata-Mapping pattern is a method that transfers domain object’s fields into database’s records. The metadata is saved in a class or a independent file. Using it can have no more source code&#x2F;code generation&#x2F;reflection programs.</p>
+<h4 id="1-2-When-to-use-it"><a href="#1-2-When-to-use-it" class="headerlink" title="1.2 When to use it"></a>1.2 When to use it</h4><ol>
+<li>Domain Model don’t understand database existence. Modifying domain objects or mappers is more efficient.</li>
+<li>For more complex business logic.</li>
+<li>If Domain Model is not used, Data Mapper is not required.</li>
+</ol>
+<h3 id="2-Pattern-Practice-The-Person-Management"><a href="#2-Pattern-Practice-The-Person-Management" class="headerlink" title="2. Pattern Practice: The Person Management"></a>2. Pattern Practice: The Person Management</h3><p>This problem is introduced in the previous article <a target="_blank" rel="noopener" href="https://geekcodeparadise.com/2021/06/20/poeaa-data-source-architectural-pattern-table-data-gateway/">[PoEAA] Data Source Architectural Pattern - Table Data Gateway</a>. This article uses Data Mapper to build the data source architectural layer.</p>
+<h4 id="2-1-Implementation-by-C-SQLite"><a href="#2-1-Implementation-by-C-SQLite" class="headerlink" title="2.1 Implementation by C# &amp; SQLite"></a>2.1 Implementation by C# &amp; SQLite</h4><p>This pattern is implemented by C# based on the content of <strong>Chapter 10 Data Source Architectural Patterns - Data Mapper</strong> of PoEAA. The database is SQLite.</p>
+<p>By Martin’s implementation, it doesn’t contain a Delete function in a data mapper. So this article also has no Delete function.</p>
+<h5 id="2-1-1-Domain-Mapper-layers"><a href="#2-1-1-Domain-Mapper-layers" class="headerlink" title="2.1.1 Domain&#x2F;Mapper layers"></a>2.1.1 Domain&#x2F;Mapper layers</h5><p>Create Domain and Mapper these 2 layers to separate responsibilities. Figure 4 shows:  </p>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2021/07/Architecture-2.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2021/07/Architecture-1.png" alt="Domain/Mapper layers data mapper"></a></p>
+<p>Figure 4. Domain&#x2F;Mapper layers</p>
+<p>Following sections explain what they work for.</p>
+<h5 id="2-1-2-AbstractMapper-PersonMapper-classes"><a href="#2-1-2-AbstractMapper-PersonMapper-classes" class="headerlink" title="2.1.2 AbstractMapper&#x2F;PersonMapper classes"></a>2.1.2 AbstractMapper&#x2F;PersonMapper classes</h5><p>AbstractMapper class has common behaviors for concrete child Mapper classes. AbstractMapper has a <strong>Identity Map</strong>: Dictionary&lt;int, DomainObject&gt; LoadedMap. When loading is processing, mapper uses this map to check whether this domain object has been loaded or not. If not, then mapper loads it from database.   AbstractMapper’s DoLoad&#x2F;DoInsert are abstract methods. They are override by concrete child Mapper classes. PersonMapper implements these abstract methods and access Person domain objects from database.   For Update function, this is implemented by concrete Mapper instead of abstract method.   PersonMapper has implemented IPersonFinder interface. This interface is defined in Domain layer for responsibility.  </p>
+<p>public abstract class AbstractMapper<br>{<br>protected Dictionary&lt;int, DomainObject&gt; LoadedMap &#x3D; new Dictionary&lt;int, DomainObject&gt;();<br>protected abstract string FindStatement();<br>protected abstract string InsertStatement();</p>
+<p>protected abstract int FindNextDatabaseId();</p>
+<p>protected DomainObject AbstractFind(int id)<br>{<br>bool findResult &#x3D; LoadedMap.TryGetValue(id, out DomainObject result);<br>if (findResult)<br>{<br>return result;<br>}</p>
+<p>try<br>{<br>using var conn &#x3D; DbManager.CreateConnection();<br>conn.Open();<br>using IDbCommand comm &#x3D; new SQLiteCommand(FindStatement(), conn);<br>comm.Parameters.Add(new SQLiteParameter(“$id”, id));<br>using IDataReader reader &#x3D; comm.ExecuteReader();<br>reader.Read();<br>result &#x3D; Load(reader);<br>return result;<br>}<br>catch (Exception ex)<br>{<br>throw new ApplicationException(ex.Message);<br>}<br>}</p>
+<p>protected DomainObject Load(IDataReader reader)<br>{<br>object[] resultSet &#x3D; new object[reader.FieldCount];<br>reader.GetValues(resultSet);</p>
+<p>int id &#x3D; (int)resultSet[0];<br>if (LoadedMap.ContainsKey(id))<br>{<br>return LoadedMap[id];<br>}</p>
+<p>DomainObject result &#x3D; DoLoad(id, reader);<br>LoadedMap.Add(id, result);<br>return result;<br>}</p>
+<p>protected List&lt;DomainObject&gt; LoadAll(IDataReader reader)<br>{<br>List&lt;DomainObject&gt; result &#x3D; new List&lt;DomainObject&gt;();<br>while (reader.Read())<br>{<br>result.Add(Load(reader));<br>}</p>
+<p>return result;<br>}</p>
+<p>protected abstract DomainObject DoLoad(int id, IDataReader reader);</p>
+<p>public int Insert(DomainObject subject)<br>{<br>try<br>{<br>using var conn &#x3D; DbManager.CreateConnection();<br>conn.Open();<br>using IDbCommand comm &#x3D; new SQLiteCommand(InsertStatement(), conn);<br>subject.Id &#x3D; FindNextDatabaseId();<br>var parameter &#x3D; comm.CreateParameter();<br>parameter.DbType &#x3D; DbType.Int32;<br>parameter.Value &#x3D; subject.Id;<br>comm.Parameters.Add(parameter);<br>DoInsert(subject, comm);<br>comm.ExecuteNonQuery();<br>LoadedMap.Add(subject.Id, subject);<br>return subject.Id;<br>}<br>catch (Exception ex)<br>{<br>throw new ApplicationException(ex.Message);<br>}</p>
+<p>}</p>
+<p>protected abstract void DoInsert(DomainObject subject, IDbCommand insertStatement);</p>
+<p>public List&lt;DomainObject&gt; FindMany(IStatementSource source)<br>{<br>try<br>{<br>using var conn &#x3D; DbManager.CreateConnection();<br>conn.Open();<br>using IDbCommand comm &#x3D; new SQLiteCommand(source.Sql, conn);<br>foreach (var p in source.Parameters)<br>{<br>var parameter &#x3D; comm.CreateParameter();<br>parameter.DbType &#x3D; DbType.Object;<br>parameter.Value &#x3D; p;<br>comm.Parameters.Add(parameter);<br>}<br>using IDataReader reader &#x3D; comm.ExecuteReader();<br>return LoadAll(reader);<br>}<br>catch (Exception ex)<br>{<br>throw new ApplicationException(ex.Message);<br>}<br>}</p>
+<p>}</p>
+<p>public class PersonMapper : AbstractMapper, IPersonFinder<br>{<br>private const string Columns &#x3D; “ id, lastname, firstname, numberOfDependents “;</p>
+<p>private const string UpdateStatementString &#x3D;<br>“UPDATE person SET lastname &#x3D; ?, firstname &#x3D; ?, numberOfDependents &#x3D; ? WHERE id &#x3D; ?”;<br>protected override string FindStatement()<br>{<br>return “SELECT “ + Columns + “ FROM person WHERE id &#x3D; $id”;<br>}</p>
+<p>protected override string InsertStatement()<br>{<br>return “INSERT INTO person VALUES (?, ?, ?, ?)”;<br>}</p>
+<p>protected override int FindNextDatabaseId()<br>{<br>string sql &#x3D; “SELECT max(id) as curId from person”;<br>using var conn &#x3D; DbManager.CreateConnection();<br>conn.Open();<br>using IDbCommand comm &#x3D; new SQLiteCommand(sql, conn);<br>using IDataReader reader &#x3D; comm.ExecuteReader();<br>bool hasResult &#x3D; reader.Read();<br>if (hasResult)<br>{<br>return ((int)((long)reader[“curId”] + 1));<br>}<br>else<br>{<br>return 1;<br>}<br>}</p>
+<p>protected override DomainObject DoLoad(int id, IDataReader reader)<br>{<br>object[] resultSet &#x3D; new object[reader.FieldCount];<br>reader.GetValues(resultSet);<br>string lastName &#x3D; resultSet[1].ToString();<br>string firstName &#x3D; resultSet[2].ToString();<br>int numberOfDependents &#x3D; (int)resultSet[3];<br>return new Person(id, lastName, firstName, numberOfDependents);<br>}</p>
+<p>protected override void DoInsert(DomainObject subject, IDbCommand insertStatement)<br>{<br>Person person &#x3D; (Person) subject;<br>var p1 &#x3D; insertStatement.CreateParameter();<br>p1.DbType &#x3D; DbType.String;<br>p1.Value &#x3D; person.LastName;</p>
+<p>var p2 &#x3D; insertStatement.CreateParameter();<br>p2.DbType &#x3D; DbType.String;<br>p2.Value &#x3D; person.FirstName;</p>
+<p>var p3 &#x3D; insertStatement.CreateParameter();<br>p3.DbType &#x3D; DbType.Int32;<br>p3.Value &#x3D; person.NumberOfDependents;<br>insertStatement.Parameters.Add(p1);<br>insertStatement.Parameters.Add(p2);<br>insertStatement.Parameters.Add(p3);<br>}</p>
+<p>public Person Find(int id)<br>{<br>return (Person) AbstractFind(id);<br>}</p>
+<p>public IList&lt;Person&gt; FindByLastName2(string pattern)<br>{<br>return FindMany(new FindByLastName(pattern))<br>.Cast&lt;Person&gt;().ToList();<br>}</p>
+<p>public IList&lt;Person&gt; FinAll()<br>{<br>return FindMany(new FindAllStatement())<br>.Cast&lt;Person&gt;().ToList();<br>}</p>
+<p>public void Update(Person subject)<br>{<br>try<br>{<br>using var conn &#x3D; DbManager.CreateConnection();<br>conn.Open();<br>using IDbCommand comm &#x3D; new SQLiteCommand(UpdateStatementString, conn);<br>var p1 &#x3D; comm.CreateParameter();<br>p1.DbType &#x3D; DbType.String;<br>p1.Value &#x3D; subject.LastName;</p>
+<p>var p2 &#x3D; comm.CreateParameter();<br>p2.DbType &#x3D; DbType.String;<br>p2.Value &#x3D; subject.FirstName;</p>
+<p>var p3 &#x3D; comm.CreateParameter();<br>p3.DbType &#x3D; DbType.Int32;<br>p3.Value &#x3D; subject.NumberOfDependents;</p>
+<p>var p4 &#x3D; comm.CreateParameter();<br>p4.DbType &#x3D; DbType.Int32;<br>p4.Value &#x3D; subject.Id;</p>
+<p>comm.Parameters.Add(p1);<br>comm.Parameters.Add(p2);<br>comm.Parameters.Add(p3);<br>comm.Parameters.Add(p4);</p>
+<p>comm.ExecuteNonQuery();<br>}<br>catch (Exception ex)<br>{<br>throw new ApplicationException(ex.Message);<br>}<br>}</p>
+<p>private class FindByLastName : IStatementSource<br>{<br>private readonly string _lastName;</p>
+<p>public string Sql { get; } &#x3D;<br>“SELECT “ + Columns + “ FROM person WHERE UPPER(lastname) like UPPER(?) ORDER BY lastName”;</p>
+<p>public object[] Parameters<br>{<br>get<br>{<br>return new object[] {_lastName};<br>}<br>}</p>
+<p>public FindByLastName(string lastName)<br>{<br>_lastName &#x3D; lastName;<br>}<br>}</p>
+<p>private class FindAllStatement : IStatementSource<br>{<br>private readonly string _lastName;</p>
+<p>public string Sql { get; } &#x3D;<br>“SELECT * FROM person”;</p>
+<p>public object[] Parameters<br>{<br>get<br>{<br>return new object[] {};<br>}<br>}<br>}<br>}</p>
+<h5 id="2-1-3-IStatementSource-interface"><a href="#2-1-3-IStatementSource-interface" class="headerlink" title="2.1.3 IStatementSource interface"></a>2.1.3 IStatementSource interface</h5><p>This interface packs SQL string and SQL parameters for FindMany method.  </p>
+<p>public interface IStatementSource<br>{<br>    string Sql { get; }<br>    object[] Parameters { get; }<br>}</p>
+<h5 id="2-1-4-DomainObject-Person-classes-and-IPersonFinder-interface"><a href="#2-1-4-DomainObject-Person-classes-and-IPersonFinder-interface" class="headerlink" title="2.1.4 DomainObject&#x2F;Person classes and IPersonFinder interface"></a>2.1.4 DomainObject&#x2F;Person classes and IPersonFinder interface</h5><p>Domain Model’s super class is DomainObject. For this person management case, Person class is the main Domain Model to perform business logic.   IPersonFinder interface associates with Person class and provides Find methods.</p>
+<p>public abstract class DomainObject<br>{<br>public int Id { get; set; }<br>}</p>
+<p>public class Person : DomainObject<br>{<br>public string LastName { get; }<br>public string FirstName { get; }<br>public int NumberOfDependents { get; }<br>public Person(int id, string lastName, string firstName, int numberOfDependents)<br>{<br>Id &#x3D; id;<br>LastName &#x3D; lastName;<br>FirstName &#x3D; firstName;<br>NumberOfDependents &#x3D; numberOfDependents;<br>}</p>
+<p>public Money GetExemption()<br>{<br>Money baseExemption &#x3D; Money.Dollars(1500d);<br>Money dependentExemption &#x3D; Money.Dollars(750d);<br>return baseExemption.Add(dependentExemption.Multiply((double)NumberOfDependents));<br>}<br>}</p>
+<p>public interface IPersonFinder<br>{<br>IList&lt;Person&gt; FinAll();<br>Person Find(int id);<br>IList&lt;Person&gt; FindByLastName2(string pattern);<br>}</p>
+<h4 id="2-2-Demo"><a href="#2-2-Demo" class="headerlink" title="2.2 Demo"></a>2.2 Demo</h4><p>Create a console program and create 3 Persons in SQLite as the following code:</p>
+<p>class Program<br>{<br>static void Main(string[] args)<br>{<br>InitializeData();</p>
+<p>Console.WriteLine(“Get persons”);<br>PersonMapper mapper &#x3D; new PersonMapper();<br>&#x2F;&#x2F; get all persons<br>var people &#x3D; mapper.FinAll();<br>PrintPerson(people);</p>
+<p>Console.WriteLine(“Insert a new person”);<br>mapper.Insert(new Person(0, “Rose”, “Jackson”, 60));<br>people &#x3D; mapper.FinAll();<br>PrintPerson(people);</p>
+<p>Console.WriteLine(“Update a person’s first name”);<br>var firstPerson &#x3D; mapper.Find(1);<br>firstPerson.FirstName &#x3D; “Jack”;<br>mapper.Update(firstPerson);</p>
+<p>Console.WriteLine(“Update a person’s number of dependents”);<br>var secondPerson &#x3D; mapper.Find(2);<br>secondPerson.NumberOfDependents &#x3D; 0;<br>mapper.Update(secondPerson);</p>
+<p>Console.WriteLine(“Get persons again”);<br>people &#x3D; mapper.FinAll();<br>PrintPerson(people);</p>
+<p>Console.WriteLine(“Get persons with lastname containing n”);<br>people &#x3D; mapper.FindByLastName2(“%n%”);<br>PrintPerson(people);<br>}</p>
+<p>private static void PrintPerson(IEnumerable&lt;Person&gt; people)<br>{<br>foreach (var person in people)<br>{<br>Console.WriteLine($”ID: {person.Id}, “ +<br>  $”last name: {person.LastName}, “ +<br>  $”first name: {person.FirstName}, “ +<br>  $”number of dependents: {person.NumberOfDependents}, “ +<br>  $”exemption: {person.GetExemption().Amount}”);<br>}<br>}</p>
+<p>private static void InitializeData()<br>{<br>using (var connection &#x3D; DbManager.CreateConnection())<br>{<br>connection.Open();</p>
+<p>using (var command &#x3D; connection.CreateCommand())<br>{<br>command.CommandText &#x3D;<br>@”<br>DROP TABLE IF EXISTS person;<br>“;<br>command.ExecuteNonQuery();</p>
+<p>command.CommandText &#x3D;<br>@”<br>CREATE TABLE person (Id int primary key, lastname TEXT, firstname TEXT, numberOfDependents int);<br>“;<br>command.ExecuteNonQuery();</p>
+<p>command.CommandText &#x3D;<br>@”</p>
+<p>INSERT INTO person<br>VALUES (1, ‘Sean’, ‘Reid’, 5);</p>
+<p>INSERT INTO person<br>VALUES (2, ‘Madeleine’, ‘Lyman’, 13);</p>
+<p>INSERT INTO person<br>VALUES (3, ‘Oliver’, ‘Wright’, 66);<br>“;<br>command.ExecuteNonQuery();<br>}</p>
+<p>}<br>}<br>}</p>
+<p>The console shows:</p>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2021/07/image-6.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2021/07/image-4.png" alt="data mapper result"></a></p>
+<h3 id="3-Conclusions-for-Data-Mapper"><a href="#3-Conclusions-for-Data-Mapper" class="headerlink" title="3. Conclusions for Data Mapper"></a>3. Conclusions for Data Mapper</h3><p>I very like “Data Mapper” pattern because of decoupling between Domain Model and Data Source. For testings and maintenance, these works are easier than other data source patterns. The above sample code is uploaded to this <a target="_blank" rel="noopener" href="https://github.com/u8989332/PoEAA_DataMapper">Github Repository</a>.</p>
+<p>For next article I will write <strong>Unit of Work</strong> pattern according to <strong>Chapter 11 Object-Relational Behavioral Patterns - Unit of Work</strong> of PoEAA.</p>
+<h3 id="4-References"><a href="#4-References" class="headerlink" title="4. References"></a>4. References</h3><p><a target="_blank" rel="noopener" href="https://amzn.to/40CuWZT">Patterns of Enterprise Application Architecture Book(Amazon)</a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/07/01/poeaa-data-source-architectural-pattern-active-record/" rel="prev" title="Active Record Pattern">
+      <i class="fa fa-chevron-left"></i> Active Record Pattern
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/10/17/refactoring-chapter-2-principles-in-refactoring-book-summary/" rel="next" title="Principles in Refactoring">
+      Principles in Refactoring <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-What-is-Data-Mapper"><span class="nav-number">1.</span> <span class="nav-text">1. What is Data Mapper</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1-How-it-works"><span class="nav-number">1.1.</span> <span class="nav-text">1.1 How it works</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-1-1-Handling-Finders"><span class="nav-number">1.1.1.</span> <span class="nav-text">1.1.1 Handling Finders</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-1-2-Mapping-Data-to-Domain-Fields"><span class="nav-number">1.1.2.</span> <span class="nav-text">1.1.2 Mapping Data to Domain Fields</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-1-3-Metadata-Based-Mappings"><span class="nav-number">1.1.3.</span> <span class="nav-text">1.1.3 Metadata-Based Mappings</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-When-to-use-it"><span class="nav-number">1.2.</span> <span class="nav-text">1.2 When to use it</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-Pattern-Practice-The-Person-Management"><span class="nav-number">2.</span> <span class="nav-text">2. Pattern Practice: The Person Management</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-Implementation-by-C-SQLite"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 Implementation by C# &amp; SQLite</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#2-1-1-Domain-Mapper-layers"><span class="nav-number">2.1.1.</span> <span class="nav-text">2.1.1 Domain&#x2F;Mapper layers</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-1-2-AbstractMapper-PersonMapper-classes"><span class="nav-number">2.1.2.</span> <span class="nav-text">2.1.2 AbstractMapper&#x2F;PersonMapper classes</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-1-3-IStatementSource-interface"><span class="nav-number">2.1.3.</span> <span class="nav-text">2.1.3 IStatementSource interface</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-1-4-DomainObject-Person-classes-and-IPersonFinder-interface"><span class="nav-number">2.1.4.</span> <span class="nav-text">2.1.4 DomainObject&#x2F;Person classes and IPersonFinder interface</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-Demo"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 Demo</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-Conclusions-for-Data-Mapper"><span class="nav-number">3.</span> <span class="nav-text">3. Conclusions for Data Mapper</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-References"><span class="nav-number">4.</span> <span class="nav-text">4. References</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">208</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">49</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

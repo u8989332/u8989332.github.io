@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="物件導向程式設計觀念 1. 學物件導向之前的準備工作兩年了，漸漸了解程式專案能否好維護、好延伸的重要性，必須使用到設計模式（Design Pattern），這些模式能套用在各種程式設計狀況，才能讓程式寫得更順～　　現在做Web最常用到MVC架構，甚至細項能切到Service-Repository pattern，但都是邊看範例邊學，尚未學一套要領，實在可惜。　　在學常見的物件導向、Design P">
+<meta property="og:type" content="article">
+<meta property="og:title" content="物件導向程式設計觀念">
+<meta property="og:url" content="http://example.com/2017/11/08/design-pattern-object-oriented-programming-concept/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="物件導向程式設計觀念 1. 學物件導向之前的準備工作兩年了，漸漸了解程式專案能否好維護、好延伸的重要性，必須使用到設計模式（Design Pattern），這些模式能套用在各種程式設計狀況，才能讓程式寫得更順～　　現在做Web最常用到MVC架構，甚至細項能切到Service-Repository pattern，但都是邊看範例邊學，尚未學一套要領，實在可惜。　　在學常見的物件導向、Design P">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://geekcodeparadise.com/wp-content/uploads/2017/11/1eRc2bw.jpg">
+<meta property="og:image" content="http://geekcodeparadise.com/wp-content/uploads/2017/11/2017-11-062B21_18_03-Form1.png">
+<meta property="og:image" content="http://geekcodeparadise.com/wp-content/uploads/2017/11/2017-11-062B21_43_04-DahuaDesignPattern2B255B25E5259F25B725E825A1258C255D2B-2BMicrosoft2BVisual2BStudio2B252825E725B325BB25E725B525B125E725AE25A125E72590258625E5259325A12529.png">
+<meta property="og:image" content="http://geekcodeparadise.com/wp-content/uploads/2017/11/2017-11-072B22_14_57-DahuaDesignPattern2B255B25E5259F25B725E825A1258C255D2B-2BMicrosoft2BVisual2BStudio2B252825E725B325BB25E725B525B125E725AE25A125E72590258625E5259325A12529.png">
+<meta property="og:image" content="http://geekcodeparadise.com/wp-content/uploads/2017/11/2017-11-072B22_15_12-DahuaDesignPattern2B255B25E5259F25B725E825A1258C255D2B-2BMicrosoft2BVisual2BStudio2B252825E725B325BB25E725B525B125E725AE25A125E72590258625E5259325A12529.png">
+<meta property="og:image" content="http://geekcodeparadise.com/wp-content/uploads/2017/11/2017-11-072B23_53_24-DahuaDesignPattern2B255B25E5259F25B725E825A1258C255D2B-2BMicrosoft2BVisual2BStudio2B252825E725B325BB25E725B525B125E725AE25A125E72590258625E5259325A12529.png">
+<meta property="og:image" content="http://geekcodeparadise.com/wp-content/uploads/2017/11/2017-11-082B07_40_51-DahuaDesignPattern2B255B25E5259F25B725E825A1258C255D2B-2BMicrosoft2BVisual2BStudio2B252825E725B325BB25E725B525B125E725AE25A125E72590258625E5259325A12529.png">
+<meta property="article:published_time" content="2017-11-07T23:56:00.000Z">
+<meta property="article:modified_time" content="2023-11-19T07:47:25.512Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://geekcodeparadise.com/wp-content/uploads/2017/11/1eRc2bw.jpg">
+
+<link rel="canonical" href="http://example.com/2017/11/08/design-pattern-object-oriented-programming-concept/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>物件導向程式設計觀念 | Hexo</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Hexo</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2017/11/08/design-pattern-object-oriented-programming-concept/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          物件導向程式設計觀念
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2017-11-08 07:56:00" itemprop="dateCreated datePublished" datetime="2017-11-08T07:56:00+08:00">2017-11-08</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-11-19 15:47:25" itemprop="dateModified" datetime="2023-11-19T15:47:25+08:00">2023-11-19</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Design-Pattern/" itemprop="url" rel="index"><span itemprop="name">Design Pattern</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/OOP/" itemprop="url" rel="index"><span itemprop="name">OOP</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>物件導向程式設計觀念</p>
+<h2 id="1-學物件導向之前的準備"><a href="#1-學物件導向之前的準備" class="headerlink" title="1. 學物件導向之前的準備"></a>1. 學物件導向之前的準備</h2><p>工作兩年了，漸漸了解程式專案能否好維護、好延伸的重要性，必須使用到設計模式（Design Pattern），這些模式能套用在各種程式設計狀況，才能讓程式寫得更順～<br>　　現在做Web最常用到MVC架構，甚至細項能切到Service-Repository pattern，但都是邊看範例邊學，尚未學一套要領，實在可惜。<br>　　在學常見的物件導向、Design Pattern之前，先要有穩固的物件導向程式設計觀念，否則之後會看不懂、不知所以然！好比蓋房子，必須基於良好的地基才能往上蓋，不然就變成違建囉（？</p>
+<h2 id="2-物件導向程式設計（Object-oriented-programming-Concept-簡稱OOP）"><a href="#2-物件導向程式設計（Object-oriented-programming-Concept-簡稱OOP）" class="headerlink" title="2.物件導向程式設計（Object-oriented programming Concept , 簡稱OOP）"></a>2.物件導向程式設計（Object-oriented programming Concept , 簡稱OOP）</h2><p>主要會用C#(Java也可通，差不多）來講解OOP的基本觀念，也不會講太多C#的程式語言如何設計。</p>
+<h3 id="2-1-類別-Class"><a href="#2-1-類別-Class" class="headerlink" title="2.1 類別(Class)"></a>2.1 類別(Class)</h3><p>在講類別之前，先提物件(Object)。物件是什麼？其實所有東西都是物件，能碰到、聞到、看到、買到、丟到….BLABLA，物件是個自我包含的實體(Instance)，可用一組能識別的特性和行為來標記。<br>　　類別，則是具有相同的屬性(Attribute)和功能(Method)的物件的抽象集合。其實這句看文字真的很抽象，以下面程式碼來說明。<br>　　假如要設計個RPG(角色扮演)遊戲的Win form程式，按下按鈕可以跳出招式的顯示[星爆氣流斬！]之視窗。</p>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2017/11/1eRc2bw.jpg"><img src="http://geekcodeparadise.com/wp-content/uploads/2017/11/1eRc2bw.jpg" alt="刀劍神域 範例"></a></p>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2017/11/2017-11-062B21_18_03-Form1-1.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2017/11/2017-11-062B21_18_03-Form1.png" alt="Object-oriented programming Concept DEMO"></a></p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">button1_Click</span>(<span class="params"><span class="built_in">object</span> sender, EventArgs e</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    MessageBox.Show(<span class="string">&quot;星爆氣流斬！&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　可是，如果今天有很多遊戲關卡要你使出招式，該怎辦呢？寫成函數(function)！</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">button1_Click</span>(<span class="params"><span class="built_in">object</span> sender, EventArgs e</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    MessageBox.Show(Skill());</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="built_in">string</span> <span class="title">Skill</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;星爆氣流斬！&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　這樣就可以一直展現招式囉。<br>　　但是這個很欠噓的招式，應該是拿著劍的劍士才會的吧？而不是WinForm的行為。所以，把這招式，放在劍士的類別。</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title">Swordsman</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="built_in">string</span> <span class="title">Skill</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;星爆氣流斬！&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">button1_Click</span>(<span class="params"><span class="built_in">object</span> sender, EventArgs e</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    Swordsman swordsman = <span class="keyword">new</span> Swordsman();</span><br><span class="line">    MessageBox.Show(swordsman.Skill());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　我宣告了一個Swordsman的類別，其中類別的命名規則(Naming Convention)必須首字母大寫，多個單字的首字母一樣大寫。要公開讓別人呼叫的方法，修飾詞則用public。<br>　　上述的程式碼裡，包含兩重要的步驟，宣告swordsman物件並將它實例化</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Swordsman swordsman; <span class="comment">// 宣告一個Swordsman的物件,名字是swordsman</span></span><br><span class="line">swordsman = <span class="keyword">new</span> Swordsman(); <span class="comment">// 將swordsman物件給實例化</span></span><br></pre></td></tr></table></figure>
+
+<p>　　之後這swordsman物件能一直呼叫Skill()函數，展現自己的招式。</p>
+<h3 id="2-2-建構子-Constructor"><a href="#2-2-建構子-Constructor" class="headerlink" title="2.2 建構子(Constructor)"></a>2.2 建構子(Constructor)</h3><p>　　建構子是能讓類別做初始化的函數，若開發者沒有定義建構子，則編譯器會自動產生空的建構子。假如swordsman物件初始時有個人名，則如下述建構子程式碼：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title">Swordsman</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="built_in">string</span> name = <span class="built_in">string</span>.Empty;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Swordsman</span>(<span class="params"><span class="built_in">string</span> name</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="built_in">string</span> <span class="title">Skill</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;私は&quot;</span> + name + <span class="string">&quot;です, 接招吧！星爆氣流斬！&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">button1_Click</span>(<span class="params"><span class="built_in">object</span> sender, EventArgs e</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    Swordsman swordsman = <span class="keyword">new</span> Swordsman(<span class="string">&quot;Kirito&quot;</span>);</span><br><span class="line">    MessageBox.Show(swordsman.Skill());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　上述程式碼定義了私有變數name，再定義Swordsman(string name)建構子，將參數name指定給私有變數name。當宣告swordsman物件時，代入了”Kirito”字串，”Kirito”會存到name變數。</p>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2017/11/2017-11-062B21_43_04-DahuaDesignPattern2B255B25E5259F25B725E825A1258C255D2B-2BMicrosoft2BVisual2BStudio2B252825E725B325BB25E725B525B125E725AE25A125E72590258625E5259325A12529-1.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2017/11/2017-11-062B21_43_04-DahuaDesignPattern2B255B25E5259F25B725E825A1258C255D2B-2BMicrosoft2BVisual2BStudio2B252825E725B325BB25E725B525B125E725AE25A125E72590258625E5259325A12529.png"></a></p>
+<h3 id="2-3-多載-Overloading"><a href="#2-3-多載-Overloading" class="headerlink" title="2.3 多載(Overloading)"></a>2.3 多載(Overloading)</h3><p>　　多載是指可定義多個同樣名字的函數，但需要不同的參數類型。比如前面的建構子，可以定義不代參數的建構子，讓名字有個預設值：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title">Swordsman</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="built_in">string</span> name = <span class="built_in">string</span>.Empty;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Swordsman</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">this</span>.name = <span class="string">&quot;無名氏&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Swordsman</span>(<span class="params"><span class="built_in">string</span> name</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="built_in">string</span> <span class="title">Skill</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;私は&quot;</span> + name + <span class="string">&quot;です, 接招吧！星爆氣流斬！&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-4-屬性和修飾詞-Attribute-Modifier"><a href="#2-4-屬性和修飾詞-Attribute-Modifier" class="headerlink" title="2.4 屬性和修飾詞(Attribute &amp; Modifier)"></a>2.4 屬性和修飾詞(Attribute &amp; Modifier)</h3><p>　　屬性(attribute)是指類別中可儲存資料的地方。在C#中，又區分Field和Property，如下方程式碼解釋：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title">Swordsman</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="built_in">string</span> name = <span class="built_in">string</span>.Empty;</span><br><span class="line">    <span class="keyword">private</span> <span class="built_in">int</span> skillNum = <span class="number">3</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">int</span> SkillNum</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">get</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> skillNum;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">set</span></span><br><span class="line">        &#123;</span><br><span class="line">            skillNum = <span class="keyword">value</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Swordsman</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">this</span>.name = <span class="string">&quot;無名氏&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Swordsman</span>(<span class="params"><span class="built_in">string</span> name</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="built_in">string</span> <span class="title">Skill</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">string</span> result = <span class="built_in">string</span>.Empty;</span><br><span class="line">        <span class="keyword">for</span>(<span class="built_in">int</span> i = <span class="number">0</span>; i &lt; skillNum; ++i)</span><br><span class="line">        &#123;</span><br><span class="line">            result += <span class="string">&quot;星爆氣流斬！\n&quot;</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;私は&quot;</span> + name + <span class="string">&quot;です, 接招吧！&quot;</span> + result;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　上方的”出招次數” skillNum，是個field。它通常是以private修飾，只能在同一個類別存取，子類別是無法存取的。field的命名規則通常首字母是小寫。<br>　　再者的SkillNum是property，通常以public修飾。property的命名規則通常首字母是大寫。<br>　　property和field的差別是，它擁有set&#x2F;get函數。get能回傳field的值；set能透過關鍵字value，賦予跟value同樣的值給field。property會有set&#x2F;get這功能，是為了不要讓field直接讓外部存取，是個好的封裝實踐之一。</p>
+<h3 id="2-5-封裝-Encapsulation"><a href="#2-5-封裝-Encapsulation" class="headerlink" title="2.5 封裝(Encapsulation)"></a>2.5 封裝(Encapsulation)</h3><p>　　物件導向程式設計三大元素之一，封裝(Encapsulation)，之前的例子都有呈現過了，再做個更仔細的說明。每個物件都包含它運行操作所需要的資訊，這個特性稱之為封裝，因此物件不需依賴其他物件來完成自己的操作。<br>　　那麼封裝的好處有哪些？</p>
+<ol>
+<li>良好的封裝能減少耦合(Coupling)，將Swordsman和win form分開是耦合分離的動作。</li>
+<li>類別內部的實作可以自由修改，前面修改過好多次Swordsman的Skill()和屬性。</li>
+<li>類別有明瞭的對外接口，也就是用public的函數讓外部呼叫。</li>
+</ol>
+<h3 id="2-6-繼承-Inheritance"><a href="#2-6-繼承-Inheritance" class="headerlink" title="2.6 繼承(Inheritance)"></a>2.6 繼承(Inheritance)</h3><p>如果今天多了一個角色-弓箭手也要出招，可以直接寫一個Archer類別，其他功能和Swordsman類別都一樣，可以達到所需的功能。只是兩個類別的程式碼相似度高達90%!<br>　　那麼可以想一下，這兩種角色共通性是什麼？都是遊戲裡的角色職業！他們都有自己的招式名稱和出招行為。<br>　　這是一種繼承的關係，以物件導向程式設計來看，物件的繼承代表”is-a”的關係，也就是說兩個物件A和B，可以描述為B是A，則表明B可以繼承A。”劍士是角色職業”，代表了繼承與被繼承的關係。<br>　　繼承定義了類別如何互相關聯，共享特性。繼承能定義出父類別與子類別，其中子類別繼承父類別所有的特性，且子類別還能定義新的特性。<br>　　所以繼承有三個重點：</p>
+<ol>
+<li>子類別擁有父類別非private的屬性和方法</li>
+<li>子類別可拓展父類別沒有的屬性和方法</li>
+<li>子類別能重寫父類別的方法</li>
+</ol>
+<p>　　將角色職業這個父類別建出來吧！</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title">Job</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">protected</span> <span class="built_in">string</span> name = <span class="string">&quot;&quot;</span>;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Job</span>(<span class="params"><span class="built_in">string</span> name</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Job</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">this</span>.name = <span class="string">&quot;無名氏&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">protected</span> <span class="built_in">int</span> skillNum = <span class="number">3</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">int</span> SkillNum</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">get</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> skillNum;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">set</span></span><br><span class="line">        &#123;</span><br><span class="line">            skillNum = <span class="keyword">value</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　子類別-劍士和弓箭手</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title">Swordsman</span> : <span class="title">Job</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Swordsman</span>() : <span class="title">base</span>()</span></span><br><span class="line">    &#123; &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Swordsman</span>(<span class="params"><span class="built_in">string</span> name</span>) : <span class="title">base</span>(<span class="params">name</span>)</span></span><br><span class="line">    &#123; &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="built_in">string</span> <span class="title">Skill</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">string</span> result = <span class="built_in">string</span>.Empty;</span><br><span class="line">        <span class="keyword">for</span>(<span class="built_in">int</span> i = <span class="number">0</span>; i &lt; skillNum; ++i)</span><br><span class="line">        &#123;</span><br><span class="line">            result += <span class="string">&quot;星爆氣流斬！\n&quot;</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;私は&quot;</span> + name + <span class="string">&quot;です, 接招吧！&quot;</span> + result;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title">Archer</span> : <span class="title">Job</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Archer</span>() : <span class="title">base</span>()</span></span><br><span class="line">    &#123; &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Archer</span>(<span class="params"><span class="built_in">string</span> name</span>) : <span class="title">base</span>(<span class="params">name</span>)</span></span><br><span class="line">    &#123; &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="built_in">string</span> <span class="title">Skill</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">string</span> result = <span class="built_in">string</span>.Empty;</span><br><span class="line">        <span class="keyword">for</span>(<span class="built_in">int</span> i = <span class="number">0</span>; i &lt; skillNum; ++i)</span><br><span class="line">        &#123;</span><br><span class="line">            result += <span class="string">&quot;二連箭！\n&quot;</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;私は&quot;</span> + name + <span class="string">&quot;です, 接招吧！&quot;</span> + result;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　其中，建構子是無法被繼承，只能用base()呼叫它。<br>　　繼承也是有缺點的，當父類別改變時，子類別也會改變。另外繼承是一種類別與類別之間有強耦合的關係。</p>
+<h3 id="2-7-多型-Polymorphism"><a href="#2-7-多型-Polymorphism" class="headerlink" title="2.7 多型(Polymorphism)"></a>2.7 多型(Polymorphism)</h3><p>　　物件導向程式設計三大元素之三，多型，表示不同的物件可以執行相同的動作，但要透過它們自己的實作來執行。<br>　　如果子類別要完全實作父類別的成員，父類別則將該成員宣告為虛擬(virtual)。子類別可以使用override，將自己的實作取代掉父類別的實作。<br>　　這樣的文字敘述也很難懂，拿上面遊戲角色的例子。如果今天有個關卡要打魔物，多個角色要連續出招，那麼程式該怎寫呢？如下：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title">Job</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">protected</span> <span class="built_in">string</span> name = <span class="string">&quot;&quot;</span>;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Job</span>(<span class="params"><span class="built_in">string</span> name</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Job</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">this</span>.name = <span class="string">&quot;無名氏&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">protected</span> <span class="built_in">int</span> skillNum = <span class="number">3</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">int</span> SkillNum</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">get</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> skillNum;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">set</span></span><br><span class="line">        &#123;</span><br><span class="line">            skillNum = <span class="keyword">value</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">virtual</span> <span class="built_in">string</span> <span class="title">Skill</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="keyword">class</span> <span class="title">Swordsman</span> : <span class="title">Job</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Swordsman</span>() : <span class="title">base</span>()</span></span><br><span class="line">    &#123; &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Swordsman</span>(<span class="params"><span class="built_in">string</span> name</span>) : <span class="title">base</span>(<span class="params">name</span>)</span></span><br><span class="line">    &#123; &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">override</span> <span class="built_in">string</span> <span class="title">Skill</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">string</span> result = <span class="built_in">string</span>.Empty;</span><br><span class="line">        <span class="keyword">for</span>(<span class="built_in">int</span> i = <span class="number">0</span>; i &lt; skillNum; ++i)</span><br><span class="line">        &#123;</span><br><span class="line">            result += <span class="string">&quot;星爆氣流斬！\n&quot;</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;私は&quot;</span> + name + <span class="string">&quot;です, 接招吧！&quot;</span> + result;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title">Archer</span> : <span class="title">Job</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Archer</span>() : <span class="title">base</span>()</span></span><br><span class="line">    &#123; &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Archer</span>(<span class="params"><span class="built_in">string</span> name</span>) : <span class="title">base</span>(<span class="params">name</span>)</span></span><br><span class="line">    &#123; &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">override</span> <span class="built_in">string</span> <span class="title">Skill</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">string</span> result = <span class="built_in">string</span>.Empty;</span><br><span class="line">        <span class="keyword">for</span> (<span class="built_in">int</span> i = <span class="number">0</span>; i &lt; skillNum; ++i)</span><br><span class="line">        &#123;</span><br><span class="line">            result += <span class="string">&quot;二連箭！\n&quot;</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;私は&quot;</span> + name + <span class="string">&quot;です, 接招吧！&quot;</span> + result;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">button1_Click</span>(<span class="params"><span class="built_in">object</span> sender, EventArgs e</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    Job[] jobs = <span class="keyword">new</span> Job[<span class="number">5</span>];</span><br><span class="line">    jobs[<span class="number">0</span>] = <span class="keyword">new</span> Swordsman(<span class="string">&quot;Kirito&quot;</span>);</span><br><span class="line">    jobs[<span class="number">1</span>] = <span class="keyword">new</span> Archer(<span class="string">&quot;Gilgamesh&quot;</span>);</span><br><span class="line">    jobs[<span class="number">2</span>] = <span class="keyword">new</span> Swordsman(<span class="string">&quot;Asuna&quot;</span>);</span><br><span class="line">    jobs[<span class="number">3</span>] = <span class="keyword">new</span> Archer(<span class="string">&quot;Emiya&quot;</span>);</span><br><span class="line">    jobs[<span class="number">4</span>] = <span class="keyword">new</span> Swordsman(<span class="string">&quot;Leafa&quot;</span>);</span><br><span class="line">    <span class="keyword">foreach</span>(Job item <span class="keyword">in</span> jobs)</span><br><span class="line">    &#123;</span><br><span class="line">        MessageBox.Show(item.Skill());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　在Job類別裡，加上了Skill()函數，在public和string之間多了virtual關鍵字，代表這是能讓子類別重寫的方法。<br>　　在Swordsman和Archer類別裡，原本的Skill()函數也多加了override關鍵字，代表這方法重寫。<br>　　最後在按鈕事件中，宣告Job陣列jobs，大小為5，分別實例化劍士、弓箭手、劍士、弓箭手、劍士，再放到jobs陣列裡。使用foreach的方式，去迭代jobs陣列所有的物件，並呼叫Skill()函數。因為多型的關係，程式會自動找item是什麼物件，且是使用哪個重寫的方法。<br>　　多型的原理，是當方法被呼叫時，不管物件是否轉換成它的父類別，都只有位於物件繼承鏈最後一個的方法實現才會被呼叫。</p>
+<h3 id="2-8-重構-Refactoring"><a href="#2-8-重構-Refactoring" class="headerlink" title="2.8 重構(Refactoring)"></a>2.8 重構(Refactoring)</h3><p>　　如果又有更多的角色職業要加入遊戲，那麼是不是這些職業繼承Job類別就好了？是可以這樣做，只是會發現除了招式名稱不一樣之外，其他的程式碼幾乎重複，需要做個修改。<br>　　由於每個職業的招式名稱不同，所以在Job類別中，把取得招式名稱寫成一個函數：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title">Job</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">protected</span> <span class="built_in">string</span> name = <span class="string">&quot;&quot;</span>;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Job</span>(<span class="params"><span class="built_in">string</span> name</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Job</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">this</span>.name = <span class="string">&quot;無名氏&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">protected</span> <span class="built_in">int</span> skillNum = <span class="number">3</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">int</span> SkillNum</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">get</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> skillNum;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">set</span></span><br><span class="line">        &#123;</span><br><span class="line">            skillNum = <span class="keyword">value</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="built_in">string</span> <span class="title">Skill</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">string</span> result = <span class="string">&quot;&quot;</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="built_in">int</span> i = <span class="number">0</span>; i &lt; skillNum; ++i)</span><br><span class="line">        &#123;</span><br><span class="line">            result += getSkillName();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;私は&quot;</span> + name + <span class="string">&quot;です, 接招吧！&quot;</span> + result;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">virtual</span> <span class="built_in">string</span> <span class="title">getSkillName</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">string</span>.Empty;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　再將繼承Job的子類別做修改：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title">Swordsman</span> : <span class="title">Job</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Swordsman</span>() : <span class="title">base</span>()</span></span><br><span class="line">    &#123; &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Swordsman</span>(<span class="params"><span class="built_in">string</span> name</span>) : <span class="title">base</span>(<span class="params">name</span>)</span></span><br><span class="line">    &#123; &#125;</span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">override</span> <span class="built_in">string</span> <span class="title">getSkillName</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;星爆氣流斬!\n&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title">Archer</span> : <span class="title">Job</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Archer</span>() : <span class="title">base</span>()</span></span><br><span class="line">    &#123; &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Archer</span>(<span class="params"><span class="built_in">string</span> name</span>) : <span class="title">base</span>(<span class="params">name</span>)</span></span><br><span class="line">    &#123; &#125;</span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">override</span> <span class="built_in">string</span> <span class="title">getSkillName</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;二連箭！\n&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　把Skill()的virtual移除，改成由getSkillName()有virtual修飾詞，讓子類別繼承後做重寫。</p>
+<h3 id="2-9-抽象類別-Abstract-Class"><a href="#2-9-抽象類別-Abstract-Class" class="headerlink" title="2.9 抽象類別(Abstract Class)"></a>2.9 抽象類別(Abstract Class)</h3><p>再想想上述的例子，角色職業是一個不能實例化的類別，因為實例化後，沒人知道它到底是什麼職業。所以把Job類別定義為抽象類別：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">abstract</span> <span class="keyword">class</span> <span class="title">Job</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">protected</span> <span class="built_in">string</span> name = <span class="string">&quot;&quot;</span>;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Job</span>(<span class="params"><span class="built_in">string</span> name</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Job</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">this</span>.name = <span class="string">&quot;無名氏&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">protected</span> <span class="built_in">int</span> skillNum = <span class="number">3</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">int</span> SkillNum</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">get</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> skillNum;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">set</span></span><br><span class="line">        &#123;</span><br><span class="line">            skillNum = <span class="keyword">value</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="built_in">string</span> <span class="title">Skill</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">string</span> result = <span class="string">&quot;&quot;</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="built_in">int</span> i = <span class="number">0</span>; i &lt; skillNum; ++i)</span><br><span class="line">        &#123;</span><br><span class="line">            result += getSkillName();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;私は&quot;</span> + name + <span class="string">&quot;です, 接招吧！&quot;</span> + result;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">abstract</span> <span class="built_in">string</span> <span class="title">getSkillName</span>()</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　在class Job前面多了abstract，代表此類別為抽象類別。在getSkillName()也多了abstract，代表這方法為抽象方法，是不需要定義其實作方式。<br>　　使用抽象類別有三個重點：</p>
+<ol>
+<li>抽象類別無法實例化</li>
+<li>子類別必須重寫父類別的抽象方法</li>
+<li>如果一個類別中有宣告抽象方法，這類別也必須是抽象類別</li>
+</ol>
+<p>　　在繼承的樹狀關係裡，樹葉節點是具體的類別（Archer、Swordsman之類），而被繼承的類別是抽象類別（Job之類）</p>
+<h3 id="2-10-介面-Interface"><a href="#2-10-介面-Interface" class="headerlink" title="2.10 介面(Interface)"></a>2.10 介面(Interface)</h3><p>　　介面是用來封裝特定功能的集合，其包含公用的屬性和方法。當有類別實作此介面時，則該類別能使用與實做所有介面的所有屬性和方法。<br>　　以角色職業為例，遊戲多了一項回復血量技能，但是只有近戰系角色可以使用，那麼可以建立一個回復血量技能的介面：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">interface IHealthUpSkill</span><br><span class="line">&#123;</span><br><span class="line">    string HealthUp(int healthUpPoint); </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　其他近戰角色劍士和刺客實作IHealthUpSkill介面：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title">Swordsman</span> : <span class="title">Job</span>, <span class="title">IHealthUpSkill</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Swordsman</span>() : <span class="title">base</span>()</span></span><br><span class="line">    &#123; &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Swordsman</span>(<span class="params"><span class="built_in">string</span> name</span>) : <span class="title">base</span>(<span class="params">name</span>)</span></span><br><span class="line">    &#123; &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="built_in">string</span> <span class="title">HealthUp</span>(<span class="params"><span class="built_in">int</span> healthUpPoint</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> name + <span class="string">&quot;: 幫我撐10秒, 使用急速回復&quot;</span> + healthUpPoint.ToString() + <span class="string">&quot;點HP!&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">override</span> <span class="built_in">string</span> <span class="title">getSkillName</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;星爆氣流斬!\n&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title">Assassin</span> : <span class="title">Job</span>, <span class="title">IHealthUpSkill</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Assassin</span>() : <span class="title">base</span>()</span></span><br><span class="line">    &#123; &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Assassin</span>(<span class="params"><span class="built_in">string</span> name</span>) : <span class="title">base</span>(<span class="params">name</span>)</span></span><br><span class="line">    &#123; &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="built_in">string</span> <span class="title">HealthUp</span>(<span class="params"><span class="built_in">int</span> healthUpPoint</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> name + <span class="string">&quot;: 先隱匿起來, 無聲無息回復&quot;</span> + healthUpPoint.ToString() + <span class="string">&quot;點HP!&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">override</span> <span class="built_in">string</span> <span class="title">getSkillName</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;音速投擲!\n&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">button2_Click</span>(<span class="params"><span class="built_in">object</span> sender, EventArgs e</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    Swordsman swordsman = <span class="keyword">new</span> Swordsman(<span class="string">&quot;Kirito&quot;</span>);</span><br><span class="line">    Assassin assassin = <span class="keyword">new</span> Assassin(<span class="string">&quot;Sasaki&quot;</span>);</span><br><span class="line">    IHealthUpSkill[] healthArray = <span class="keyword">new</span> IHealthUpSkill[<span class="number">2</span>];</span><br><span class="line">    healthArray[<span class="number">0</span>] = swordsman;</span><br><span class="line">    healthArray[<span class="number">1</span>] = assassin;</span><br><span class="line">    MessageBox.Show(healthArray[<span class="number">0</span>].HealthUp(<span class="number">1000</span>));</span><br><span class="line">    MessageBox.Show(healthArray[<span class="number">1</span>].HealthUp(<span class="number">750</span>));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2017/11/2017-11-072B22_14_57-DahuaDesignPattern2B255B25E5259F25B725E825A1258C255D2B-2BMicrosoft2BVisual2BStudio2B252825E725B325BB25E725B525B125E725AE25A125E72590258625E5259325A12529-1.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2017/11/2017-11-072B22_14_57-DahuaDesignPattern2B255B25E5259F25B725E825A1258C255D2B-2BMicrosoft2BVisual2BStudio2B252825E725B325BB25E725B525B125E725AE25A125E72590258625E5259325A12529.png" alt="Object-oriented programming Concept 結果1"></a></p>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2017/11/2017-11-072B22_15_12-DahuaDesignPattern2B255B25E5259F25B725E825A1258C255D2B-2BMicrosoft2BVisual2BStudio2B252825E725B325BB25E725B525B125E725AE25A125E72590258625E5259325A12529-1.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2017/11/2017-11-072B22_15_12-DahuaDesignPattern2B255B25E5259F25B725E825A1258C255D2B-2BMicrosoft2BVisual2BStudio2B252825E725B325BB25E725B525B125E725AE25A125E72590258625E5259325A12529.png" alt="Object-oriented programming Concept 結果2"></a></p>
+<p>　　介面IHealthUpSkill沒有任何修飾詞，也沒有任何方法的定義。而介面名稱的命名規則都要首字母為大寫的I。宣告Swordsman和Assassin實作IHealthUpSkill介面的兩個物件，再用陣列和多型的方式，儲存它們之後，呼叫HealthUp(int healthUpPoint)方法。<br>　　從類別、抽象類別到介面的使用，在做設計時會依循這些原則：</p>
+<ol>
+<li>類別是對物件的抽象化；抽象類別是對類別的抽象化；介面是對行為的抽象化</li>
+<li>如果行為跨越不同類別的物件，則可以使用介面；對於有相似的類別，使用繼承抽象類別</li>
+<li>在設計過程中，抽象類別是從子類別發現了重複的內容，可總結出父類別，再由子類別繼承父類別；但介面是不知道子類別的存在，還不確定方法該如何實現，所以先宣告。</li>
+</ol>
+<h3 id="2-11-集合-Collection-和泛型-Generic"><a href="#2-11-集合-Collection-和泛型-Generic" class="headerlink" title="2.11 集合(Collection)和泛型(Generic)"></a>2.11 集合(Collection)和泛型(Generic)</h3><p>　　前面有很多用陣列的方式儲存物件，但是程式無法預先知道物件的數量時，就不能用先宣告陣列的大小。因此有集合(Collection)類別和介面可以使用。如下方程式碼：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">button3_Click</span>(<span class="params"><span class="built_in">object</span> sender, EventArgs e</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    IList&lt;Job&gt; list = <span class="keyword">new</span> List&lt;Job&gt;();</span><br><span class="line">    list.Add(<span class="keyword">new</span> Swordsman(<span class="string">&quot;Kirito&quot;</span>));</span><br><span class="line">    list.Add(<span class="keyword">new</span> Archer(<span class="string">&quot;Gilgamesh&quot;</span>));</span><br><span class="line">    list.Add(<span class="keyword">new</span> Swordsman(<span class="string">&quot;Asuna&quot;</span>));</span><br><span class="line">    list.Add(<span class="keyword">new</span> Archer(<span class="string">&quot;Emiya&quot;</span>));</span><br><span class="line">    list.Add(<span class="keyword">new</span> Assassin(<span class="string">&quot;Sasaki&quot;</span>));</span><br><span class="line">    <span class="keyword">for</span>(<span class="built_in">int</span> i = <span class="number">0</span>; i &lt; list.Count; ++i)</span><br><span class="line">    &#123;</span><br><span class="line">        MessageBox.Show(list[i].Skill());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　使用了IList介面和List類別儲存Job類別的資料，再用迴圈方式呼叫該list所有的Skill()函數。其中可以看一下List在.NET Framework的宣告：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">List</span>&lt;<span class="title">T</span>&gt; : <span class="title">IList</span>&lt;<span class="title">T</span>&gt;, <span class="title">ICollection</span>&lt;<span class="title">T</span>&gt;, <span class="title">IList</span>, <span class="title">ICollection</span>, <span class="title">IReadOnlyList</span>&lt;<span class="title">T</span>&gt;, <span class="title">IReadOnlyCollection</span>&lt;<span class="title">T</span>&gt;, <span class="title">IEnumerable</span>&lt;<span class="title">T</span>&gt;, <span class="title">IEnumerable</span></span><br><span class="line">&#123;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">List</span>()</span>;</span><br><span class="line">        <span class="comment">//以下省略</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　List是實作了IList介面，另外有個，代表這是使用泛型的類別、介面。以上述範例T是Job類別，代表list是只能存入Job(或多型子類別)物件，取出的元素也是Job物件。使用泛型好處是可讓編譯器預先處理錯誤的類別，二來是減少裝箱、拆箱(autoboxing)的計算負擔。</p>
+<h3 id="2-12-委託-Delegate-和事件-Event"><a href="#2-12-委託-Delegate-和事件-Event" class="headerlink" title="2.12 委託(Delegate)和事件(Event)"></a>2.12 委託(Delegate)和事件(Event)</h3><p>　　委託是對函數的封裝，可以當作給方法的特徵指定一個名稱。而事件是委託的一種特殊形式，當有事情發生時，事件物件處理通知過程。<br>　　上述這句一樣很難懂，但再用個範例會好懂。遊戲裡多了組合技(Combo)的玩法，就是當角色A攻擊敵人時，接著B角色也能跟著攻擊敵人。修改前述的劍士和弓箭手，當劍士攻擊敵人時，弓箭手也要跟攻擊：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title">Swordsman</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="built_in">delegate</span> <span class="built_in">string</span> <span class="title">SwordsmanAttackHandler</span>()</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">event</span> SwordsmanAttackHandler SwordsmanAttack;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">Skill</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">string</span> result = SwordsmanAttack?.Invoke();</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;劍士:星爆氣流斬！ &quot;</span> + result;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title">Archer</span> </span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="built_in">string</span> <span class="title">ComboSkill</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;弓箭手:精準射擊!&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">button1_Click</span>(<span class="params"><span class="built_in">object</span> sender, EventArgs e</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    Swordsman swordsman = <span class="keyword">new</span> Swordsman();</span><br><span class="line">    swordsman.SwordsmanAttack += <span class="keyword">new</span> Swordsman.SwordsmanAttackHandler(<span class="keyword">new</span> Archer().ComboSkill);</span><br><span class="line">    MessageBox.Show(swordsman.Skill());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2017/11/2017-11-072B23_53_24-DahuaDesignPattern2B255B25E5259F25B725E825A1258C255D2B-2BMicrosoft2BVisual2BStudio2B252825E725B325BB25E725B525B125E725AE25A125E72590258625E5259325A12529-1.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2017/11/2017-11-072B23_53_24-DahuaDesignPattern2B255B25E5259F25B725E825A1258C255D2B-2BMicrosoft2BVisual2BStudio2B252825E725B325BB25E725B525B125E725AE25A125E72590258625E5259325A12529.png" alt="結果 3"></a></p>
+<p>在Swordsman類別中，宣告了delegate string SwordsmanAttackHandler()委託，並宣告event SwordsmanAttackHandler SwordsmanAttack事件。在方法Skill()裡，使用Invoke()函數，代表呼叫SwordsmanAttackHandler()的意思。其中有個?問號，是代表允許SwordsmanAttack可以是空的。</p>
+<p>　　在Archer類別中，定義了ComboSkill()方法，是回傳招式字串的函數。<br>　　最後在按鈕按下時，先宣告swordsman物件，而物件裡的SwordsmanAttack註冊SwordsmanAttackHandler事件的委託方法，是來自於Archer的ComboSkill。註冊的語法是用+&#x3D;，若想取消註冊則是用　-&#x3D;　。<br>　　最後呼叫swordsman的Skill()，會觸發事件，呼叫到Archer的ComboSkill。再看執行結果，發現劍士和弓箭手兩者的招式一起使出！<br>　　很多的事件處理函數，會有sender和EventArgs參數，且可從EventArgs裡獲得需要的資訊。而我們也可以自己定義EventArgs，比如代入觸發事件的角色名字。</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title">SwordsmanSkillEventArgs</span> : <span class="title">EventArgs</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="built_in">string</span> name;</span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">string</span> Name</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">get</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> name;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">set</span></span><br><span class="line">        &#123;</span><br><span class="line">            name = <span class="keyword">value</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　定義了一個SwordsmanSkillEventArgs類別，有property : Name和field : name，且繼承EventArgs。修改Swordsman的委託方法：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="built_in">delegate</span> <span class="built_in">string</span> <span class="title">SwordsmanAttackHandler</span>(<span class="params"><span class="built_in">object</span> sender, SwordsmanSkillEventArgs args</span>)</span>;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">event</span> SwordsmanAttackHandler SwordsmanAttack;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="built_in">string</span> <span class="title">Skill</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">    SwordsmanSkillEventArgs args = <span class="keyword">new</span> SwordsmanSkillEventArgs();</span><br><span class="line">    args.Name = <span class="keyword">this</span>.name;</span><br><span class="line">    <span class="built_in">string</span> result = SwordsmanAttack?.Invoke(<span class="keyword">this</span>, args);</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;劍士:星爆氣流斬！ &quot;</span> + result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　將SwordsmanAttackHandler裡的參數代入Object sender和SwordsmanSkillEventArgs args。在Skill()裡，宣告SwordsmanSkillEventArgs物件args，並指定args的Name為Swordsman的name，invoke時再將this(指的是swordsman)與args代入。<br>　　因為委託方法SwordsmanAttackHandler更改了，所以也要將Archer的ComboSkill()改成與SwordsmanAttackHandler一樣的參數：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title">Archer</span> </span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="built_in">string</span> <span class="title">ComboSkill</span>(<span class="params"><span class="built_in">object</span> sender, SwordsmanSkillEventArgs args</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;\n劍士&quot;</span> + args.Name + <span class="string">&quot;出招了, 換我弓箭手使用[精準射擊]!&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在ComboSkill方法裡，可透過SwordsmanSkillEventArgs args取得Name資料。程式運行的畫面：</p>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2017/11/2017-11-082B07_40_51-DahuaDesignPattern2B255B25E5259F25B725E825A1258C255D2B-2BMicrosoft2BVisual2BStudio2B252825E725B325BB25E725B525B125E725AE25A125E72590258625E5259325A12529-1.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2017/11/2017-11-082B07_40_51-DahuaDesignPattern2B255B25E5259F25B725E825A1258C255D2B-2BMicrosoft2BVisual2BStudio2B252825E725B325BB25E725B525B125E725AE25A125E72590258625E5259325A12529.png" alt="結果 4"></a></p>
+<h2 id="3-心得"><a href="#3-心得" class="headerlink" title="3.心得"></a>3.心得</h2><p>這篇文章主要是參考&lt;&lt;大話設計模式&gt;&gt;裡的附錄A訓練實習生—物件導向基礎 章節，可說是讀書心得+實際模仿練習。以前看過很多物件導向程式設計的教學，沒有一個可以很讓人印象深刻又好懂的，直到翻了這本，有恍然大悟的感覺！只是我寫的內容是參考自己玩遊戲、看動漫的經驗，不代表真實遊戲產品也是這樣設計，重點是要抓到OOP的精神～<br>　　之後會開始每2~3天會寫blog，目標是坊間的Design Pattern的書有提到的pattern都要讀+模仿練習，如果不再加強這方面的能力，未來會跟不上軟體業的技能需求。。。</p>
+<h2 id="參考文獻"><a href="#參考文獻" class="headerlink" title="參考文獻"></a>參考文獻</h2><ol>
+<li><a target="_blank" rel="noopener" href="https://amzn.to/3LOwYlp">程杰 大話設計模式 附錄A-訓練實習生—物件導向基礎</a></li>
+</ol>
+<p>Object-oriented programming Concept</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2017/01/08/windows-server-2012-r2-64bit-oracle-12c-database/" rel="prev" title="Windows Server 2012 R2 64bit 安裝 Oracle 12c database">
+      <i class="fa fa-chevron-left"></i> Windows Server 2012 R2 64bit 安裝 Oracle 12c database
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2018/02/11/design-pattern-uml-class-diagram/" rel="next" title="UML Class Diagram">
+      UML Class Diagram <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E5%AD%B8%E7%89%A9%E4%BB%B6%E5%B0%8E%E5%90%91%E4%B9%8B%E5%89%8D%E7%9A%84%E6%BA%96%E5%82%99"><span class="nav-number">1.</span> <span class="nav-text">1. 學物件導向之前的準備</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E7%89%A9%E4%BB%B6%E5%B0%8E%E5%90%91%E7%A8%8B%E5%BC%8F%E8%A8%AD%E8%A8%88%EF%BC%88Object-oriented-programming-Concept-%E7%B0%A1%E7%A8%B1OOP%EF%BC%89"><span class="nav-number">2.</span> <span class="nav-text">2.物件導向程式設計（Object-oriented programming Concept , 簡稱OOP）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-%E9%A1%9E%E5%88%A5-Class"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 類別(Class)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-%E5%BB%BA%E6%A7%8B%E5%AD%90-Constructor"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 建構子(Constructor)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-%E5%A4%9A%E8%BC%89-Overloading"><span class="nav-number">2.3.</span> <span class="nav-text">2.3 多載(Overloading)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-%E5%B1%AC%E6%80%A7%E5%92%8C%E4%BF%AE%E9%A3%BE%E8%A9%9E-Attribute-Modifier"><span class="nav-number">2.4.</span> <span class="nav-text">2.4 屬性和修飾詞(Attribute &amp; Modifier)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-5-%E5%B0%81%E8%A3%9D-Encapsulation"><span class="nav-number">2.5.</span> <span class="nav-text">2.5 封裝(Encapsulation)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-6-%E7%B9%BC%E6%89%BF-Inheritance"><span class="nav-number">2.6.</span> <span class="nav-text">2.6 繼承(Inheritance)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-7-%E5%A4%9A%E5%9E%8B-Polymorphism"><span class="nav-number">2.7.</span> <span class="nav-text">2.7 多型(Polymorphism)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-8-%E9%87%8D%E6%A7%8B-Refactoring"><span class="nav-number">2.8.</span> <span class="nav-text">2.8 重構(Refactoring)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-9-%E6%8A%BD%E8%B1%A1%E9%A1%9E%E5%88%A5-Abstract-Class"><span class="nav-number">2.9.</span> <span class="nav-text">2.9 抽象類別(Abstract Class)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-10-%E4%BB%8B%E9%9D%A2-Interface"><span class="nav-number">2.10.</span> <span class="nav-text">2.10 介面(Interface)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-11-%E9%9B%86%E5%90%88-Collection-%E5%92%8C%E6%B3%9B%E5%9E%8B-Generic"><span class="nav-number">2.11.</span> <span class="nav-text">2.11 集合(Collection)和泛型(Generic)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-12-%E5%A7%94%E8%A8%97-Delegate-%E5%92%8C%E4%BA%8B%E4%BB%B6-Event"><span class="nav-number">2.12.</span> <span class="nav-text">2.12 委託(Delegate)和事件(Event)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E5%BF%83%E5%BE%97"><span class="nav-number">3.</span> <span class="nav-text">3.心得</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%83%E8%80%83%E6%96%87%E7%8D%BB"><span class="nav-number">4.</span> <span class="nav-text">參考文獻</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">208</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">49</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

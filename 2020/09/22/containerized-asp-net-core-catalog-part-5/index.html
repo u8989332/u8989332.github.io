@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="1. 建立Dockerfile　　在CatalogApi專案右鍵&#x3D;&gt;加入&#x3D;&gt;Dokcer支援，選擇目標平台Linux，將會在根目錄新增Dockerfile檔案，但這Dokcerfile有一些Bug，因為我的專案目錄設計方式，會讓VS產生錯誤的連結，所以需要再手動修改，變成下方的內容。其內容主要功能是在Docker容器內載入NET Core SDK編譯我們的程式碼，將">
+<meta property="og:type" content="article">
+<meta property="og:title" content="一袋.NET要扛幾樓？打造 容器化 的 ASP.NET Core 網站！系列文章 - (7) 建立商品服務的Api - 5">
+<meta property="og:url" content="http://example.com/2020/09/22/containerized-asp-net-core-catalog-part-5/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="1. 建立Dockerfile　　在CatalogApi專案右鍵&#x3D;&gt;加入&#x3D;&gt;Dokcer支援，選擇目標平台Linux，將會在根目錄新增Dockerfile檔案，但這Dokcerfile有一些Bug，因為我的專案目錄設計方式，會讓VS產生錯誤的連結，所以需要再手動修改，變成下方的內容。其內容主要功能是在Docker容器內載入NET Core SDK編譯我們的程式碼，將">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://geekcodeparadise.com/wp-content/uploads/2020/09/container2Bto2B2Bcatalogapi.png">
+<meta property="article:published_time" content="2020-09-22T15:40:00.000Z">
+<meta property="article:modified_time" content="2023-11-19T07:47:25.872Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://geekcodeparadise.com/wp-content/uploads/2020/09/container2Bto2B2Bcatalogapi.png">
+
+<link rel="canonical" href="http://example.com/2020/09/22/containerized-asp-net-core-catalog-part-5/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>一袋.NET要扛幾樓？打造 容器化 的 ASP.NET Core 網站！系列文章 - (7) 建立商品服務的Api - 5 | Hexo</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Hexo</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/09/22/containerized-asp-net-core-catalog-part-5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          一袋.NET要扛幾樓？打造 容器化 的 ASP.NET Core 網站！系列文章 - (7) 建立商品服務的Api - 5
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-09-22 23:40:00" itemprop="dateCreated datePublished" datetime="2020-09-22T23:40:00+08:00">2020-09-22</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-11-19 15:47:25" itemprop="dateModified" datetime="2023-11-19T15:47:25+08:00">2023-11-19</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ASP-NET-Core/" itemprop="url" rel="index"><span itemprop="name">ASP.NET Core</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Docker/" itemprop="url" rel="index"><span itemprop="name">Docker</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h4 id="1-建立Dockerfile"><a href="#1-建立Dockerfile" class="headerlink" title="1. 建立Dockerfile"></a>1. 建立Dockerfile</h4><p>　　在CatalogApi專案右鍵&#x3D;&gt;加入&#x3D;&gt;Dokcer支援，選擇目標平台Linux，將會在根目錄新增Dockerfile檔案，但這Dokcerfile有一些Bug，因為我的專案目錄設計方式，會讓VS產生錯誤的連結，所以需要再手動修改，變成下方的內容。其內容主要功能是在Docker容器內載入NET Core SDK編譯我們的程式碼，將編譯後的目錄檔案複製到Runtime環境的&#x2F;app目錄，再用NET Core Runtime執行商品服務的Api系統。</p>
+<figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">FROM</span> mcr.microsoft.com/dotnet/core/sdk:<span class="number">3.1</span>-buster AS build</span><br><span class="line"></span><br><span class="line"><span class="keyword">WORKDIR</span><span class="language-bash"> /code</span></span><br><span class="line"><span class="keyword">EXPOSE</span> <span class="number">80</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> . .</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> dotnet restore</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> dotnet publish -o /out/ -c Release</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">FROM</span> mcr.microsoft.com/dotnet/core/aspnet:<span class="number">3.1</span>-buster-slim AS base</span><br><span class="line"></span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> --from=build /out /app/</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">WORKDIR</span><span class="language-bash"> /app</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">ENTRYPOINT</span><span class="language-bash"> [<span class="string">&quot;dotnet&quot;</span>, <span class="string">&quot;CatalogApi.dll&quot;</span>]</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="2-修改dokcer-compose-yml"><a href="#2-修改dokcer-compose-yml" class="headerlink" title="2. 修改dokcer-compose.yml"></a>2. 修改dokcer-compose.yml</h4><p>之前已經在docker-compose.yml加入SQL Server的image，而這次要加上商品服務的Api，如下方的yml。主要的參數包含：</p>
+<ul>
+<li>build的dockerfile：Dockerfile的檔名</li>
+<li>build的context：我們商品服務Api的Dockerfile所在的目錄</li>
+<li>image：這商品服務Api的image命名</li>
+<li>environment：這些參數將會覆蓋appSettings.json的內容，包含資料庫的連線資訊、外部連到此服務的URL。其中ExternalCatalogBaseUrl的{}值會從.env檔的內容做替換</li>
+<li>ports：將此Api的80 port對應為本機的7000</li>
+<li>depends_on：需要先等SQL Server的容器啟動完，才輪到此Api啟動容器</li>
+<li>networks：新增一個frontend網路區域，之後會和網頁前端系統互通</li>
+</ul>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="attr">version:</span> <span class="string">&quot;3.4&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="attr">networks:</span></span><br><span class="line"> <span class="attr">frontend:</span></span><br><span class="line"> <span class="attr">backend:</span></span><br><span class="line"> </span><br><span class="line"><span class="attr">services:</span></span><br><span class="line"> <span class="attr">catalog:</span></span><br><span class="line"> <span class="attr">build:</span></span><br><span class="line"> <span class="attr">context:</span> <span class="string">.srcServicesCatalogApi</span></span><br><span class="line"> <span class="attr">dockerfile:</span> <span class="string">Dockerfile</span></span><br><span class="line"> <span class="attr">image:</span> <span class="string">rpgshop/catalog</span></span><br><span class="line"> <span class="attr">environment:</span></span><br><span class="line"> <span class="bullet">-</span> <span class="string">DatabaseServer=mssqlserver</span></span><br><span class="line"> <span class="bullet">-</span> <span class="string">DatabaseName=CatalogDb</span></span><br><span class="line"> <span class="bullet">-</span> <span class="string">DatabaseUser=sa</span></span><br><span class="line"> <span class="bullet">-</span> <span class="string">DatabasePassword=JustTest!</span></span><br><span class="line"> <span class="bullet">-</span> <span class="string">ExternalCatalogBaseUrl=http://$&#123;RPGSHOP_EXTERNAL_DNS_NAME_OR_IP&#125;:7000</span></span><br><span class="line"> <span class="attr">container_name:</span> <span class="string">rpgcatalogapi</span></span><br><span class="line"> <span class="attr">ports:</span></span><br><span class="line"> <span class="bullet">-</span> <span class="string">&quot;7000:80&quot;</span></span><br><span class="line"> <span class="attr">networks:</span></span><br><span class="line"> <span class="bullet">-</span> <span class="string">backend</span></span><br><span class="line"> <span class="bullet">-</span> <span class="string">frontend</span></span><br><span class="line"> <span class="attr">depends_on:</span></span><br><span class="line"> <span class="bullet">-</span> <span class="string">mssqlserver</span></span><br><span class="line"></span><br><span class="line"> <span class="attr">mssqlserver:</span></span><br><span class="line"> <span class="attr">image:</span> <span class="string">&quot;microsoft/mssql-server-linux:latest&quot;</span></span><br><span class="line"> <span class="attr">ports:</span></span><br><span class="line"> <span class="bullet">-</span> <span class="string">&quot;1445:1433&quot;</span></span><br><span class="line"> <span class="attr">container_name:</span> <span class="string">rpgmssqlcontainer</span></span><br><span class="line"> <span class="attr">environment:</span></span><br><span class="line"> <span class="bullet">-</span> <span class="string">ACCEPT_EULA=Y</span></span><br><span class="line"> <span class="bullet">-</span> <span class="string">SA_PASSWORD=JustTest!</span></span><br><span class="line"> <span class="attr">networks:</span></span><br><span class="line"> <span class="bullet">-</span> <span class="string">backend</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="3-建立-env檔"><a href="#3-建立-env檔" class="headerlink" title="3. 建立.env檔"></a>3. 建立.env檔</h4><p>　　.env檔是一種環境變數檔，用key&#x3D;value的方式寫在此檔案，目前我們只需要放一筆資料： RPGSHOP_EXTERNAL_DNS_NAME_OR_IP&#x3D;docker.for.win.localhost 　　這是前述的ExternalCatalogBaseUrl的值會被替換，而docker.for.win.localhost是docker內建在Windows的host。</p>
+<h4 id="4-用cmd執行docker-compose"><a href="#4-用cmd執行docker-compose" class="headerlink" title="4. 用cmd執行docker-compose"></a>4. 用cmd執行docker-compose</h4><p>　　用cmd在docker-compose.yml所在位置輸入指令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker-compose up</span><br></pre></td></tr></table></figure>
+
+<p>　　執行完後，在瀏覽器輸入<a target="_blank" rel="noopener" href="http://docker.for.win.localhost:7000/swagger">http://docker.for.win.localhost:7000/swagger</a> ，將看見容器化的商品服務API，如圖1，且使用try it out都是正常運作。</p>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2020/09/container2Bto2B2Bcatalogapi-1.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2020/09/container2Bto2B2Bcatalogapi.png" alt="容器化 ASP.NET Core docker api test"></a></p>
+<p>圖1</p>
+<p>-————————————————————-</p>
+<p>這一系列的專案將開在這Github：<a target="_blank" rel="noopener" href="https://github.com/u8989332/RPGShopOnContainers">RPGShopOnContainers</a>，會依照文章的主題進度區分資料夾，有需要的人可自行pull &#x2F; download～ 下一篇將建立一套網站前端，整合商品服務的API作商品呈現。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/09/22/poj-1182/" rel="prev" title="POJ 1182 食物链">
+      <i class="fa fa-chevron-left"></i> POJ 1182 食物链
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/09/23/leetcode-409-longest-palindrome/" rel="next" title="LeetCode 409 Longest Palindrome">
+      LeetCode 409 Longest Palindrome <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E5%BB%BA%E7%AB%8BDockerfile"><span class="nav-number">1.</span> <span class="nav-text">1. 建立Dockerfile</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E4%BF%AE%E6%94%B9dokcer-compose-yml"><span class="nav-number">2.</span> <span class="nav-text">2. 修改dokcer-compose.yml</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-%E5%BB%BA%E7%AB%8B-env%E6%AA%94"><span class="nav-number">3.</span> <span class="nav-text">3. 建立.env檔</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-%E7%94%A8cmd%E5%9F%B7%E8%A1%8Cdocker-compose"><span class="nav-number">4.</span> <span class="nav-text">4. 用cmd執行docker-compose</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">208</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">49</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

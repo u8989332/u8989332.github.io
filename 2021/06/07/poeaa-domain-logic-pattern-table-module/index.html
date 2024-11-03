@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="1. What is Table ModuleAccording to [PoEAA], Table Module definition is “A single instance that handles the business logic for all rows in a database table or view.” A Table Module only processes one">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Table Module Pattern">
+<meta property="og:url" content="http://example.com/2021/06/07/poeaa-domain-logic-pattern-table-module/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="1. What is Table ModuleAccording to [PoEAA], Table Module definition is “A single instance that handles the business logic for all rows in a database table or view.” A Table Module only processes one">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://geekcodeparadise.com/wp-content/uploads/2021/06/25E6259C25AA25E5259125BD25E52590258D25E725BB259825E5259B25BE-2.png">
+<meta property="og:image" content="http://geekcodeparadise.com/wp-content/uploads/2021/06/image-16.png">
+<meta property="article:published_time" content="2021-06-07T06:46:00.000Z">
+<meta property="article:modified_time" content="2023-11-19T07:47:25.941Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://geekcodeparadise.com/wp-content/uploads/2021/06/25E6259C25AA25E5259125BD25E52590258D25E725BB259825E5259B25BE-2.png">
+
+<link rel="canonical" href="http://example.com/2021/06/07/poeaa-domain-logic-pattern-table-module/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>Table Module Pattern | Hexo</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Hexo</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/06/07/poeaa-domain-logic-pattern-table-module/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Table Module Pattern
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-06-07 14:46:00" itemprop="dateCreated datePublished" datetime="2021-06-07T14:46:00+08:00">2021-06-07</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-11-19 15:47:25" itemprop="dateModified" datetime="2023-11-19T15:47:25+08:00">2023-11-19</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Design-Pattern/" itemprop="url" rel="index"><span itemprop="name">Design Pattern</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Architecture/" itemprop="url" rel="index"><span itemprop="name">Architecture</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/PoEAA/" itemprop="url" rel="index"><span itemprop="name">PoEAA</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="1-What-is-Table-Module"><a href="#1-What-is-Table-Module" class="headerlink" title="1. What is Table Module"></a>1. What is Table Module</h3><p>According to [PoEAA], Table Module definition is “A single instance that handles the business logic for all rows in a database table or view.”</p>
+<p>A Table Module only processes one table&#x2F;view&#x2F;custom SQL query in a database. Its underlying data source pattern usually is Table Data Gateway. A approximate equality ≈ Table Data Gateway + Domain Logic</p>
+<p>This pattern focuses on business logic and Table Data Gateway focuses on interactions with database (CRUD).</p>
+<h4 id="1-1-When-to-use-it"><a href="#1-1-When-to-use-it" class="headerlink" title="1.1 When to use it"></a>1.1 When to use it</h4><p>If the business layer is based on the structure of database table, Table Module is a better choice. When business logic becomes more complex, it’s better to choose Domain Logic as business layer.</p>
+<h3 id="2-Pattern-Practice-The-Revenue-Recognition-Problem"><a href="#2-Pattern-Practice-The-Revenue-Recognition-Problem" class="headerlink" title="2. Pattern Practice: The Revenue Recognition Problem"></a>2. Pattern Practice: The Revenue Recognition Problem</h3><p>This problem is introduced in the previous article <a target="_blank" rel="noopener" href="https://geekcodeparadise.com/2021/05/23/poeaa-domain-logic-pattern-transaction-script/">[PoEAA] Domain Logic Pattern - Transaction Script</a>. This article uses this pattern to build the domain layer.</p>
+<p>Define the table module classes for the revenue recognition, product and contract as the following figure:</p>
+<p><img src="http://geekcodeparadise.com/wp-content/uploads/2021/06/25E6259C25AA25E5259125BD25E52590258D25E725BB259825E5259B25BE-2.png" alt="table module classes for the revenue recognition"></p>
+<h4 id="2-1-Implementation-by-C"><a href="#2-1-Implementation-by-C" class="headerlink" title="2.1 Implementation by C#"></a>2.1 Implementation by C#</h4><p>This pattern is implemented by C#. Because the section <strong>Chapter 9 Domain Logic Pattern - Table Module</strong> of PoEAA didn’t implement with database integration, this implementation don’t contain database example.</p>
+<h5 id="2-1-1-Table-Module-base-class"><a href="#2-1-1-Table-Module-base-class" class="headerlink" title="2.1.1 Table Module base class"></a>2.1.1 Table Module base class</h5><p>.NET’s DataSet is a type of a in-memory database structure and provides basic CRUD functions. And DataTable is a table structure and is contained in a DataSet, so every TableModule contains a DataTable object.</p>
+<p>abstract class TableModule {<br>  protected DataTable Table;<br>  protected TableModule(DataSet ds, string tableName) {<br>    Table &#x3D; ds.Tables[tableName];<br>  }<br>}</p>
+<h5 id="2-1-2-Product-Class"><a href="#2-1-2-Product-Class" class="headerlink" title="2.1.2 Product Class"></a>2.1.2 Product Class</h5><p>For Product class, it contains a DataTable named “Products” and a function that returns ProductType by product id:</p>
+<p>public enum ProductType {<br>  W,<br>  S,<br>  D<br>};<br>class Product: TableModule {<br>  public Product(DataSet tableDataSet): base(tableDataSet, “Products”) {}<br>  public DataRow this[int key] {<br>    get {<br>      string filter &#x3D; $ “Id &#x3D; {key}”;<br>      return Table.Select(filter)[0];<br>    }<br>  }<br>  public ProductType GetProductType(int prodId) {<br>    string typeCode &#x3D; (string) this[prodId][“Type”];<br>    return (ProductType) Enum.Parse(typeof (ProductType), typeCode);<br>  }<br>}</p>
+<h5 id="2-1-3-Contract-Class-RevenueRecognition-Class"><a href="#2-1-3-Contract-Class-RevenueRecognition-Class" class="headerlink" title="2.1.3 Contract Class &amp; RevenueRecognition Class"></a>2.1.3 Contract Class &amp; RevenueRecognition Class</h5><p>For Contract class, it contains a DataTable named “Contracts” and a function that calculates the recognized revenues. It associates a RevenueRecognition table module and inserts the revenue to RevenueRecognition.   For RevenueRecognition class, it contains a DataTable named “RevenueRecognitions”. One function that inserts revenue to DataTable. The second function that returns revenue by contract id and a date.</p>
+<p>class Contract: TableModule {<br>  public Contract(DataSet ds): base(ds, “Contracts”) {}<br>  public DataRow this[int key] {<br>    get {<br>      string filter &#x3D; $ “Id &#x3D; {key}”;<br>      return Table.Select(filter)[0];<br>    }<br>  }<br>  public void CalculateRecognitions(int contractId) {<br>    DataRow contractRow &#x3D; this[contractId];<br>    decimal amount &#x3D; (decimal) contractRow[“Revenue”];<br>    RevenueRecognition rr &#x3D; new RevenueRecognition(Table.DataSet);<br>    Product prod &#x3D; new Product(Table.DataSet);<br>    int prodId &#x3D; GetProductId(contractId);<br>    var productType &#x3D; prod.GetProductType(prodId);<br>    if (productType &#x3D;&#x3D; ProductType.W) {<br>      rr.Insert(contractId, amount, GetWhenSigned(contractId));<br>    } else if (productType &#x3D;&#x3D; ProductType.S) {<br>      DateTime signedDate &#x3D; GetWhenSigned(contractId);<br>      decimal[] allocation &#x3D; Allocate(amount, 3);<br>      rr.Insert(contractId, allocation[0], signedDate);<br>      rr.Insert(contractId, allocation[1], signedDate.AddDays(60));<br>      rr.Insert(contractId, allocation[2], signedDate.AddDays(90));<br>    } else if (productType &#x3D;&#x3D; ProductType.D) {<br>      DateTime signedDate &#x3D; GetWhenSigned(contractId);<br>      decimal[] allocation &#x3D; Allocate(amount, 3);<br>      rr.Insert(contractId, allocation[0], signedDate);<br>      rr.Insert(contractId, allocation[1], signedDate.AddDays(30));<br>      rr.Insert(contractId, allocation[2], signedDate.AddDays(60));<br>    }<br>  }<br>  private decimal[] Allocate(decimal amount, int by) {<br>    decimal lowResult &#x3D; amount &#x2F; by;<br>    lowResult &#x3D; decimal.Round(lowResult, 2);<br>    decimal highReult &#x3D; lowResult + 0.01 m;<br>    decimal[] results &#x3D; new decimal[by];<br>    int remainder &#x3D; (int) amount % by;<br>    for (int i &#x3D; 0; i &lt; remainder; ++i) {<br>      results[i] &#x3D; highReult;<br>    }<br>    for (int i &#x3D; remainder; i &lt; by; ++i) {<br>      results[i] &#x3D; lowResult;<br>    }<br>    return results;<br>  }<br>  private DateTime GetWhenSigned(int contractId) {<br>    return (DateTime) this[contractId][“DateSigned”];<br>  }<br>  private int GetProductId(int contractId) {<br>    return (int) this[contractId][“Product”];<br>  }<br>}<br>class RevenueRecognition: TableModule {<br>  private static int _id &#x3D; 1;<br>  private static readonly object IdLock &#x3D; new object();<br>  public RevenueRecognition(DataSet ds): base(ds, “RevenueRecognitions”) {}<br>  public int Insert(int contractId, decimal amount, DateTime date) {<br>    DataRow newRow &#x3D; Table.NewRow();<br>    int id &#x3D; GetNextId();<br>    newRow[“Id”] &#x3D; id;<br>    newRow[“Contract”] &#x3D; contractId;<br>    newRow[“Amount”] &#x3D; amount;<br>    newRow[“RecognizedOn”] &#x3D; date;<br>    Table.Rows.Add(newRow);<br>    return id;<br>  }<br>  public decimal RecognizedRevenue(int contractId, DateTime asOf) {<br>    string filter &#x3D; $ “Contract &#x3D; {contractId} AND RecognizedOn &lt;&#x3D; #{asOf:d}#”;<br>    DataRow[] rows &#x3D; Table.Select(filter);<br>    decimal result &#x3D; 0 m;<br>    foreach(DataRow row in rows) {<br>      result +&#x3D; (decimal) row[“Amount”];<br>    }<br>    return result;<br>  }<br>  private static int GetNextId() {<br>    lock(IdLock) {<br>      return _id++;<br>    }<br>  }<br>}</p>
+<h5 id="2-1-4-Demo"><a href="#2-1-4-Demo" class="headerlink" title="2.1.4 Demo"></a>2.1.4 Demo</h5><p>Create a console program and create 3 <strong>Products</strong> and <strong>3 Contracts</strong> to calculate the revenue recognitions for the 3 products.</p>
+<p>As the following code:</p>
+<p>&#x2F;&#x2F; mock Result Set<br>DataSet ds &#x3D; new DataSet();<br>DataTable productTable &#x3D; new DataTable(“Products”);<br>productTable.Columns.Add(“Id”, typeof (int));<br>productTable.Columns.Add(“Name”, typeof (string));<br>productTable.Columns.Add(“Type”, typeof (string));<br>productTable.Rows.Add(1, “Code Paradise Database”, “D”);<br>productTable.Rows.Add(2, “Code Paradise Spreadsheet”, “S”);<br>productTable.Rows.Add(3, “Code Paradise Word Processor”, “W”);<br>DataTable contractTable &#x3D; new DataTable(“Contracts”);<br>contractTable.Columns.Add(“Id”, typeof (int));<br>contractTable.Columns.Add(“Product”, typeof (int));<br>contractTable.Columns.Add(“Revenue”, typeof (decimal));<br>contractTable.Columns.Add(“DateSigned”, typeof (DateTime));<br>contractTable.Rows.Add(1, 1, 9999, new DateTime(2020, 1, 1));<br>contractTable.Rows.Add(2, 2, 1000, new DateTime(2020, 3, 15));<br>contractTable.Rows.Add(3, 3, 24000, new DateTime(2020, 7, 25));<br>DataTable revenueRecognitionsTable &#x3D; new DataTable(“RevenueRecognitions”);<br>revenueRecognitionsTable.Columns.Add(“Id”, typeof (int));<br>revenueRecognitionsTable.Columns.Add(“Contract”, typeof (int));<br>revenueRecognitionsTable.Columns.Add(“Amount”, typeof (decimal));<br>revenueRecognitionsTable.Columns.Add(“RecognizedOn”, typeof (DateTime));<br>ds.Tables.Add(productTable);<br>ds.Tables.Add(contractTable);<br>ds.Tables.Add(revenueRecognitionsTable);</p>
+<p>&#x2F;&#x2F; calculate recognized revenues<br>Contract contract &#x3D; new Contract(ds);</p>
+<p>&#x2F;&#x2F; database product<br>contract.CalculateRecognitions(1);<br>var databaseRevenue &#x3D; new RevenueRecognition(ds).RecognizedRevenue(1, new DateTime(2020, 1, 25));<br>Console.WriteLine($”database revenue before 2020-01-25 &#x3D; {databaseRevenue}”);</p>
+<p>&#x2F;&#x2F; spreadsheet product<br>contract.CalculateRecognitions(2);<br>var spreadsheetRevenue &#x3D; new RevenueRecognition(ds).RecognizedRevenue(2, new DateTime(2020, 6, 1));<br>Console.WriteLine($”spreadsheet revenue before 2020-06-01 &#x3D; {spreadsheetRevenue}”);</p>
+<p>&#x2F;&#x2F; word processor product<br>contract.CalculateRecognitions(3);<br>var wordProcessorRevenue &#x3D; new RevenueRecognition(ds).RecognizedRevenue(3, new DateTime(2020, 9, 30));<br>Console.WriteLine($”word processor revenue before 2020-09-30 &#x3D; {wordProcessorRevenue}”);</p>
+<p>The console shows:</p>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2021/06/image-17.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2021/06/image-16.png" alt="Table Module result"></a></p>
+<p>This result is the same as the Transaction Script example.</p>
+<h3 id="3-Conclusions-for-Table-Module"><a href="#3-Conclusions-for-Table-Module" class="headerlink" title="3. Conclusions for Table Module"></a>3. Conclusions for Table Module</h3><p>This pattern is good at processing every table’s logic. For .NET solution, DataSet&#x2F;DataTable have provide complete functions to use this pattern. But when the domain layer is more complex, Domain Model pattern is the better choice.</p>
+<p>The above sample code is uploaded to this <a target="_blank" rel="noopener" href="https://github.com/u8989332/PoEAA_TableModule">Github Repository</a>.</p>
+<p>For next article I will write <strong>Service Layer</strong> pattern according to <strong>Chapter 9 Domain Logic Pattern - Service Layer</strong> of PoEAA.</p>
+<h3 id="4-References"><a href="#4-References" class="headerlink" title="4. References"></a>4. References</h3><p><a target="_blank" rel="noopener" href="https://amzn.to/40CuWZT">Patterns of Enterprise Application Architecture Book(Amazon)</a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/05/29/poeaa-domain-logic-pattern-domain-model/" rel="prev" title="Domain Model Pattern">
+      <i class="fa fa-chevron-left"></i> Domain Model Pattern
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/06/16/poeaa-domain-logic-pattern-service-layer/" rel="next" title="Service Layer Pattern">
+      Service Layer Pattern <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-What-is-Table-Module"><span class="nav-number">1.</span> <span class="nav-text">1. What is Table Module</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1-When-to-use-it"><span class="nav-number">1.1.</span> <span class="nav-text">1.1 When to use it</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-Pattern-Practice-The-Revenue-Recognition-Problem"><span class="nav-number">2.</span> <span class="nav-text">2. Pattern Practice: The Revenue Recognition Problem</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-Implementation-by-C"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 Implementation by C#</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#2-1-1-Table-Module-base-class"><span class="nav-number">2.1.1.</span> <span class="nav-text">2.1.1 Table Module base class</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-1-2-Product-Class"><span class="nav-number">2.1.2.</span> <span class="nav-text">2.1.2 Product Class</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-1-3-Contract-Class-RevenueRecognition-Class"><span class="nav-number">2.1.3.</span> <span class="nav-text">2.1.3 Contract Class &amp; RevenueRecognition Class</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-1-4-Demo"><span class="nav-number">2.1.4.</span> <span class="nav-text">2.1.4 Demo</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-Conclusions-for-Table-Module"><span class="nav-number">3.</span> <span class="nav-text">3. Conclusions for Table Module</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-References"><span class="nav-number">4.</span> <span class="nav-text">4. References</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">208</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">49</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

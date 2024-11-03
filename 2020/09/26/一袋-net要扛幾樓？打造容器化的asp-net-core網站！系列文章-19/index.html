@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="1. 建立ViewModel在WebMvc專案新增ViewModels資料夾，這些模型專門在頁面作呈現 1.1 新增類別: CatalogIndexViewModelCatalogIndexViewModel帶著商品類型列表、商品列表，還有一個分頁模型 1using Microsoft.AspNetCore.Mvc.Rendering;using System.Collections.Generi">
+<meta property="og:type" content="article">
+<meta property="og:title" content="一袋.NET要扛幾樓？打造容器化的ASP.NET Core網站！系列文章 - (10) 建立商品列表的頁面 - 3">
+<meta property="og:url" content="http://example.com/2020/09/26/%E4%B8%80%E8%A2%8B-net%E8%A6%81%E6%89%9B%E5%B9%BE%E6%A8%93%EF%BC%9F%E6%89%93%E9%80%A0%E5%AE%B9%E5%99%A8%E5%8C%96%E7%9A%84asp-net-core%E7%B6%B2%E7%AB%99%EF%BC%81%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0-19/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="1. 建立ViewModel在WebMvc專案新增ViewModels資料夾，這些模型專門在頁面作呈現 1.1 新增類別: CatalogIndexViewModelCatalogIndexViewModel帶著商品類型列表、商品列表，還有一個分頁模型 1using Microsoft.AspNetCore.Mvc.Rendering;using System.Collections.Generi">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://geekcodeparadise.com/wp-content/uploads/2020/09/product2Blist.png">
+<meta property="article:published_time" content="2020-09-26T06:32:00.000Z">
+<meta property="article:modified_time" content="2023-11-19T07:47:25.855Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://geekcodeparadise.com/wp-content/uploads/2020/09/product2Blist.png">
+
+<link rel="canonical" href="http://example.com/2020/09/26/%E4%B8%80%E8%A2%8B-net%E8%A6%81%E6%89%9B%E5%B9%BE%E6%A8%93%EF%BC%9F%E6%89%93%E9%80%A0%E5%AE%B9%E5%99%A8%E5%8C%96%E7%9A%84asp-net-core%E7%B6%B2%E7%AB%99%EF%BC%81%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0-19/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>一袋.NET要扛幾樓？打造容器化的ASP.NET Core網站！系列文章 - (10) 建立商品列表的頁面 - 3 | Hexo</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Hexo</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/09/26/%E4%B8%80%E8%A2%8B-net%E8%A6%81%E6%89%9B%E5%B9%BE%E6%A8%93%EF%BC%9F%E6%89%93%E9%80%A0%E5%AE%B9%E5%99%A8%E5%8C%96%E7%9A%84asp-net-core%E7%B6%B2%E7%AB%99%EF%BC%81%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0-19/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          一袋.NET要扛幾樓？打造容器化的ASP.NET Core網站！系列文章 - (10) 建立商品列表的頁面 - 3
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-09-26 14:32:00" itemprop="dateCreated datePublished" datetime="2020-09-26T14:32:00+08:00">2020-09-26</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-11-19 15:47:25" itemprop="dateModified" datetime="2023-11-19T15:47:25+08:00">2023-11-19</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ASP-NET-Core/" itemprop="url" rel="index"><span itemprop="name">ASP.NET Core</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="1-建立ViewModel"><a href="#1-建立ViewModel" class="headerlink" title="1. 建立ViewModel"></a>1. 建立ViewModel</h1><p>在WebMvc專案新增ViewModels資料夾，這些模型專門在頁面作呈現</p>
+<h2 id="1-1-新增類別-CatalogIndexViewModel"><a href="#1-1-新增類別-CatalogIndexViewModel" class="headerlink" title="1.1 新增類別: CatalogIndexViewModel"></a>1.1 新增類別: CatalogIndexViewModel</h2><p>CatalogIndexViewModel帶著商品類型列表、商品列表，還有一個分頁模型</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">using Microsoft.AspNetCore.Mvc.Rendering;using System.Collections.Generic;using WebMvc.Models;namespace WebMvc.ViewModels&#123;    public class CatalogIndexViewModel    &#123;        public IEnumerable&lt;CatalogItem&gt; CatalogItems &#123; get; set; &#125;        public IEnumerable&lt;SelectListItem&gt; Types &#123; get; set; &#125;        public int? TypesFilterApplied &#123; get; set; &#125;        public PaginationInfo PaginationInfo &#123; get; set; &#125;    &#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="1-2-新增類別-PaginationInfo"><a href="#1-2-新增類別-PaginationInfo" class="headerlink" title="1.2 新增類別: PaginationInfo"></a>1.2 新增類別: PaginationInfo</h2><p>PaginationInfo帶著列表的分頁資訊，包含總數量、每頁的數量、第Ｎ頁、總頁數、前一頁&#x2F;下一頁按鈕的CSS</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">namespace WebMvc.ViewModels&#123;    public class PaginationInfo    &#123;        public int TotalItems &#123; get; set; &#125;        public int ItemsPerPage &#123; get; set; &#125;        public int ActualPage &#123; get; set; &#125;        public int TotalPages &#123; get; set; &#125;        public string Previous &#123; get; set; &#125;        public string Next &#123; get; set; &#125;    &#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="2-新增appSettings-json參數"><a href="#2-新增appSettings-json參數" class="headerlink" title="2. 新增appSettings.json參數"></a>2. 新增appSettings.json參數</h1><p>在appSettings.json新增CatalogUrl, 因為目前還在VS開發，所以是用launchSettings.json的IIS Express設定檔：</p>
+<p>“CatalogUrl”: “<a target="_blank" rel="noopener" href="http://localhost/">http://localhost:13914"</a></p>
+<h1 id="3-新增-修改Razor頁面"><a href="#3-新增-修改Razor頁面" class="headerlink" title="3. 新增&#x2F;修改Razor頁面"></a>3. 新增&#x2F;修改Razor頁面</h1><h2 id="3-1-修改-Layout-cshtml"><a href="#3-1-修改-Layout-cshtml" class="headerlink" title="3.1 修改_Layout.cshtml"></a>3.1 修改_Layout.cshtml</h2><p>網頁風格採用NES.css，於是Layout是主要的外觀修改，另外也搭配bootstrap 3做排版</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE html&gt;&lt;html lang=&quot;en&quot;&gt;&lt;head&gt;    &lt;meta charset=&quot;utf-8&quot; /&gt;    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot; /&gt;    &lt;title&gt;@ViewData[&quot;Title&quot;] - WebMvc&lt;/title&gt;    &lt;link rel=&quot;stylesheet&quot; href=&quot;~/css/site.css&quot; /&gt;    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css&quot; /&gt;    &lt;link href=&quot;https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css&quot; rel=&quot;stylesheet&quot; /&gt;    &lt;link href=&quot;https://fonts.googleapis.com/css?family=Press+Start+2P&quot;          rel=&quot;stylesheet&quot; /&gt;    &lt;link href=&quot;https://unpkg.com/nes.css@2.3.0/css/nes.min.css&quot;          rel=&quot;stylesheet&quot; /&gt;&lt;/head&gt;&lt;body&gt;    &lt;nav class=&quot;navbar navbar-default&quot; role=&quot;navigation&quot;&gt;        &lt;div class=&quot;container-fluid&quot;&gt;            &lt;!-- Brand and toggle get grouped for better mobile display --&gt;            &lt;div class=&quot;navbar-header&quot;&gt;                &lt;button type=&quot;button&quot;                        class=&quot;navbar-toggle&quot;                        data-toggle=&quot;collapse&quot;                        data-target=&quot;#bs-example-navbar-collapse-1&quot;&gt;                    &lt;span class=&quot;sr-only&quot;&gt;Toggle navigation&lt;/span&gt;                    &lt;span class=&quot;icon-bar&quot;&gt;&lt;/span&gt;                    &lt;span class=&quot;icon-bar&quot;&gt;&lt;/span&gt;                    &lt;span class=&quot;icon-bar&quot;&gt;&lt;/span&gt;                &lt;/button&gt;                &lt;a class=&quot;navbar-brand&quot; href=&quot;#&quot;&gt;&lt;strong&gt;RPG&lt;/strong&gt; Shop&lt;/a&gt;            &lt;/div&gt;            &lt;!-- Collect the nav links, forms, and other content for toggling --&gt;            &lt;div class=&quot;collapse navbar-collapse&quot; id=&quot;bs-example-navbar-collapse-1&quot;&gt;                &lt;ul class=&quot;nav navbar-nav navbar-right&quot;&gt;                    &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Login&lt;/a&gt;&lt;/li&gt;                    &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Signup&lt;/a&gt;&lt;/li&gt;                &lt;/ul&gt;            &lt;/div&gt;            &lt;!-- /.navbar-collapse --&gt;        &lt;/div&gt;        &lt;!-- /.container-fluid --&gt;    &lt;/nav&gt;    &lt;div class=&quot;container&quot;&gt;        &lt;main role=&quot;main&quot; class=&quot;pb-3&quot;&gt;            @RenderBody()        &lt;/main&gt;    &lt;/div&gt;    &lt;script src=&quot;~/lib/jquery/dist/jquery.min.js&quot;&gt;&lt;/script&gt;    @RenderSection(&quot;Scripts&quot;, required: false)&lt;/body&gt;&lt;/html&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-2-新增Views-Catalog資料夾-新增Index-cshtml"><a href="#3-2-新增Views-Catalog資料夾-新增Index-cshtml" class="headerlink" title="3.2 新增Views&#x2F;Catalog資料夾, 新增Index.cshtml"></a>3.2 新增Views&#x2F;Catalog資料夾, 新增Index.cshtml</h2><p>此頁面是商品的首頁</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@&#123;    ViewData[&quot;Title&quot;] = &quot;Catalog&quot;;    @model WebMvc.ViewModels.CatalogIndexViewModel&#125;&lt;form asp-action=&quot;Index&quot; asp-controller=&quot;Catalog&quot; method=&quot;post&quot;&gt;    &lt;div class=&quot;row&quot;&gt;        &lt;div class=&quot;col-md-3&quot;&gt;            &lt;section class=&quot;nes-container with-title&quot;&gt;                &lt;h3 class=&quot;title&quot;&gt;Types&lt;/h3&gt;                &lt;div id=&quot;lists&quot; class=&quot;item&quot;&gt;                    &lt;div class=&quot;nes-select&quot;&gt;                        &lt;select asp-for=&quot;@Model.TypesFilterApplied&quot; asp-items=&quot;@Model.Types&quot;&gt;&lt;/select&gt;                    &lt;/div&gt;                    &lt;button type=&quot;submit&quot; class=&quot;nes-btn is-primary&quot;&gt;Search&lt;/button&gt;                &lt;/div&gt;            &lt;/section&gt;        &lt;/div&gt;        &lt;!-- /.col --&gt;        &lt;div class=&quot;col-md-9&quot;&gt;            &lt;div class=&quot;row&quot;&gt;                @if (Model.CatalogItems.Count() &gt; 0)                &#123;                    &lt;div class=&quot;row&quot;&gt;                        @foreach (var catalogItem in Model.CatalogItems)                        &#123;                            &lt;partial name=&quot;_product&quot; model=&quot;catalogItem&quot; /&gt;                        &#125;                    &lt;/div&gt;                    &lt;partial name=&quot;_pagination&quot; model=&quot;Model.PaginationInfo&quot; /&gt;                &#125;                else                &#123;                    &lt;div class=&quot;row&quot;&gt;                        No any product.                    &lt;/div&gt;                &#125;            &lt;/div&gt;            &lt;!-- /.row --&gt;        &lt;/div&gt;        &lt;!-- /.col --&gt;    &lt;/div&gt;    &lt;!-- /.row --&gt;&lt;/form&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-3-在Views-Catalog資料夾-新增-product-cshtml"><a href="#3-3-在Views-Catalog資料夾-新增-product-cshtml" class="headerlink" title="3.3 在Views&#x2F;Catalog資料夾, 新增_product.cshtml"></a>3.3 在Views&#x2F;Catalog資料夾, 新增_product.cshtml</h2><p>每個商品的詳細內容是同樣的排版，所以用Partial的方式呈現</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@model WebMvc.Models.CatalogItem&lt;form asp-controller=&quot;Cart&quot; asp-action=&quot;AddToCart&quot;&gt;    &lt;div class=&quot;col-md-6 text-center col-sm-6 col-xs-6&quot;&gt;        &lt;section class=&quot;nes-container with-title&quot;&gt;            &lt;h3&gt;&lt;a href=&quot;#&quot;&gt;@Model.Name&lt;/a&gt;&lt;/h3&gt;            &lt;img src=&quot;@Model.PictureUrl&quot; style=&quot;width: 100%&quot; alt=&quot;&quot; /&gt;            &lt;div class=&quot;caption&quot;&gt;&lt;/div&gt;            &lt;p&gt;Price : &lt;strong&gt;@Model.Price.ToString(&quot;N2&quot;)&lt;/strong&gt;&lt;/p&gt;            &lt;p&gt;                &lt;input type=&quot;submit&quot; href=&quot;#&quot; class=&quot;nes-btn is-success&quot; value=&quot;Add To Cart&quot; /&gt;            &lt;/p&gt;        &lt;/section&gt;    &lt;/div&gt;    &lt;input type=&quot;hidden&quot; asp-for=&quot;@Model.Description&quot; name=&quot;description&quot; /&gt;    &lt;input type=&quot;hidden&quot; asp-for=&quot;@Model.Id&quot; name=&quot;id&quot; /&gt;    &lt;input type=&quot;hidden&quot; asp-for=&quot;@Model.Name&quot; name=&quot;name&quot; /&gt;    &lt;input type=&quot;hidden&quot; asp-for=&quot;@Model.PictureUrl&quot; name=&quot;pictureUrl&quot; /&gt;    &lt;input type=&quot;hidden&quot; asp-for=&quot;@Model.Price&quot; name=&quot;price&quot; /&gt;&lt;/form&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-4-在Views-Catalog資料夾-新增-pagination-cshtml"><a href="#3-4-在Views-Catalog資料夾-新增-pagination-cshtml" class="headerlink" title="3.4 在Views&#x2F;Catalog資料夾, 新增_pagination.cshtml"></a>3.4 在Views&#x2F;Catalog資料夾, 新增_pagination.cshtml</h2><p>分頁的功能另外寫成一個Partial頁面</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@model WebMvc.ViewModels.PaginationInfo&lt;div class=&quot;row&quot;&gt;    &lt;span&gt;        Showing @Model.ItemsPerPage of @Model.TotalItems products - Page @(Model.ActualPage + 1) - @Model.TotalPages    &lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;row&quot;&gt;    &lt;ul class=&quot;pagination alg-right-pad&quot;&gt;        &lt;li&gt;            &lt;a class=&quot;@Model.Previous&quot;               id=&quot;Previous&quot;               asp-controller=&quot;Catalog&quot;               asp-action=&quot;Index&quot;               asp-route-page=&quot;@(Model.ActualPage - 1)&quot;               asp-route-typesFilterApplied=&quot;@(ViewBag.TypesFilterApplied)&quot;               aria-label=&quot;Previous&quot;&gt;                Previous            &lt;/a&gt;        &lt;/li&gt;        &lt;li&gt;            &lt;a class=&quot;@Model.Next&quot;               id=&quot;Next&quot;               asp-controller=&quot;Catalog&quot;               asp-action=&quot;Index&quot;               asp-route-page=&quot;@(Model.ActualPage + 1)&quot;               asp-route-typesFilterApplied=&quot;@(ViewBag.TypesFilterApplied)&quot;               aria-label=&quot;Next&quot;&gt;                Next            &lt;/a&gt;        &lt;/li&gt;    &lt;/ul&gt;&lt;/div&gt;</span><br></pre></td></tr></table></figure>
+
+<h1 id="4-新增CatalogController"><a href="#4-新增CatalogController" class="headerlink" title="4. 新增CatalogController"></a>4. 新增CatalogController</h1><p>在Contollers新增CatalogController，商品的資料都是從Controller為起點，並透過Service取資料，再由ViewModel組成回傳cshtml的CatalogIndexViewModel模型。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">using Microsoft.AspNetCore.Mvc;using System;using System.Threading.Tasks;using WebMvc.Services;using WebMvc.ViewModels;namespace WebMvc.Controllers&#123;    public class CatalogController : Controller    &#123;        private const int itemsPage = 6;        private ICatalogService _catalogService;        public CatalogController(ICatalogService catalogService)        &#123;            _catalogService = catalogService;        &#125;        public async Task&lt;IActionResult&gt; Index(int? typesFilterApplied, int? page)        &#123;            var catalog = await _catalogService.GetCatalogItems(page ?? 0, itemsPage, typesFilterApplied);            var vm = new CatalogIndexViewModel()            &#123;                CatalogItems = catalog.Data,                Types = await _catalogService.GetTypes(),                TypesFilterApplied = typesFilterApplied ?? 0,                PaginationInfo = new PaginationInfo()                &#123;                    ActualPage = page ?? 0,                    ItemsPerPage = Math.Min(catalog.Data.Count, itemsPage),                    TotalItems = catalog.Count,                    TotalPages = (int)Math.Ceiling((decimal)catalog.Count / itemsPage)                &#125;            &#125;;            vm.PaginationInfo.Next = (vm.PaginationInfo.ActualPage == vm.PaginationInfo.TotalPages - 1) ? &quot;is-disabled&quot; : &quot;&quot;;            vm.PaginationInfo.Previous = (vm.PaginationInfo.ActualPage == 0) ? &quot;is-disabled&quot; : &quot;&quot;;            ViewBag.TypesFilterApplied = typesFilterApplied;            return View(vm);        &#125;    &#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="5-修改site-css"><a href="#5-修改site-css" class="headerlink" title="5. 修改site.css"></a>5. 修改site.css</h1><p>增加一條css，用在讓按鈕變成disable</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">.is-disabled &#123;    opacity: .5;    pointer-events: none;&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="6-網頁呈現"><a href="#6-網頁呈現" class="headerlink" title="6. 網頁呈現"></a>6. 網頁呈現</h1><p>最終商品列表的頁面  </p>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2020/09/product2Blist-1.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2020/09/product2Blist.png"></a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/09/26/leetcode-136-single-number/" rel="prev" title="LeetCode 136 Single Number">
+      <i class="fa fa-chevron-left"></i> LeetCode 136 Single Number
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/09/26/leetcode-392-is-subsequence/" rel="next" title="LeetCode 392 Is Subsequence">
+      LeetCode 392 Is Subsequence <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E5%BB%BA%E7%AB%8BViewModel"><span class="nav-number">1.</span> <span class="nav-text">1. 建立ViewModel</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-%E6%96%B0%E5%A2%9E%E9%A1%9E%E5%88%A5-CatalogIndexViewModel"><span class="nav-number">1.1.</span> <span class="nav-text">1.1 新增類別: CatalogIndexViewModel</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-%E6%96%B0%E5%A2%9E%E9%A1%9E%E5%88%A5-PaginationInfo"><span class="nav-number">1.2.</span> <span class="nav-text">1.2 新增類別: PaginationInfo</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E6%96%B0%E5%A2%9EappSettings-json%E5%8F%83%E6%95%B8"><span class="nav-number">2.</span> <span class="nav-text">2. 新增appSettings.json參數</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-%E6%96%B0%E5%A2%9E-%E4%BF%AE%E6%94%B9Razor%E9%A0%81%E9%9D%A2"><span class="nav-number">3.</span> <span class="nav-text">3. 新增&#x2F;修改Razor頁面</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-%E4%BF%AE%E6%94%B9-Layout-cshtml"><span class="nav-number">3.1.</span> <span class="nav-text">3.1 修改_Layout.cshtml</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-%E6%96%B0%E5%A2%9EViews-Catalog%E8%B3%87%E6%96%99%E5%A4%BE-%E6%96%B0%E5%A2%9EIndex-cshtml"><span class="nav-number">3.2.</span> <span class="nav-text">3.2 新增Views&#x2F;Catalog資料夾, 新增Index.cshtml</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-3-%E5%9C%A8Views-Catalog%E8%B3%87%E6%96%99%E5%A4%BE-%E6%96%B0%E5%A2%9E-product-cshtml"><span class="nav-number">3.3.</span> <span class="nav-text">3.3 在Views&#x2F;Catalog資料夾, 新增_product.cshtml</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-4-%E5%9C%A8Views-Catalog%E8%B3%87%E6%96%99%E5%A4%BE-%E6%96%B0%E5%A2%9E-pagination-cshtml"><span class="nav-number">3.4.</span> <span class="nav-text">3.4 在Views&#x2F;Catalog資料夾, 新增_pagination.cshtml</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-%E6%96%B0%E5%A2%9ECatalogController"><span class="nav-number">4.</span> <span class="nav-text">4. 新增CatalogController</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-%E4%BF%AE%E6%94%B9site-css"><span class="nav-number">5.</span> <span class="nav-text">5. 修改site.css</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#6-%E7%B6%B2%E9%A0%81%E5%91%88%E7%8F%BE"><span class="nav-number">6.</span> <span class="nav-text">6. 網頁呈現</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">208</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">49</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
