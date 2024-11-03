@@ -21,11 +21,11 @@
   </script>
 
   <meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
+<meta property="og:title" content="GeekCodeParadise">
 <meta property="og:url" content="http://example.com/page/9/index.html">
-<meta property="og:site_name" content="Hexo">
+<meta property="og:site_name" content="GeekCodeParadise">
 <meta property="og:locale" content="en_US">
-<meta property="article:author" content="John Doe">
+<meta property="article:author" content="LiJyu Gao">
 <meta name="twitter:card" content="summary">
 
 <link rel="canonical" href="http://example.com/page/9/">
@@ -41,7 +41,7 @@
   };
 </script>
 
-  <title>Hexo</title>
+  <title>GeekCodeParadise</title>
   
 
 
@@ -92,7 +92,7 @@
 
     <a href="/" class="brand" rel="start">
       <span class="logo-line-before"><i></i></span>
-      <h1 class="site-title">Hexo</h1>
+      <h1 class="site-title">GeekCodeParadise</h1>
       <span class="logo-line-after"><i></i></span>
     </a>
   </div>
@@ -173,239 +173,16 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2020/09/18/uva-548-tree/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/09/18/uva-548-tree/" class="post-title-link" itemprop="url">UVa 548 Tree</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2020-09-18 21:58:00" itemprop="dateCreated datePublished" datetime="2020-09-18T21:58:00+08:00">2020-09-18</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-11-19 15:47:25" itemprop="dateModified" datetime="2023-11-19T15:47:25+08:00">2023-11-19</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C#</span></a>
-                </span>
-                  , 
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/ACM/" itemprop="url" rel="index"><span itemprop="name">ACM</span></a>
-                </span>
-                  , 
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Level-Medium/" itemprop="url" rel="index"><span itemprop="name">Level-Medium</span></a>
-                </span>
-                  , 
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E7%A8%8B%E5%BC%8F%E8%A7%A3%E9%A1%8C/" itemprop="url" rel="index"><span itemprop="name">程式解題</span></a>
-                </span>
-                  , 
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/ProgramSolving/" itemprop="url" rel="index"><span itemprop="name">ProgramSolving</span></a>
-                </span>
-                  , 
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/UVa/" itemprop="url" rel="index"><span itemprop="name">UVa</span></a>
-                </span>
-                  , 
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Tree/" itemprop="url" rel="index"><span itemprop="name">Tree</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>UVa 548 Tree 解題報告</p>
-<h4 id="平台："><a href="#平台：" class="headerlink" title="平台："></a>平台：</h4><p>UVa Online Judge</p>
-<h4 id="題號："><a href="#題號：" class="headerlink" title="題號："></a>題號：</h4><p>548 - Tree</p>
-<h4 id="題目連結："><a href="#題目連結：" class="headerlink" title="題目連結："></a>題目連結：</h4><p><a target="_blank" rel="noopener" href="https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&category=0&problem=489">https://onlinejudge.org/index.php?option=com_onlinejudge&amp;Itemid&#x3D;8&amp;page&#x3D;show_problem&amp;category&#x3D;0&amp;problem&#x3D;489</a></p>
-<h4 id="題目說明："><a href="#題目說明：" class="headerlink" title="題目說明："></a>題目說明：</h4><p>給一個樹的中序(Inorder)和後序(Postorder)，求這個樹的葉子到根的值總和是最小的路徑，並輸出那路徑的葉子值。假如有多個路徑的總和最小值相同，則輸出葉子值是最小的。</p>
-<p>樹的節點最多會有10000個、最少1個。  
-　　</p>
-<h4 id="範例輸入："><a href="#範例輸入：" class="headerlink" title="範例輸入："></a>範例輸入：</h4><p>3 2 1 4 5 7 6 3 1 2 5 6 7 4 7 8 11 3 5 16 12 18 8 3 11 7 16 18 12 5 255 255</p>
-<h4 id="範例輸出："><a href="#範例輸出：" class="headerlink" title="範例輸出："></a>範例輸出：</h4><p>1 3 255</p>
-<h4 id="解題方法："><a href="#解題方法：" class="headerlink" title="解題方法："></a>解題方法：</h4><p>經典的樹狀資料結構問題，首先要將後序與中序的關係釐清，並建立原來的樹，即可用深度搜尋去找路徑。以下用畫圖解釋第1個範例輸入，原始的中序與後序如圖1</p>
-<p><img src="http://geekcodeparadise.com/wp-content/uploads/2020/09/1.png"></p>
-<p>圖1</p>
-<p>目前後序的最右邊值，為目前的根，也就是4，對應到中序，可區分左子樹與右子樹的範圍，如圖2。接著我們往左子樹遞迴找子節點。</p>
-<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2020/09/2-1.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2020/09/2.png"></a></p>
-<p>圖2</p>
-<p>4節點的左子樹範圍，2的後序索引值是最大的，所以2是連著4的節點，在中序又可區分左子樹與右子樹的範圍，如圖3。</p>
-<p><img src="http://geekcodeparadise.com/wp-content/uploads/2020/09/3.png" alt="UVa 548 Tree solution"></p>
-<p>圖3</p>
-<p>2的左子樹與右子樹再遞迴處理後是3和1，如圖4與圖5。</p>
-<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2020/09/4-1.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2020/09/4.png" alt="UVa 548 Tree solution"></a></p>
-<p>圖4</p>
-<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2020/09/5-1.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2020/09/5.png" alt="UVa 548 Tree solution"></a></p>
-<p>圖5</p>
-<p>4節點的右子樹範圍，7的後序索引值是最大的，所以7是連著4的節點，在中序又可區分左子樹與右子樹的範圍，如圖6。</p>
-<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2020/09/6-1.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2020/09/6.png" alt="UVa 548 Tree solution"></a></p>
-<p>圖6</p>
-<p>7的左子樹與右子樹再遞迴處理後是5和6，如圖7與圖8。</p>
-<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2020/09/7-1.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2020/09/7.png" alt="UVa 548 Tree solution"></a></p>
-<p>圖7</p>
-<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2020/09/8-1.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2020/09/8.png" alt="UVa 548 Tree solution"></a></p>
-<p>圖8</p>
-<p>最終答案是(4 + 2 + 1)的路徑總和是最小的 ,於是輸出這路徑的節點1。而程式碼使用遞迴的方式解析中序和後序，再用Linked List建立樹。<br>難度為Medium</p>
-<h3 id="GITHUB位置："><a href="#GITHUB位置：" class="headerlink" title="GITHUB位置："></a>GITHUB位置：</h3><p><a target="_blank" rel="noopener" href="https://github.com/u8989332/ProblemSolving/blob/master/UVaOnlineJudge/500-599/548.cpp">https://github.com/u8989332/ProblemSolving/blob/master/UVaOnlineJudge/500-599/548.cpp</a></p>
-<h2 id="UVa-548-Tree"><a href="#UVa-548-Tree" class="headerlink" title="UVa 548 Tree"></a>UVa 548 Tree</h2>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2020/09/17/containerized-asp-net-core-monolithic-vs-microservices/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/09/17/containerized-asp-net-core-monolithic-vs-microservices/" class="post-title-link" itemprop="url">一袋.NET要扛幾樓？打造 容器化 的 ASP.NET  Core網站！系列文章 - (2) 傳統單一架構 VS 微服務架構</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2020-09-17 20:34:00" itemprop="dateCreated datePublished" datetime="2020-09-17T20:34:00+08:00">2020-09-17</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-11-19 15:47:25" itemprop="dateModified" datetime="2023-11-19T15:47:25+08:00">2023-11-19</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%BE%AE%E6%9C%8D%E5%8B%99%E6%9E%B6%E6%A7%8B/" itemprop="url" rel="index"><span itemprop="name">微服務架構</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>　　傳統的單一系統架構，裡面的功能越做越大，導致後續維護越來越吃力。比如今天只要修改購物網站的會員功能，沒有更改其他程式碼，修改完畢後，光是編譯就得花不少時間，後續的測試與部署更不用說，只要中間過程一出錯，從頭來回修改的時間要很久。</p>
-<p>　　今天微服務架構的特性有兩個：</p>
-<ol>
-<li>小又專精：國軍知名口號「小而精、小而強、小而巧」，用在微服務洽好不過(?)，使相關功能的模組都收斂在一個服務，也符合單一職責原則。</li>
-<li>自治性：微服務各自部署在不同機器&#x2F;平台，彼此開放API並用網路溝通，降低耦合性</li>
-</ol>
-<p>　　基於這些特性，所帶來的好處有：</p>
-<ol>
-<li>不同技術的Stack：每個微服務可以有自己的技術Stack，比如會員服務可以用ASP.NET Core + SQL Server，訂單服務可以用PHP + MySQL</li>
-<li>高彈性：即使有個服務壞了，其他服務仍可運作</li>
-<li>高擴展性：容易擴充服務，比如負載平衡</li>
-<li>簡化部署：只需針對要部署的服務，其他服務仍保持運作</li>
-<li>減少團隊共同的負擔：以前維護單一系統是所有團隊共同維護，一人更改就得全部受影響；使用微服務可讓團隊專注在自己的服務</li>
-<li>可組合性：微服務可支援多樣的前端應用</li>
-<li>替代性高：如果該服務需要換技術或者移除，比起傳統單一系統容易達成</li>
-</ol>
-<p>　　但微服務架構也有些缺點，要考慮分散式帶來的問題(比如CAP)，還有測試、部署、監控的工作與傳統單一系統不同。 目前有些台灣公司找後端工程師，不限制使用的技術Stack，很有可能是採用微服務架構，可知這種架構是有幫助的。而我工作環境仍都是單一系統開發，只有Side Project能嘗試這新架構，而且微軟也為相關的文件寫得很充裕，非常的有用！下一篇會開始設計商品列表的Api，敬請期待。</p>
-<p>參考資料：</p>
-<p><a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-tw/dotnet/architecture/microservices/architect-microservice-container-applications/microservices-architecture">.NET 微服務 - 架構電子書：微服務架構</a></p>
-<p><a target="_blank" rel="noopener" href="https://www.amazon.com/-/zh_TW/Building-Microservices-Designing-Fine-Grained-Systems%EF%BC%88%E8%8B%B1%E6%96%87%E7%89%88%EF%BC%89/dp/1491950358?keywords=Building+Microservices:+Desi&qid=1641913626&sr=8-8&linkCode=ll1&tag=glj89893320b-20&linkId=f39a585e87ef8f44e6f4a8de27d75061&language=zh_TW&ref_=as_li_ss_tl">Building Microservices: Designing Fine-Grained System</a><a target="_blank" rel="noopener" href="https://www.amazon.com/Building-Microservices-Designing-Fine-Grained-Systems/dp/1491950358">s：1. Microservices</a></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2020/09/17/poj-2431-expedition/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
+      <meta itemprop="name" content="LiJyu Gao">
       <meta itemprop="description" content="">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
+      <meta itemprop="name" content="GeekCodeParadise">
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
@@ -513,12 +290,12 @@
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
+      <meta itemprop="name" content="LiJyu Gao">
       <meta itemprop="description" content="">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
+      <meta itemprop="name" content="GeekCodeParadise">
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
@@ -612,12 +389,12 @@
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
+      <meta itemprop="name" content="LiJyu Gao">
       <meta itemprop="description" content="">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
+      <meta itemprop="name" content="GeekCodeParadise">
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
@@ -689,12 +466,12 @@
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
+      <meta itemprop="name" content="LiJyu Gao">
       <meta itemprop="description" content="">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
+      <meta itemprop="name" content="GeekCodeParadise">
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
@@ -804,12 +581,12 @@
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
+      <meta itemprop="name" content="LiJyu Gao">
       <meta itemprop="description" content="">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
+      <meta itemprop="name" content="GeekCodeParadise">
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
@@ -883,12 +660,12 @@
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
+      <meta itemprop="name" content="LiJyu Gao">
       <meta itemprop="description" content="">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
+      <meta itemprop="name" content="GeekCodeParadise">
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
@@ -964,12 +741,12 @@
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
+      <meta itemprop="name" content="LiJyu Gao">
       <meta itemprop="description" content="">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
+      <meta itemprop="name" content="GeekCodeParadise">
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
@@ -1097,12 +874,12 @@
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
+      <meta itemprop="name" content="LiJyu Gao">
       <meta itemprop="description" content="">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
+      <meta itemprop="name" content="GeekCodeParadise">
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
@@ -1163,6 +940,269 @@
 <p>難度為Medium</p>
 <h4 id="GITHUB位置："><a href="#GITHUB位置：" class="headerlink" title="GITHUB位置："></a>GITHUB位置：</h4><p><a target="_blank" rel="noopener" href="https://github.com/u8989332/ProblemSolving/blob/master/HackerRank/Algorithms/Bit%20Manipulation/AND%20Product.cpp">https://github.com/u8989332/ProblemSolving/blob/master/HackerRank/Algorithms/Bit%20Manipulation/AND%20Product.cpp</a></p>
 
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/06/07/uva-12333-revenge-of-fibonacci/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="LiJyu Gao">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="GeekCodeParadise">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/06/07/uva-12333-revenge-of-fibonacci/" class="post-title-link" itemprop="url">UVa 12333 Revenge of Fibonacci</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-06-07 19:58:00" itemprop="dateCreated datePublished" datetime="2020-06-07T19:58:00+08:00">2020-06-07</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-11-19 15:47:25" itemprop="dateModified" datetime="2023-11-19T15:47:25+08:00">2023-11-19</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Trie/" itemprop="url" rel="index"><span itemprop="name">Trie</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C#</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ACM/" itemprop="url" rel="index"><span itemprop="name">ACM</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Level-Medium/" itemprop="url" rel="index"><span itemprop="name">Level-Medium</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%A8%8B%E5%BC%8F%E8%A7%A3%E9%A1%8C/" itemprop="url" rel="index"><span itemprop="name">程式解題</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Big-Number/" itemprop="url" rel="index"><span itemprop="name">Big Number</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ProgramSolving/" itemprop="url" rel="index"><span itemprop="name">ProgramSolving</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/UVa/" itemprop="url" rel="index"><span itemprop="name">UVa</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>UVa 12333 Revenge of Fibonacci 解題報告</p>
+<h4 id="平台："><a href="#平台：" class="headerlink" title="平台："></a>平台：</h4><p>UVa Online Judge</p>
+<h4 id="題號："><a href="#題號：" class="headerlink" title="題號："></a>題號：</h4><p>12333 - Revenge of Fibonacci</p>
+<h4 id="題目連結："><a href="#題目連結：" class="headerlink" title="題目連結："></a>題目連結：</h4><p><a target="_blank" rel="noopener" href="https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=3755">https://onlinejudge.org/index.php?option=com_onlinejudge&amp;Itemid&#x3D;8&amp;page&#x3D;show_problem&amp;problem&#x3D;3755</a></p>
+<h4 id="題目說明："><a href="#題目說明：" class="headerlink" title="題目說明："></a>題目說明：</h4><p>給一個數字開頭，求最早出現有此開頭的Fibonacci數字的索引值，索引值從0開始。比如開頭12，最早有12開頭的是第25個Fibonacci數字:121393。</p>
+<p>如果沒任何Fibonacci數字包含開頭, 則輸出-1。索引值上限小於100000、每個數字開頭最多40位數。  
+　　</p>
+<h4 id="範例輸入："><a href="#範例輸入：" class="headerlink" title="範例輸入："></a>範例輸入：</h4><p>15 1 12 123 1234 12345 9 98 987 9876 98765 89 32 51075176167176176176 347746739 5610</p>
+<h4 id="範例輸出："><a href="#範例輸出：" class="headerlink" title="範例輸出："></a>範例輸出：</h4><p>Case #1: 0 Case #2: 25 Case #3: 226 Case #4: 1628 Case #5: 49516 Case #6: 15 Case #7: 15 Case #8: 15 Case #9: 43764 Case #10: 49750 Case #11: 10 Case #12: 51 Case #13: -1 Case #14: 1233 Case #15: 22374</p>
+<h4 id="解題方法："><a href="#解題方法：" class="headerlink" title="解題方法："></a>解題方法：</h4><ul>
+<li>採用大數的方式，建立第0~99999個Fibonacci數字。</li>
+<li>將每個大數開頭的前40個位數，用<a target="_blank" rel="noopener" href="https://geekcodeparadise.com/2020/06/data-structure-trie/">Trie</a>紀錄，再用Trie查詢是否有此開頭。</li>
+</ul>
+<p>難度為Medium</p>
+<h3 id="GITHUB位置："><a href="#GITHUB位置：" class="headerlink" title="GITHUB位置："></a>GITHUB位置：</h3><p><a target="_blank" rel="noopener" href="https://github.com/u8989332/ProblemSolving/blob/master/UVaOnlineJudge/12300-12399/12333.cpp">https://github.com/u8989332/ProblemSolving/blob/master/UVaOnlineJudge/12300-12399/12333.cpp</a></p>
+<h3 id="UVa-12333-Revenge-of-Fibonacci"><a href="#UVa-12333-Revenge-of-Fibonacci" class="headerlink" title="UVa 12333 Revenge of Fibonacci"></a>UVa 12333 Revenge of Fibonacci</h3>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/06/07/data-structure-trie/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="LiJyu Gao">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="GeekCodeParadise">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/06/07/data-structure-trie/" class="post-title-link" itemprop="url">Data Structure Trie</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-06-07 00:36:00" itemprop="dateCreated datePublished" datetime="2020-06-07T00:36:00+08:00">2020-06-07</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-11-19 15:47:25" itemprop="dateModified" datetime="2023-11-19T15:47:25+08:00">2023-11-19</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Data-Structure/" itemprop="url" rel="index"><span itemprop="name">Data Structure</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Trie/" itemprop="url" rel="index"><span itemprop="name">Trie</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>Data Structure - Trie</p>
+<h4 id="1-Trie的介紹"><a href="#1-Trie的介紹" class="headerlink" title="1. Trie的介紹"></a>1. Trie的介紹</h4><p> Trie又稱為前綴樹、字典樹，在大量新增單字、查詢單字時有高效能的表現，是一種特殊的樹狀資料結構。</p>
+<p>假如今天依序新增3個單字: hello, hey 和 bag，那麼Trie會像圖1。</p>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2020/06/1-1.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2020/06/1.png" alt="Data Structure Trie example"></a></p>
+<p>圖1</p>
+<h4 id="2-資料結構介紹"><a href="#2-資料結構介紹" class="headerlink" title="2. 資料結構介紹"></a>2. 資料結構介紹</h4><p> Trie的實作常用R-way Trie, R代表在某一層的節點數. 比如R &#x3D; 10, 可以記0<del>9的10個數字、R &#x3D; 26, 可以記A</del>Z的26個字母、 R &#x3D; 256, 可以記ASCII Code.</p>
+<p>本篇的Trie基本功能有5種: </p>
+<ol>
+<li>新增(Insert)</li>
+<li>刪除有包含前綴字的所有單字(Delete Prefix)</li>
+<li>刪除完整單字(Delete Exact)</li>
+<li>搜尋有前綴字的數量(Find Prefix Count)</li>
+<li>搜尋完整單字(Find Exact)</li>
+</ol>
+<p>本篇採用R &#x3D; 26的方式記錄a~z字母的單字, 首先Trie有個Root節點, 如圖2. 有3個重要的欄位:</p>
+<ol>
+<li>sums: 所有Trie的單字在此節點經過的次數</li>
+<li>end: 是否為某單字的最後一個字母</li>
+<li>children: 此字母底下連結其他字母的指標</li>
+</ol>
+<h3 id="2-1-新增-Insert"><a href="#2-1-新增-Insert" class="headerlink" title="2.1 新增 Insert"></a>2.1 新增 Insert</h3><p>Root節點的sums&#x2F;end永遠是0, 而children是初始化全都為空值.</p>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2020/06/2-1.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2020/06/2.png" alt="Data Structure Trie 圖2" title="圖2"></a></p>
+<p>圖2</p>
+<p>接著新增第1個單字hello, 首先是它的第1個字母h, 如圖3. 新增h節點, Root的h索引指向h節點, 且h節點的sums增加為1.</p>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2020/06/3-1.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2020/06/3.png" alt="Data Structure Trie 圖3"></a></p>
+<p>圖3</p>
+<p>第2個字母e, 如圖4. 新增e節點, h節點的e索引指向e節點, 且e節點的sums增加為1.</p>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2020/06/4-1.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2020/06/4.png" alt="Data Structure Trie 圖4"></a></p>
+<p>圖4</p>
+<p>第3個字母l, 如圖5. 新增l節點, e節點的l索引指向l節點, 且l節點的sums增加為1.</p>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2020/06/5-1.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2020/06/5.png" alt="Data Structure Trie 圖5"></a></p>
+<p>圖5</p>
+<p>第4個字母l, 如圖6. 新增第2個l節點, 第1個l節點的l索引指向第2個l節點, 且第2個l節點的sums增加為1.</p>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2020/06/6.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2020/06/6.png" alt="Data Structure Trie 圖6"></a></p>
+<p>圖6</p>
+<p>第5個字母o, 如圖7. 新增o節點, 第2個l節點的o索引指向o節點, 且o節點的sums增加為1、end標記為1.</p>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2020/06/7.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2020/06/7.png" alt="Data Structure Trie 圖7"></a></p>
+<p>圖7</p>
+<p>接著新增第2個單字hey, 如圖8. 首先是它的第1個字母h, 由於Root指向h節點已存在, 所以h節點的sums增加為2. 第2個字母e, 而h節點指向e節點已存在, 所以e節點的sums增加為2. 第3個字母y, 新增y節點, e節點的y索引指向y節點, 且y節點的sums增加為1、end標記為1.</p>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2020/06/8.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2020/06/8.png" alt="Data Structure Trie 圖8"></a></p>
+<p>圖8</p>
+<p>接著新增第3個單字bag, 首先是它的第1個字母b, 如圖9. 新增b節點, Root的b索引指向b節點, 且b節點的sums增加為1.</p>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2020/06/9.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2020/06/9.png" alt="Data Structure Trie 圖9"></a></p>
+<p>圖9</p>
+<p>第2個字母a, 如圖10. 新增a節點, b節點的a索引指向a節點, 且a節點的sums增加為1.</p>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2020/06/10.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2020/06/10.png" alt="Data Structure Trie 圖10"></a></p>
+<p>圖10</p>
+<p>第3個字母g, 如圖11. 新增a節點, b節點的a索引指向a節點, 且a節點的sums增加為1、end標記為1.</p>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2020/06/11.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2020/06/11.png" alt="Data Structure Trie 圖11"></a></p>
+<p>圖11</p>
+<h5 id="2-2-搜尋完整單字-Find-Exact"><a href="#2-2-搜尋完整單字-Find-Exact" class="headerlink" title="2.2 搜尋完整單字 Find Exact"></a>2.2 搜尋完整單字 Find Exact</h5><p>比如要搜尋單字hey, 從根節點往下分別尋找h -&gt; e -&gt; y, 第3個節點的end為1, 代表有完整的hey單字在此trie, 回傳true, 如圖12. 如果最後字母是到end為0的節點 或者 前面無任何子節點到達最後字母, 則回傳false.</p>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2020/06/12.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2020/06/12.png" alt=" Trie 圖12"></a></p>
+<p>圖12</p>
+<h5 id="2-3-搜尋有前綴字的數量-Find-Prefix-Count"><a href="#2-3-搜尋有前綴字的數量-Find-Prefix-Count" class="headerlink" title="2.3 搜尋有前綴字的數量 Find Prefix Count"></a>2.3 搜尋有前綴字的數量 Find Prefix Count</h5><p>比如要搜尋前綴字he, 從根節點往下分別尋找h -&gt; e, 第2個節點的sums為2, 代表有所有單字有前綴字的數量為2, 因此回傳2, 如圖13. 如果前面無任何子節點到達最後字母, 則回傳0.</p>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2020/06/13.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2020/06/13.png" alt="Trie 圖13"></a></p>
+<p>圖13</p>
+<h5 id="2-4-刪除完整單字-Delete-Exact"><a href="#2-4-刪除完整單字-Delete-Exact" class="headerlink" title="2.4 刪除完整單字 Delete Exact"></a>2.4 刪除完整單字 Delete Exact</h5><p>依照2.1的Trie, 比如要刪除完整的單字hey, 首先先用[搜尋完整單字 Find Exact]函式確認有此hey單字, 才可以做刪除.  從根節點往下分別尋找h -&gt; e -&gt; y, 沿途將sums的值減1，最後將第3個節點的end設為0, 完成刪除的功能, 如圖14.</p>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2020/06/14.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2020/06/14.png" alt="Trie 圖14"></a></p>
+<p>圖14</p>
+<h5 id="2-5-刪除完整單字-Delete-Exact"><a href="#2-5-刪除完整單字-Delete-Exact" class="headerlink" title="2.5 刪除完整單字 Delete Exact"></a>2.5 刪除完整單字 Delete Exact</h5><p>依照2.1的Trie, 比如要刪除有前綴字he的所有單字, 首先先用[搜尋有前綴字的數量 Find Prefix Count]函式確認有he前綴字的數量cnt, 才可以做刪除.  從根節點往下分別尋找h -&gt; e, 沿途將sums的值減cnt，最後將第3個節點的子節點都初始化為空值, 完成刪除的功能, 如圖15.</p>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2020/06/15.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2020/06/15.png" alt="Trie 圖15"></a></p>
+<p>圖15</p>
+<h4 id="3-資料結構實作"><a href="#3-資料結構實作" class="headerlink" title="3. 資料結構實作"></a>3. 資料結構實作</h4><p>實作可用Array或Linked List, 本篇先實作Array版本, 可再思考如何做成Linked List版.</p>
+<h5 id="3-1-Array-Version"><a href="#3-1-Array-Version" class="headerlink" title="3.1 Array Version"></a>3.1 Array Version</h5><p>Array版的Trie又稱為靜態Trie, 代表它的節點空間大小一開始都先宣告好. 程式碼和它的功能可參考註解.</p>
+<h4 id="4-效能分析"><a href="#4-效能分析" class="headerlink" title="4. 效能分析"></a><strong>4. 效能分析</strong></h4><p>假如Trie裡有N個單字、每個單字平均長度為Len、使用的R-way為R個字，新增、刪除和搜尋的時間複雜度均為O(Len)、空間複雜度為O(R * Len * N)。</p>
+<p><strong>5. 心得</strong>  </p>
+<p>最近寫題目開始接觸Trie，寫這篇來紀錄它的基礎模板，日後以此模板可做更多變化題。</p>
+<h2 id="參考文獻"><a href="#參考文獻" class="headerlink" title="參考文獻"></a>參考文獻</h2><ol>
+<li><a target="_blank" rel="noopener" href="https://www.amazon.com/-/zh_TW/%E5%88%98%E6%B1%9D%E4%BD%B3%EF%BC%8C%E9%99%88%E9%94%8B%EF%BC%8C%E5%90%B4%E6%B0%B8%E8%BE%89%EF%BC%8C%E7%AD%89/dp/B00G9XHCBW?crid=3PEAUP1LB5BNW&keywords=%E5%88%98%E6%B1%9D%E4%BD%B3&qid=1640528279&s=books&sprefix=%E5%88%98%E6%B1%9D%E4%BD%B3,stripbooks-intl-ship,231&sr=1-2&linkCode=ll1&tag=glj89893320b-20&linkId=fd63e663f641f28c5635a58f40b184d7&language=zh_TW&ref_=as_li_ss_tl">劉汝佳 - 算法竞赛入门经典训练指南</a></li>
+</ol>
+<h3 id="data-structure-trie"><a href="#data-structure-trie" class="headerlink" title="data structure trie"></a>data structure trie</h3>
       
     </div>
 
@@ -1238,7 +1278,7 @@
 
       <div class="site-overview-wrap sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-  <p class="site-author-name" itemprop="name">John Doe</p>
+  <p class="site-author-name" itemprop="name">LiJyu Gao</p>
   <div class="site-description" itemprop="description"></div>
 </div>
 <div class="site-state-wrap motion-element">
@@ -1246,7 +1286,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">208</span>
+          <span class="site-state-item-count">206</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -1282,11 +1322,11 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2023</span>
+  <span itemprop="copyrightYear">2024</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
-  <span class="author" itemprop="copyrightHolder">John Doe</span>
+  <span class="author" itemprop="copyrightHolder">LiJyu Gao</span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
   </div>

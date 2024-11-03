@@ -21,11 +21,11 @@
   </script>
 
   <meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
+<meta property="og:title" content="GeekCodeParadise">
 <meta property="og:url" content="http://example.com/page/3/index.html">
-<meta property="og:site_name" content="Hexo">
+<meta property="og:site_name" content="GeekCodeParadise">
 <meta property="og:locale" content="en_US">
-<meta property="article:author" content="John Doe">
+<meta property="article:author" content="LiJyu Gao">
 <meta name="twitter:card" content="summary">
 
 <link rel="canonical" href="http://example.com/page/3/">
@@ -41,7 +41,7 @@
   };
 </script>
 
-  <title>Hexo</title>
+  <title>GeekCodeParadise</title>
   
 
 
@@ -92,7 +92,7 @@
 
     <a href="/" class="brand" rel="start">
       <span class="logo-line-before"><i></i></span>
-      <h1 class="site-title">Hexo</h1>
+      <h1 class="site-title">GeekCodeParadise</h1>
       <span class="logo-line-after"><i></i></span>
     </a>
   </div>
@@ -173,259 +173,16 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/06/16/poeaa-domain-logic-pattern-service-layer/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/06/16/poeaa-domain-logic-pattern-service-layer/" class="post-title-link" itemprop="url">Service Layer Pattern</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2021-06-16 00:33:00" itemprop="dateCreated datePublished" datetime="2021-06-16T00:33:00+08:00">2021-06-16</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-11-19 15:47:25" itemprop="dateModified" datetime="2023-11-19T15:47:25+08:00">2023-11-19</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Design-Pattern/" itemprop="url" rel="index"><span itemprop="name">Design Pattern</span></a>
-                </span>
-                  , 
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Architecture/" itemprop="url" rel="index"><span itemprop="name">Architecture</span></a>
-                </span>
-                  , 
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/PoEAA/" itemprop="url" rel="index"><span itemprop="name">PoEAA</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="1-What-is-Service-Layer"><a href="#1-What-is-Service-Layer" class="headerlink" title="1. What is Service Layer"></a>1. What is Service Layer</h3><p>According to [PoEAA], Service Layer Pattern definition is “Defines an application’s boundary with a layer of services that establishes a set of available operations and coordinates the application’s response in each operation.”</p>
-<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2021/06/image-14.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2021/06/image-12.png" alt="Service Layer Architecture"></a></p>
-<p>Figure 1. Service Layer Architecture (From <a target="_blank" rel="noopener" href="https://martinfowler.com/eaaCatalog/serviceLayer.html">PoEAA Page</a>)</p>
-<h4 id="1-1-How-it-works"><a href="#1-1-How-it-works" class="headerlink" title="1.1 How it works"></a>1.1 How it works</h4><p>Business Logic is generally split into “Domain Logic” and “Application Logic”. Domain Logic focuses on the domain problem like the calculation of contract’s revenue recognition. Application Logic is responsible for integrating “workflow”. The workflow example: When the calculation of contract’s revenue recognition is finished, system sends the result email to contract’s owner and prints contract paper. Every service layer packs an kind of application logic and makes the domain objects reusable.   Implementation:</p>
-<ol>
-<li>Domain Facade: This facade have no business logic and hides the a domain object’s implementation.</li>
-<li>Operation Script: This implements the above Application Logic and some services are composed as a Operation Script for clients.</li>
-</ol>
-<p>Service Layer’s operations are based on the use case model and user interface design. Most use cases are “CRUD” with database for every domain model. In some applications have to interact with other application, so the service layer organizes the integration.   By application’s scale, if the application is large, then split it vertically into subsystems and every subsystem has a service name. The other way is based on Domain Model to build the services (like ContractService&#x2F;ProductService) or bases on the behavior to build the services (like RecognitionService)  </p>
-<h4 id="1-2-When-to-use-it"><a href="#1-2-When-to-use-it" class="headerlink" title="1.2 When to use it"></a>1.2 When to use it</h4><p>If the application has only one resource transaction when client interact with every operation, Service Layer is not required and sending request to Data Source is straight. Otherwise, all clients interact this system with Service Layer’s public operations.</p>
-<h3 id="2-Pattern-Practice-The-Revenue-Recognition-Problem"><a href="#2-Pattern-Practice-The-Revenue-Recognition-Problem" class="headerlink" title="2. Pattern Practice: The Revenue Recognition Problem"></a>2. Pattern Practice: The Revenue Recognition Problem</h3><p>This problem is introduced in the previous article <a target="_blank" rel="noopener" href="https://geekcodeparadise.com/2021/05/23/poeaa-domain-logic-pattern-transaction-script/">[PoEAA] Domain Logic Pattern - Transaction Script</a>. Original Transaction Script example has a service class. This article extends this service.</p>
-<p>Define the service layer classes for the revenue recognition, product and contract as the following figure:</p>
-<p><img src="http://geekcodeparadise.com/wp-content/uploads/2021/06/25E6259C25AA25E5259125BD25E52590258D25E725BB259825E5259B25BE.png" alt="service layer classes for the revenue recognition"></p>
-<h4 id="2-1-Implementation-by-C"><a href="#2-1-Implementation-by-C" class="headerlink" title="2.1 Implementation by C#"></a>2.1 Implementation by C#</h4><p>This pattern is implemented by C# based on the content of <strong>Chapter 9 Domain Logic Pattern - Service Layer</strong> of PoEAA. </p>
-<h5 id="2-1-1-New-Features"><a href="#2-1-1-New-Features" class="headerlink" title="2.1.1 New Features"></a>2.1.1 New Features</h5><p>When use RecognitionService’s CalculateRevenueRecognitions function, the calculated revenue result will be sent to contract’s administrator owner by email and broadcast to integrate other system. These 2 features are mocking implementation, not real sending&#x2F;broadcasting systems.</p>
-<h5 id="2-1-2-IEmailGateway-IIntegrationGateway-interfaces-implementation"><a href="#2-1-2-IEmailGateway-IIntegrationGateway-interfaces-implementation" class="headerlink" title="2.1.2 IEmailGateway&#x2F;IIntegrationGateway interfaces&#x2F;implementation"></a>2.1.2 IEmailGateway&#x2F;IIntegrationGateway interfaces&#x2F;implementation</h5><p>The above new features are implemented in IEmailGateway and IIntegrationGateway as Figure 2 shows. Their implementation just prints parameter content by console.</p>
-<p>internal class IntegrationGateway : IIntegrationGateway<br>{<br>public void PublishRevenueRecognitionCalculation(DataRow contract)<br>{<br>Console.WriteLine($”Id : {contract[“Id”]} , Signed Date: {((DateTime)contract[“DateSigned”]):MM&#x2F;dd&#x2F;yyyy}”);<br>}<br>}</p>
-<p>public interface IIntegrationGateway<br>{<br>void PublishRevenueRecognitionCalculation(DataRow contract);<br>}</p>
-<p>internal class EmailGateway : IEmailGateway<br>{<br>public void SendEmailMessage(string toAddress, string subject, string body)<br>{<br>Console.WriteLine($”To Address : {toAddress} , subject: {subject}, body: {body}”);<br>}<br>}</p>
-<p>public interface IEmailGateway<br>{<br>void SendEmailMessage(string toAddress, string subject, string body);<br>}</p>
-<h5 id="2-1-3-ApplicationService-base-class"><a href="#2-1-3-ApplicationService-base-class" class="headerlink" title="2.1.3 ApplicationService base class"></a>2.1.3 ApplicationService base class</h5><p>All service layer’s classes have reusable and common functions, so this ApplicationService provides those. In this example, ApplicationService only generates the IEmailGateway and IIntegrationGateway’s instances.</p>
-<p>public class ApplicationService<br>{<br>protected virtual IEmailGateway GetEmailGateway()<br>{<br>return new EmailGateway();<br>}</p>
-<p>protected virtual IIntegrationGateway GetIntegrationGateway()<br>{<br>return new IntegrationGateway();<br>}<br>}</p>
-<h5 id="2-1-4-RecognitionService-Class"><a href="#2-1-4-RecognitionService-Class" class="headerlink" title="2.1.4 RecognitionService Class"></a>2.1.4 RecognitionService Class</h5><p>This class extends ApplicationService to get IEmailGateway and IIntegrationGateway’s instances. When the revenue recognitions are calculated, call these services to complete the new features.</p>
-<p>public class RecognitionService : ApplicationService<br>{<br>public Money RecognizedRevenue(int contractNumber, DateTime beforeDate)<br>{<br>Money result &#x3D; Money.Dollars(0m);<br>Gateway db &#x3D; new Gateway();<br>var dt &#x3D; db.FindRecognitionsFor(contractNumber, beforeDate);<br>for (int i &#x3D; 0; i &lt; dt.Rows.Count; ++i)<br>{<br>var amount &#x3D; (decimal) dt.Rows[i][“Amount”];<br>result +&#x3D; Money.Dollars(amount);<br>}</p>
-<p>return result;<br>}</p>
-<p>public void CalculateRevenueRecognitions(int contractId)<br>{<br>Gateway db &#x3D; new Gateway();<br>var contracts &#x3D; db.FindContract(contractId);<br>Money totalRevenue &#x3D; Money.Dollars((decimal) contracts.Rows[0][“Revenue”]);<br>DateTime recognitionDate &#x3D; (DateTime) contracts.Rows[0][“DateSigned”];<br>string type &#x3D; contracts.Rows[0][“Type”].ToString();</p>
-<p>if(type &#x3D;&#x3D; “S”)<br>{<br>Money[] allocation &#x3D; totalRevenue.Allocate(3);<br>db.InsertRecognitions(contractId, allocation[0], recognitionDate);<br>db.InsertRecognitions(contractId, allocation[1], recognitionDate.AddDays(60));<br>db.InsertRecognitions(contractId, allocation[2], recognitionDate.AddDays(90));<br>}<br>else if(type &#x3D;&#x3D; “W”)<br>{<br>db.InsertRecognitions(contractId, totalRevenue, recognitionDate);<br>}<br>else if(type &#x3D;&#x3D; “D”)<br>{<br>Money[] allocation &#x3D; totalRevenue.Allocate(3);<br>db.InsertRecognitions(contractId, allocation[0], recognitionDate);<br>db.InsertRecognitions(contractId, allocation[1], recognitionDate.AddDays(30));<br>db.InsertRecognitions(contractId, allocation[2], recognitionDate.AddDays(60));<br>}</p>
-<p>GetEmailGateway().SendEmailMessage(<br>contracts.Rows[0][“AdministratorEmail”].ToString(),<br>“RE: Contract #” + contractId,<br>contractId + “ has had revenue recognitions calculated”);</p>
-<p>GetIntegrationGateway().PublishRevenueRecognitionCalculation(contracts.Rows[0]);<br>}<br>}</p>
-<h5 id="2-1-5-Demo"><a href="#2-1-5-Demo" class="headerlink" title="2.1.5 Demo"></a>2.1.5 Demo</h5><p>Create a console program and create 3 Products and 3 Contracts to calculate the revenue recognitions for the 3 products.</p>
-<p>As the following code:</p>
-<p>using (var connection &#x3D; DbManager.CreateConnection())<br>{<br>connection.Open();</p>
-<p>var command &#x3D; connection.CreateCommand();<br>command.CommandText &#x3D;<br>@”<br>DROP TABLE IF EXISTS Products;<br>DROP TABLE IF EXISTS Contracts;<br>DROP TABLE IF EXISTS RevenueRecognitions;<br>“;<br>command.ExecuteNonQuery();</p>
-<p>command.CommandText &#x3D;<br>@”<br>CREATE TABLE Products (Id int primary key, Name TEXT, Type TEXT);<br>CREATE TABLE Contracts (Id int primary key, Product int, Revenue decimal, DateSigned date, AdministratorEmail TEXT);<br>CREATE TABLE RevenueRecognitions (Contract int, Amount decimal, RecognizedOn date, PRIMARY KEY(Contract, RecognizedOn));<br>“;<br>command.ExecuteNonQuery();</p>
-<p>command.CommandText &#x3D;<br>@”</p>
-<p>INSERT INTO Products<br>VALUES (1, ‘Code Paradise Database’, ‘D’);</p>
-<p>INSERT INTO Products<br>VALUES (2, ‘Code Paradise Spreadsheet’, ‘S’);</p>
-<p>INSERT INTO Products<br>VALUES (3, ‘Code Paradise Word Processor’, ‘W’);</p>
-<p>INSERT INTO Contracts<br>VALUES (1, 1, 9999, date(‘2020-01-01’), ‘<a href="mailto:&#116;&#x65;&#x73;&#x74;&#x31;&#64;&#116;&#101;&#x73;&#x74;&#x2e;&#99;&#x6f;&#x6d;">&#116;&#x65;&#x73;&#x74;&#x31;&#64;&#116;&#101;&#x73;&#x74;&#x2e;&#99;&#x6f;&#x6d;</a>‘);</p>
-<p>INSERT INTO Contracts<br>VALUES (2, 2, 1000, date(‘2020-03-15’), ‘<a href="mailto:&#x74;&#101;&#x73;&#116;&#x32;&#64;&#116;&#x65;&#115;&#x74;&#46;&#99;&#111;&#x6d;">&#x74;&#101;&#x73;&#116;&#x32;&#64;&#116;&#x65;&#115;&#x74;&#46;&#99;&#111;&#x6d;</a>‘);</p>
-<p>INSERT INTO Contracts<br>VALUES (3, 3, 24000, date(‘2020-07-25’), ‘<a href="mailto:&#116;&#101;&#x73;&#x74;&#51;&#x40;&#x74;&#x65;&#x73;&#x74;&#46;&#99;&#111;&#x6d;">&#116;&#101;&#x73;&#x74;&#51;&#x40;&#x74;&#x65;&#x73;&#x74;&#46;&#99;&#111;&#x6d;</a>‘);<br>“;<br>command.ExecuteNonQuery();<br>}</p>
-<p>RecognitionService service &#x3D; new RecognitionService();</p>
-<p>&#x2F;&#x2F; database product<br>service.CalculateRevenueRecognitions(1);<br>var databaseRevenue &#x3D; service.RecognizedRevenue(1, new System.DateTime(2020, 1, 25));<br>Console.WriteLine($”database revenue before 2020-01-25 &#x3D; {databaseRevenue.Amount}”);</p>
-<p>&#x2F;&#x2F; spreadsheet product<br>service.CalculateRevenueRecognitions(2);<br>var spreadsheetRevenue &#x3D; service.RecognizedRevenue(2, new System.DateTime(2020, 6, 1));<br>Console.WriteLine($”spreadsheet revenue before 2020-06-01 &#x3D; {spreadsheetRevenue.Amount}”);</p>
-<p>&#x2F;&#x2F; word processor product<br>service.CalculateRevenueRecognitions(3);<br>var wordProcessorRevenue &#x3D; service.RecognizedRevenue(3, new System.DateTime(2020, 9, 30));<br>Console.WriteLine($”word processor revenue before 2020-09-30 &#x3D; {wordProcessorRevenue.Amount}”);</p>
-<p>The console shows:</p>
-<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2021/06/image-15.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2021/06/image-13.png" alt="Service Layer result"></a></p>
-<p>This revenue recognition result is the same as the Transaction Script example and additionally shows the email sending messages&#x2F;broadcasting messages.</p>
-<h3 id="3-Conclusions-for-Service-Layer"><a href="#3-Conclusions-for-Service-Layer" class="headerlink" title="3. Conclusions for Service Layer"></a>3. Conclusions for Service Layer</h3><p>“Service Layer” is a very popular domain logic’s pattern. All domain logic underlying implementation is coordinated by service layer and clients only interact the domain logic by service layer. In many open sources, services classes&#x2F;patterns&#x2F;architectures are ubiquitous. Each service (subsystem) plays a role that cooperates with the other to finish a requirement.</p>
-<p>The above sample code is uploaded to this <a target="_blank" rel="noopener" href="https://github.com/u8989332/PoEAA_ServiceLayer">Github Repository</a>.</p>
-<p>For next article I will write <strong>Table Data Gateway</strong> pattern according to <strong>Chapter 10 Data Source Architectural Pattern - Table Data Gateway</strong> of PoEAA.</p>
-<h3 id="4-References"><a href="#4-References" class="headerlink" title="4. References"></a>4. References</h3><p><a target="_blank" rel="noopener" href="https://amzn.to/40CuWZT">Patterns of Enterprise Application Architecture Book(Amazon)</a></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/06/07/poeaa-domain-logic-pattern-table-module/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/06/07/poeaa-domain-logic-pattern-table-module/" class="post-title-link" itemprop="url">Table Module Pattern</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2021-06-07 14:46:00" itemprop="dateCreated datePublished" datetime="2021-06-07T14:46:00+08:00">2021-06-07</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-11-19 15:47:25" itemprop="dateModified" datetime="2023-11-19T15:47:25+08:00">2023-11-19</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Design-Pattern/" itemprop="url" rel="index"><span itemprop="name">Design Pattern</span></a>
-                </span>
-                  , 
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Architecture/" itemprop="url" rel="index"><span itemprop="name">Architecture</span></a>
-                </span>
-                  , 
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/PoEAA/" itemprop="url" rel="index"><span itemprop="name">PoEAA</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="1-What-is-Table-Module"><a href="#1-What-is-Table-Module" class="headerlink" title="1. What is Table Module"></a>1. What is Table Module</h3><p>According to [PoEAA], Table Module definition is “A single instance that handles the business logic for all rows in a database table or view.”</p>
-<p>A Table Module only processes one table&#x2F;view&#x2F;custom SQL query in a database. Its underlying data source pattern usually is Table Data Gateway. A approximate equality ≈ Table Data Gateway + Domain Logic</p>
-<p>This pattern focuses on business logic and Table Data Gateway focuses on interactions with database (CRUD).</p>
-<h4 id="1-1-When-to-use-it"><a href="#1-1-When-to-use-it" class="headerlink" title="1.1 When to use it"></a>1.1 When to use it</h4><p>If the business layer is based on the structure of database table, Table Module is a better choice. When business logic becomes more complex, it’s better to choose Domain Logic as business layer.</p>
-<h3 id="2-Pattern-Practice-The-Revenue-Recognition-Problem"><a href="#2-Pattern-Practice-The-Revenue-Recognition-Problem" class="headerlink" title="2. Pattern Practice: The Revenue Recognition Problem"></a>2. Pattern Practice: The Revenue Recognition Problem</h3><p>This problem is introduced in the previous article <a target="_blank" rel="noopener" href="https://geekcodeparadise.com/2021/05/23/poeaa-domain-logic-pattern-transaction-script/">[PoEAA] Domain Logic Pattern - Transaction Script</a>. This article uses this pattern to build the domain layer.</p>
-<p>Define the table module classes for the revenue recognition, product and contract as the following figure:</p>
-<p><img src="http://geekcodeparadise.com/wp-content/uploads/2021/06/25E6259C25AA25E5259125BD25E52590258D25E725BB259825E5259B25BE-2.png" alt="table module classes for the revenue recognition"></p>
-<h4 id="2-1-Implementation-by-C"><a href="#2-1-Implementation-by-C" class="headerlink" title="2.1 Implementation by C#"></a>2.1 Implementation by C#</h4><p>This pattern is implemented by C#. Because the section <strong>Chapter 9 Domain Logic Pattern - Table Module</strong> of PoEAA didn’t implement with database integration, this implementation don’t contain database example.</p>
-<h5 id="2-1-1-Table-Module-base-class"><a href="#2-1-1-Table-Module-base-class" class="headerlink" title="2.1.1 Table Module base class"></a>2.1.1 Table Module base class</h5><p>.NET’s DataSet is a type of a in-memory database structure and provides basic CRUD functions. And DataTable is a table structure and is contained in a DataSet, so every TableModule contains a DataTable object.</p>
-<p>abstract class TableModule {<br>  protected DataTable Table;<br>  protected TableModule(DataSet ds, string tableName) {<br>    Table &#x3D; ds.Tables[tableName];<br>  }<br>}</p>
-<h5 id="2-1-2-Product-Class"><a href="#2-1-2-Product-Class" class="headerlink" title="2.1.2 Product Class"></a>2.1.2 Product Class</h5><p>For Product class, it contains a DataTable named “Products” and a function that returns ProductType by product id:</p>
-<p>public enum ProductType {<br>  W,<br>  S,<br>  D<br>};<br>class Product: TableModule {<br>  public Product(DataSet tableDataSet): base(tableDataSet, “Products”) {}<br>  public DataRow this[int key] {<br>    get {<br>      string filter &#x3D; $ “Id &#x3D; {key}”;<br>      return Table.Select(filter)[0];<br>    }<br>  }<br>  public ProductType GetProductType(int prodId) {<br>    string typeCode &#x3D; (string) this[prodId][“Type”];<br>    return (ProductType) Enum.Parse(typeof (ProductType), typeCode);<br>  }<br>}</p>
-<h5 id="2-1-3-Contract-Class-RevenueRecognition-Class"><a href="#2-1-3-Contract-Class-RevenueRecognition-Class" class="headerlink" title="2.1.3 Contract Class &amp; RevenueRecognition Class"></a>2.1.3 Contract Class &amp; RevenueRecognition Class</h5><p>For Contract class, it contains a DataTable named “Contracts” and a function that calculates the recognized revenues. It associates a RevenueRecognition table module and inserts the revenue to RevenueRecognition.   For RevenueRecognition class, it contains a DataTable named “RevenueRecognitions”. One function that inserts revenue to DataTable. The second function that returns revenue by contract id and a date.</p>
-<p>class Contract: TableModule {<br>  public Contract(DataSet ds): base(ds, “Contracts”) {}<br>  public DataRow this[int key] {<br>    get {<br>      string filter &#x3D; $ “Id &#x3D; {key}”;<br>      return Table.Select(filter)[0];<br>    }<br>  }<br>  public void CalculateRecognitions(int contractId) {<br>    DataRow contractRow &#x3D; this[contractId];<br>    decimal amount &#x3D; (decimal) contractRow[“Revenue”];<br>    RevenueRecognition rr &#x3D; new RevenueRecognition(Table.DataSet);<br>    Product prod &#x3D; new Product(Table.DataSet);<br>    int prodId &#x3D; GetProductId(contractId);<br>    var productType &#x3D; prod.GetProductType(prodId);<br>    if (productType &#x3D;&#x3D; ProductType.W) {<br>      rr.Insert(contractId, amount, GetWhenSigned(contractId));<br>    } else if (productType &#x3D;&#x3D; ProductType.S) {<br>      DateTime signedDate &#x3D; GetWhenSigned(contractId);<br>      decimal[] allocation &#x3D; Allocate(amount, 3);<br>      rr.Insert(contractId, allocation[0], signedDate);<br>      rr.Insert(contractId, allocation[1], signedDate.AddDays(60));<br>      rr.Insert(contractId, allocation[2], signedDate.AddDays(90));<br>    } else if (productType &#x3D;&#x3D; ProductType.D) {<br>      DateTime signedDate &#x3D; GetWhenSigned(contractId);<br>      decimal[] allocation &#x3D; Allocate(amount, 3);<br>      rr.Insert(contractId, allocation[0], signedDate);<br>      rr.Insert(contractId, allocation[1], signedDate.AddDays(30));<br>      rr.Insert(contractId, allocation[2], signedDate.AddDays(60));<br>    }<br>  }<br>  private decimal[] Allocate(decimal amount, int by) {<br>    decimal lowResult &#x3D; amount &#x2F; by;<br>    lowResult &#x3D; decimal.Round(lowResult, 2);<br>    decimal highReult &#x3D; lowResult + 0.01 m;<br>    decimal[] results &#x3D; new decimal[by];<br>    int remainder &#x3D; (int) amount % by;<br>    for (int i &#x3D; 0; i &lt; remainder; ++i) {<br>      results[i] &#x3D; highReult;<br>    }<br>    for (int i &#x3D; remainder; i &lt; by; ++i) {<br>      results[i] &#x3D; lowResult;<br>    }<br>    return results;<br>  }<br>  private DateTime GetWhenSigned(int contractId) {<br>    return (DateTime) this[contractId][“DateSigned”];<br>  }<br>  private int GetProductId(int contractId) {<br>    return (int) this[contractId][“Product”];<br>  }<br>}<br>class RevenueRecognition: TableModule {<br>  private static int _id &#x3D; 1;<br>  private static readonly object IdLock &#x3D; new object();<br>  public RevenueRecognition(DataSet ds): base(ds, “RevenueRecognitions”) {}<br>  public int Insert(int contractId, decimal amount, DateTime date) {<br>    DataRow newRow &#x3D; Table.NewRow();<br>    int id &#x3D; GetNextId();<br>    newRow[“Id”] &#x3D; id;<br>    newRow[“Contract”] &#x3D; contractId;<br>    newRow[“Amount”] &#x3D; amount;<br>    newRow[“RecognizedOn”] &#x3D; date;<br>    Table.Rows.Add(newRow);<br>    return id;<br>  }<br>  public decimal RecognizedRevenue(int contractId, DateTime asOf) {<br>    string filter &#x3D; $ “Contract &#x3D; {contractId} AND RecognizedOn &lt;&#x3D; #{asOf:d}#”;<br>    DataRow[] rows &#x3D; Table.Select(filter);<br>    decimal result &#x3D; 0 m;<br>    foreach(DataRow row in rows) {<br>      result +&#x3D; (decimal) row[“Amount”];<br>    }<br>    return result;<br>  }<br>  private static int GetNextId() {<br>    lock(IdLock) {<br>      return _id++;<br>    }<br>  }<br>}</p>
-<h5 id="2-1-4-Demo"><a href="#2-1-4-Demo" class="headerlink" title="2.1.4 Demo"></a>2.1.4 Demo</h5><p>Create a console program and create 3 <strong>Products</strong> and <strong>3 Contracts</strong> to calculate the revenue recognitions for the 3 products.</p>
-<p>As the following code:</p>
-<p>&#x2F;&#x2F; mock Result Set<br>DataSet ds &#x3D; new DataSet();<br>DataTable productTable &#x3D; new DataTable(“Products”);<br>productTable.Columns.Add(“Id”, typeof (int));<br>productTable.Columns.Add(“Name”, typeof (string));<br>productTable.Columns.Add(“Type”, typeof (string));<br>productTable.Rows.Add(1, “Code Paradise Database”, “D”);<br>productTable.Rows.Add(2, “Code Paradise Spreadsheet”, “S”);<br>productTable.Rows.Add(3, “Code Paradise Word Processor”, “W”);<br>DataTable contractTable &#x3D; new DataTable(“Contracts”);<br>contractTable.Columns.Add(“Id”, typeof (int));<br>contractTable.Columns.Add(“Product”, typeof (int));<br>contractTable.Columns.Add(“Revenue”, typeof (decimal));<br>contractTable.Columns.Add(“DateSigned”, typeof (DateTime));<br>contractTable.Rows.Add(1, 1, 9999, new DateTime(2020, 1, 1));<br>contractTable.Rows.Add(2, 2, 1000, new DateTime(2020, 3, 15));<br>contractTable.Rows.Add(3, 3, 24000, new DateTime(2020, 7, 25));<br>DataTable revenueRecognitionsTable &#x3D; new DataTable(“RevenueRecognitions”);<br>revenueRecognitionsTable.Columns.Add(“Id”, typeof (int));<br>revenueRecognitionsTable.Columns.Add(“Contract”, typeof (int));<br>revenueRecognitionsTable.Columns.Add(“Amount”, typeof (decimal));<br>revenueRecognitionsTable.Columns.Add(“RecognizedOn”, typeof (DateTime));<br>ds.Tables.Add(productTable);<br>ds.Tables.Add(contractTable);<br>ds.Tables.Add(revenueRecognitionsTable);</p>
-<p>&#x2F;&#x2F; calculate recognized revenues<br>Contract contract &#x3D; new Contract(ds);</p>
-<p>&#x2F;&#x2F; database product<br>contract.CalculateRecognitions(1);<br>var databaseRevenue &#x3D; new RevenueRecognition(ds).RecognizedRevenue(1, new DateTime(2020, 1, 25));<br>Console.WriteLine($”database revenue before 2020-01-25 &#x3D; {databaseRevenue}”);</p>
-<p>&#x2F;&#x2F; spreadsheet product<br>contract.CalculateRecognitions(2);<br>var spreadsheetRevenue &#x3D; new RevenueRecognition(ds).RecognizedRevenue(2, new DateTime(2020, 6, 1));<br>Console.WriteLine($”spreadsheet revenue before 2020-06-01 &#x3D; {spreadsheetRevenue}”);</p>
-<p>&#x2F;&#x2F; word processor product<br>contract.CalculateRecognitions(3);<br>var wordProcessorRevenue &#x3D; new RevenueRecognition(ds).RecognizedRevenue(3, new DateTime(2020, 9, 30));<br>Console.WriteLine($”word processor revenue before 2020-09-30 &#x3D; {wordProcessorRevenue}”);</p>
-<p>The console shows:</p>
-<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2021/06/image-17.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2021/06/image-16.png" alt="Table Module result"></a></p>
-<p>This result is the same as the Transaction Script example.</p>
-<h3 id="3-Conclusions-for-Table-Module"><a href="#3-Conclusions-for-Table-Module" class="headerlink" title="3. Conclusions for Table Module"></a>3. Conclusions for Table Module</h3><p>This pattern is good at processing every table’s logic. For .NET solution, DataSet&#x2F;DataTable have provide complete functions to use this pattern. But when the domain layer is more complex, Domain Model pattern is the better choice.</p>
-<p>The above sample code is uploaded to this <a target="_blank" rel="noopener" href="https://github.com/u8989332/PoEAA_TableModule">Github Repository</a>.</p>
-<p>For next article I will write <strong>Service Layer</strong> pattern according to <strong>Chapter 9 Domain Logic Pattern - Service Layer</strong> of PoEAA.</p>
-<h3 id="4-References"><a href="#4-References" class="headerlink" title="4. References"></a>4. References</h3><p><a target="_blank" rel="noopener" href="https://amzn.to/40CuWZT">Patterns of Enterprise Application Architecture Book(Amazon)</a></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2021/05/29/poeaa-domain-logic-pattern-domain-model/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
+      <meta itemprop="name" content="LiJyu Gao">
       <meta itemprop="description" content="">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
+      <meta itemprop="name" content="GeekCodeParadise">
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
@@ -649,12 +406,12 @@ public void CalculateRevenueRecognitions(Contract contract)
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
+      <meta itemprop="name" content="LiJyu Gao">
       <meta itemprop="description" content="">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
+      <meta itemprop="name" content="GeekCodeParadise">
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
@@ -872,12 +629,12 @@ public void CalculateRevenueRecognitions(Contract contract)
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
+      <meta itemprop="name" content="LiJyu Gao">
       <meta itemprop="description" content="">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
+      <meta itemprop="name" content="GeekCodeParadise">
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
@@ -947,12 +704,12 @@ public void CalculateRevenueRecognitions(Contract contract)
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
+      <meta itemprop="name" content="LiJyu Gao">
       <meta itemprop="description" content="">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
+      <meta itemprop="name" content="GeekCodeParadise">
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
@@ -1026,12 +783,12 @@ public void CalculateRevenueRecognitions(Contract contract)
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
+      <meta itemprop="name" content="LiJyu Gao">
       <meta itemprop="description" content="">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
+      <meta itemprop="name" content="GeekCodeParadise">
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
@@ -1134,12 +891,12 @@ public void CalculateRevenueRecognitions(Contract contract)
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
+      <meta itemprop="name" content="LiJyu Gao">
       <meta itemprop="description" content="">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
+      <meta itemprop="name" content="GeekCodeParadise">
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
@@ -1214,12 +971,12 @@ public void CalculateRevenueRecognitions(Contract contract)
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
+      <meta itemprop="name" content="LiJyu Gao">
       <meta itemprop="description" content="">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
+      <meta itemprop="name" content="GeekCodeParadise">
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
@@ -1314,12 +1071,12 @@ public void CalculateRevenueRecognitions(Contract contract)
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
+      <meta itemprop="name" content="LiJyu Gao">
       <meta itemprop="description" content="">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
+      <meta itemprop="name" content="GeekCodeParadise">
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
@@ -1369,6 +1126,188 @@ public void CalculateRevenueRecognitions(Contract contract)
 
 <h2 id="1-2-新增ViewComponent-Cart的頁面"><a href="#1-2-新增ViewComponent-Cart的頁面" class="headerlink" title="1.2 新增ViewComponent Cart的頁面"></a>1.2 新增ViewComponent Cart的頁面</h2><p>在Views&#x2F;Shared的目錄，新增Components目錄，再新增Cart目錄，最後加上Default.cshtml，也就是之前繼承ViewComponent的Cart.cs會回傳的頁面，主要是顯示購物車的數量：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@model WebMvc.ViewModels.CartComponentViewModel@&#123;     ViewData[&quot;Title&quot;] = &quot;My Cart&quot;;&#125;&lt;a class=&quot;@Model.Disabled&quot; asp-area=&quot;&quot; asp-controller=&quot;Cart&quot; asp-action=&quot;Index&quot;&gt;    @if (ViewBag.IsCartInoperative == true)    &#123;        &lt;p class=&quot;fa fa-2x fa-shopping-cart&quot;&gt;X&lt;/p&gt;    &#125;    else    &#123;        &lt;p class=&quot;fa fa-2x fa-shopping-cart&quot;&gt;@Model.ItemsInCart&lt;/p&gt;    &#125;&lt;/a&gt;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/10/13/leetcode-242-valid-anagram/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="LiJyu Gao">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="GeekCodeParadise">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/10/13/leetcode-242-valid-anagram/" class="post-title-link" itemprop="url">LeetCode 242 Valid Anagram</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-10-13 22:11:00" itemprop="dateCreated datePublished" datetime="2020-10-13T22:11:00+08:00">2020-10-13</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-11-19 15:47:25" itemprop="dateModified" datetime="2023-11-19T15:47:25+08:00">2023-11-19</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C#</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/LeetCode/" itemprop="url" rel="index"><span itemprop="name">LeetCode</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Level-Easy/" itemprop="url" rel="index"><span itemprop="name">Level-Easy</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%A8%8B%E5%BC%8F%E8%A7%A3%E9%A1%8C/" itemprop="url" rel="index"><span itemprop="name">程式解題</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ProgramSolving/" itemprop="url" rel="index"><span itemprop="name">ProgramSolving</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>LeetCode - 242 Valid Anagram 解題報告</p>
+<h4 id="平台："><a href="#平台：" class="headerlink" title="平台："></a>平台：</h4><p>LeetCode</p>
+<h4 id="題號："><a href="#題號：" class="headerlink" title="題號："></a>題號：</h4><p>242 - Valid Anagram</p>
+<h4 id="題目連結："><a href="#題目連結：" class="headerlink" title="題目連結："></a>題目連結：</h4><p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/valid-anagram/">https://leetcode.com/problems/valid-anagram/</a></p>
+<h4 id="題目說明："><a href="#題目說明：" class="headerlink" title="題目說明："></a>題目說明：</h4><p>給2個字串s和t，求t是否為s的anagram，anagram的定義是一個字串的字母經過不同的排列組合，形成另一個字串。題目保證只有小寫英文字母。</p>
+<p>比如範例輸入s &#x3D; “anagram”, t &#x3D; “nagaram”，它們彼此是anagram；但s &#x3D; “rat”, t &#x3D; “car”，並不是anagram，因為t沒有s的r字母、且多了c字母。</p>
+<h4 id="解題方法："><a href="#解題方法：" class="headerlink" title="解題方法："></a>解題方法：</h4><p>建立2個陣列，分別記錄s和t每個a-z字母出現的次數，最後再比對這2個陣列a-z的次數是否相同，相同則代表是anagram。</p>
+<p>難度為Easy  </p>
+<h4 id="GITHUB位置-C-與-C-："><a href="#GITHUB位置-C-與-C-：" class="headerlink" title="GITHUB位置(C++ 與 C#)："></a>GITHUB位置(C++ 與 C#)：</h4><p><a target="_blank" rel="noopener" href="https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%2B%2B/200-299/242.cpp">https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%2B%2B/200-299/242.cpp</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%23/200-299/242.cs">https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%23/200-299/242.cs</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/10/12/%E4%B8%80%E8%A2%8B-net%E8%A6%81%E6%89%9B%E5%B9%BE%E6%A8%93%EF%BC%9F%E6%89%93%E9%80%A0%E5%AE%B9%E5%99%A8%E5%8C%96%E7%9A%84asp-net-core%E7%B6%B2%E7%AB%99%EF%BC%81%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0-2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="LiJyu Gao">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="GeekCodeParadise">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/10/12/%E4%B8%80%E8%A2%8B-net%E8%A6%81%E6%89%9B%E5%B9%BE%E6%A8%93%EF%BC%9F%E6%89%93%E9%80%A0%E5%AE%B9%E5%99%A8%E5%8C%96%E7%9A%84asp-net-core%E7%B6%B2%E7%AB%99%EF%BC%81%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0-2/" class="post-title-link" itemprop="url">一袋.NET要扛幾樓？打造容器化的ASP.NET Core網站！系列文章 - (27) 建立購物車系統 - 10</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-10-12 23:58:00" itemprop="dateCreated datePublished" datetime="2020-10-12T23:58:00+08:00">2020-10-12</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-11-19 15:47:25" itemprop="dateModified" datetime="2023-11-19T15:47:25+08:00">2023-11-19</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ASP-NET-Core/" itemprop="url" rel="index"><span itemprop="name">ASP.NET Core</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="1-在WebMvc專案新增購物車服務的功能"><a href="#1-在WebMvc專案新增購物車服務的功能" class="headerlink" title="1. 在WebMvc專案新增購物車服務的功能"></a>1. 在WebMvc專案新增購物車服務的功能</h1><h2 id="1-1-修改appSettings-json"><a href="#1-1-修改appSettings-json" class="headerlink" title="1.1 修改appSettings.json"></a>1.1 修改appSettings.json</h2><p>在WebMvc專案的appSettings.json增加購物車服務的Api連結：</p>
+<p>  “CartUrl”: “<a target="_blank" rel="noopener" href="http://localhost:1028/">http://localhost:1028</a>“,</p>
+<h2 id="1-2-修改Startup-cs類別"><a href="#1-2-修改Startup-cs類別" class="headerlink" title="1.2 修改Startup.cs類別"></a>1.2 修改Startup.cs類別</h2><p>修改WebMvc專案的Startup.cs，主要是增加在OIDC的購物車Scope、註冊購物車相關服務：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">using Microsoft.AspNetCore.Authentication.Cookies;using Microsoft.AspNetCore.Authentication.OpenIdConnect;using Microsoft.AspNetCore.Builder;using Microsoft.AspNetCore.Hosting;using Microsoft.AspNetCore.Http;using Microsoft.Extensions.Configuration;using Microsoft.Extensions.DependencyInjection;using Microsoft.Extensions.Hosting;using Newtonsoft.Json.Serialization;using System.IdentityModel.Tokens.Jwt;using System.Net.Http;using WebMvc.Infrastructure;using WebMvc.Models;using WebMvc.Services;namespace WebMvc&#123;    public class Startup    &#123;        public Startup(IConfiguration configuration)        &#123;            Configuration = configuration;        &#125;        public IConfiguration Configuration &#123; get; &#125;        // This method gets called by the runtime. Use this method to add services to the container.        public void ConfigureServices(IServiceCollection services)        &#123;            services.Configure&lt;AppSettings&gt;(Configuration);            services.AddSingleton&lt;IHttpContextAccessor, HttpContextAccessor&gt;();            services.AddSingleton&lt;IHttpClient, CustomHttpClient&gt;();            services.AddTransient&lt;ICatalogService, CatalogService&gt;();            services.AddTransient&lt;IAuthService&lt;ApplicationUser&gt;, AuthService&gt;();            services.AddTransient&lt;ICartService, CartService&gt;();            services.AddControllersWithViews().AddNewtonsoftJson(options =&gt;            &#123;                options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;            &#125;);            JwtSecurityTokenHandler.DefaultMapInboundClaims = false;            var identityUrl = Configuration.GetValue&lt;string&gt;(&quot;IdentityUrl&quot;);            var callBackUrl = Configuration.GetValue&lt;string&gt;(&quot;CallBackUrl&quot;);            services.AddAuthentication(options =&gt;            &#123;                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;                options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;            &#125;)            .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme)            .AddOpenIdConnect(OpenIdConnectDefaults.AuthenticationScheme, options =&gt;            &#123;                options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;                options.Authority = identityUrl;                options.SignedOutRedirectUri = callBackUrl;                options.ClientId = &quot;mvc&quot;;                options.ClientSecret = &quot;secret&quot;;                options.ResponseType = &quot;code id_token&quot;;                options.SaveTokens = true;                options.GetClaimsFromUserInfoEndpoint = true;                options.RequireHttpsMetadata = false;                options.Scope.Add(&quot;openid&quot;);                options.Scope.Add(&quot;profile&quot;);                options.Scope.Add(&quot;offline_access&quot;);                options.Scope.Add(&quot;basket&quot;);                options.NonceCookie.SameSite = SameSiteMode.Lax;                options.CorrelationCookie.SameSite = SameSiteMode.Lax;                options.BackchannelHttpHandler = new HttpClientHandler()                &#123;                    ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator                &#125;;            &#125;);        &#125;        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)        &#123;            if (env.IsDevelopment())            &#123;                app.UseDeveloperExceptionPage();            &#125;            else            &#123;                app.UseExceptionHandler(&quot;/Home/Error&quot;);            &#125;            app.UseStaticFiles();            app.UseRouting();            app.UseAuthentication();            app.UseAuthorization();            app.UseEndpoints(endpoints =&gt;            &#123;                endpoints.MapControllerRoute(                    name: &quot;default&quot;,                    pattern: &quot;&#123;controller=Catalog&#125;/&#123;action=Index&#125;/&#123;id?&#125;&quot;);            &#125;);        &#125;    &#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id=""><a href="#" class="headerlink" title=""></a></h1><h2 id="1-3-新增Cart和CartList的ViewComponent"><a href="#1-3-新增Cart和CartList的ViewComponent" class="headerlink" title="1.3 新增Cart和CartList的ViewComponent"></a>1.3 新增Cart和CartList的ViewComponent</h2><p>在WebMvc專案新增ViewComponents資料夾，並新增Cart.cs和CartList.cs 2個類別，都實作Microsoft.AspNetCore.Mvc.ViewComponent，之後Views的cshtml可以直接把它們當function呼叫並產生子View：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">using Microsoft.AspNetCore.Mvc;using System;using System.Threading.Tasks;using WebMvc.Models;using WebMvc.Services;using WebMvc.ViewModels;namespace WebMvc.ViewComponents&#123;    public class Cart : ViewComponent    &#123;        private readonly ICartService _cartService;        public Cart(ICartService cartService)        &#123;            _cartService = cartService;        &#125;        public async Task&lt;IViewComponentResult&gt; InvokeAsync(ApplicationUser user)        &#123;            var vm = new CartComponentViewModel();            try            &#123;                var cart = await _cartService.GetCartAsync(user);                vm.ItemsInCart = cart.Items.Count;                vm.TotalCost = cart.Total();                return View(vm);            &#125;            catch (Exception)            &#123;                ViewBag.IsCartInoperative = true;            &#125;            return View(vm);        &#125;    &#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">using Microsoft.AspNetCore.Mvc;using System;using System.Threading.Tasks;using WebMvc.Models;using WebMvc.Services;namespace WebMvc.ViewComponents&#123;    public class CartList : ViewComponent    &#123;        private readonly ICartService _cartService;        public CartList(ICartService cartService)        &#123;            _cartService = cartService;        &#125;        public async Task&lt;IViewComponentResult&gt; InvokeAsync(ApplicationUser user)        &#123;            var vm = new Models.CartModels.Cart();            try            &#123;                vm = await _cartService.GetCartAsync(user);                return View(vm);            &#125;            catch (Exception)            &#123;                ViewBag.IsCartInoperative = true;                TempData[&quot;CartInoperativeMsg&quot;] = &quot;Cart Service is inoperative, please retry later.&quot;;            &#125;            return View(vm);        &#125;    &#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1.4 新增CartComponentViewModel類別在WebMvc專案的ViewModels新增CartComponentViewModel.cs，是Cart ViewComponent要回傳的View：namespace WebMvc.ViewModels&#123;    public class CartComponentViewModel    &#123;        public int ItemsInCart &#123; get; set; &#125;        public decimal TotalCost &#123; get; set; &#125;        public string Disabled =&gt; (ItemsInCart == 0) ? &quot;is-disabled&quot; : &quot;&quot;;    &#125;&#125; </span><br></pre></td></tr></table></figure>
       
     </div>
 
@@ -1444,7 +1383,7 @@ public void CalculateRevenueRecognitions(Contract contract)
 
       <div class="site-overview-wrap sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-  <p class="site-author-name" itemprop="name">John Doe</p>
+  <p class="site-author-name" itemprop="name">LiJyu Gao</p>
   <div class="site-description" itemprop="description"></div>
 </div>
 <div class="site-state-wrap motion-element">
@@ -1452,7 +1391,7 @@ public void CalculateRevenueRecognitions(Contract contract)
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">208</span>
+          <span class="site-state-item-count">206</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -1488,11 +1427,11 @@ public void CalculateRevenueRecognitions(Contract contract)
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2023</span>
+  <span itemprop="copyrightYear">2024</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
-  <span class="author" itemprop="copyrightHolder">John Doe</span>
+  <span class="author" itemprop="copyrightHolder">LiJyu Gao</span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
   </div>

@@ -21,11 +21,11 @@
   </script>
 
   <meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
+<meta property="og:title" content="GeekCodeParadise">
 <meta property="og:url" content="http://example.com/page/16/index.html">
-<meta property="og:site_name" content="Hexo">
+<meta property="og:site_name" content="GeekCodeParadise">
 <meta property="og:locale" content="en_US">
-<meta property="article:author" content="John Doe">
+<meta property="article:author" content="LiJyu Gao">
 <meta name="twitter:card" content="summary">
 
 <link rel="canonical" href="http://example.com/page/16/">
@@ -41,7 +41,7 @@
   };
 </script>
 
-  <title>Hexo</title>
+  <title>GeekCodeParadise</title>
   
 
 
@@ -92,7 +92,7 @@
 
     <a href="/" class="brand" rel="start">
       <span class="logo-line-before"><i></i></span>
-      <h1 class="site-title">Hexo</h1>
+      <h1 class="site-title">GeekCodeParadise</h1>
       <span class="logo-line-after"><i></i></span>
     </a>
   </div>
@@ -173,245 +173,16 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2019/09/22/leetcode-215-kth-largest-element-in-an-array/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/09/22/leetcode-215-kth-largest-element-in-an-array/" class="post-title-link" itemprop="url">LeetCode 215 Kth Largest Element in an Array</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2019-09-22 23:32:00" itemprop="dateCreated datePublished" datetime="2019-09-22T23:32:00+08:00">2019-09-22</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-11-19 15:47:25" itemprop="dateModified" datetime="2023-11-19T15:47:25+08:00">2023-11-19</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C#</span></a>
-                </span>
-                  , 
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/LeetCode/" itemprop="url" rel="index"><span itemprop="name">LeetCode</span></a>
-                </span>
-                  , 
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Level-Medium/" itemprop="url" rel="index"><span itemprop="name">Level-Medium</span></a>
-                </span>
-                  , 
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E7%A8%8B%E5%BC%8F%E8%A7%A3%E9%A1%8C/" itemprop="url" rel="index"><span itemprop="name">程式解題</span></a>
-                </span>
-                  , 
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/ProgramSolving/" itemprop="url" rel="index"><span itemprop="name">ProgramSolving</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>LeetCode 215 Kth Largest Element in an Array 解題報告</p>
-<h4 id="平台："><a href="#平台：" class="headerlink" title="平台："></a>平台：</h4><p>LeetCode</p>
-<h4 id="題號："><a href="#題號：" class="headerlink" title="題號："></a>題號：</h4><p>215 - Kth Largest Element in an Array</p>
-<h4 id="題目連結："><a href="#題目連結：" class="headerlink" title="題目連結："></a>題目連結：</h4><p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/kth-largest-element-in-an-array/">https://leetcode.com/problems/kth-largest-element-in-an-array/</a></p>
-<h4 id="題目說明："><a href="#題目說明：" class="headerlink" title="題目說明："></a>題目說明：</h4><p>輸入一個整數陣列nums，求陣列中第k大的數字。</p>
-<h4 id="解題方法："><a href="#解題方法：" class="headerlink" title="解題方法："></a>解題方法：</h4><ol>
-<li>使用時間複雜度O(nlogn)的排序方法。</li>
-<li>使用Heap，維護只有k個節點的Heap即可求出第k大的解，平均時間複雜度為O(nlogk)。</li>
-<li>使用Quick Sort的原理，找第k大的數字，本篇採用使方案。依Quick Sort原理，會將陣列做部分排序，這裡從大排到小。隨機選一個點為pivot，從左邊與從右邊找出比pivot還小 &#x2F; 還大 互相交換，會分成2個區塊，再判斷k位置繼續往左邊或右邊尋找。時間複雜度為O(N)。以下用圖例解釋每個步驟。</li>
-</ol>
-<p>　　假設有1個輸入陣列nums為[4, 1 , 6 , 5 , 9 , 2]，left與right為最左&#x2F;最右的起始位置，分別是0與5，而設置i 與 j 也分別為left 與 right。pivot的選取採用nums[left]，也就是4，而K為第2大的數字，轉成索引後變成k &#x3D; 2 - 1 &#x3D; 1。如圖1.</p>
-<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2019/09/1-5.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2019/09/1-4.png" alt="LeetCode 215 Kth Largest Element in an Array 圖1"></a></p>
-<p>圖1</p>
-<p>　　從左邊開始，找nums[i] &lt;&#x3D; pivot的位置；從右邊開始，找nums[j] &gt;&#x3D; pivot的位置，i與j分別停在0 與 4 的位置，並且交換，再往下個位置，如圖2.</p>
-<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2019/09/2-5.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2019/09/2-4.png" alt="LeetCode 215 Kth Largest Element in an Array 圖2"></a></p>
-<p>圖2</p>
-<p>再次找nums[i] &lt;&#x3D; pivot的位置與nums[j] &gt;&#x3D; pivot的位置，i 與 j停在 1 與 3，並且交換，再往下個位置，如圖3.</p>
-<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2019/09/3-5.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2019/09/3-4.png" alt="LeetCode 215 Kth Largest Element in an Array 圖3"></a></p>
-<p>圖3</p>
-<p>再次找nums[i] &lt;&#x3D; pivot的位置與nums[j] &gt;&#x3D; pivot的位置，i 與 j停在 3 與 2，i與j的位置已超出邊界，而k &lt;&#x3D; j ，代表k在左邊的區塊，所以將進行第2輪的排序，如圖4.</p>
-<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2019/09/4-5.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2019/09/4-4.png" alt="LeetCode 215 Kth Largest Element in an Array 圖4"></a></p>
-<p>圖4</p>
-<p>再次找nums[i] &lt;&#x3D; pivot的位置與nums[j] &gt;&#x3D; pivot的位置，i 與 j都停在1的位置，並且交換，並進到下個位置，如圖5.</p>
-<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2019/09/5-4.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2019/09/5-3.png" alt="LeetCode 215 Kth Largest Element in an Array 圖5"></a></p>
-<p>圖5</p>
-<p>此時j已經超出left，所以k不會在左邊的區塊；而k &gt;&#x3D; i，代表k將在i 與right之間，進行第3輪的排序，如圖6.</p>
-<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2019/09/6-5.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2019/09/6-4.png" alt="圖6"></a></p>
-<p>圖6</p>
-<p>pivot目前為nums[left] &#x3D; 5，再次找nums[i] &lt;&#x3D; pivot的位置與nums[j] &gt;&#x3D; pivot的位置，i 與 j停在1與2的位置，並且交換，再往下個位置，如圖7.</p>
-<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2019/09/7-3.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2019/09/7-2.png" alt="圖7"></a></p>
-<p>圖7</p>
-<p>由於j &lt;&#x3D; left 且 i &gt;&#x3D; right，已經沒有再排序的需要，回傳nums[k] &#x3D; nums[1] &#x3D; 6為解.</p>
-<p>難度為Medium</p>
-<h4 id="GITHUB位置-C-與-C-："><a href="#GITHUB位置-C-與-C-：" class="headerlink" title="GITHUB位置(C++ 與 C#)："></a>GITHUB位置(C++ 與 C#)：</h4><p><a target="_blank" rel="noopener" href="https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%2B%2B/200-299/215.cpp">https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%2B%2B/200-299/215.cpp</a></p>
-<p><a target="_blank" rel="noopener" href="https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%23/200-299/215.cs">https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%23/200-299/215.cs</a></p>
-<p>LeetCode 215 Kth Largest Element in an Array</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2019/09/17/leetcode-224-basic-calculator/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/09/17/leetcode-224-basic-calculator/" class="post-title-link" itemprop="url">LeetCode 224 Basic Calculator</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2019-09-17 23:32:00" itemprop="dateCreated datePublished" datetime="2019-09-17T23:32:00+08:00">2019-09-17</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-11-19 15:47:25" itemprop="dateModified" datetime="2023-11-19T15:47:25+08:00">2023-11-19</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C#</span></a>
-                </span>
-                  , 
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/LeetCode/" itemprop="url" rel="index"><span itemprop="name">LeetCode</span></a>
-                </span>
-                  , 
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E7%A8%8B%E5%BC%8F%E8%A7%A3%E9%A1%8C/" itemprop="url" rel="index"><span itemprop="name">程式解題</span></a>
-                </span>
-                  , 
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Level-Hard/" itemprop="url" rel="index"><span itemprop="name">Level-Hard</span></a>
-                </span>
-                  , 
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/ProgramSolving/" itemprop="url" rel="index"><span itemprop="name">ProgramSolving</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>LeetCode 224 Basic Calculator 解題報告</p>
-<h4 id="平台："><a href="#平台：" class="headerlink" title="平台："></a>平台：</h4><p>LeetCode</p>
-<h4 id="題號："><a href="#題號：" class="headerlink" title="題號："></a>題號：</h4><p>224 - Basic Calculator</p>
-<h4 id="題目連結："><a href="#題目連結：" class="headerlink" title="題目連結："></a>題目連結：</h4><p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/basic-calculator/">https://leetcode.com/problems/basic-calculator/</a></p>
-<h4 id="題目說明："><a href="#題目說明：" class="headerlink" title="題目說明："></a>題目說明：</h4><p>輸入只有 ( ) + - 空格 與 非負整數的數學運算式，求這運算式的結果。</p>
-<h4 id="解題方法："><a href="#解題方法：" class="headerlink" title="解題方法："></a>解題方法：</h4><ol>
-<li>完整的方法，需要使用Stack將中序(Infix)運算式轉成後序 (Postfix)，再解出運算結果。</li>
-<li>網路看到有一種更快的解法，因為只有+ 跟 -，沒有其他優先序的符號，所以遇到 + 跟 - 都直接加起來，如果是有圓括 ( )的，將圓括裡面的加完再補到前面。</li>
-<li>採用網路上另一種解法，用狀態機(Finite State Machine)，分析每一步驟要做的邏輯，如圖1. 共3種狀態，分別為Start、Number與Operatior。一開始在Start的狀態，讀取第1個字元後，將知道要往哪個狀態。Number狀態比較簡單，會一直讀數字，直到有非數字要往Operator狀態。完整的數字都存進Stack，如果前面有 + 或 - 的運算子，從Stack取出運算，再Push運算結果。Operator狀態需要分 ( ) + - 與 數字，遇到數字或( 回到Number狀態；遇到 ) 直接做+ -運算；若是+ 或 -，下一筆若是數字的話可以做+ - 運算 。詳細的方法可以參考程式碼，個人比較喜歡這種用狀態機的分析，比較清楚每一步驟的可能性。</li>
-</ol>
-<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2019/09/1-7.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2019/09/1-6.png" alt="LeetCode 224 Basic Calculator 圖解"></a></p>
-<p>圖1</p>
-<p>難度為Hard</p>
-<h4 id="GITHUB位置-C-與-C-："><a href="#GITHUB位置-C-與-C-：" class="headerlink" title="GITHUB位置(C++ 與 C#)："></a>GITHUB位置(C++ 與 C#)：</h4><p><a target="_blank" rel="noopener" href="https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%2B%2B/200-299/224.cpp">https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%2B%2B/200-299/224.cpp</a></p>
-<p><a target="_blank" rel="noopener" href="https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%23/200-299/224.cs">https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%23/200-299/224.cs</a></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2019/09/13/uva-202-repeating-decimals/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
+      <meta itemprop="name" content="LiJyu Gao">
       <meta itemprop="description" content="">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
+      <meta itemprop="name" content="GeekCodeParadise">
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
@@ -533,12 +304,12 @@
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
+      <meta itemprop="name" content="LiJyu Gao">
       <meta itemprop="description" content="">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
+      <meta itemprop="name" content="GeekCodeParadise">
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
@@ -651,12 +422,12 @@
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
+      <meta itemprop="name" content="LiJyu Gao">
       <meta itemprop="description" content="">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
+      <meta itemprop="name" content="GeekCodeParadise">
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
@@ -758,12 +529,12 @@
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
+      <meta itemprop="name" content="LiJyu Gao">
       <meta itemprop="description" content="">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
+      <meta itemprop="name" content="GeekCodeParadise">
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
@@ -875,12 +646,12 @@
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
+      <meta itemprop="name" content="LiJyu Gao">
       <meta itemprop="description" content="">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
+      <meta itemprop="name" content="GeekCodeParadise">
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
@@ -1003,12 +774,12 @@
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
+      <meta itemprop="name" content="LiJyu Gao">
       <meta itemprop="description" content="">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
+      <meta itemprop="name" content="GeekCodeParadise">
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
@@ -1131,12 +902,12 @@
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
+      <meta itemprop="name" content="LiJyu Gao">
       <meta itemprop="description" content="">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
+      <meta itemprop="name" content="GeekCodeParadise">
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
@@ -1247,12 +1018,12 @@
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
+      <meta itemprop="name" content="LiJyu Gao">
       <meta itemprop="description" content="">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
+      <meta itemprop="name" content="GeekCodeParadise">
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
@@ -1358,6 +1129,242 @@
   
   
 
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2019/09/01/leetcode-23-merge-k-sorted-lists/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="LiJyu Gao">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="GeekCodeParadise">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/09/01/leetcode-23-merge-k-sorted-lists/" class="post-title-link" itemprop="url">LeetCode 23 Merge k Sorted Lists</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-09-01 16:10:00" itemprop="dateCreated datePublished" datetime="2019-09-01T16:10:00+08:00">2019-09-01</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-11-19 15:47:25" itemprop="dateModified" datetime="2023-11-19T15:47:25+08:00">2023-11-19</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C#</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/LeetCode/" itemprop="url" rel="index"><span itemprop="name">LeetCode</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%A8%8B%E5%BC%8F%E8%A7%A3%E9%A1%8C/" itemprop="url" rel="index"><span itemprop="name">程式解題</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Level-Hard/" itemprop="url" rel="index"><span itemprop="name">Level-Hard</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ProgramSolving/" itemprop="url" rel="index"><span itemprop="name">ProgramSolving</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>LeetCode 23 Merge k Sorted Lists 解題報告</p>
+<h4 id="平台："><a href="#平台：" class="headerlink" title="平台："></a>平台：</h4><p>LeetCode</p>
+<h4 id="題號："><a href="#題號：" class="headerlink" title="題號："></a>題號：</h4><p>23 - Merge k Sorted Lists</p>
+<h4 id="題目連結："><a href="#題目連結：" class="headerlink" title="題目連結："></a>題目連結：</h4><p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/merge-k-sorted-lists/">https://leetcode.com/problems/merge-k-sorted-lists/</a></p>
+<h4 id="題目說明："><a href="#題目說明：" class="headerlink" title="題目說明："></a>題目說明：</h4><p>給K串Linked List，並將它們全部合併。合併的規則為每個節點的值由小排到大。</p>
+<h4 id="範例輸入："><a href="#範例輸入：" class="headerlink" title="範例輸入："></a>範例輸入：</h4><p>[ 1-&gt;4-&gt;5, 1-&gt;3-&gt;4, 2-&gt;6 ]</p>
+<h4 id="範例輸出："><a href="#範例輸出：" class="headerlink" title="範例輸出："></a>範例輸出：</h4><p>1-&gt;1-&gt;2-&gt;3-&gt;4-&gt;4-&gt;5-&gt;6</p>
+<h4 id="解題方法："><a href="#解題方法：" class="headerlink" title="解題方法："></a>解題方法：</h4><p>解法有暴力法與Divide&amp;Conquer(分而治之法)，假設有K個Linked List，平均每串有N個Node。</p>
+<p>首先分析暴力法的時間複雜度：先由第1與第2 Linked List互相比較並串新的Linked List，需要花費N + N的時間；第3個與前面新的Linked List互相比較並串新的Linked List，需要花費2N + N的時間；到最後第K個Linked List與前面新的Linked List互相比較並串新的Linked List，需要花費 (K - 1) * N + N的時間，所以全部的時間花費為  (N + N) + (2N + N) + …. + (K - 1) * N + N &#x3D; (2 + K) * (K - 1) &#x2F; 2 * N &#x3D; O(K^2 * N)</p>
+<p>Divide&amp;Conquer的時間複雜度分析：將K個Linked List不斷切一半去合併，切到最小的單位（只剩2個Linked List）時，會需要K&#x2F;2次的比較，每次比較會有2N個Node；合併後再進行K&#x2F;4次的比較，每次比較會有4N個Node；到最後一次時；會變成K &#x2F; 2^logK次的比較，每次比較會有2^logK * N個Node。所以全部的時間花費為 (K&#x2F;2 * 2N) + (K&#x2F;4 * 4N) + …. + (K &#x2F; 2^ logK) * 2^logK * N  &#x3D; KN + KN + …. + KN &#x3D; O(logK * KN) 　</p>
+<p>以時間上的比較，Divide&amp;Conquer快了暴力法logK &#x2F; K倍。採用Divide&amp;Conquer的2串合併時，延續<a target="_blank" rel="noopener" href="https://geekcodeparadise.com/2019/09/leetcode-21-merge-two-sorted-lists/">[解題] LeetCode - 21 Merge Two Sorted Lists</a>的解法。實作上可參考Merge Sort或Quick Sort在切分子問題的精神。</p>
+<p>難度為Hard</p>
+<h4 id="GITHUB位置-C-與-C-："><a href="#GITHUB位置-C-與-C-：" class="headerlink" title="GITHUB位置(C++ 與 C#)："></a>GITHUB位置(C++ 與 C#)：</h4><p><a target="_blank" rel="noopener" href="https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%2B%2B/1-99/23.cpp">https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%2B%2B/1-99/23.cpp</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%23/1-99/23.cs">https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%23/1-99/23.cs</a></p>
+<p>LeetCode 23 Merge k Sorted Lists</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2019/09/01/leetcode-21-merge-two-sorted-lists/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="LiJyu Gao">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="GeekCodeParadise">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/09/01/leetcode-21-merge-two-sorted-lists/" class="post-title-link" itemprop="url">LeetCode 21 Merge Two Sorted Lists</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-09-01 00:22:00" itemprop="dateCreated datePublished" datetime="2019-09-01T00:22:00+08:00">2019-09-01</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-11-19 15:47:25" itemprop="dateModified" datetime="2023-11-19T15:47:25+08:00">2023-11-19</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C#</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/LeetCode/" itemprop="url" rel="index"><span itemprop="name">LeetCode</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Level-Easy/" itemprop="url" rel="index"><span itemprop="name">Level-Easy</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%A8%8B%E5%BC%8F%E8%A7%A3%E9%A1%8C/" itemprop="url" rel="index"><span itemprop="name">程式解題</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ProgramSolving/" itemprop="url" rel="index"><span itemprop="name">ProgramSolving</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>LeetCode 21 Merge Two Sorted Lists 解題報告</p>
+<h4 id="平台："><a href="#平台：" class="headerlink" title="平台："></a>平台：</h4><p>LeetCode</p>
+<h4 id="題號："><a href="#題號：" class="headerlink" title="題號："></a>題號：</h4><p>21 - Merge Two Sorted Lists</p>
+<h4 id="題目連結："><a href="#題目連結：" class="headerlink" title="題目連結："></a>題目連結：</h4><p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/merge-two-sorted-lists/">https://leetcode.com/problems/merge-two-sorted-lists/</a></p>
+<h4 id="題目說明："><a href="#題目說明：" class="headerlink" title="題目說明："></a>題目說明：</h4><p>給2串Linked List，L1與L2，並將它們合併。合併的規則為每個節點的值由小排到大。</p>
+<h4 id="範例輸入："><a href="#範例輸入：" class="headerlink" title="範例輸入："></a>範例輸入：</h4><p>1-&gt;2-&gt;4 , 1-&gt;3-&gt;4</p>
+<h4 id="範例輸出："><a href="#範例輸出：" class="headerlink" title="範例輸出："></a>範例輸出：</h4><p>1-&gt;1-&gt;2-&gt;3-&gt;4-&gt;4</p>
+<h4 id="解題方法："><a href="#解題方法：" class="headerlink" title="解題方法："></a>解題方法：</h4><ol>
+<li>建立一個值為0的空間點tempHead和一個暫存的Node指標teap。tempHead是串完排序後的Linked List Head。</li>
+<li>L1與L2各所指的值比對大小，再由temp去指定當前Node的Next到比較小值的Node。指定後L1&#x2F;L2 與 temp各往下個Node移動。</li>
+<li>最後檢查是否有尚未串接完的List並接上它。</li>
+<li>最後回傳tempHead的Next即為排序後的Linked List Head。</li>
+</ol>
+<p>　　以下用2個Linked List說明，分別為1-&gt;2-&gt;4-&gt;7與1-&gt;3-&gt;5 ，且宣告tempHead與temp，如圖1。</p>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2019/09/1-17.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2019/09/1-16.png" alt="LeetCode 21 Merge Two Sorted Lists 圖1"></a></p>
+<p>圖1</p>
+<p>　　目前L1與L2的值都為1，temp選L2做為串接對象，將temp的Next指向L2，L2再往L2的Next移動，temp再往temp的Next移動，如圖2至圖3.</p>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2019/09/2-14.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2019/09/2-13.png" alt="LeetCode 21 Merge Two Sorted Lists 圖2"></a></p>
+<p>圖2</p>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2019/09/3-14.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2019/09/3-13.png" alt="LeetCode 21 Merge Two Sorted Lists 圖3"></a></p>
+<p>圖3</p>
+<p>　 目前L1的值為1、L2的值為3，temp選L1做為串接對象，將temp的Next指向L1，L1再往L1的Next移動，temp再往temp的Next移動，如圖4至圖5.</p>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2019/09/4-13.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2019/09/4-12.png" alt="LeetCode 21 Merge Two Sorted Lists 圖4"></a></p>
+<p>圖4</p>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2019/09/5-14.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2019/09/5-13.png" alt="LeetCode 21 Merge Two Sorted Lists 圖5"></a></p>
+<p>圖5</p>
+<p>目前L1的值為2、L2的值為3，temp選L1做為串接對象，將temp的Next指向L1，L1再往L1的Next移動，temp再往temp的Next移動，如圖6至圖7.</p>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2019/09/6-14.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2019/09/6-13.png" alt="LeetCode 21 Merge Two Sorted Lists 圖6"></a></p>
+<p>圖6</p>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2019/09/7-11.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2019/09/7-10.png" alt="LeetCode 21 Merge Two Sorted Lists 圖7"></a></p>
+<p>圖7</p>
+<p>　　依照前述的比對邏輯，到最後會變成L2先指向NULL，如圖8。</p>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2019/09/8-6.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2019/09/8-5.png" alt="圖8"></a></p>
+<p>圖8</p>
+<p>剩下L1還沒指向NULL，由temp的Next指向L1，如圖9。</p>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2019/09/9-2.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2019/09/9-1.png" alt="圖9"></a></p>
+<p>圖9</p>
+<p>回傳tempHead的Next，即為新的Linked List Head，如圖10。</p>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2019/09/10-2.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2019/09/10-1.png" alt="圖10"></a></p>
+<p>圖10</p>
+<p>難度為Easy</p>
+<h4 id="GITHUB位置-C-與-C-："><a href="#GITHUB位置-C-與-C-：" class="headerlink" title="GITHUB位置(C++ 與 C#)："></a>GITHUB位置(C++ 與 C#)：</h4><p><a target="_blank" rel="noopener" href="https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%2B%2B/1-99/21.cpp">https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%2B%2B/1-99/21.cpp</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%23/1-99/21.cs">https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%23/1-99/21.cs</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
 
   
   <nav class="pagination">
@@ -1419,7 +1426,7 @@
 
       <div class="site-overview-wrap sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-  <p class="site-author-name" itemprop="name">John Doe</p>
+  <p class="site-author-name" itemprop="name">LiJyu Gao</p>
   <div class="site-description" itemprop="description"></div>
 </div>
 <div class="site-state-wrap motion-element">
@@ -1427,7 +1434,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">208</span>
+          <span class="site-state-item-count">206</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -1463,11 +1470,11 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2023</span>
+  <span itemprop="copyrightYear">2024</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
-  <span class="author" itemprop="copyrightHolder">John Doe</span>
+  <span class="author" itemprop="copyrightHolder">LiJyu Gao</span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
   </div>

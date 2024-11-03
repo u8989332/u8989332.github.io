@@ -21,11 +21,11 @@
   </script>
 
   <meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
+<meta property="og:title" content="GeekCodeParadise">
 <meta property="og:url" content="http://example.com/page/20/index.html">
-<meta property="og:site_name" content="Hexo">
+<meta property="og:site_name" content="GeekCodeParadise">
 <meta property="og:locale" content="en_US">
-<meta property="article:author" content="John Doe">
+<meta property="article:author" content="LiJyu Gao">
 <meta name="twitter:card" content="summary">
 
 <link rel="canonical" href="http://example.com/page/20/">
@@ -41,7 +41,7 @@
   };
 </script>
 
-  <title>Hexo</title>
+  <title>GeekCodeParadise</title>
   
 
 
@@ -92,7 +92,7 @@
 
     <a href="/" class="brand" rel="start">
       <span class="logo-line-before"><i></i></span>
-      <h1 class="site-title">Hexo</h1>
+      <h1 class="site-title">GeekCodeParadise</h1>
       <span class="logo-line-after"><i></i></span>
     </a>
   </div>
@@ -173,243 +173,16 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2018/02/24/design-pattern-single-responsibility-principle/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2018/02/24/design-pattern-single-responsibility-principle/" class="post-title-link" itemprop="url">單一職責原則 Single Responsibility Principle</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2018-02-24 21:04:00" itemprop="dateCreated datePublished" datetime="2018-02-24T21:04:00+08:00">2018-02-24</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-11-19 15:47:25" itemprop="dateModified" datetime="2023-11-19T15:47:25+08:00">2023-11-19</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Design-Pattern/" itemprop="url" rel="index"><span itemprop="name">Design Pattern</span></a>
-                </span>
-                  , 
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/OOP/" itemprop="url" rel="index"><span itemprop="name">OOP</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>單一職責原則 Single Responsibility Principle 的設計模式介紹</p>
-<h4 id="1-單一職責原則介紹"><a href="#1-單一職責原則介紹" class="headerlink" title="1. 單一職責原則介紹"></a>1. 單一職責原則介紹</h4><h5 id="1-1-單一職責原則定義"><a href="#1-1-單一職責原則定義" class="headerlink" title="1.1 單一職責原則定義"></a>1.1 單一職責原則定義</h5><p>　　根據書上的介紹，單一職責原則的定義：There should never be more than one reason for a class to change。意思是對一個類別而言，應該只會有一個引起它變化的原因。此原則不只用在類別，還能用在介面，甚至是方法。</p>
-<h5 id="1-2-單一職責原則案例"><a href="#1-2-單一職責原則案例" class="headerlink" title="1.2 單一職責原則案例"></a>1.2 單一職責原則案例</h5><p>　　以病患去診所就醫為例，要完成就醫的流程，從掛號、問診、領藥，可以寫成一個介面：</p>
-<p>　　看似完美的介面，但其實仔細檢查，這介面有兩個職責：掛號與治療。掛號是向診所說要依序排隊看醫生，而治療的問診內容、領醫生開的藥跟掛號互不影響，所以可以切成兩個職責，如下UML類別圖：</p>
-<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2018/02/SRP-1.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2018/02/SRP.png" alt="單一職責原則 Single Responsibility Principle 案例 UML Class"></a></p>
-<p>　　這樣的設計已經達到一個介面只有一個職責的原則，但是對於Patient類別而言，有兩個引起它變化的原因（ICure和IRegister），還能再透過組合模式做單一職責原則的設計，但是會有耦合性變高、類別數量增加的問題。</p>
-<h5 id="1-3-單一職責原則優點"><a href="#1-3-單一職責原則優點" class="headerlink" title="1.3 單一職責原則優點"></a>1.3 單一職責原則優點</h5><ul>
-<li>類別的複雜性降低</li>
-<li>可讀性提高</li>
-<li>可維護性提高</li>
-<li>降低因更改的風險：如果單一職責能做得好，更改一項類別或介面時，不會引起其他介面或類別的變更</li>
-</ul>
-<h5 id="1-4-單一職責原則實踐難處"><a href="#1-4-單一職責原則實踐難處" class="headerlink" title="1.4 單一職責原則實踐難處"></a>1.4 單一職責原則實踐難處</h5><p>　　職責很難量化，因每個功能情境不同而職責劃分會有不同，只能建議介面的單一職責原則要遵守，而類別盡量達到。</p>
-<h4 id="參考文獻"><a href="#參考文獻" class="headerlink" title="參考文獻"></a>參考文獻</h4><ol>
-<li><a target="_blank" rel="noopener" href="https://amzn.to/3LOwYlp">程杰 大話設計模式 第03章｜拍攝UFO—單一職責原則</a></li>
-<li><a target="_blank" rel="noopener" href="https://amzn.to/3JLkwQW">秦小波 設計模式之禪 第1章 單一職責原則</a></li>
-</ol>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2018/02/19/design-pattern-strategy/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2018/02/19/design-pattern-strategy/" class="post-title-link" itemprop="url">策略模式 Strategy Pattern</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2018-02-19 21:33:00" itemprop="dateCreated datePublished" datetime="2018-02-19T21:33:00+08:00">2018-02-19</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-11-19 15:47:25" itemprop="dateModified" datetime="2023-11-19T15:47:25+08:00">2023-11-19</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Design-Pattern/" itemprop="url" rel="index"><span itemprop="name">Design Pattern</span></a>
-                </span>
-                  , 
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/OOP/" itemprop="url" rel="index"><span itemprop="name">OOP</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>策略模式 Strategy Pattern 的設計模式介紹</p>
-<h4 id="1-案例需求"><a href="#1-案例需求" class="headerlink" title="1. 案例需求"></a>1. 案例需求</h4><p><img src="https://geekcodeparadise.com/wp-content/uploads/2022/01/800x_100_w-61c240ccc454b.jpg" alt="灌籃高手"></p>
-<p>圖片來源：<a target="_blank" rel="noopener" href="https://www.juksy.com/article/54771">https://www.juksy.com/article/54771</a></p>
-<p>　　本篇以動漫－灌籃高手為例。在籃球比賽時，櫻木在我方禁區搶到籃板，準備要做進攻的動作，此時他腦中想了很多策略：</p>
-<ul>
-<li>自己灌籃！</li>
-<li>傳球給三井壽投三分！</li>
-<li>傳給宮城良田速攻</li>
-<li>傳給赤木剛憲灌籃！</li>
-<li>傳給櫻木討厭的流川楓速攻！</li>
-</ul>
-<h4 id="2-程式設計"><a href="#2-程式設計" class="headerlink" title="2. 程式設計"></a>2. 程式設計</h4><p>依照前述的需求，可畫出策略模式的UML類別圖，如下：</p>
-<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2018/02/Strategy-1.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2018/02/Strategy.png" alt="策略模式 Strategy Pattern 案例 UML Class"></a></p>
-<p>　　分成三大區塊，Context類別、IOffense介面與實作介面的類別。<br>　　Context類別：</p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Context</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">private</span> IOffense offense;</span><br><span class="line">    <span class="comment">// 使用哪個進攻策略</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Context</span>(<span class="params">IOffense offense</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">this</span>.offense = offense;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 呼叫進攻的方法</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Operate</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">this</span>.offense.Operate();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　IOffense介面：</p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title">IOffense</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Operate</span>()</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　實作IOffense的類別：</p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">DunkSelf</span> : <span class="title">IOffense</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Operate</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        Console.WriteLine(<span class="string">&quot;我要灌籃啦！&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">PassAkagi</span> : <span class="title">IOffense</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Operate</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        Console.WriteLine(<span class="string">&quot;給赤木灌籃！&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">PassMitsui</span> : <span class="title">IOffense</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Operate</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        Console.WriteLine(<span class="string">&quot;給三井投三分！&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">PassMiyagi</span> : <span class="title">IOffense</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Operate</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        Console.WriteLine(<span class="string">&quot;給宮城速攻！&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">PassRukawa</span> : <span class="title">IOffense</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Operate</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        Console.WriteLine(<span class="string">&quot;給流川速攻！&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>　　使用者介面：</p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">Context context;</span><br><span class="line">Console.WriteLine(<span class="string">&quot;第1次接到籃板時，&quot;</span>);</span><br><span class="line">context = <span class="keyword">new</span> Context(<span class="keyword">new</span> PassAkagi());</span><br><span class="line">context.Operate();</span><br><span class="line">Console.WriteLine(<span class="string">&quot;第2次接到籃板時，&quot;</span>);</span><br><span class="line">context = <span class="keyword">new</span> Context(<span class="keyword">new</span> PassMitsui());</span><br><span class="line">context.Operate();</span><br><span class="line">Console.WriteLine(<span class="string">&quot;第3次接到籃板時，&quot;</span>);</span><br><span class="line">context = <span class="keyword">new</span> Context(<span class="keyword">new</span> PassMiyagi());</span><br><span class="line">context.Operate();</span><br><span class="line">Console.WriteLine(<span class="string">&quot;第4次接到籃板時，&quot;</span>);</span><br><span class="line">context = <span class="keyword">new</span> Context(<span class="keyword">new</span> PassRukawa());</span><br><span class="line">context.Operate();</span><br><span class="line">Console.WriteLine(<span class="string">&quot;第5次接到籃板時，&quot;</span>);</span><br><span class="line">context = <span class="keyword">new</span> Context(<span class="keyword">new</span> DunkSelf());</span><br><span class="line">context.Operate();</span><br><span class="line">Console.ReadKey();</span><br></pre></td></tr></table></figure>
-
-<p>　　輸出結果：</p>
-<p><img src="https://geekcodeparadise.com/wp-content/uploads/2022/01/2018-02-19-18_16_57-file____H__%E6%88%91%E7%9A%84%E8%B3%87%E6%96%99_%E5%B7%A5%E4%BD%9C_blogger%E5%88%86%E4%BA%AB_DesignPattern_%E7%A8%8B%E5%BC%8F%E7%A2%BC_DesignPattern_StrategyPattern_bin.png" alt="策略模式 Strategy Pattern 結果"></p>
-<h4 id="3-策略模式介紹"><a href="#3-策略模式介紹" class="headerlink" title="3. 策略模式介紹"></a>3. 策略模式介紹</h4><h5 id="3-1-策略模式定義"><a href="#3-1-策略模式定義" class="headerlink" title="3.1 策略模式定義"></a>3.1 策略模式定義</h5><p>根據書上的介紹，策略模式的定義：Define a family of algorithms,encapsulate each one,and make them interchangeable。意思是將同一系列的每個演算法（策略）封裝起來，並可以互相交換使用。</p>
-<p>　　而策略模式包含三大角色：</p>
-<p>　　Context封裝角色：是個封裝類別，不能讓外部直接存取每個演算法，並維護Strategy物件。依照前述例子，是Context類別，其封裝了IOffense介面，不能讓外部呼叫IOffense。</p>
-<p>　　Strategy抽象策略角色：演算法（策略）家族的抽象化，可用抽象類別或介面，需定義每個演算法的屬性和方法。依照前述例子，是IOffense介面，其定義了Operate方法。</p>
-<p>　　ConcreteStrategy具體策略角色：實作Strategy抽象策略角色的類別，有實際的演算法。依照前述例子，具體策略的類別有PassAkagi、PassMitsui、PassMiyagi、PassRukawa與DunkSelf，皆實作IOffense介面。</p>
-<p>　　此三大角色，可以總結出通用的UML類別圖：</p>
-<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2018/02/Strategy_common-1.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2018/02/Strategy_common.png" alt="策略模式 Strategy Pattern 通用 UML Class"></a></p>
-<h5 id="3-2-策略模式優缺點"><a href="#3-2-策略模式優缺點" class="headerlink" title="3.2 策略模式優缺點"></a>3.2 策略模式優缺點</h5><p>優點</p>
-<ul>
-<li>可自由切換演算法</li>
-<li>避免使用多重條件判斷：實作Strategy封裝每個演算法（策略），不用太多的條件判斷如何切換演算法</li>
-<li>擴展性高：有新的演算法直接實作介面</li>
-<li>每個演算法容易單元測試</li>
-</ul>
-<p>缺點</p>
-<ul>
-<li>具體策略類別過多：因為每一個策略就是一個類別，重複使用的情形很少，導致類別數量過多。若超過3個策略，建議要使用混合模式。</li>
-<li>每個策略類別對外暴露：在使用者介面，須了解要呼叫哪個演算法，再透過Context呼叫，不是很完善的設計。</li>
-</ul>
-<h5 id="3-3-策略模式使用情境"><a href="#3-3-策略模式使用情境" class="headerlink" title="3.3 策略模式使用情境"></a>3.3 策略模式使用情境</h5><ul>
-<li>存在很多個類別且只有演算法不一樣的情境</li>
-<li>需要自由切換演算法的情境</li>
-<li>需要隱藏演算法規則的情境：不需要讓使用者知道每個演算法的實作方式，只需了解類別名稱</li>
-</ul>
-<h5 id="3-4-策略模式改良"><a href="#3-4-策略模式改良" class="headerlink" title="3.4 策略模式改良"></a>3.4 策略模式改良</h5><p>策略模式的重大缺點，是每個策略類別暴露於外部，變成呼叫策略還要先了解策略的名稱，很明顯這樣的封裝還不夠完整。後繼有提出混合其他的模式做改良，像是工廠方法、代理模式或享元模式。</p>
-<h4 id="參考文獻"><a href="#參考文獻" class="headerlink" title="參考文獻"></a>參考文獻</h4><ol>
-<li><a target="_blank" rel="noopener" href="https://amzn.to/3LOwYlp">程杰 大話設計模式 第02章｜商場促銷—策略模式</a></li>
-<li><a target="_blank" rel="noopener" href="https://amzn.to/3JLkwQW">秦小波 設計模式之禪 第18章  策略模式</a></li>
-</ol>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2018/02/17/design-pattern-simple-factory/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
+      <meta itemprop="name" content="LiJyu Gao">
       <meta itemprop="description" content="">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
+      <meta itemprop="name" content="GeekCodeParadise">
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
@@ -518,12 +291,12 @@
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
+      <meta itemprop="name" content="LiJyu Gao">
       <meta itemprop="description" content="">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
+      <meta itemprop="name" content="GeekCodeParadise">
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
@@ -631,12 +404,12 @@
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
+      <meta itemprop="name" content="LiJyu Gao">
       <meta itemprop="description" content="">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
+      <meta itemprop="name" content="GeekCodeParadise">
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
@@ -820,12 +593,12 @@
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
+      <meta itemprop="name" content="LiJyu Gao">
       <meta itemprop="description" content="">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
+      <meta itemprop="name" content="GeekCodeParadise">
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
@@ -939,12 +712,12 @@
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
+      <meta itemprop="name" content="LiJyu Gao">
       <meta itemprop="description" content="">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
+      <meta itemprop="name" content="GeekCodeParadise">
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
@@ -1032,12 +805,12 @@
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
+      <meta itemprop="name" content="LiJyu Gao">
       <meta itemprop="description" content="">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
+      <meta itemprop="name" content="GeekCodeParadise">
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
@@ -1166,12 +939,12 @@
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
+      <meta itemprop="name" content="LiJyu Gao">
       <meta itemprop="description" content="">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
+      <meta itemprop="name" content="GeekCodeParadise">
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
@@ -1279,12 +1052,12 @@
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
+      <meta itemprop="name" content="LiJyu Gao">
       <meta itemprop="description" content="">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
+      <meta itemprop="name" content="GeekCodeParadise">
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
@@ -1424,6 +1197,207 @@
   
   
 
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2015/10/18/zookeeper-3-4-6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="LiJyu Gao">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="GeekCodeParadise">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2015/10/18/zookeeper-3-4-6/" class="post-title-link" itemprop="url">Zookeeper 3.4.6 安裝</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2015-10-18 00:10:00" itemprop="dateCreated datePublished" datetime="2015-10-18T00:10:00+08:00">2015-10-18</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-11-19 15:47:25" itemprop="dateModified" datetime="2023-11-19T15:47:25+08:00">2023-11-19</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Hadoop/" itemprop="url" rel="index"><span itemprop="name">Hadoop</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Zookeeper/" itemprop="url" rel="index"><span itemprop="name">Zookeeper</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>Zookeeper 3.4.6 安裝</p>
+<h4 id="1-Zookeeper介紹"><a href="#1-Zookeeper介紹" class="headerlink" title="1.Zookeeper介紹"></a>1.Zookeeper介紹</h4><p>Zookeeper是一種能協調分佈式節點運算的系統，當有節點loading過多或者掛掉，Zookeeper會做平衡的機制，使整體系統能保持穩定。在Hadoop的環境最常使用Zookeeper的有MapReduce、HBase等，而本篇安裝Zookeeper是為了之後安裝HBase能正常，不會有太詳細的使用方式。</p>
+<h4 id="2-安裝Zookeeper"><a href="#2-安裝Zookeeper" class="headerlink" title="2.安裝Zookeeper"></a>2.安裝Zookeeper</h4><p>Zookeeper比較特別，他不用帶入Hadoop的環境參數，安裝的方式較容易。每一台機器需要安裝Zookeeper從Apache官網下載，最新穩定版本為3.6.4：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo wget http://apache.stu.edu.tw/zookeeper/stable/zookeeper-3.4.6.tar.gz</span><br></pre></td></tr></table></figure>
+
+<p>　　解壓縮後，進入到其conf目錄下，將zoo_sample.cfg複製成zoo.cfg：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cp</span> zoo_sample.cfg zoo.cfg</span><br></pre></td></tr></table></figure>
+
+<p>　　編輯zoo.cfg，將dataDir路徑修改，且在最下方增加server列表，其餘變數不用改：</p>
+<figure class="highlight apacheconf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">dataDir</span>=/home/test/zookeeper-<span class="number">3</span>.<span class="number">4</span>.<span class="number">6</span>/data #zookeeper資料會存放在此目錄</span><br><span class="line"></span><br><span class="line"><span class="comment">#最下方新增server的資料，其格式為server.A=B:C:D，A為每台機器的ID；B為每台機器的IP</span></span><br><span class="line"><span class="comment">#：C為各節點之間傳資料的port；D為Leader掛掉時做重新選舉的port</span></span><br><span class="line"><span class="attribute">server</span>.<span class="number">1</span>=<span class="number">192.168.56.101:2888</span>:<span class="number">3888</span></span><br><span class="line"><span class="attribute">server</span>.<span class="number">2</span>=<span class="number">192.168.56.102:2888</span>:<span class="number">3888</span></span><br><span class="line"><span class="attribute">server</span>.<span class="number">3</span>=<span class="number">192.168.56.103:2888</span>:<span class="number">3888</span></span><br><span class="line"><span class="attribute">server</span>.<span class="number">4</span>=<span class="number">192.168.56.104:2888</span>:<span class="number">3888</span></span><br><span class="line"><span class="attribute">server</span>.<span class="number">5</span>=<span class="number">192.168.56.105:2888</span>:<span class="number">3888</span></span><br></pre></td></tr></table></figure>
+
+<p>　　在各台機器建立data資料夾，並且增加id資料：</p>
+<figure class="highlight apacheconf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">dataDir</span>=/home/test/zookeeper-<span class="number">3</span>.<span class="number">4</span>.<span class="number">6</span>/data #zookeeper資料會存放在此目錄</span><br><span class="line"></span><br><span class="line"><span class="comment">#最下方新增server的資料，格式為server.A=B:C:D，其中A為每台機器的ID；B為每台機器的IP</span></span><br><span class="line"><span class="comment">#：C為各節點之間傳資料的port；D為Leader掛掉時做重新選舉的port</span></span><br><span class="line"><span class="attribute">server</span>.<span class="number">1</span>=<span class="number">192.168.56.101:2888</span>:<span class="number">3888</span></span><br><span class="line"><span class="attribute">server</span>.<span class="number">2</span>=<span class="number">192.168.56.102:2888</span>:<span class="number">3888</span></span><br><span class="line"><span class="attribute">server</span>.<span class="number">3</span>=<span class="number">192.168.56.103:2888</span>:<span class="number">3888</span></span><br><span class="line"><span class="attribute">server</span>.<span class="number">4</span>=<span class="number">192.168.56.104:2888</span>:<span class="number">3888</span></span><br><span class="line"><span class="attribute">server</span>.<span class="number">5</span>=<span class="number">192.168.56.105:2888</span>:<span class="number">3888</span></span><br></pre></td></tr></table></figure>
+
+<p>之後在每台機器新增data目錄與myid資料：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> /home/test/zookeeper-3.4.6/data</span><br><span class="line"></span><br><span class="line"><span class="comment">#在hadoop01的myid內容是1，其他hadoop02~hadoop05的myid內容分別為2、3、4、5</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;1&quot;</span> &gt; /home/test/zookeeper-3.4.6/data/myid</span><br></pre></td></tr></table></figure>
+
+<p>　　關掉防火牆，沒關會使Zookeeper之間無法連線：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">service ufw stop <span class="comment">#ubuntu是用ufw，centos是iptables</span></span><br></pre></td></tr></table></figure>
+
+<p>　　新增Zookeeper的bin路徑：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$PATH</span>:/home/test/zookeeper-3.4.6/bin</span><br></pre></td></tr></table></figure>
+
+<p>　　每一台機器啟動zookeeper service：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">zkServer.sh start</span><br></pre></td></tr></table></figure>
+
+<p>　　用jps查看，會多了新的服務QuorumPeerMain，代表有啟動成功，如下圖所示：</p>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2015/10/25E52595259F25E5258B2595ZKSERVER-1.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2015/10/25E52595259F25E5258B2595ZKSERVER.png" alt="Zookeeper 3.4.6 服務"></a></p>
+<p>　　連到每台機器，看是否各Zookeeper能傳遞&#x2F;接收資料，如下圖所示，hadoop01對hadoop02請求：</p>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2015/10/ECHO25E825AB258B25E625B12582-1.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2015/10/ECHO25E825AB258B25E625B12582.png" alt="Zookeeper 3.4.6 request"></a></p>
+<h4 id="3-結論"><a href="#3-結論" class="headerlink" title="3.結論"></a>3.結論</h4><p>　　Zookeeper在安裝上很單純，沒有很複雜的問題～接著下一篇會介紹安裝HBase。</p>
+<h4 id="參考文獻"><a href="#參考文獻" class="headerlink" title="參考文獻"></a>參考文獻</h4><ol>
+<li><a target="_blank" rel="noopener" href="https://zookeeper.apache.org/">Zookeeper官方</a></li>
+<li><a target="_blank" rel="noopener" href="http://songlee24.github.io/2015/07/20/hadoop-hbase-zookeeper-distributed-mode/">Song Lee blog：Hadoop+HBase+ZooKeeper分布式集群环境搭建</a></li>
+<li> <a target="_blank" rel="noopener" href="http://www.cnblogs.com/dennisit/p/4141342.html">dennisit blog：初始zookeeper与集群搭建实例</a></li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2015/10/06/ubuntu-install-uninstall-mysql/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="LiJyu Gao">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="GeekCodeParadise">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2015/10/06/ubuntu-install-uninstall-mysql/" class="post-title-link" itemprop="url">ubuntu 移除與安裝 MySQL</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2015-10-06 22:46:00" itemprop="dateCreated datePublished" datetime="2015-10-06T22:46:00+08:00">2015-10-06</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-11-19 15:47:25" itemprop="dateModified" datetime="2023-11-19T15:47:25+08:00">2023-11-19</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/MySQL/" itemprop="url" rel="index"><span itemprop="name">MySQL</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>ubuntu 移除與安裝 MySQL</p>
+<h4 id="1-移除MySQL"><a href="#1-移除MySQL" class="headerlink" title="1.移除MySQL"></a>1.移除MySQL</h4><p>　　若在ubuntu上有安裝MySQL且想移除它，可用下面這些指令來完整的移除：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get remove --purge mysql-server mysql-client mysql-common</span><br><span class="line">sudo apt-get autoremove</span><br><span class="line">sudo apt-get autoclean</span><br><span class="line">sudo <span class="built_in">rm</span> -rf /var/lib/mysql</span><br><span class="line">sudo <span class="built_in">rm</span> -rf /etc/mysql</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-安裝MySQL"><a href="#2-安裝MySQL" class="headerlink" title="2.安裝MySQL"></a>2.安裝MySQL</h4><p>　　若要在ubuntu上安裝MySQL，可用下面這些指令安裝：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install mysql-server </span><br></pre></td></tr></table></figure>
+
+<p>　　安裝過程會要求設定root的密碼，切記密碼不要用<strong>root</strong>，因為我之前一直設定root為密碼，害我無法登入mysql。。。不知是MySQL的BUG還是啥特殊設定</p>
+<p>　　安裝完成後，啟動MySQL就大功造成：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo service mysql start</span><br></pre></td></tr></table></figure>
+
+<h4 id="參考文獻"><a href="#參考文獻" class="headerlink" title="參考文獻"></a>參考文獻</h4><ol>
+<li><a target="_blank" rel="noopener" href="http://www.liquidweb.com/kb/how-to-install-mysql-on-ubuntu-14-04-lts/">liquidweb : How to Install MySQL on Ubuntu 14.04 LTS</a> </li>
+<li><a target="_blank" rel="noopener" href="http://askubuntu.com/questions/172514/how-do-i-uninstall-mysql">ask ubuntu : How do I uninstall Mysql?</a></li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
 
   
   <nav class="pagination">
@@ -1485,7 +1459,7 @@
 
       <div class="site-overview-wrap sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-  <p class="site-author-name" itemprop="name">John Doe</p>
+  <p class="site-author-name" itemprop="name">LiJyu Gao</p>
   <div class="site-description" itemprop="description"></div>
 </div>
 <div class="site-state-wrap motion-element">
@@ -1493,7 +1467,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">208</span>
+          <span class="site-state-item-count">206</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -1529,11 +1503,11 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2023</span>
+  <span itemprop="copyrightYear">2024</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
-  <span class="author" itemprop="copyrightHolder">John Doe</span>
+  <span class="author" itemprop="copyrightHolder">LiJyu Gao</span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
   </div>

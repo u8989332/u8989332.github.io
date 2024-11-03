@@ -21,11 +21,11 @@
   </script>
 
   <meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
+<meta property="og:title" content="GeekCodeParadise">
 <meta property="og:url" content="http://example.com/page/7/index.html">
-<meta property="og:site_name" content="Hexo">
+<meta property="og:site_name" content="GeekCodeParadise">
 <meta property="og:locale" content="en_US">
-<meta property="article:author" content="John Doe">
+<meta property="article:author" content="LiJyu Gao">
 <meta name="twitter:card" content="summary">
 
 <link rel="canonical" href="http://example.com/page/7/">
@@ -41,7 +41,7 @@
   };
 </script>
 
-  <title>Hexo</title>
+  <title>GeekCodeParadise</title>
   
 
 
@@ -92,7 +92,7 @@
 
     <a href="/" class="brand" rel="start">
       <span class="logo-line-before"><i></i></span>
-      <h1 class="site-title">Hexo</h1>
+      <h1 class="site-title">GeekCodeParadise</h1>
       <span class="logo-line-after"><i></i></span>
     </a>
   </div>
@@ -173,214 +173,16 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2020/09/28/leetcode-832-flipping-an-image/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/09/28/leetcode-832-flipping-an-image/" class="post-title-link" itemprop="url">LeetCode 832 Flipping an Image</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2020-09-28 20:21:00" itemprop="dateCreated datePublished" datetime="2020-09-28T20:21:00+08:00">2020-09-28</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-11-19 15:47:25" itemprop="dateModified" datetime="2023-11-19T15:47:25+08:00">2023-11-19</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C#</span></a>
-                </span>
-                  , 
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/LeetCode/" itemprop="url" rel="index"><span itemprop="name">LeetCode</span></a>
-                </span>
-                  , 
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Level-Easy/" itemprop="url" rel="index"><span itemprop="name">Level-Easy</span></a>
-                </span>
-                  , 
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E7%A8%8B%E5%BC%8F%E8%A7%A3%E9%A1%8C/" itemprop="url" rel="index"><span itemprop="name">程式解題</span></a>
-                </span>
-                  , 
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/ProgramSolving/" itemprop="url" rel="index"><span itemprop="name">ProgramSolving</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>LeetCode 832 Flipping an Image 解題報告</p>
-<h4 id="平台："><a href="#平台：" class="headerlink" title="平台："></a>平台：</h4><p>LeetCode</p>
-<h4 id="題號："><a href="#題號：" class="headerlink" title="題號："></a>題號：</h4><p>832 - Flipping an Image</p>
-<h4 id="題目連結："><a href="#題目連結：" class="headerlink" title="題目連結："></a>題目連結：</h4><p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/flipping-an-image/">https://leetcode.com/problems/flipping-an-image/</a></p>
-<h4 id="題目說明："><a href="#題目說明：" class="headerlink" title="題目說明："></a>題目說明：</h4><p>輸入1個二維陣列A，A的列與行的長度相等，求把這二維陣列翻轉的結果。翻轉的定義為先把每一列的值作順序倒轉，再把每個值從0改1、從1改0。</p>
-<p>比如範例輸入的 [1,1,0,0], [1,0,0,1], [0,1,1,1], [1,0,1,0] 先做順序倒轉，變成 [0,0,1,1], [1,0,0,1], [1,1,1,0], [0,1,0,1] 再做0改1、1改0，變成 [1,1,0,0], [0,1,1,0], [0,0,0,1], [1,0,1,0]</p>
-<h4 id="解題方法："><a href="#解題方法：" class="headerlink" title="解題方法："></a>解題方法：</h4><p>雙層迴圈，從陣列A的第1列開始循環，利用長度n - i - 1即可計算倒轉的順序索引值。</p>
-<p>難度為Easy</p>
-<h4 id="GITHUB位置-C-與-C-："><a href="#GITHUB位置-C-與-C-：" class="headerlink" title="GITHUB位置(C++ 與 C#)："></a>GITHUB位置(C++ 與 C#)：</h4><p><a target="_blank" rel="noopener" href="https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%2B%2B/800-899/832.cpp">https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%2B%2B/800-899/832.cpp</a></p>
-<p><a target="_blank" rel="noopener" href="https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%23/800-899/832.cs">https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%23/800-899/832.cs</a></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2020/09/27/leetcode-821-shortest-distance-to-a-character/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/09/27/leetcode-821-shortest-distance-to-a-character/" class="post-title-link" itemprop="url">LeetCode 821 Shortest Distance to a Character</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2020-09-27 23:40:00" itemprop="dateCreated datePublished" datetime="2020-09-27T23:40:00+08:00">2020-09-27</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-11-19 15:47:25" itemprop="dateModified" datetime="2023-11-19T15:47:25+08:00">2023-11-19</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C#</span></a>
-                </span>
-                  , 
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/LeetCode/" itemprop="url" rel="index"><span itemprop="name">LeetCode</span></a>
-                </span>
-                  , 
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Level-Easy/" itemprop="url" rel="index"><span itemprop="name">Level-Easy</span></a>
-                </span>
-                  , 
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E7%A8%8B%E5%BC%8F%E8%A7%A3%E9%A1%8C/" itemprop="url" rel="index"><span itemprop="name">程式解題</span></a>
-                </span>
-                  , 
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/ProgramSolving/" itemprop="url" rel="index"><span itemprop="name">ProgramSolving</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>LeetCode 821 Shortest Distance to a Character 解題報告</p>
-<h4 id="平台："><a href="#平台：" class="headerlink" title="平台："></a>平台：</h4><p>LeetCode</p>
-<h4 id="題號："><a href="#題號：" class="headerlink" title="題號："></a>題號：</h4><p>821 - Shortest Distance to a Character</p>
-<h4 id="題目連結："><a href="#題目連結：" class="headerlink" title="題目連結："></a>題目連結：</h4><p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/shortest-distance-to-a-character/">https://leetcode.com/problems/shortest-distance-to-a-character/</a></p>
-<h4 id="題目說明："><a href="#題目說明：" class="headerlink" title="題目說明："></a>題目說明：</h4><p>輸入1個字串S 與 1個字元C，這字串S至少出現1個C字元，求S的每個字元到C字元的最短距離。</p>
-<p>比如範例輸入的 S &#x3D; “loveleetcode”, C &#x3D; ‘e’，第1個字元l距離e的最短距離為3、第2個字元o距離e的最短距離為2、第3個字元v距離e的最短距離為1、第4個字元e距離e的最短距離為0，完整的答案為[3, 2, 1, 0, 1, 0, 0, 1, 2, 2, 1, 0]。</p>
-<h4 id="解題方法："><a href="#解題方法：" class="headerlink" title="解題方法："></a>解題方法：</h4><p>一開始從左邊掃描目前有C字元的位置，並與之後每個位置計算距離，如果目前都沒遇到C字元，則當下那位置會標記為一個無限大的值。 再從右邊掃描，一樣紀目前有C字元的位置，並與之後每個位置計算距離，並比對前面從左邊掃描的距離誰是最小的，則為答案。 比如 S &#x3D; “loveleetcode”, C &#x3D; ‘e’，初始化一個陣列ans[12] 從左邊掃描，ans的變化為 [inf, inf, inf, 0, 1, 0, 0, 1, 2, 3, 4, 0] 再換右邊掃描，ans的變化為[min(inf, 3), min(inf, 2), min(inf, 1), 0, min(1, 1), 0, 0, min(1, 4), min(2, 3), min(3, 2) , min(4, 1), 0] &#x3D; [3, 2, 1, 0, 1, 0, 0, 1, 2, 2, 1, 0]</p>
-<p>難度為Easy</p>
-<h4 id="GITHUB位置-C-與-C-："><a href="#GITHUB位置-C-與-C-：" class="headerlink" title="GITHUB位置(C++ 與 C#)："></a>GITHUB位置(C++ 與 C#)：</h4><p><a target="_blank" rel="noopener" href="https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%2B%2B/800-899/821.cpp">https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%2B%2B/800-899/821.cpp</a></p>
-<p><a target="_blank" rel="noopener" href="https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%23/800-899/821.cs">https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%23/800-899/821.cs</a></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2020/09/27/%E4%B8%80%E8%A2%8B-net%E8%A6%81%E6%89%9B%E5%B9%BE%E6%A8%93%EF%BC%9F%E6%89%93%E9%80%A0%E5%AE%B9%E5%99%A8%E5%8C%96%E7%9A%84asp-net-core%E7%B6%B2%E7%AB%99%EF%BC%81%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0-17/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
+      <meta itemprop="name" content="LiJyu Gao">
       <meta itemprop="description" content="">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
+      <meta itemprop="name" content="GeekCodeParadise">
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
@@ -459,12 +261,12 @@
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
+      <meta itemprop="name" content="LiJyu Gao">
       <meta itemprop="description" content="">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
+      <meta itemprop="name" content="GeekCodeParadise">
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
@@ -558,12 +360,12 @@
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
+      <meta itemprop="name" content="LiJyu Gao">
       <meta itemprop="description" content="">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
+      <meta itemprop="name" content="GeekCodeParadise">
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
@@ -667,12 +469,12 @@
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
+      <meta itemprop="name" content="LiJyu Gao">
       <meta itemprop="description" content="">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
+      <meta itemprop="name" content="GeekCodeParadise">
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
@@ -769,12 +571,12 @@
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
+      <meta itemprop="name" content="LiJyu Gao">
       <meta itemprop="description" content="">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
+      <meta itemprop="name" content="GeekCodeParadise">
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
@@ -876,12 +678,12 @@
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
+      <meta itemprop="name" content="LiJyu Gao">
       <meta itemprop="description" content="">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
+      <meta itemprop="name" content="GeekCodeParadise">
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
@@ -972,12 +774,12 @@
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
+      <meta itemprop="name" content="LiJyu Gao">
       <meta itemprop="description" content="">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
+      <meta itemprop="name" content="GeekCodeParadise">
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
@@ -1071,12 +873,12 @@
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
+      <meta itemprop="name" content="LiJyu Gao">
       <meta itemprop="description" content="">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
+      <meta itemprop="name" content="GeekCodeParadise">
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
@@ -1159,6 +961,213 @@
   
   
 
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/09/23/leetcode-409-longest-palindrome/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="LiJyu Gao">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="GeekCodeParadise">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/09/23/leetcode-409-longest-palindrome/" class="post-title-link" itemprop="url">LeetCode 409 Longest Palindrome</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-09-23 21:04:00" itemprop="dateCreated datePublished" datetime="2020-09-23T21:04:00+08:00">2020-09-23</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-11-19 15:47:25" itemprop="dateModified" datetime="2023-11-19T15:47:25+08:00">2023-11-19</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C#</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/LeetCode/" itemprop="url" rel="index"><span itemprop="name">LeetCode</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Level-Easy/" itemprop="url" rel="index"><span itemprop="name">Level-Easy</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%A8%8B%E5%BC%8F%E8%A7%A3%E9%A1%8C/" itemprop="url" rel="index"><span itemprop="name">程式解題</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ProgramSolving/" itemprop="url" rel="index"><span itemprop="name">ProgramSolving</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>LeetCode 409 Longest Palindrome 解題報告</p>
+<h4 id="平台："><a href="#平台：" class="headerlink" title="平台："></a>平台：</h4><p>LeetCode</p>
+<h4 id="題號："><a href="#題號：" class="headerlink" title="題號："></a>題號：</h4><p>409 - Longest Palindrome</p>
+<h4 id="題目連結："><a href="#題目連結：" class="headerlink" title="題目連結："></a>題目連結：</h4><p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/longest-palindrome/">https://leetcode.com/problems/longest-palindrome/</a></p>
+<h4 id="題目說明："><a href="#題目說明：" class="headerlink" title="題目說明："></a>題目說明：</h4><p>輸入1個字串，裡面有不同的字元，且大小寫也視為不同，求從這些字元組成最大回文的長度。</p>
+<p>比如範例輸入的abccccdd，能組成最大長度為7的回文，有可能是ccdadcc或者其他的組合。</p>
+<h4 id="解題方法："><a href="#解題方法：" class="headerlink" title="解題方法："></a>解題方法：</h4><p>分析每個字元出現的頻率，假如X字元出現偶數次，則它一定能全部拿去組回文。但如果X字元出現奇數次，則只能取它的數量-1後再拿去組回文，假如目前回文的長度是偶數，則剛剛那筆奇數次的字元，被-1的數量要再補上去，這樣仍是回文。 以範例輸入的abccccdd：</p>
+<ul>
+<li>a的出現次數為1，能組成回文，目前回文長度為1</li>
+<li>b的出現次數為1，無法加進回文，回文長度仍不變</li>
+<li>c的出現次數為4，能組成回文，目前回文長度為5</li>
+<li>d的出現次數為2，能組成回文，目前回文長度為7</li>
+</ul>
+<p>所以最長的長度為7。</p>
+<p>難度為Easy</p>
+<h4 id="GITHUB位置-C-與-C-："><a href="#GITHUB位置-C-與-C-：" class="headerlink" title="GITHUB位置(C++ 與 C#)："></a>GITHUB位置(C++ 與 C#)：</h4><p><a target="_blank" rel="noopener" href="https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%2B%2B/400-499/409.cpp">https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%2B%2B/400-499/409.cpp</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%23/400-499/409.cs">https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%23/400-499/409.cs</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/09/22/containerized-asp-net-core-catalog-part-5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="LiJyu Gao">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="GeekCodeParadise">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/09/22/containerized-asp-net-core-catalog-part-5/" class="post-title-link" itemprop="url">一袋.NET要扛幾樓？打造 容器化 的 ASP.NET Core 網站！系列文章 - (7) 建立商品服務的Api - 5</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-09-22 23:40:00" itemprop="dateCreated datePublished" datetime="2020-09-22T23:40:00+08:00">2020-09-22</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-11-19 15:47:25" itemprop="dateModified" datetime="2023-11-19T15:47:25+08:00">2023-11-19</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ASP-NET-Core/" itemprop="url" rel="index"><span itemprop="name">ASP.NET Core</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Docker/" itemprop="url" rel="index"><span itemprop="name">Docker</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h4 id="1-建立Dockerfile"><a href="#1-建立Dockerfile" class="headerlink" title="1. 建立Dockerfile"></a>1. 建立Dockerfile</h4><p>　　在CatalogApi專案右鍵&#x3D;&gt;加入&#x3D;&gt;Dokcer支援，選擇目標平台Linux，將會在根目錄新增Dockerfile檔案，但這Dokcerfile有一些Bug，因為我的專案目錄設計方式，會讓VS產生錯誤的連結，所以需要再手動修改，變成下方的內容。其內容主要功能是在Docker容器內載入NET Core SDK編譯我們的程式碼，將編譯後的目錄檔案複製到Runtime環境的&#x2F;app目錄，再用NET Core Runtime執行商品服務的Api系統。</p>
+<figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">FROM</span> mcr.microsoft.com/dotnet/core/sdk:<span class="number">3.1</span>-buster AS build</span><br><span class="line"></span><br><span class="line"><span class="keyword">WORKDIR</span><span class="language-bash"> /code</span></span><br><span class="line"><span class="keyword">EXPOSE</span> <span class="number">80</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> . .</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> dotnet restore</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> dotnet publish -o /out/ -c Release</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">FROM</span> mcr.microsoft.com/dotnet/core/aspnet:<span class="number">3.1</span>-buster-slim AS base</span><br><span class="line"></span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> --from=build /out /app/</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">WORKDIR</span><span class="language-bash"> /app</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">ENTRYPOINT</span><span class="language-bash"> [<span class="string">&quot;dotnet&quot;</span>, <span class="string">&quot;CatalogApi.dll&quot;</span>]</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="2-修改dokcer-compose-yml"><a href="#2-修改dokcer-compose-yml" class="headerlink" title="2. 修改dokcer-compose.yml"></a>2. 修改dokcer-compose.yml</h4><p>之前已經在docker-compose.yml加入SQL Server的image，而這次要加上商品服務的Api，如下方的yml。主要的參數包含：</p>
+<ul>
+<li>build的dockerfile：Dockerfile的檔名</li>
+<li>build的context：我們商品服務Api的Dockerfile所在的目錄</li>
+<li>image：這商品服務Api的image命名</li>
+<li>environment：這些參數將會覆蓋appSettings.json的內容，包含資料庫的連線資訊、外部連到此服務的URL。其中ExternalCatalogBaseUrl的{}值會從.env檔的內容做替換</li>
+<li>ports：將此Api的80 port對應為本機的7000</li>
+<li>depends_on：需要先等SQL Server的容器啟動完，才輪到此Api啟動容器</li>
+<li>networks：新增一個frontend網路區域，之後會和網頁前端系統互通</li>
+</ul>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="attr">version:</span> <span class="string">&quot;3.4&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="attr">networks:</span></span><br><span class="line"> <span class="attr">frontend:</span></span><br><span class="line"> <span class="attr">backend:</span></span><br><span class="line"> </span><br><span class="line"><span class="attr">services:</span></span><br><span class="line"> <span class="attr">catalog:</span></span><br><span class="line"> <span class="attr">build:</span></span><br><span class="line"> <span class="attr">context:</span> <span class="string">.srcServicesCatalogApi</span></span><br><span class="line"> <span class="attr">dockerfile:</span> <span class="string">Dockerfile</span></span><br><span class="line"> <span class="attr">image:</span> <span class="string">rpgshop/catalog</span></span><br><span class="line"> <span class="attr">environment:</span></span><br><span class="line"> <span class="bullet">-</span> <span class="string">DatabaseServer=mssqlserver</span></span><br><span class="line"> <span class="bullet">-</span> <span class="string">DatabaseName=CatalogDb</span></span><br><span class="line"> <span class="bullet">-</span> <span class="string">DatabaseUser=sa</span></span><br><span class="line"> <span class="bullet">-</span> <span class="string">DatabasePassword=JustTest!</span></span><br><span class="line"> <span class="bullet">-</span> <span class="string">ExternalCatalogBaseUrl=http://$&#123;RPGSHOP_EXTERNAL_DNS_NAME_OR_IP&#125;:7000</span></span><br><span class="line"> <span class="attr">container_name:</span> <span class="string">rpgcatalogapi</span></span><br><span class="line"> <span class="attr">ports:</span></span><br><span class="line"> <span class="bullet">-</span> <span class="string">&quot;7000:80&quot;</span></span><br><span class="line"> <span class="attr">networks:</span></span><br><span class="line"> <span class="bullet">-</span> <span class="string">backend</span></span><br><span class="line"> <span class="bullet">-</span> <span class="string">frontend</span></span><br><span class="line"> <span class="attr">depends_on:</span></span><br><span class="line"> <span class="bullet">-</span> <span class="string">mssqlserver</span></span><br><span class="line"></span><br><span class="line"> <span class="attr">mssqlserver:</span></span><br><span class="line"> <span class="attr">image:</span> <span class="string">&quot;microsoft/mssql-server-linux:latest&quot;</span></span><br><span class="line"> <span class="attr">ports:</span></span><br><span class="line"> <span class="bullet">-</span> <span class="string">&quot;1445:1433&quot;</span></span><br><span class="line"> <span class="attr">container_name:</span> <span class="string">rpgmssqlcontainer</span></span><br><span class="line"> <span class="attr">environment:</span></span><br><span class="line"> <span class="bullet">-</span> <span class="string">ACCEPT_EULA=Y</span></span><br><span class="line"> <span class="bullet">-</span> <span class="string">SA_PASSWORD=JustTest!</span></span><br><span class="line"> <span class="attr">networks:</span></span><br><span class="line"> <span class="bullet">-</span> <span class="string">backend</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="3-建立-env檔"><a href="#3-建立-env檔" class="headerlink" title="3. 建立.env檔"></a>3. 建立.env檔</h4><p>　　.env檔是一種環境變數檔，用key&#x3D;value的方式寫在此檔案，目前我們只需要放一筆資料： RPGSHOP_EXTERNAL_DNS_NAME_OR_IP&#x3D;docker.for.win.localhost 　　這是前述的ExternalCatalogBaseUrl的值會被替換，而docker.for.win.localhost是docker內建在Windows的host。</p>
+<h4 id="4-用cmd執行docker-compose"><a href="#4-用cmd執行docker-compose" class="headerlink" title="4. 用cmd執行docker-compose"></a>4. 用cmd執行docker-compose</h4><p>　　用cmd在docker-compose.yml所在位置輸入指令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker-compose up</span><br></pre></td></tr></table></figure>
+
+<p>　　執行完後，在瀏覽器輸入<a target="_blank" rel="noopener" href="http://docker.for.win.localhost:7000/swagger">http://docker.for.win.localhost:7000/swagger</a> ，將看見容器化的商品服務API，如圖1，且使用try it out都是正常運作。</p>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2020/09/container2Bto2B2Bcatalogapi-1.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2020/09/container2Bto2B2Bcatalogapi.png" alt="容器化 ASP.NET Core docker api test"></a></p>
+<p>圖1</p>
+<p>-————————————————————-</p>
+<p>這一系列的專案將開在這Github：<a target="_blank" rel="noopener" href="https://github.com/u8989332/RPGShopOnContainers">RPGShopOnContainers</a>，會依照文章的主題進度區分資料夾，有需要的人可自行pull &#x2F; download～ 下一篇將建立一套網站前端，整合商品服務的API作商品呈現。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
 
   
   <nav class="pagination">
@@ -1220,7 +1229,7 @@
 
       <div class="site-overview-wrap sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-  <p class="site-author-name" itemprop="name">John Doe</p>
+  <p class="site-author-name" itemprop="name">LiJyu Gao</p>
   <div class="site-description" itemprop="description"></div>
 </div>
 <div class="site-state-wrap motion-element">
@@ -1228,7 +1237,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">208</span>
+          <span class="site-state-item-count">206</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -1264,11 +1273,11 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2023</span>
+  <span itemprop="copyrightYear">2024</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
-  <span class="author" itemprop="copyrightHolder">John Doe</span>
+  <span class="author" itemprop="copyrightHolder">LiJyu Gao</span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
   </div>

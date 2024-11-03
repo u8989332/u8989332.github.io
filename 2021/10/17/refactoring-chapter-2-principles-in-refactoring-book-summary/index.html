@@ -24,15 +24,15 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="Principles in Refactoring">
 <meta property="og:url" content="http://example.com/2021/10/17/refactoring-chapter-2-principles-in-refactoring-book-summary/index.html">
-<meta property="og:site_name" content="Hexo">
+<meta property="og:site_name" content="GeekCodeParadise">
 <meta property="og:description" content="What are principles in refactoring?This article references the chapter 2 of  Refactoring: Improving the Design of Existing Code (2nd Edition). We need understand what principles are in refactoring and">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://geekcodeparadise.com/wp-content/uploads/2021/10/before-300x277.jpg">
 <meta property="og:image" content="http://geekcodeparadise.com/wp-content/uploads/2021/10/after-300x278.jpg">
 <meta property="og:image" content="http://geekcodeparadise.com/wp-content/uploads/2021/10/cumulativeTimeWithGoodPoorDesign.drawio-300x209.png">
 <meta property="article:published_time" content="2021-10-16T16:58:00.000Z">
-<meta property="article:modified_time" content="2023-11-19T07:47:25.928Z">
-<meta property="article:author" content="John Doe">
+<meta property="article:modified_time" content="2023-11-25T06:16:12.913Z">
+<meta property="article:author" content="LiJyu Gao">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://geekcodeparadise.com/wp-content/uploads/2021/10/before-300x277.jpg">
 
@@ -49,7 +49,7 @@
   };
 </script>
 
-  <title>Principles in Refactoring | Hexo</title>
+  <title>Principles in Refactoring | GeekCodeParadise</title>
   
 
 
@@ -100,7 +100,7 @@
 
     <a href="/" class="brand" rel="start">
       <span class="logo-line-before"><i></i></span>
-      <h1 class="site-title">Hexo</h1>
+      <h1 class="site-title">GeekCodeParadise</h1>
       <span class="logo-line-after"><i></i></span>
     </a>
   </div>
@@ -186,12 +186,12 @@
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
+      <meta itemprop="name" content="LiJyu Gao">
       <meta itemprop="description" content="">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
+      <meta itemprop="name" content="GeekCodeParadise">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
@@ -212,7 +212,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-11-19 15:47:25" itemprop="dateModified" datetime="2023-11-19T15:47:25+08:00">2023-11-19</time>
+                <time title="Modified: 2023-11-25 14:16:12" itemprop="dateModified" datetime="2023-11-25T14:16:12+08:00">2023-11-25</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -236,7 +236,7 @@
 
       
         <h1 id="What-are-principles-in-refactoring"><a href="#What-are-principles-in-refactoring" class="headerlink" title="What are principles in refactoring?"></a>What are principles in refactoring?</h1><p>This article references the chapter 2 of  <a target="_blank" rel="noopener" href="https://amzn.to/3LUmBwI">Refactoring: Improving the Design of Existing Code (2nd Edition)</a>. We need understand what principles are in refactoring and we can refactor codes smoothly.</p>
-<h4 id="1-Defining-Refactoring"><a href="#1-Defining-Refactoring" class="headerlink" title="1. Defining Refactoring"></a>1. Defining Refactoring</h4><ul>
+<h1 id="Defining-Refactoring"><a href="#Defining-Refactoring" class="headerlink" title="Defining Refactoring"></a>Defining Refactoring</h1><ul>
 <li>Noun’s definition: A change made to the internal structure of software to make it easier to understand and cheaper to modify without changing its observable behavior.</li>
 <li>Verb’s definition: To restructure software by applying a series of refactorings without changing its observable behavior.</li>
 </ul>
@@ -254,23 +254,23 @@
 <p>If someone says their code was broken for a couple of days while they are refactoring, you can be pretty sure they were not refactoring.</p>
 </blockquote>
 <p>This tip is very funny XD. According to chapter 1’s tip, refactoring is driven by testings. Every refactoring step is done, then run the testings to validate the observable behavior is not changed.</p>
-<h4 id="2-The-Two-Hats"><a href="#2-The-Two-Hats" class="headerlink" title="2. The Two Hats"></a>2. The Two Hats</h4><p>When we are developing the software, we have 2 hats: one hat for adding functionality and the other one for refactoring. Only wear one of these 2 hats in a period of developing. Do not add functionality and refactor concurrently.</p>
-<h4 id="3-Why-Should-We-Refactor"><a href="#3-Why-Should-We-Refactor" class="headerlink" title="3. Why Should We Refactor?"></a>3. Why Should We Refactor?</h4><h5 id="3-1-Refactoring-Improves-the-Design-of-Software"><a href="#3-1-Refactoring-Improves-the-Design-of-Software" class="headerlink" title="3.1 Refactoring Improves the Design of Software"></a>3.1 Refactoring Improves the Design of Software</h5><ul>
+<h1 id="The-Two-Hats"><a href="#The-Two-Hats" class="headerlink" title="The Two Hats"></a>The Two Hats</h1><p>When we are developing the software, we have 2 hats: one hat for adding functionality and the other one for refactoring. Only wear one of these 2 hats in a period of developing. Do not add functionality and refactor concurrently.</p>
+<h1 id="Why-Should-We-Refactor"><a href="#Why-Should-We-Refactor" class="headerlink" title="Why Should We Refactor?"></a>Why Should We Refactor?</h1><h2 id="Refactoring-Improves-the-Design-of-Software"><a href="#Refactoring-Improves-the-Design-of-Software" class="headerlink" title="Refactoring Improves the Design of Software"></a>Refactoring Improves the Design of Software</h2><ul>
 <li>If we don’t refactor, the code becomes more messy</li>
 <li>Messy code means maintenance is more difficult.</li>
 <li>DRY (Don’t Repeat Yourself) is a fundamental design principle and reduces the code size</li>
 </ul>
-<h5 id="3-2-Refactoring-Makes-Software-Easier-to-Understand"><a href="#3-2-Refactoring-Makes-Software-Easier-to-Understand" class="headerlink" title="3.2 Refactoring Makes Software Easier to Understand"></a>3.2 Refactoring Makes Software Easier to Understand</h5><ul>
+<h2 id="Refactoring-Makes-Software-Easier-to-Understand"><a href="#Refactoring-Makes-Software-Easier-to-Understand" class="headerlink" title="Refactoring Makes Software Easier to Understand"></a>Refactoring Makes Software Easier to Understand</h2><ul>
 <li>Programmer is the reader of the code and it’s the major time cost</li>
 <li>If the reader spends 1 week understanding the code and modifying it —- What a terrible code</li>
 <li>If the reader spends 1 hour understanding the code  and modifying it —- What a great code</li>
 <li>We spend a little time refactoring our code and make the code more readable. Next time the reader will spend less time working.</li>
 <li>If the code function is easily looked up by documentation, programmers don’t deliberately remember them.</li>
 </ul>
-<h5 id="3-3-Refactoring-Helps-Me-Find-Bugs"><a href="#3-3-Refactoring-Helps-Me-Find-Bugs" class="headerlink" title="3.3 Refactoring Helps Me Find Bugs"></a>3.3 Refactoring Helps Me Find Bugs</h5><ul>
+<h2 id="Refactoring-Helps-Me-Find-Bugs"><a href="#Refactoring-Helps-Me-Find-Bugs" class="headerlink" title="Refactoring Helps Me Find Bugs"></a>Refactoring Helps Me Find Bugs</h2><ul>
 <li>When we are refactoring the code, code structure maybe shows some bugs we have never noticed</li>
 </ul>
-<h5 id="3-4-Refactoring-Helps-Me-Program-Faster"><a href="#3-4-Refactoring-Helps-Me-Program-Faster" class="headerlink" title="3.4 Refactoring Helps Me Program Faster"></a>3.4 Refactoring Helps Me Program Faster</h5><ul>
+<h2 id="Refactoring-Helps-Me-Program-Faster"><a href="#Refactoring-Helps-Me-Program-Faster" class="headerlink" title="Refactoring Helps Me Program Faster"></a>Refactoring Helps Me Program Faster</h2><ul>
 <li>The previous points result in this point</li>
 <li>Does not the time of refactoring slow the development? No! If the system with poor design, it would add features like putting many “patches” on it…. It’s hard to understand what a module works.</li>
 <li>Design Stamina Hypothesis: Good designs increase the stamina of the software effort</li>
@@ -278,20 +278,20 @@
 </ul>
 <p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2021/10/cumulativeTimeWithGoodPoorDesign.drawio.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2021/10/cumulativeTimeWithGoodPoorDesign.drawio-300x209.png"></a></p>
 <p>The development time with good and poor design (Redraw at book’s page 49)</p>
-<h4 id="4-When-Should-We-Refactor"><a href="#4-When-Should-We-Refactor" class="headerlink" title="4. When Should We Refactor?"></a>4. When Should We Refactor?</h4><h5 id="The-Rule-of-Three"><a href="#The-Rule-of-Three" class="headerlink" title="The Rule of Three"></a>The Rule of Three</h5><p>The first time you do something, you just do it. The second time you do something similar, you wince at the duplication, but you do the duplicate thing anyway. The third time you do something similar, you refactor. Or for those who like baseball: <strong>Three strikes, then you refactor.</strong></p>
-<h5 id="4-1-Preparatory-Refactoring-Making-It-Easier-to-Add-a-feature"><a href="#4-1-Preparatory-Refactoring-Making-It-Easier-to-Add-a-feature" class="headerlink" title="4.1 Preparatory Refactoring - Making It Easier to Add a feature"></a>4.1 Preparatory Refactoring - Making It Easier to Add a feature</h5><ul>
+<h1 id="When-Should-We-Refactor"><a href="#When-Should-We-Refactor" class="headerlink" title="When Should We Refactor?"></a>When Should We Refactor?</h1><h2 id="The-Rule-of-Three"><a href="#The-Rule-of-Three" class="headerlink" title="The Rule of Three"></a>The Rule of Three</h2><p>The first time you do something, you just do it. The second time you do something similar, you wince at the duplication, but you do the duplicate thing anyway. The third time you do something similar, you refactor. Or for those who like baseball: <strong>Three strikes, then you refactor.</strong></p>
+<h2 id="Preparatory-Refactoring-Making-It-Easier-to-Add-a-feature"><a href="#Preparatory-Refactoring-Making-It-Easier-to-Add-a-feature" class="headerlink" title="Preparatory Refactoring - Making It Easier to Add a feature"></a>Preparatory Refactoring - Making It Easier to Add a feature</h2><ul>
 <li><em>Parameterize Function</em> skill reduces the duplicated code. Similar codes are centered.</li>
 <li>Like before I move to a place, I check the map and find a short route to arrive at the place.</li>
 </ul>
-<h5 id="4-2-Comprehension-Refactoring-Making-Code-Easier-to-Understand"><a href="#4-2-Comprehension-Refactoring-Making-Code-Easier-to-Understand" class="headerlink" title="4.2 Comprehension Refactoring: Making Code Easier to Understand"></a>4.2 Comprehension Refactoring: Making Code Easier to Understand</h5><ul>
+<h2 id="Comprehension-Refactoring-Making-Code-Easier-to-Understand"><a href="#Comprehension-Refactoring-Making-Code-Easier-to-Understand" class="headerlink" title="Comprehension Refactoring: Making Code Easier to Understand"></a>Comprehension Refactoring: Making Code Easier to Understand</h2><ul>
 <li>Read codes to understand “What is the section of the code doing?”. Spending much time reading  code is a refactoring chance.</li>
 <li>Refactoring makes the code logics clearer</li>
 </ul>
-<h5 id="4-3-Litter-Pickup-Refactoring"><a href="#4-3-Litter-Pickup-Refactoring" class="headerlink" title="4.3 Litter-Pickup Refactoring"></a>4.3 Litter-Pickup Refactoring</h5><ul>
+<h2 id="Litter-Pickup-Refactoring"><a href="#Litter-Pickup-Refactoring" class="headerlink" title="Litter-Pickup Refactoring"></a>Litter-Pickup Refactoring</h2><ul>
 <li>If there is a small trash code (duplicated codes, terrible variable naming…), immediately refactor it</li>
 <li>If the trash code is not easy to be refactored with current task, note the trash code, put it aside and continue current task. After finish the task, then refactor the noted trash code.</li>
 </ul>
-<h5 id="4-4-Planned-and-Opportunistic-Refactoring"><a href="#4-4-Planned-and-Opportunistic-Refactoring" class="headerlink" title="4.4 Planned and Opportunistic Refactoring"></a>4.4 Planned and Opportunistic Refactoring</h5><ul>
+<h2 id="4-4-Planned-and-Opportunistic-Refactoring"><a href="#4-4-Planned-and-Opportunistic-Refactoring" class="headerlink" title="4.4 Planned and Opportunistic Refactoring"></a>4.4 Planned and Opportunistic Refactoring</h2><ul>
 <li>Previous 3 refactoring examples are opportunistic. Planned refactoring is not a natural thing. Adding features or fixing bugs are normal with refactoring.</li>
 </ul>
 <p>The tip at book’s page 52 describes:</p>
@@ -477,13 +477,13 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#What-are-principles-in-refactoring"><span class="nav-number">1.</span> <span class="nav-text">What are principles in refactoring?</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-Defining-Refactoring"><span class="nav-number">1.0.0.1.</span> <span class="nav-text">1. Defining Refactoring</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-The-Two-Hats"><span class="nav-number">1.0.0.2.</span> <span class="nav-text">2. The Two Hats</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-Why-Should-We-Refactor"><span class="nav-number">1.0.0.3.</span> <span class="nav-text">3. Why Should We Refactor?</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#3-1-Refactoring-Improves-the-Design-of-Software"><span class="nav-number">1.0.0.3.1.</span> <span class="nav-text">3.1 Refactoring Improves the Design of Software</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-2-Refactoring-Makes-Software-Easier-to-Understand"><span class="nav-number">1.0.0.3.2.</span> <span class="nav-text">3.2 Refactoring Makes Software Easier to Understand</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-3-Refactoring-Helps-Me-Find-Bugs"><span class="nav-number">1.0.0.3.3.</span> <span class="nav-text">3.3 Refactoring Helps Me Find Bugs</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-4-Refactoring-Helps-Me-Program-Faster"><span class="nav-number">1.0.0.3.4.</span> <span class="nav-text">3.4 Refactoring Helps Me Program Faster</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-When-Should-We-Refactor"><span class="nav-number">1.0.0.4.</span> <span class="nav-text">4. When Should We Refactor?</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#The-Rule-of-Three"><span class="nav-number">1.0.0.4.1.</span> <span class="nav-text">The Rule of Three</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-1-Preparatory-Refactoring-Making-It-Easier-to-Add-a-feature"><span class="nav-number">1.0.0.4.2.</span> <span class="nav-text">4.1 Preparatory Refactoring - Making It Easier to Add a feature</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-2-Comprehension-Refactoring-Making-Code-Easier-to-Understand"><span class="nav-number">1.0.0.4.3.</span> <span class="nav-text">4.2 Comprehension Refactoring: Making Code Easier to Understand</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-3-Litter-Pickup-Refactoring"><span class="nav-number">1.0.0.4.4.</span> <span class="nav-text">4.3 Litter-Pickup Refactoring</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-4-Planned-and-Opportunistic-Refactoring"><span class="nav-number">1.0.0.4.5.</span> <span class="nav-text">4.4 Planned and Opportunistic Refactoring</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-5-Long-Term-Refactoring"><span class="nav-number">1.0.0.4.6.</span> <span class="nav-text">4.5 Long-Term Refactoring</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-6-Refactoring-in-a-Code-Review"><span class="nav-number">1.0.0.4.7.</span> <span class="nav-text">4.6 Refactoring in a Code Review</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-7-What-Do-I-Tell-My-Manager"><span class="nav-number">1.0.0.4.8.</span> <span class="nav-text">4.7 What Do I Tell My Manager?</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-8-When-Should-I-Not-Refactor"><span class="nav-number">1.0.0.4.9.</span> <span class="nav-text">4.8 When Should I Not Refactor?</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-Problems-with-Refactoring"><span class="nav-number">1.0.0.5.</span> <span class="nav-text">5. Problems with Refactoring</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#5-1-Slowing-Down-New-Features"><span class="nav-number">1.0.0.5.1.</span> <span class="nav-text">5.1 Slowing Down New Features</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#5-2-Code-Ownership"><span class="nav-number">1.0.0.5.2.</span> <span class="nav-text">5.2 Code Ownership</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#5-3-Branches"><span class="nav-number">1.0.0.5.3.</span> <span class="nav-text">5.3 Branches</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#5-4-Testing"><span class="nav-number">1.0.0.5.4.</span> <span class="nav-text">5.4 Testing</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#5-5-Legacy-Code"><span class="nav-number">1.0.0.5.5.</span> <span class="nav-text">5.5 Legacy Code</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#5-6-Databases"><span class="nav-number">1.0.0.5.6.</span> <span class="nav-text">5.6 Databases</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-Refactoring-Architecture-and-Yagni"><span class="nav-number">1.0.0.6.</span> <span class="nav-text">6. Refactoring, Architecture, and Yagni</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-Refactoring-and-the-Wider-Software-Development-Process"><span class="nav-number">1.0.0.7.</span> <span class="nav-text">7. Refactoring and the Wider Software Development Process</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#8-Refactoring-and-Performance"><span class="nav-number">1.0.0.8.</span> <span class="nav-text">8. Refactoring and Performance</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#9-Where-Did-Refactoring-Come-From"><span class="nav-number">1.0.0.9.</span> <span class="nav-text">9. Where Did Refactoring Come From?</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#10-Automated-Refactorings"><span class="nav-number">1.0.0.10.</span> <span class="nav-text">10. Automated Refactorings</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#11-Going-Further"><span class="nav-number">1.0.0.11.</span> <span class="nav-text">11. Going Further</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#12-Conclusion"><span class="nav-number">1.0.0.12.</span> <span class="nav-text">12. Conclusion</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#13-References"><span class="nav-number">1.0.0.13.</span> <span class="nav-text">13. References</span></a></li></ol></li></ol></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#What-are-principles-in-refactoring"><span class="nav-number">1.</span> <span class="nav-text">What are principles in refactoring?</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Defining-Refactoring"><span class="nav-number">2.</span> <span class="nav-text">Defining Refactoring</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#The-Two-Hats"><span class="nav-number">3.</span> <span class="nav-text">The Two Hats</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Why-Should-We-Refactor"><span class="nav-number">4.</span> <span class="nav-text">Why Should We Refactor?</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Refactoring-Improves-the-Design-of-Software"><span class="nav-number">4.1.</span> <span class="nav-text">Refactoring Improves the Design of Software</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Refactoring-Makes-Software-Easier-to-Understand"><span class="nav-number">4.2.</span> <span class="nav-text">Refactoring Makes Software Easier to Understand</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Refactoring-Helps-Me-Find-Bugs"><span class="nav-number">4.3.</span> <span class="nav-text">Refactoring Helps Me Find Bugs</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Refactoring-Helps-Me-Program-Faster"><span class="nav-number">4.4.</span> <span class="nav-text">Refactoring Helps Me Program Faster</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#When-Should-We-Refactor"><span class="nav-number">5.</span> <span class="nav-text">When Should We Refactor?</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#The-Rule-of-Three"><span class="nav-number">5.1.</span> <span class="nav-text">The Rule of Three</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Preparatory-Refactoring-Making-It-Easier-to-Add-a-feature"><span class="nav-number">5.2.</span> <span class="nav-text">Preparatory Refactoring - Making It Easier to Add a feature</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Comprehension-Refactoring-Making-Code-Easier-to-Understand"><span class="nav-number">5.3.</span> <span class="nav-text">Comprehension Refactoring: Making Code Easier to Understand</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Litter-Pickup-Refactoring"><span class="nav-number">5.4.</span> <span class="nav-text">Litter-Pickup Refactoring</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-4-Planned-and-Opportunistic-Refactoring"><span class="nav-number">5.5.</span> <span class="nav-text">4.4 Planned and Opportunistic Refactoring</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#4-5-Long-Term-Refactoring"><span class="nav-number">5.5.0.0.1.</span> <span class="nav-text">4.5 Long-Term Refactoring</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-6-Refactoring-in-a-Code-Review"><span class="nav-number">5.5.0.0.2.</span> <span class="nav-text">4.6 Refactoring in a Code Review</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-7-What-Do-I-Tell-My-Manager"><span class="nav-number">5.5.0.0.3.</span> <span class="nav-text">4.7 What Do I Tell My Manager?</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-8-When-Should-I-Not-Refactor"><span class="nav-number">5.5.0.0.4.</span> <span class="nav-text">4.8 When Should I Not Refactor?</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-Problems-with-Refactoring"><span class="nav-number">5.5.0.1.</span> <span class="nav-text">5. Problems with Refactoring</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#5-1-Slowing-Down-New-Features"><span class="nav-number">5.5.0.1.1.</span> <span class="nav-text">5.1 Slowing Down New Features</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#5-2-Code-Ownership"><span class="nav-number">5.5.0.1.2.</span> <span class="nav-text">5.2 Code Ownership</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#5-3-Branches"><span class="nav-number">5.5.0.1.3.</span> <span class="nav-text">5.3 Branches</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#5-4-Testing"><span class="nav-number">5.5.0.1.4.</span> <span class="nav-text">5.4 Testing</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#5-5-Legacy-Code"><span class="nav-number">5.5.0.1.5.</span> <span class="nav-text">5.5 Legacy Code</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#5-6-Databases"><span class="nav-number">5.5.0.1.6.</span> <span class="nav-text">5.6 Databases</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-Refactoring-Architecture-and-Yagni"><span class="nav-number">5.5.0.2.</span> <span class="nav-text">6. Refactoring, Architecture, and Yagni</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-Refactoring-and-the-Wider-Software-Development-Process"><span class="nav-number">5.5.0.3.</span> <span class="nav-text">7. Refactoring and the Wider Software Development Process</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#8-Refactoring-and-Performance"><span class="nav-number">5.5.0.4.</span> <span class="nav-text">8. Refactoring and Performance</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#9-Where-Did-Refactoring-Come-From"><span class="nav-number">5.5.0.5.</span> <span class="nav-text">9. Where Did Refactoring Come From?</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#10-Automated-Refactorings"><span class="nav-number">5.5.0.6.</span> <span class="nav-text">10. Automated Refactorings</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#11-Going-Further"><span class="nav-number">5.5.0.7.</span> <span class="nav-text">11. Going Further</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#12-Conclusion"><span class="nav-number">5.5.0.8.</span> <span class="nav-text">12. Conclusion</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#13-References"><span class="nav-number">5.5.0.9.</span> <span class="nav-text">13. References</span></a></li></ol></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
       <div class="site-overview-wrap sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-  <p class="site-author-name" itemprop="name">John Doe</p>
+  <p class="site-author-name" itemprop="name">LiJyu Gao</p>
   <div class="site-description" itemprop="description"></div>
 </div>
 <div class="site-state-wrap motion-element">
@@ -491,7 +491,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">208</span>
+          <span class="site-state-item-count">206</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -527,11 +527,11 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2023</span>
+  <span itemprop="copyrightYear">2024</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
-  <span class="author" itemprop="copyrightHolder">John Doe</span>
+  <span class="author" itemprop="copyrightHolder">LiJyu Gao</span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
   </div>

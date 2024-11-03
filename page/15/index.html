@@ -21,11 +21,11 @@
   </script>
 
   <meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
+<meta property="og:title" content="GeekCodeParadise">
 <meta property="og:url" content="http://example.com/page/15/index.html">
-<meta property="og:site_name" content="Hexo">
+<meta property="og:site_name" content="GeekCodeParadise">
 <meta property="og:locale" content="en_US">
-<meta property="article:author" content="John Doe">
+<meta property="article:author" content="LiJyu Gao">
 <meta name="twitter:card" content="summary">
 
 <link rel="canonical" href="http://example.com/page/15/">
@@ -41,7 +41,7 @@
   };
 </script>
 
-  <title>Hexo</title>
+  <title>GeekCodeParadise</title>
   
 
 
@@ -92,7 +92,7 @@
 
     <a href="/" class="brand" rel="start">
       <span class="logo-line-before"><i></i></span>
-      <h1 class="site-title">Hexo</h1>
+      <h1 class="site-title">GeekCodeParadise</h1>
       <span class="logo-line-after"><i></i></span>
     </a>
   </div>
@@ -173,231 +173,16 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2019/10/07/uva-489-hangman-judge/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/10/07/uva-489-hangman-judge/" class="post-title-link" itemprop="url">UVa 489 Hangman Judge</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2019-10-07 22:59:00" itemprop="dateCreated datePublished" datetime="2019-10-07T22:59:00+08:00">2019-10-07</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-11-19 15:47:25" itemprop="dateModified" datetime="2023-11-19T15:47:25+08:00">2023-11-19</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C#</span></a>
-                </span>
-                  , 
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/ACM/" itemprop="url" rel="index"><span itemprop="name">ACM</span></a>
-                </span>
-                  , 
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Level-Easy/" itemprop="url" rel="index"><span itemprop="name">Level-Easy</span></a>
-                </span>
-                  , 
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E7%A8%8B%E5%BC%8F%E8%A7%A3%E9%A1%8C/" itemprop="url" rel="index"><span itemprop="name">程式解題</span></a>
-                </span>
-                  , 
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/ProgramSolving/" itemprop="url" rel="index"><span itemprop="name">ProgramSolving</span></a>
-                </span>
-                  , 
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/UVa/" itemprop="url" rel="index"><span itemprop="name">UVa</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>UVa 489 Hangman Judge 解題報告</p>
-<h4 id="平台："><a href="#平台：" class="headerlink" title="平台："></a>平台：</h4><p>UVa Online Judge</p>
-<h4 id="題號："><a href="#題號：" class="headerlink" title="題號："></a>題號：</h4><p>489 - Hangman Judge</p>
-<h4 id="題目連結："><a href="#題目連結：" class="headerlink" title="題目連結："></a>題目連結：</h4><p><a target="_blank" rel="noopener" href="https://uva.onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=430">https://uva.onlinejudge.org/index.php?option=com_onlinejudge&amp;Itemid&#x3D;8&amp;page&#x3D;show_problem&amp;problem&#x3D;430</a></p>
-<h4 id="題目說明："><a href="#題目說明：" class="headerlink" title="題目說明："></a>題目說明：</h4><p>給2個字串，第1個字串是解答，第2個字串是猜測值。如果猜測結束前的字元全出現在解答，則獲勝，輸出You win.；如果猜測結束前猜錯7次，則失敗，輸出You lose.；沒贏也輸，則是放棄，輸出You chickened out.。</p>
-<h4 id="範例輸入："><a href="#範例輸入：" class="headerlink" title="範例輸入："></a>範例輸入：</h4><p>1<br>cheese<br>chese<br>2<br>cheese<br>abcdefg<br>3<br>cheese<br>abcdefgij<br>-1</p>
-<h4 id="範例輸出："><a href="#範例輸出：" class="headerlink" title="範例輸出："></a>範例輸出：</h4><p>Round 1<br>You win.<br>Round 2<br>You chickened out.<br>Round 3<br>You lose.</p>
-<h4 id="解題方法："><a href="#解題方法：" class="headerlink" title="解題方法："></a>解題方法：</h4><p>模擬每次輸入的猜測，並計數猜對與猜錯的數量，只要全猜對或錯7次可結束比對，都不符合則是chickend out。</p>
-<p>以範例測資第1筆，猜測結束前都中解答，如圖1.</p>
-<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2019/10/1.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2019/10/1.png" alt="UVa 489 Hangman Judge 圖1"></a></p>
-<p>圖1</p>
-<p>以範例測資第2筆，猜測結束前沒勝利也沒失敗，如圖2.</p>
-<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2019/10/2.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2019/10/2.png" alt="UVa 489 Hangman Judge 圖2"></a></p>
-<p>圖2</p>
-<p>以範例測資第3筆，猜測結束前錯7次失敗，如圖3.</p>
-<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2019/10/3.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2019/10/3.png" alt="圖3"></a></p>
-<p>圖3</p>
-<p>難度為Easy</p>
-<h4 id="GITHUB位置："><a href="#GITHUB位置：" class="headerlink" title="GITHUB位置："></a>GITHUB位置：</h4><p><a target="_blank" rel="noopener" href="https://github.com/u8989332/ProblemSolving/blob/master/UVaOnlineJudge/400-499/489.c">https://github.com/u8989332/ProblemSolving/blob/master/UVaOnlineJudge/400-499/489.c</a></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2019/10/06/uva-1339-ancient-cipher/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/10/06/uva-1339-ancient-cipher/" class="post-title-link" itemprop="url">UVa 1339 Ancient Cipher</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2019-10-06 12:07:00" itemprop="dateCreated datePublished" datetime="2019-10-06T12:07:00+08:00">2019-10-06</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-11-19 15:47:25" itemprop="dateModified" datetime="2023-11-19T15:47:25+08:00">2023-11-19</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C#</span></a>
-                </span>
-                  , 
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/ACM/" itemprop="url" rel="index"><span itemprop="name">ACM</span></a>
-                </span>
-                  , 
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Level-Easy/" itemprop="url" rel="index"><span itemprop="name">Level-Easy</span></a>
-                </span>
-                  , 
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E7%A8%8B%E5%BC%8F%E8%A7%A3%E9%A1%8C/" itemprop="url" rel="index"><span itemprop="name">程式解題</span></a>
-                </span>
-                  , 
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/ProgramSolving/" itemprop="url" rel="index"><span itemprop="name">ProgramSolving</span></a>
-                </span>
-                  , 
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/UVa/" itemprop="url" rel="index"><span itemprop="name">UVa</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>UVa 1339 Ancient Cipher 解題報告</p>
-<h4 id="平台："><a href="#平台：" class="headerlink" title="平台："></a>平台：</h4><p>UVa Online Judge</p>
-<h4 id="題號："><a href="#題號：" class="headerlink" title="題號："></a>題號：</h4><p>1339 - Ancient Cipher</p>
-<h4 id="題目連結："><a href="#題目連結：" class="headerlink" title="題目連結："></a>題目連結：</h4><p><a target="_blank" rel="noopener" href="https://uva.onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=4085">https://uva.onlinejudge.org/index.php?option=com_onlinejudge&amp;Itemid&#x3D;8&amp;page&#x3D;show_problem&amp;problem&#x3D;4085</a></p>
-<h4 id="題目說明："><a href="#題目說明：" class="headerlink" title="題目說明："></a>題目說明：</h4><p>給2個字串，求第1個字串是否能編碼成第2個字串。編碼規則為第1個字串的每個字元能1對1映射第2個字串的每個字元。以範例輸入第1筆測資JWPUDJSTVP，它的<br>J &#x3D;&gt; I、W &#x3D;&gt; V、P&#x3D;&gt;O….、T&#x3D;&gt;S，所以是YES。而第2筆測資MAMA只有2個不同字元，目標ROME有4個不同字元，無法完整1對1映射，所以是NO。</p>
-<h4 id="範例輸入："><a href="#範例輸入：" class="headerlink" title="範例輸入："></a>範例輸入：</h4><p>JWPUDJSTVP<br>VICTORIOUS<br>MAMA<br>ROME<br>HAHA<br>HEHE<br>AAA<br>AAA<br>NEERCISTHEBEST<br>SECRETMESSAGES</p>
-<h4 id="範例輸出："><a href="#範例輸出：" class="headerlink" title="範例輸出："></a>範例輸出：</h4><p>YES<br>NO<br>YES<br>YES<br>NO</p>
-<h4 id="解題方法："><a href="#解題方法：" class="headerlink" title="解題方法："></a>解題方法：</h4><p>不用管字元先後順序，而是將2個字串的26個英文字母字元出現數量各自加總後排序。排序後2個字元數量由小到大比對，有不同數量代表無法編碼，反之可以。<br>　　比如測資第3筆的HAHA和HEHE，他們字元數量排序都是{0,0,…..,0,2,2}，所以是可以編碼的。</p>
-<p>難度為Easy</p>
-<h4 id="GITHUB位置："><a href="#GITHUB位置：" class="headerlink" title="GITHUB位置："></a>GITHUB位置：</h4><p><a target="_blank" rel="noopener" href="https://github.com/u8989332/ProblemSolving/blob/master/UVaOnlineJudge/1300-1399/1339.cpp">https://github.com/u8989332/ProblemSolving/blob/master/UVaOnlineJudge/1300-1399/1339.cpp</a></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2019/10/05/poj-2386-lake-counting/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
+      <meta itemprop="name" content="LiJyu Gao">
       <meta itemprop="description" content="">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
+      <meta itemprop="name" content="GeekCodeParadise">
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
@@ -495,12 +280,12 @@
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
+      <meta itemprop="name" content="LiJyu Gao">
       <meta itemprop="description" content="">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
+      <meta itemprop="name" content="GeekCodeParadise">
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
@@ -610,12 +395,12 @@
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
+      <meta itemprop="name" content="LiJyu Gao">
       <meta itemprop="description" content="">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
+      <meta itemprop="name" content="GeekCodeParadise">
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
@@ -722,12 +507,12 @@
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
+      <meta itemprop="name" content="LiJyu Gao">
       <meta itemprop="description" content="">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
+      <meta itemprop="name" content="GeekCodeParadise">
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
@@ -830,12 +615,12 @@
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
+      <meta itemprop="name" content="LiJyu Gao">
       <meta itemprop="description" content="">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
+      <meta itemprop="name" content="GeekCodeParadise">
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
@@ -933,12 +718,12 @@
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
+      <meta itemprop="name" content="LiJyu Gao">
       <meta itemprop="description" content="">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
+      <meta itemprop="name" content="GeekCodeParadise">
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
@@ -1043,12 +828,12 @@
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
+      <meta itemprop="name" content="LiJyu Gao">
       <meta itemprop="description" content="">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
+      <meta itemprop="name" content="GeekCodeParadise">
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
@@ -1162,12 +947,12 @@
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
+      <meta itemprop="name" content="LiJyu Gao">
       <meta itemprop="description" content="">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
+      <meta itemprop="name" content="GeekCodeParadise">
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
@@ -1276,6 +1061,235 @@
   
   
 
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2019/09/22/leetcode-215-kth-largest-element-in-an-array/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="LiJyu Gao">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="GeekCodeParadise">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/09/22/leetcode-215-kth-largest-element-in-an-array/" class="post-title-link" itemprop="url">LeetCode 215 Kth Largest Element in an Array</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-09-22 23:32:00" itemprop="dateCreated datePublished" datetime="2019-09-22T23:32:00+08:00">2019-09-22</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-11-19 15:47:25" itemprop="dateModified" datetime="2023-11-19T15:47:25+08:00">2023-11-19</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C#</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/LeetCode/" itemprop="url" rel="index"><span itemprop="name">LeetCode</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Level-Medium/" itemprop="url" rel="index"><span itemprop="name">Level-Medium</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%A8%8B%E5%BC%8F%E8%A7%A3%E9%A1%8C/" itemprop="url" rel="index"><span itemprop="name">程式解題</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ProgramSolving/" itemprop="url" rel="index"><span itemprop="name">ProgramSolving</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>LeetCode 215 Kth Largest Element in an Array 解題報告</p>
+<h4 id="平台："><a href="#平台：" class="headerlink" title="平台："></a>平台：</h4><p>LeetCode</p>
+<h4 id="題號："><a href="#題號：" class="headerlink" title="題號："></a>題號：</h4><p>215 - Kth Largest Element in an Array</p>
+<h4 id="題目連結："><a href="#題目連結：" class="headerlink" title="題目連結："></a>題目連結：</h4><p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/kth-largest-element-in-an-array/">https://leetcode.com/problems/kth-largest-element-in-an-array/</a></p>
+<h4 id="題目說明："><a href="#題目說明：" class="headerlink" title="題目說明："></a>題目說明：</h4><p>輸入一個整數陣列nums，求陣列中第k大的數字。</p>
+<h4 id="解題方法："><a href="#解題方法：" class="headerlink" title="解題方法："></a>解題方法：</h4><ol>
+<li>使用時間複雜度O(nlogn)的排序方法。</li>
+<li>使用Heap，維護只有k個節點的Heap即可求出第k大的解，平均時間複雜度為O(nlogk)。</li>
+<li>使用Quick Sort的原理，找第k大的數字，本篇採用使方案。依Quick Sort原理，會將陣列做部分排序，這裡從大排到小。隨機選一個點為pivot，從左邊與從右邊找出比pivot還小 &#x2F; 還大 互相交換，會分成2個區塊，再判斷k位置繼續往左邊或右邊尋找。時間複雜度為O(N)。以下用圖例解釋每個步驟。</li>
+</ol>
+<p>　　假設有1個輸入陣列nums為[4, 1 , 6 , 5 , 9 , 2]，left與right為最左&#x2F;最右的起始位置，分別是0與5，而設置i 與 j 也分別為left 與 right。pivot的選取採用nums[left]，也就是4，而K為第2大的數字，轉成索引後變成k &#x3D; 2 - 1 &#x3D; 1。如圖1.</p>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2019/09/1-5.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2019/09/1-4.png" alt="LeetCode 215 Kth Largest Element in an Array 圖1"></a></p>
+<p>圖1</p>
+<p>　　從左邊開始，找nums[i] &lt;&#x3D; pivot的位置；從右邊開始，找nums[j] &gt;&#x3D; pivot的位置，i與j分別停在0 與 4 的位置，並且交換，再往下個位置，如圖2.</p>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2019/09/2-5.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2019/09/2-4.png" alt="LeetCode 215 Kth Largest Element in an Array 圖2"></a></p>
+<p>圖2</p>
+<p>再次找nums[i] &lt;&#x3D; pivot的位置與nums[j] &gt;&#x3D; pivot的位置，i 與 j停在 1 與 3，並且交換，再往下個位置，如圖3.</p>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2019/09/3-5.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2019/09/3-4.png" alt="LeetCode 215 Kth Largest Element in an Array 圖3"></a></p>
+<p>圖3</p>
+<p>再次找nums[i] &lt;&#x3D; pivot的位置與nums[j] &gt;&#x3D; pivot的位置，i 與 j停在 3 與 2，i與j的位置已超出邊界，而k &lt;&#x3D; j ，代表k在左邊的區塊，所以將進行第2輪的排序，如圖4.</p>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2019/09/4-5.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2019/09/4-4.png" alt="LeetCode 215 Kth Largest Element in an Array 圖4"></a></p>
+<p>圖4</p>
+<p>再次找nums[i] &lt;&#x3D; pivot的位置與nums[j] &gt;&#x3D; pivot的位置，i 與 j都停在1的位置，並且交換，並進到下個位置，如圖5.</p>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2019/09/5-4.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2019/09/5-3.png" alt="LeetCode 215 Kth Largest Element in an Array 圖5"></a></p>
+<p>圖5</p>
+<p>此時j已經超出left，所以k不會在左邊的區塊；而k &gt;&#x3D; i，代表k將在i 與right之間，進行第3輪的排序，如圖6.</p>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2019/09/6-5.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2019/09/6-4.png" alt="圖6"></a></p>
+<p>圖6</p>
+<p>pivot目前為nums[left] &#x3D; 5，再次找nums[i] &lt;&#x3D; pivot的位置與nums[j] &gt;&#x3D; pivot的位置，i 與 j停在1與2的位置，並且交換，再往下個位置，如圖7.</p>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2019/09/7-3.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2019/09/7-2.png" alt="圖7"></a></p>
+<p>圖7</p>
+<p>由於j &lt;&#x3D; left 且 i &gt;&#x3D; right，已經沒有再排序的需要，回傳nums[k] &#x3D; nums[1] &#x3D; 6為解.</p>
+<p>難度為Medium</p>
+<h4 id="GITHUB位置-C-與-C-："><a href="#GITHUB位置-C-與-C-：" class="headerlink" title="GITHUB位置(C++ 與 C#)："></a>GITHUB位置(C++ 與 C#)：</h4><p><a target="_blank" rel="noopener" href="https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%2B%2B/200-299/215.cpp">https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%2B%2B/200-299/215.cpp</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%23/200-299/215.cs">https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%23/200-299/215.cs</a></p>
+<p>LeetCode 215 Kth Largest Element in an Array</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2019/09/17/leetcode-224-basic-calculator/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="LiJyu Gao">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="GeekCodeParadise">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/09/17/leetcode-224-basic-calculator/" class="post-title-link" itemprop="url">LeetCode 224 Basic Calculator</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-09-17 23:32:00" itemprop="dateCreated datePublished" datetime="2019-09-17T23:32:00+08:00">2019-09-17</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-11-19 15:47:25" itemprop="dateModified" datetime="2023-11-19T15:47:25+08:00">2023-11-19</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C#</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/LeetCode/" itemprop="url" rel="index"><span itemprop="name">LeetCode</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%A8%8B%E5%BC%8F%E8%A7%A3%E9%A1%8C/" itemprop="url" rel="index"><span itemprop="name">程式解題</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Level-Hard/" itemprop="url" rel="index"><span itemprop="name">Level-Hard</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ProgramSolving/" itemprop="url" rel="index"><span itemprop="name">ProgramSolving</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>LeetCode 224 Basic Calculator 解題報告</p>
+<h4 id="平台："><a href="#平台：" class="headerlink" title="平台："></a>平台：</h4><p>LeetCode</p>
+<h4 id="題號："><a href="#題號：" class="headerlink" title="題號："></a>題號：</h4><p>224 - Basic Calculator</p>
+<h4 id="題目連結："><a href="#題目連結：" class="headerlink" title="題目連結："></a>題目連結：</h4><p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/basic-calculator/">https://leetcode.com/problems/basic-calculator/</a></p>
+<h4 id="題目說明："><a href="#題目說明：" class="headerlink" title="題目說明："></a>題目說明：</h4><p>輸入只有 ( ) + - 空格 與 非負整數的數學運算式，求這運算式的結果。</p>
+<h4 id="解題方法："><a href="#解題方法：" class="headerlink" title="解題方法："></a>解題方法：</h4><ol>
+<li>完整的方法，需要使用Stack將中序(Infix)運算式轉成後序 (Postfix)，再解出運算結果。</li>
+<li>網路看到有一種更快的解法，因為只有+ 跟 -，沒有其他優先序的符號，所以遇到 + 跟 - 都直接加起來，如果是有圓括 ( )的，將圓括裡面的加完再補到前面。</li>
+<li>採用網路上另一種解法，用狀態機(Finite State Machine)，分析每一步驟要做的邏輯，如圖1. 共3種狀態，分別為Start、Number與Operatior。一開始在Start的狀態，讀取第1個字元後，將知道要往哪個狀態。Number狀態比較簡單，會一直讀數字，直到有非數字要往Operator狀態。完整的數字都存進Stack，如果前面有 + 或 - 的運算子，從Stack取出運算，再Push運算結果。Operator狀態需要分 ( ) + - 與 數字，遇到數字或( 回到Number狀態；遇到 ) 直接做+ -運算；若是+ 或 -，下一筆若是數字的話可以做+ - 運算 。詳細的方法可以參考程式碼，個人比較喜歡這種用狀態機的分析，比較清楚每一步驟的可能性。</li>
+</ol>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2019/09/1-7.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2019/09/1-6.png" alt="LeetCode 224 Basic Calculator 圖解"></a></p>
+<p>圖1</p>
+<p>難度為Hard</p>
+<h4 id="GITHUB位置-C-與-C-："><a href="#GITHUB位置-C-與-C-：" class="headerlink" title="GITHUB位置(C++ 與 C#)："></a>GITHUB位置(C++ 與 C#)：</h4><p><a target="_blank" rel="noopener" href="https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%2B%2B/200-299/224.cpp">https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%2B%2B/200-299/224.cpp</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%23/200-299/224.cs">https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%23/200-299/224.cs</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
 
   
   <nav class="pagination">
@@ -1337,7 +1351,7 @@
 
       <div class="site-overview-wrap sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-  <p class="site-author-name" itemprop="name">John Doe</p>
+  <p class="site-author-name" itemprop="name">LiJyu Gao</p>
   <div class="site-description" itemprop="description"></div>
 </div>
 <div class="site-state-wrap motion-element">
@@ -1345,7 +1359,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">208</span>
+          <span class="site-state-item-count">206</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -1381,11 +1395,11 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2023</span>
+  <span itemprop="copyrightYear">2024</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
-  <span class="author" itemprop="copyrightHolder">John Doe</span>
+  <span class="author" itemprop="copyrightHolder">LiJyu Gao</span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
   </div>

@@ -24,7 +24,7 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="Service Layer Pattern">
 <meta property="og:url" content="http://example.com/2021/06/16/poeaa-domain-logic-pattern-service-layer/index.html">
-<meta property="og:site_name" content="Hexo">
+<meta property="og:site_name" content="GeekCodeParadise">
 <meta property="og:description" content="1. What is Service LayerAccording to [PoEAA], Service Layer Pattern definition is “Defines an application’s boundary with a layer of services that establishes a set of available operations and coordin">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://geekcodeparadise.com/wp-content/uploads/2021/06/image-12.png">
@@ -32,7 +32,7 @@
 <meta property="og:image" content="http://geekcodeparadise.com/wp-content/uploads/2021/06/image-13.png">
 <meta property="article:published_time" content="2021-06-15T16:33:00.000Z">
 <meta property="article:modified_time" content="2023-11-19T07:47:25.939Z">
-<meta property="article:author" content="John Doe">
+<meta property="article:author" content="LiJyu Gao">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://geekcodeparadise.com/wp-content/uploads/2021/06/image-12.png">
 
@@ -49,7 +49,7 @@
   };
 </script>
 
-  <title>Service Layer Pattern | Hexo</title>
+  <title>Service Layer Pattern | GeekCodeParadise</title>
   
 
 
@@ -100,7 +100,7 @@
 
     <a href="/" class="brand" rel="start">
       <span class="logo-line-before"><i></i></span>
-      <h1 class="site-title">Hexo</h1>
+      <h1 class="site-title">GeekCodeParadise</h1>
       <span class="logo-line-after"><i></i></span>
     </a>
   </div>
@@ -186,12 +186,12 @@
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
+      <meta itemprop="name" content="LiJyu Gao">
       <meta itemprop="description" content="">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
+      <meta itemprop="name" content="GeekCodeParadise">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
@@ -282,9 +282,9 @@
 <p>INSERT INTO Products<br>VALUES (1, ‘Code Paradise Database’, ‘D’);</p>
 <p>INSERT INTO Products<br>VALUES (2, ‘Code Paradise Spreadsheet’, ‘S’);</p>
 <p>INSERT INTO Products<br>VALUES (3, ‘Code Paradise Word Processor’, ‘W’);</p>
-<p>INSERT INTO Contracts<br>VALUES (1, 1, 9999, date(‘2020-01-01’), ‘<a href="mailto:&#116;&#x65;&#x73;&#x74;&#x31;&#64;&#116;&#101;&#x73;&#x74;&#x2e;&#99;&#x6f;&#x6d;">&#116;&#x65;&#x73;&#x74;&#x31;&#64;&#116;&#101;&#x73;&#x74;&#x2e;&#99;&#x6f;&#x6d;</a>‘);</p>
-<p>INSERT INTO Contracts<br>VALUES (2, 2, 1000, date(‘2020-03-15’), ‘<a href="mailto:&#x74;&#101;&#x73;&#116;&#x32;&#64;&#116;&#x65;&#115;&#x74;&#46;&#99;&#111;&#x6d;">&#x74;&#101;&#x73;&#116;&#x32;&#64;&#116;&#x65;&#115;&#x74;&#46;&#99;&#111;&#x6d;</a>‘);</p>
-<p>INSERT INTO Contracts<br>VALUES (3, 3, 24000, date(‘2020-07-25’), ‘<a href="mailto:&#116;&#101;&#x73;&#x74;&#51;&#x40;&#x74;&#x65;&#x73;&#x74;&#46;&#99;&#111;&#x6d;">&#116;&#101;&#x73;&#x74;&#51;&#x40;&#x74;&#x65;&#x73;&#x74;&#46;&#99;&#111;&#x6d;</a>‘);<br>“;<br>command.ExecuteNonQuery();<br>}</p>
+<p>INSERT INTO Contracts<br>VALUES (1, 1, 9999, date(‘2020-01-01’), ‘<a href="mailto:&#x74;&#101;&#115;&#x74;&#49;&#64;&#116;&#101;&#115;&#116;&#46;&#99;&#x6f;&#109;">&#x74;&#101;&#115;&#x74;&#49;&#64;&#116;&#101;&#115;&#116;&#46;&#99;&#x6f;&#109;</a>‘);</p>
+<p>INSERT INTO Contracts<br>VALUES (2, 2, 1000, date(‘2020-03-15’), ‘<a href="mailto:&#116;&#x65;&#x73;&#116;&#x32;&#x40;&#116;&#x65;&#115;&#116;&#x2e;&#99;&#111;&#x6d;">&#116;&#x65;&#x73;&#116;&#x32;&#x40;&#116;&#x65;&#115;&#116;&#x2e;&#99;&#111;&#x6d;</a>‘);</p>
+<p>INSERT INTO Contracts<br>VALUES (3, 3, 24000, date(‘2020-07-25’), ‘<a href="mailto:&#x74;&#x65;&#x73;&#116;&#51;&#x40;&#116;&#x65;&#115;&#116;&#x2e;&#99;&#x6f;&#109;">&#x74;&#x65;&#x73;&#116;&#51;&#x40;&#116;&#x65;&#115;&#116;&#x2e;&#99;&#x6f;&#109;</a>‘);<br>“;<br>command.ExecuteNonQuery();<br>}</p>
 <p>RecognitionService service &#x3D; new RecognitionService();</p>
 <p>&#x2F;&#x2F; database product<br>service.CalculateRevenueRecognitions(1);<br>var databaseRevenue &#x3D; service.RecognizedRevenue(1, new System.DateTime(2020, 1, 25));<br>Console.WriteLine($”database revenue before 2020-01-25 &#x3D; {databaseRevenue.Amount}”);</p>
 <p>&#x2F;&#x2F; spreadsheet product<br>service.CalculateRevenueRecognitions(2);<br>var spreadsheetRevenue &#x3D; service.RecognizedRevenue(2, new System.DateTime(2020, 6, 1));<br>Console.WriteLine($”spreadsheet revenue before 2020-06-01 &#x3D; {spreadsheetRevenue.Amount}”);</p>
@@ -382,7 +382,7 @@
 
       <div class="site-overview-wrap sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-  <p class="site-author-name" itemprop="name">John Doe</p>
+  <p class="site-author-name" itemprop="name">LiJyu Gao</p>
   <div class="site-description" itemprop="description"></div>
 </div>
 <div class="site-state-wrap motion-element">
@@ -390,7 +390,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">208</span>
+          <span class="site-state-item-count">206</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -426,11 +426,11 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2023</span>
+  <span itemprop="copyrightYear">2024</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
-  <span class="author" itemprop="copyrightHolder">John Doe</span>
+  <span class="author" itemprop="copyrightHolder">LiJyu Gao</span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
   </div>

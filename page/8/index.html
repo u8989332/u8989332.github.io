@@ -21,11 +21,11 @@
   </script>
 
   <meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
+<meta property="og:title" content="GeekCodeParadise">
 <meta property="og:url" content="http://example.com/page/8/index.html">
-<meta property="og:site_name" content="Hexo">
+<meta property="og:site_name" content="GeekCodeParadise">
 <meta property="og:locale" content="en_US">
-<meta property="article:author" content="John Doe">
+<meta property="article:author" content="LiJyu Gao">
 <meta name="twitter:card" content="summary">
 
 <link rel="canonical" href="http://example.com/page/8/">
@@ -41,7 +41,7 @@
   };
 </script>
 
-  <title>Hexo</title>
+  <title>GeekCodeParadise</title>
   
 
 
@@ -92,7 +92,7 @@
 
     <a href="/" class="brand" rel="start">
       <span class="logo-line-before"><i></i></span>
-      <h1 class="site-title">Hexo</h1>
+      <h1 class="site-title">GeekCodeParadise</h1>
       <span class="logo-line-after"><i></i></span>
     </a>
   </div>
@@ -173,223 +173,16 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2020/09/23/leetcode-409-longest-palindrome/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/09/23/leetcode-409-longest-palindrome/" class="post-title-link" itemprop="url">LeetCode 409 Longest Palindrome</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2020-09-23 21:04:00" itemprop="dateCreated datePublished" datetime="2020-09-23T21:04:00+08:00">2020-09-23</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-11-19 15:47:25" itemprop="dateModified" datetime="2023-11-19T15:47:25+08:00">2023-11-19</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C#</span></a>
-                </span>
-                  , 
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/LeetCode/" itemprop="url" rel="index"><span itemprop="name">LeetCode</span></a>
-                </span>
-                  , 
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Level-Easy/" itemprop="url" rel="index"><span itemprop="name">Level-Easy</span></a>
-                </span>
-                  , 
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E7%A8%8B%E5%BC%8F%E8%A7%A3%E9%A1%8C/" itemprop="url" rel="index"><span itemprop="name">程式解題</span></a>
-                </span>
-                  , 
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/ProgramSolving/" itemprop="url" rel="index"><span itemprop="name">ProgramSolving</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>LeetCode 409 Longest Palindrome 解題報告</p>
-<h4 id="平台："><a href="#平台：" class="headerlink" title="平台："></a>平台：</h4><p>LeetCode</p>
-<h4 id="題號："><a href="#題號：" class="headerlink" title="題號："></a>題號：</h4><p>409 - Longest Palindrome</p>
-<h4 id="題目連結："><a href="#題目連結：" class="headerlink" title="題目連結："></a>題目連結：</h4><p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/longest-palindrome/">https://leetcode.com/problems/longest-palindrome/</a></p>
-<h4 id="題目說明："><a href="#題目說明：" class="headerlink" title="題目說明："></a>題目說明：</h4><p>輸入1個字串，裡面有不同的字元，且大小寫也視為不同，求從這些字元組成最大回文的長度。</p>
-<p>比如範例輸入的abccccdd，能組成最大長度為7的回文，有可能是ccdadcc或者其他的組合。</p>
-<h4 id="解題方法："><a href="#解題方法：" class="headerlink" title="解題方法："></a>解題方法：</h4><p>分析每個字元出現的頻率，假如X字元出現偶數次，則它一定能全部拿去組回文。但如果X字元出現奇數次，則只能取它的數量-1後再拿去組回文，假如目前回文的長度是偶數，則剛剛那筆奇數次的字元，被-1的數量要再補上去，這樣仍是回文。 以範例輸入的abccccdd：</p>
-<ul>
-<li>a的出現次數為1，能組成回文，目前回文長度為1</li>
-<li>b的出現次數為1，無法加進回文，回文長度仍不變</li>
-<li>c的出現次數為4，能組成回文，目前回文長度為5</li>
-<li>d的出現次數為2，能組成回文，目前回文長度為7</li>
-</ul>
-<p>所以最長的長度為7。</p>
-<p>難度為Easy</p>
-<h4 id="GITHUB位置-C-與-C-："><a href="#GITHUB位置-C-與-C-：" class="headerlink" title="GITHUB位置(C++ 與 C#)："></a>GITHUB位置(C++ 與 C#)：</h4><p><a target="_blank" rel="noopener" href="https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%2B%2B/400-499/409.cpp">https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%2B%2B/400-499/409.cpp</a></p>
-<p><a target="_blank" rel="noopener" href="https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%23/400-499/409.cs">https://github.com/u8989332/ProblemSolving/blob/master/LeetCode/C%23/400-499/409.cs</a></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2020/09/22/containerized-asp-net-core-catalog-part-5/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/09/22/containerized-asp-net-core-catalog-part-5/" class="post-title-link" itemprop="url">一袋.NET要扛幾樓？打造 容器化 的 ASP.NET Core 網站！系列文章 - (7) 建立商品服務的Api - 5</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2020-09-22 23:40:00" itemprop="dateCreated datePublished" datetime="2020-09-22T23:40:00+08:00">2020-09-22</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-11-19 15:47:25" itemprop="dateModified" datetime="2023-11-19T15:47:25+08:00">2023-11-19</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/ASP-NET-Core/" itemprop="url" rel="index"><span itemprop="name">ASP.NET Core</span></a>
-                </span>
-                  , 
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Docker/" itemprop="url" rel="index"><span itemprop="name">Docker</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h4 id="1-建立Dockerfile"><a href="#1-建立Dockerfile" class="headerlink" title="1. 建立Dockerfile"></a>1. 建立Dockerfile</h4><p>　　在CatalogApi專案右鍵&#x3D;&gt;加入&#x3D;&gt;Dokcer支援，選擇目標平台Linux，將會在根目錄新增Dockerfile檔案，但這Dokcerfile有一些Bug，因為我的專案目錄設計方式，會讓VS產生錯誤的連結，所以需要再手動修改，變成下方的內容。其內容主要功能是在Docker容器內載入NET Core SDK編譯我們的程式碼，將編譯後的目錄檔案複製到Runtime環境的&#x2F;app目錄，再用NET Core Runtime執行商品服務的Api系統。</p>
-<figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">FROM</span> mcr.microsoft.com/dotnet/core/sdk:<span class="number">3.1</span>-buster AS build</span><br><span class="line"></span><br><span class="line"><span class="keyword">WORKDIR</span><span class="language-bash"> /code</span></span><br><span class="line"><span class="keyword">EXPOSE</span> <span class="number">80</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> . .</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> dotnet restore</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> dotnet publish -o /out/ -c Release</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">FROM</span> mcr.microsoft.com/dotnet/core/aspnet:<span class="number">3.1</span>-buster-slim AS base</span><br><span class="line"></span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> --from=build /out /app/</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">WORKDIR</span><span class="language-bash"> /app</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">ENTRYPOINT</span><span class="language-bash"> [<span class="string">&quot;dotnet&quot;</span>, <span class="string">&quot;CatalogApi.dll&quot;</span>]</span></span><br></pre></td></tr></table></figure>
-
-<h4 id="2-修改dokcer-compose-yml"><a href="#2-修改dokcer-compose-yml" class="headerlink" title="2. 修改dokcer-compose.yml"></a>2. 修改dokcer-compose.yml</h4><p>之前已經在docker-compose.yml加入SQL Server的image，而這次要加上商品服務的Api，如下方的yml。主要的參數包含：</p>
-<ul>
-<li>build的dockerfile：Dockerfile的檔名</li>
-<li>build的context：我們商品服務Api的Dockerfile所在的目錄</li>
-<li>image：這商品服務Api的image命名</li>
-<li>environment：這些參數將會覆蓋appSettings.json的內容，包含資料庫的連線資訊、外部連到此服務的URL。其中ExternalCatalogBaseUrl的{}值會從.env檔的內容做替換</li>
-<li>ports：將此Api的80 port對應為本機的7000</li>
-<li>depends_on：需要先等SQL Server的容器啟動完，才輪到此Api啟動容器</li>
-<li>networks：新增一個frontend網路區域，之後會和網頁前端系統互通</li>
-</ul>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="attr">version:</span> <span class="string">&quot;3.4&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="attr">networks:</span></span><br><span class="line"> <span class="attr">frontend:</span></span><br><span class="line"> <span class="attr">backend:</span></span><br><span class="line"> </span><br><span class="line"><span class="attr">services:</span></span><br><span class="line"> <span class="attr">catalog:</span></span><br><span class="line"> <span class="attr">build:</span></span><br><span class="line"> <span class="attr">context:</span> <span class="string">.srcServicesCatalogApi</span></span><br><span class="line"> <span class="attr">dockerfile:</span> <span class="string">Dockerfile</span></span><br><span class="line"> <span class="attr">image:</span> <span class="string">rpgshop/catalog</span></span><br><span class="line"> <span class="attr">environment:</span></span><br><span class="line"> <span class="bullet">-</span> <span class="string">DatabaseServer=mssqlserver</span></span><br><span class="line"> <span class="bullet">-</span> <span class="string">DatabaseName=CatalogDb</span></span><br><span class="line"> <span class="bullet">-</span> <span class="string">DatabaseUser=sa</span></span><br><span class="line"> <span class="bullet">-</span> <span class="string">DatabasePassword=JustTest!</span></span><br><span class="line"> <span class="bullet">-</span> <span class="string">ExternalCatalogBaseUrl=http://$&#123;RPGSHOP_EXTERNAL_DNS_NAME_OR_IP&#125;:7000</span></span><br><span class="line"> <span class="attr">container_name:</span> <span class="string">rpgcatalogapi</span></span><br><span class="line"> <span class="attr">ports:</span></span><br><span class="line"> <span class="bullet">-</span> <span class="string">&quot;7000:80&quot;</span></span><br><span class="line"> <span class="attr">networks:</span></span><br><span class="line"> <span class="bullet">-</span> <span class="string">backend</span></span><br><span class="line"> <span class="bullet">-</span> <span class="string">frontend</span></span><br><span class="line"> <span class="attr">depends_on:</span></span><br><span class="line"> <span class="bullet">-</span> <span class="string">mssqlserver</span></span><br><span class="line"></span><br><span class="line"> <span class="attr">mssqlserver:</span></span><br><span class="line"> <span class="attr">image:</span> <span class="string">&quot;microsoft/mssql-server-linux:latest&quot;</span></span><br><span class="line"> <span class="attr">ports:</span></span><br><span class="line"> <span class="bullet">-</span> <span class="string">&quot;1445:1433&quot;</span></span><br><span class="line"> <span class="attr">container_name:</span> <span class="string">rpgmssqlcontainer</span></span><br><span class="line"> <span class="attr">environment:</span></span><br><span class="line"> <span class="bullet">-</span> <span class="string">ACCEPT_EULA=Y</span></span><br><span class="line"> <span class="bullet">-</span> <span class="string">SA_PASSWORD=JustTest!</span></span><br><span class="line"> <span class="attr">networks:</span></span><br><span class="line"> <span class="bullet">-</span> <span class="string">backend</span></span><br></pre></td></tr></table></figure>
-
-<h4 id="3-建立-env檔"><a href="#3-建立-env檔" class="headerlink" title="3. 建立.env檔"></a>3. 建立.env檔</h4><p>　　.env檔是一種環境變數檔，用key&#x3D;value的方式寫在此檔案，目前我們只需要放一筆資料： RPGSHOP_EXTERNAL_DNS_NAME_OR_IP&#x3D;docker.for.win.localhost 　　這是前述的ExternalCatalogBaseUrl的值會被替換，而docker.for.win.localhost是docker內建在Windows的host。</p>
-<h4 id="4-用cmd執行docker-compose"><a href="#4-用cmd執行docker-compose" class="headerlink" title="4. 用cmd執行docker-compose"></a>4. 用cmd執行docker-compose</h4><p>　　用cmd在docker-compose.yml所在位置輸入指令：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker-compose up</span><br></pre></td></tr></table></figure>
-
-<p>　　執行完後，在瀏覽器輸入<a target="_blank" rel="noopener" href="http://docker.for.win.localhost:7000/swagger">http://docker.for.win.localhost:7000/swagger</a> ，將看見容器化的商品服務API，如圖1，且使用try it out都是正常運作。</p>
-<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2020/09/container2Bto2B2Bcatalogapi-1.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2020/09/container2Bto2B2Bcatalogapi.png" alt="容器化 ASP.NET Core docker api test"></a></p>
-<p>圖1</p>
-<p>-————————————————————-</p>
-<p>這一系列的專案將開在這Github：<a target="_blank" rel="noopener" href="https://github.com/u8989332/RPGShopOnContainers">RPGShopOnContainers</a>，會依照文章的主題進度區分資料夾，有需要的人可自行pull &#x2F; download～ 下一篇將建立一套網站前端，整合商品服務的API作商品呈現。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2020/09/22/poj-1182/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
+      <meta itemprop="name" content="LiJyu Gao">
       <meta itemprop="description" content="">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
+      <meta itemprop="name" content="GeekCodeParadise">
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
@@ -501,12 +294,12 @@
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
+      <meta itemprop="name" content="LiJyu Gao">
       <meta itemprop="description" content="">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
+      <meta itemprop="name" content="GeekCodeParadise">
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
@@ -600,12 +393,12 @@
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
+      <meta itemprop="name" content="LiJyu Gao">
       <meta itemprop="description" content="">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
+      <meta itemprop="name" content="GeekCodeParadise">
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
@@ -709,12 +502,12 @@
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
+      <meta itemprop="name" content="LiJyu Gao">
       <meta itemprop="description" content="">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
+      <meta itemprop="name" content="GeekCodeParadise">
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
@@ -822,12 +615,12 @@
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
+      <meta itemprop="name" content="LiJyu Gao">
       <meta itemprop="description" content="">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
+      <meta itemprop="name" content="GeekCodeParadise">
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
@@ -924,12 +717,12 @@
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
+      <meta itemprop="name" content="LiJyu Gao">
       <meta itemprop="description" content="">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
+      <meta itemprop="name" content="GeekCodeParadise">
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
@@ -1022,12 +815,12 @@
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
+      <meta itemprop="name" content="LiJyu Gao">
       <meta itemprop="description" content="">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
+      <meta itemprop="name" content="GeekCodeParadise">
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
@@ -1153,12 +946,12 @@
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
+      <meta itemprop="name" content="LiJyu Gao">
       <meta itemprop="description" content="">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
+      <meta itemprop="name" content="GeekCodeParadise">
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
@@ -1248,6 +1041,229 @@
   
   
 
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/09/18/uva-548-tree/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="LiJyu Gao">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="GeekCodeParadise">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/09/18/uva-548-tree/" class="post-title-link" itemprop="url">UVa 548 Tree</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-09-18 21:58:00" itemprop="dateCreated datePublished" datetime="2020-09-18T21:58:00+08:00">2020-09-18</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-11-19 15:47:25" itemprop="dateModified" datetime="2023-11-19T15:47:25+08:00">2023-11-19</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C#</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ACM/" itemprop="url" rel="index"><span itemprop="name">ACM</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Level-Medium/" itemprop="url" rel="index"><span itemprop="name">Level-Medium</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%A8%8B%E5%BC%8F%E8%A7%A3%E9%A1%8C/" itemprop="url" rel="index"><span itemprop="name">程式解題</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ProgramSolving/" itemprop="url" rel="index"><span itemprop="name">ProgramSolving</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/UVa/" itemprop="url" rel="index"><span itemprop="name">UVa</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Tree/" itemprop="url" rel="index"><span itemprop="name">Tree</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>UVa 548 Tree 解題報告</p>
+<h4 id="平台："><a href="#平台：" class="headerlink" title="平台："></a>平台：</h4><p>UVa Online Judge</p>
+<h4 id="題號："><a href="#題號：" class="headerlink" title="題號："></a>題號：</h4><p>548 - Tree</p>
+<h4 id="題目連結："><a href="#題目連結：" class="headerlink" title="題目連結："></a>題目連結：</h4><p><a target="_blank" rel="noopener" href="https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&category=0&problem=489">https://onlinejudge.org/index.php?option=com_onlinejudge&amp;Itemid&#x3D;8&amp;page&#x3D;show_problem&amp;category&#x3D;0&amp;problem&#x3D;489</a></p>
+<h4 id="題目說明："><a href="#題目說明：" class="headerlink" title="題目說明："></a>題目說明：</h4><p>給一個樹的中序(Inorder)和後序(Postorder)，求這個樹的葉子到根的值總和是最小的路徑，並輸出那路徑的葉子值。假如有多個路徑的總和最小值相同，則輸出葉子值是最小的。</p>
+<p>樹的節點最多會有10000個、最少1個。  
+　　</p>
+<h4 id="範例輸入："><a href="#範例輸入：" class="headerlink" title="範例輸入："></a>範例輸入：</h4><p>3 2 1 4 5 7 6 3 1 2 5 6 7 4 7 8 11 3 5 16 12 18 8 3 11 7 16 18 12 5 255 255</p>
+<h4 id="範例輸出："><a href="#範例輸出：" class="headerlink" title="範例輸出："></a>範例輸出：</h4><p>1 3 255</p>
+<h4 id="解題方法："><a href="#解題方法：" class="headerlink" title="解題方法："></a>解題方法：</h4><p>經典的樹狀資料結構問題，首先要將後序與中序的關係釐清，並建立原來的樹，即可用深度搜尋去找路徑。以下用畫圖解釋第1個範例輸入，原始的中序與後序如圖1</p>
+<p><img src="http://geekcodeparadise.com/wp-content/uploads/2020/09/1.png"></p>
+<p>圖1</p>
+<p>目前後序的最右邊值，為目前的根，也就是4，對應到中序，可區分左子樹與右子樹的範圍，如圖2。接著我們往左子樹遞迴找子節點。</p>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2020/09/2-1.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2020/09/2.png"></a></p>
+<p>圖2</p>
+<p>4節點的左子樹範圍，2的後序索引值是最大的，所以2是連著4的節點，在中序又可區分左子樹與右子樹的範圍，如圖3。</p>
+<p><img src="http://geekcodeparadise.com/wp-content/uploads/2020/09/3.png" alt="UVa 548 Tree solution"></p>
+<p>圖3</p>
+<p>2的左子樹與右子樹再遞迴處理後是3和1，如圖4與圖5。</p>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2020/09/4-1.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2020/09/4.png" alt="UVa 548 Tree solution"></a></p>
+<p>圖4</p>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2020/09/5-1.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2020/09/5.png" alt="UVa 548 Tree solution"></a></p>
+<p>圖5</p>
+<p>4節點的右子樹範圍，7的後序索引值是最大的，所以7是連著4的節點，在中序又可區分左子樹與右子樹的範圍，如圖6。</p>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2020/09/6-1.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2020/09/6.png" alt="UVa 548 Tree solution"></a></p>
+<p>圖6</p>
+<p>7的左子樹與右子樹再遞迴處理後是5和6，如圖7與圖8。</p>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2020/09/7-1.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2020/09/7.png" alt="UVa 548 Tree solution"></a></p>
+<p>圖7</p>
+<p><a target="_blank" rel="noopener" href="http://geekcodeparadise.com/wp-content/uploads/2020/09/8-1.png"><img src="http://geekcodeparadise.com/wp-content/uploads/2020/09/8.png" alt="UVa 548 Tree solution"></a></p>
+<p>圖8</p>
+<p>最終答案是(4 + 2 + 1)的路徑總和是最小的 ,於是輸出這路徑的節點1。而程式碼使用遞迴的方式解析中序和後序，再用Linked List建立樹。<br>難度為Medium</p>
+<h3 id="GITHUB位置："><a href="#GITHUB位置：" class="headerlink" title="GITHUB位置："></a>GITHUB位置：</h3><p><a target="_blank" rel="noopener" href="https://github.com/u8989332/ProblemSolving/blob/master/UVaOnlineJudge/500-599/548.cpp">https://github.com/u8989332/ProblemSolving/blob/master/UVaOnlineJudge/500-599/548.cpp</a></p>
+<h2 id="UVa-548-Tree"><a href="#UVa-548-Tree" class="headerlink" title="UVa 548 Tree"></a>UVa 548 Tree</h2>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/09/17/containerized-asp-net-core-monolithic-vs-microservices/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="LiJyu Gao">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="GeekCodeParadise">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/09/17/containerized-asp-net-core-monolithic-vs-microservices/" class="post-title-link" itemprop="url">一袋.NET要扛幾樓？打造 容器化 的 ASP.NET  Core網站！系列文章 - (2) 傳統單一架構 VS 微服務架構</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-09-17 20:34:00" itemprop="dateCreated datePublished" datetime="2020-09-17T20:34:00+08:00">2020-09-17</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-11-19 15:47:25" itemprop="dateModified" datetime="2023-11-19T15:47:25+08:00">2023-11-19</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%BE%AE%E6%9C%8D%E5%8B%99%E6%9E%B6%E6%A7%8B/" itemprop="url" rel="index"><span itemprop="name">微服務架構</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>　　傳統的單一系統架構，裡面的功能越做越大，導致後續維護越來越吃力。比如今天只要修改購物網站的會員功能，沒有更改其他程式碼，修改完畢後，光是編譯就得花不少時間，後續的測試與部署更不用說，只要中間過程一出錯，從頭來回修改的時間要很久。</p>
+<p>　　今天微服務架構的特性有兩個：</p>
+<ol>
+<li>小又專精：國軍知名口號「小而精、小而強、小而巧」，用在微服務洽好不過(?)，使相關功能的模組都收斂在一個服務，也符合單一職責原則。</li>
+<li>自治性：微服務各自部署在不同機器&#x2F;平台，彼此開放API並用網路溝通，降低耦合性</li>
+</ol>
+<p>　　基於這些特性，所帶來的好處有：</p>
+<ol>
+<li>不同技術的Stack：每個微服務可以有自己的技術Stack，比如會員服務可以用ASP.NET Core + SQL Server，訂單服務可以用PHP + MySQL</li>
+<li>高彈性：即使有個服務壞了，其他服務仍可運作</li>
+<li>高擴展性：容易擴充服務，比如負載平衡</li>
+<li>簡化部署：只需針對要部署的服務，其他服務仍保持運作</li>
+<li>減少團隊共同的負擔：以前維護單一系統是所有團隊共同維護，一人更改就得全部受影響；使用微服務可讓團隊專注在自己的服務</li>
+<li>可組合性：微服務可支援多樣的前端應用</li>
+<li>替代性高：如果該服務需要換技術或者移除，比起傳統單一系統容易達成</li>
+</ol>
+<p>　　但微服務架構也有些缺點，要考慮分散式帶來的問題(比如CAP)，還有測試、部署、監控的工作與傳統單一系統不同。 目前有些台灣公司找後端工程師，不限制使用的技術Stack，很有可能是採用微服務架構，可知這種架構是有幫助的。而我工作環境仍都是單一系統開發，只有Side Project能嘗試這新架構，而且微軟也為相關的文件寫得很充裕，非常的有用！下一篇會開始設計商品列表的Api，敬請期待。</p>
+<p>參考資料：</p>
+<p><a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-tw/dotnet/architecture/microservices/architect-microservice-container-applications/microservices-architecture">.NET 微服務 - 架構電子書：微服務架構</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.amazon.com/-/zh_TW/Building-Microservices-Designing-Fine-Grained-Systems%EF%BC%88%E8%8B%B1%E6%96%87%E7%89%88%EF%BC%89/dp/1491950358?keywords=Building+Microservices:+Desi&qid=1641913626&sr=8-8&linkCode=ll1&tag=glj89893320b-20&linkId=f39a585e87ef8f44e6f4a8de27d75061&language=zh_TW&ref_=as_li_ss_tl">Building Microservices: Designing Fine-Grained System</a><a target="_blank" rel="noopener" href="https://www.amazon.com/Building-Microservices-Designing-Fine-Grained-Systems/dp/1491950358">s：1. Microservices</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
 
   
   <nav class="pagination">
@@ -1309,7 +1325,7 @@
 
       <div class="site-overview-wrap sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-  <p class="site-author-name" itemprop="name">John Doe</p>
+  <p class="site-author-name" itemprop="name">LiJyu Gao</p>
   <div class="site-description" itemprop="description"></div>
 </div>
 <div class="site-state-wrap motion-element">
@@ -1317,7 +1333,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">208</span>
+          <span class="site-state-item-count">206</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -1353,11 +1369,11 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2023</span>
+  <span itemprop="copyrightYear">2024</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
-  <span class="author" itemprop="copyrightHolder">John Doe</span>
+  <span class="author" itemprop="copyrightHolder">LiJyu Gao</span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
   </div>
